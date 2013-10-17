@@ -1,0 +1,48 @@
+<!DOCTYPE xml SYSTEM "MiroParameterDescription.dtd">
+<config>
+  <config_global name="namespace" value="kn" />
+  <config_global name="include" value="miro/ConfigParameters.h" />
+  <config_global name="include" value="knFetchPool/FetchPoolParameters.h" />
+
+  <config_group name="Rapid">
+
+    <config_item name="DataPriorityRule" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="extension" type="string" default="" />
+      <config_parameter name="channelName" type="string" default="Default" />
+      <config_parameter name="priority" type="float" default="1" />
+      <config_parameter name="autoAdd" type="bool" default="false" />
+    </config_item>
+
+    <config_item name="FileChannel" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="name" type="string" default="Default" />
+      <config_parameter name="numTokens" type="unsigned int" default="1" />
+      <config_parameter name="startActive" type="bool" default="true" />
+    </config_item>
+
+    <config_item name="FileQueue" parent="Miro::Config" final="true" instance="true">
+      <config_parameter name="commandInterface" type="bool" default="true" unit="switch" />
+      <config_parameter name="fileAnnounceRepeater" type="bool" default="true" unit="switch" />
+
+      <config_parameter name="bandwidth" type="int" default="1000000" unit="bytes" />
+      <config_parameter name="delay" type="int" default="50000" unit="msec" />
+      <config_parameter name="channels" type="std::vector&lt;FileChannelParameters&gt;" default="1" />
+      <config_parameter name="rules" type="std::vector&lt;DataPriorityRuleParameters&gt;" />
+      <config_parameter name="stateDirectory" type="string" default="/tmp" unit="path" />
+      <config_parameter name="fetchPool" type="FetchPoolParameters" />
+      <constructor>
+    FileChannelParameters c;
+    c.name = "Engineering";
+    c.numTokens = 7;
+    channels.clear();
+    channels.push_back(c);
+    c.name = "Science";
+    c.numTokens = 4;
+    channels.push_back(c);
+    c.name = "Other";
+    c.numTokens = 1;
+    channels.push_back(c);
+      </constructor>
+    </config_item>
+
+  </config_group>
+</config>

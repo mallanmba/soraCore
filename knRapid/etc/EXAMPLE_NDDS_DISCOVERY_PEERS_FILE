@@ -1,0 +1,30 @@
+;; NDDS_DISCOVERY_PEERS - Default Discovery Configuration File
+;; Multicast builtin.udpv4://239.255.0.1 ; default discovery multicast addr
+
+;; Unicast
+localhost,192.168.1.1 			; A comma can be used a separator
+FAA0::1 FAA0::0#localhost 		; Whitespace can be used as a separator
+1@himalaya 						; Max participant ID of 1 on 'himalaya'
+1@gangotri
+
+
+;; UDPv4
+udpv4://himalaya 				; 'himalaya' via 'udpv4' transport plugin(s)
+udpv4://FAA0::0#localhost 		; 'localhost' via 'updv4' transport plugin
+								; registered at network address FAA0::0
+								
+								
+;; Shared Memory
+shmem:// 						; All 'shmem' transport plugin(s)
+builtin.shmem:// 				; The builtin builtin 'shmem' transport plugin
+shmem://FCC0::0 				; Shared memory transport plugin registered
+								; 	at network address FCC0::0
+
+
+;; StarFabric
+0/0/R 							; StarFabric node 0/0/R
+starfabric://0/0/R 				; 0/0/R accessed via 'starfabric'
+								; 	transport plugin(s)
+starfabric://FBB0::0#0/0/R 		; StarFabric transport plugin registered
+								; 	at network address FBB0::0
+starfabric:// 					; All 'starfabric' transport plugin(s)

@@ -1,0 +1,42 @@
+<!DOCTYPE xml SYSTEM "MiroParameterDescription.dtd">
+<config>
+  <config_global name="namespace" value="kn" />
+  <config_global name="include" value="rapidFrameStore/RapidFrameStoreParameters.h" />
+
+  <config_group name="FrameStore">
+
+    <config_item name="FrameStoreConfigSvc" parent="Miro::Config" final="true" instance="true">
+      <config_parameter name="siteFrame" type="std::string" />
+      <config_parameter name="ddsConfig" type="bool" default="true" />
+      <config_parameter name="publisher" type="string" />
+      <config_parameter name="library" type="string" default="" />
+      <config_parameter name="profile" type="string" default="RapidConfigQos" />
+    </config_item>
+
+    <config_item name="ConfigConsumer" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="topicSuffix" type="string" />
+      <config_parameter name="parentNode" type="string" unit="publisher/subscriber" default="Team" />
+      <config_parameter name="profile" type="string" default="RapidFrameStoreConfigProfile" />
+      <config_parameter name="library" type="string" />
+
+      <config_parameter name="enabled" type="bool" default="true" />
+    </config_item>
+
+    <config_item name="PositionUpdater" parent="rapid::FsPositionUpdater" final="false" instance="false">
+      <config_parameter name="parentNode" type="string" inherited="true" default="Team" />
+    </config_item>
+    <config_item name="JointUpdater" parent="rapid::FsJointUpdater" final="false" instance="false">
+      <config_parameter name="parentNode" type="string" inherited="true" default="Team" />
+    </config_item>
+
+   <config_item name="FrameStoreUpdaterSvc" parent="Miro::Config" final="true" instance="true">
+      <config_parameter name="frameStoreConfig" type="ConfigConsumerParameters" />
+      <config_parameter name="positionUpdaters" type="std::vector&lt;PositionUpdaterParameters&gt;" default = "2"/>
+      <config_parameter name="jointUpdaters" type="std::vector&lt;JointUpdaterParameters&gt;" default = "2" />
+      <constructor>
+        positionUpdaters[0].parentNode = "";
+        jointUpdaters[0].parentNode = "";
+      </constructor>
+    </config_item>
+  </config_group>
+</config>

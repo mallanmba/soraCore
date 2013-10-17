@@ -1,0 +1,70 @@
+# test out CPack
+
+set( GATHER_WHAT "RELEASE_ONLY" )
+if( "${CMAKE_BUILD_TYPE}" MATCHES "Debug" )
+  unset( GATHER_WHAT )
+endif( "${CMAKE_BUILD_TYPE}" MATCHES "Debug" )
+
+## Gather external dlls
+######################################
+include( GatherDlls )
+gather_dlls( ${GATHER_WHAT} 
+  ${PTHREAD_LIBRARIES} 
+)
+gather_dlls_install()
+
+## Standard CPack stuff
+######################################
+include ( InstallRequiredSystemLibraries )
+
+# copy macro, will create empty dest file if src doesn't exist
+macro( filecopy SRC_FILE DST_FILE )
+  if( EXISTS ${SRC_FILE} )
+    exec_program("${CMAKE_COMMAND}" ARGS 
+                  -E copy_if_different        
+                  ${SRC_FILE}  
+                  ${DST_FILE} 
+    )
+  else( EXISTS ${SRC_FILE} )
+    file( WRITE ${DST_FILE} "" )
+  endif( EXISTS ${SRC_FILE} )
+endmacro( filecopy )
+
+# mac installer won't accept files w/o an extension, so copy 
+filecopy( "${PROJECT_SOURCE_DIR}/README"  "${PROJECT_BINARY_DIR}/README.txt"  )
+filecopy( "${PROJECT_SOURCE_DIR}/COPYING" "${PROJECT_BINARY_DIR}/COPYING.txt" )
+filecopy( "${PROJECT_SOURCE_DIR}/../cmake/share/icons/NASA-logo-64.png"  "${PROJECT_BINARY_DIR}/NASA-logo-64.png" )
+filecopy( "${PROJECT_SOURCE_DIR}/../cmake/share/icons/NASA-logo-128.png" "${PROJECT_BINARY_DIR}/NASA-logo-128.png" )
+
+set( CPACK_PACKAGE_DESCRIPTION_SUMMARY "${PROJECT_NAME}" )
+set( CPACK_PACKAGE_VENDOR              "NASA Ames / Intelligent Robotics Group" )
+set( CPACK_PACKAGE_DESCRIPTION_FILE    "${PROJECT_BINARY_DIR}/README.txt" )
+set( CPACK_RESOURCE_FILE_LICENSE       "${PROJECT_BINARY_DIR}/COPYING.txt" )
+set( CPACK_PACKAGE_VERSION_MAJOR       "1")
+set( CPACK_PACKAGE_VERSION_MINOR       "0")
+set( CPACK_PACKAGE_VERSION_PATCH       "0")
+set( CPACK_PACKAGE_INSTALL_DIRECTORY   "${PROJECT_NAME}")
+# this generates errors for some reason
+#set( CPACK_PACKAGE_ICON                "${PROJECT_BINARY_DIR}/NASA-logo-128.png" )
+
+if( WIN32 AND NOT UNIX )
+  set( CPACK_NSIS_DISPLAY_NAME         "${CPACK_PACKAGE_INSTALL_DIRECTORY}")
+  set( CPACK_NSIS_URL_INFO_ABOUT       "http://ti.arc.nasa.gov/groups/intelligent-robotics/")
+  set( CPACK_NSIS_HELP_LINK            "https://babelfish.arc.nasa.gov/trac/roversw")
+  set( CPACK_NSIS_CONTACT              "https://babelfish.arc.nasa.gov/trac/roversw/newticket")
+  set( CPACK_NSIS_MODIFY_PATH          OFF) # ask whether bin should be added to system PATH variable
+
+endif( WIN32 AND NOT UNIX )
+
+set( MIRO_PACKAGE_EXECUTABLES ) # executable-label pairs
+if( MIRO_BUILD_WITH_TAO )
+  set( MIRO_PACKAGE_EXECUTABLES ${MIRO_PACKAGE_EXECUTABLES}
+    LogPlayer     "LogPlayer"
+    ConfigEditor  "ConfigEditor"
+  )
+endif( MIRO_BUILD_WITH_TAO )
+
+set( CPACK_PACKAGE_EXECUTABLES ${MIRO_PACKAGE_EXECUTABLES} )
+
+include(CPack)
+

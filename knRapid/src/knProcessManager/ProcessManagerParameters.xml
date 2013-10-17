@@ -1,0 +1,33 @@
+<!DOCTYPE xml SYSTEM "MiroParameterDescription.dtd">
+<config>
+  <config_global name="namespace" value="kn" />
+  <config_global name="include" value="knDds/KnDdsParameters.h" />
+  <config_global name="include" value="rapidExtIo/RapidExtIoParameters.h" />
+  <config_global name="include" value="rapidCommanding/CommandingParameters.h" />
+
+  <config_group name="Processes" >
+
+    <config_item name="ProcMgrConfigLeaf" parent="kn::DdsLeaf" final="false" >
+      <config_parameter name="profile" type="string" inherited="true" default="RapidProcessManagerConfigProfile" />
+    </config_item>
+    <config_item name="ProcMgrStateLeaf" parent="kn::DdsLeaf" final="false" >
+      <config_parameter name="profile" type="string" inherited="true" default="RapidProcessManagerStateProfile" />
+    </config_item>
+    <config_item name="ProcIoSampleLeaf" parent="kn::DdsLeaf" final="false" >
+      <config_parameter name="profile" type="string" inherited="true" default="RapidProcessIoSampleProfile" />
+    </config_item>
+
+    <config_item name="ProcessManagerSvc" parent="Miro::Config" final="true" >
+      <config_parameter name="name" type="string" default="rctld" />
+      <config_parameter name="logPath" type="string" default="/usr/local/irg/data/rctlLog" />
+      <config_parameter name="aliveTimer" type="ACE_Time_Value" default="2" />
+      <config_parameter name="reinitDelay" type="ACE_Time_Value" default="0" />
+      <config_parameter name="managerConfigWriter" type="ProcMgrConfigLeafParameters" />
+      <config_parameter name="managerStateWriter" type="ProcMgrStateLeafParameters" />
+      <config_parameter name="ioSampleWriter" type="ProcIoSampleLeafParameters" />
+      <config_parameter name="commandManager" type="rapid::CommandManagerParameters" />
+      <config_parameter name="defaultConfig" type="string" default="RctldConfig" />
+    </config_item>
+
+  </config_group>
+</config>

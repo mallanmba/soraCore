@@ -1,0 +1,6 @@
+
+struct HelloWorld {
+  string id; //@key
+  string<128> msg;
+};
+

@@ -1,0 +1,89 @@
+<!DOCTYPE MiroConfigDocument>
+<config>
+  <section name="Rapid" >
+    <parameter name="kn::RapidSystemInfoSvcParameters" >
+      <parameter name="CpuInfo" >
+        <parameter value="4" name="NumCpus" />
+      </parameter>
+      <parameter name="NetTrafficInfo" >
+        <parameter name="Interfaces" >
+          <parameter>
+            <parameter value="eth0" name="Name" />
+          </parameter>
+          <parameter>
+            <parameter value="wlan0" name="Name" />
+          </parameter>
+        </parameter>
+      </parameter>
+      <parameter name="ThermalInfo" >
+        <parameter name="Sensors" >
+          <parameter>
+            <parameter value="THM0" name="Id" />
+          </parameter>
+        </parameter>
+      </parameter>
+    </parameter>
+  </section>
+  <section name="Robot" >
+    <parameter name="kn::DdsEntitiesFactorySvcParameters" >
+      <parameter name="ConfigFiles" >
+        <parameter value="RAPID_QOS_PROFILES.xml" />
+        <parameter value="RAFT_QOS_PROFILES.xml" />
+      </parameter>
+      <parameter name="Participants" >
+        <parameter>
+          <parameter value="RapidDefaultQos" name="Profile" />
+          <!-- parameter name="FlowControllers" >
+            <parameter>
+              <parameter value="ProcessIoFlowController" name="Name" />
+              <parameter value="DDS_EDF_FLOW_CONTROLLER_SCHED_POLICY" name="SchedulingPolicy" />
+              <parameter name="TokenBucket" >
+                <parameter value="20" name="MaxTokens" />
+                <parameter value="2" name="TokensAddedPerPeriod" />
+                <parameter value="0" name="TokensLeakedPerPeriod" />
+                <parameter value="0.1" name="Period" />
+                <parameter value="1024" name="BytesPerToken" />
+              </parameter>
+            </parameter>
+          </parameter -->
+        </parameter>
+      </parameter>
+    </parameter>
+  </section>
+  <section name="Processes" >
+    <instance type="kn::ProcessManagerSvcParameters" name="Rctld" >
+      <parameter value="/usr/local/irg/data/roboctl-log" name="LogPath" />
+      <parameter value="RctldConfig" name="DefaultConfig" />
+    </instance>
+    <instance type="rapid::ext::ProcessManagerConfigParameters" name="RctldConfig" >
+      <parameter value="Testconfiguration Sim Localhost" name="ConfigName" />
+      <parameter name="Processes" >
+        <parameter>
+          <parameter value="K10Controller" name="Name" />
+          <parameter value="Test configuration" name="Comment" />
+          <parameter value="/usr/local/irg/home/hhutz/roverswTest/i686_linux_gcc4.1/bin" name="WorkingDirectory" />
+          <parameter value="./k10controller" name="BinaryName" />
+          <parameter value="-MLL 6 -f ../etc/k10controller/fake_inspection.conf -MCF ../etc/k10controller/k10Black.xml" name="CommandLineParams" />
+          <parameter value="false" name="StartOnInit" />
+          <parameter value="false" name="WaitOnInit" />
+          <!-- parameter value="/K10Black/Navigator" name="AliveInterface" / -->
+          <parameter value="K10 ROVER CONTROLLER IS UP AND FUNCTIONAL!" name="RunningMatch" />
+          <parameter name="Environment" >
+            <parameter value="NameServiceIOR=corbaloc:iiop:1.2@localhost:4900/NameService" />
+          </parameter>
+        </parameter>
+        <parameter>
+          <parameter value="NTPstat" name="Name" />
+          <parameter value="Checking Time Synchronization" name="Comment" />
+          <parameter value="/usr/bin" name="WorkingDirectory" />
+          <parameter value="ntpstat" name="BinaryName" />
+          <parameter value="true" name="SelfTerminating" />
+          <parameter value="false" name="StartOnInit" />
+          <parameter value="false" name="WaitOnInit" />
+          <!-- parameter value="/K10Black/Navigator" name="AliveInterface" / -->
+          <parameter value="synchronised" name="RunningMatch" />
+        </parameter>
+      </parameter>
+    </instance>
+  </section>
+</config>

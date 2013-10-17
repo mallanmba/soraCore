@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NavMapTest", "NavMapTest-vs2010.vcxproj", "{DC604F80-F73B-AA1B-C231-921C057DE362}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug DLL|Win32 = Debug DLL|Win32
+		Debug|Win32 = Debug|Win32
+		Release DLL|Win32 = Release DLL|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC604F80-F73B-AA1B-C231-921C057DE362}.Debug DLL|Win32.ActiveCfg = Debug DLL|Win32
+		{DC604F80-F73B-AA1B-C231-921C057DE362}.Debug DLL|Win32.Build.0 = Debug DLL|Win32
+		{DC604F80-F73B-AA1B-C231-921C057DE362}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DC604F80-F73B-AA1B-C231-921C057DE362}.Debug|Win32.Build.0 = Debug|Win32
+		{DC604F80-F73B-AA1B-C231-921C057DE362}.Release DLL|Win32.ActiveCfg = Release DLL|Win32
+		{DC604F80-F73B-AA1B-C231-921C057DE362}.Release DLL|Win32.Build.0 = Release DLL|Win32
+		{DC604F80-F73B-AA1B-C231-921C057DE362}.Release|Win32.ActiveCfg = Release|Win32
+		{DC604F80-F73B-AA1B-C231-921C057DE362}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

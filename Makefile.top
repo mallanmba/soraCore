@@ -1,0 +1,54 @@
+#
+# Top level makefile for roversw
+#
+# This is a very simple makefile allowing to build the 
+# full roversw tree from the top level.
+#
+# The makefile only defines a set of subdirectories corresponding
+# to the roversw projects/modules and define dependencies between 
+# these projects.
+#
+# A "subdirs" rule tell make to cd in the the project and build 
+# from there with the given targets.
+# This makefile defines only one real target: "subdirs"
+# All the other classic targets (clean install, etc.) are simply
+# dispatched to the projects makefiles.
+#
+# Lorenzo Flueckiger - May 2008
+#
+
+# List of projects to build
+# This list must match the modules defined in configure.sh 
+
+SUBDIRS = irgUtil kn knDds knRapid 
+
+# First goal: build the the subdirs
+subdirs: $(SUBDIRS)
+
+# Dependencies between the projects
+kn: irgUtil
+
+knDds: kn
+
+knRapid: irgUtil kn knDds
+
+# Dispatch classic targets to the projects
+# TODO extend this for other cmake common targets
+all help depend clean install: subdirs
+
+# debug stuff
+ifeq (1, $(VERBOSE))
+HIDE_CMD=
+else
+HIDE_CMD=@
+endif
+
+# Subdirectory rule
+$(SUBDIRS):
+	@echo ""
+	@echo "=== Enter project $@ for building with goal=[$(MAKECMDGOALS)]..."
+	$(HIDE_CMD)cd $@ && $(MAKE) $(MAKECMDGOALS)
+	@echo "=== Build goal=[$(MAKECMDGOALS)] on project $@ completed."
+	@echo ""
+
+.PHONY: subdirs $(SUBDIRS) all clean install

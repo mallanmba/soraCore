@@ -1,0 +1,96 @@
+<!DOCTYPE xml SYSTEM "MiroParametersDescriptionDocument.dtd">
+<config> 
+  <config_global name="namespace" value="kn" />
+  <config_global name="include" value="miro/ConfigParameters.h" />
+
+  <config_group name="Robot">
+
+    <config_item name="DdsEntity" parent="Miro::Config" final="false" instance="false" >
+      <config_parameter name="name" type="string" default="Default" />
+      <config_parameter name="profile" type="string" default="" />
+      <config_parameter name="library" type="string" default="" />
+    </config_item>
+
+    <config_item name="TokenBucket" parent="Miro::Config" final="false" instance="false" >
+      <config_parameter name="maxTokens" type="int" default="-1" />
+      <config_parameter name="tokensAddedPerPeriod" type="int" default="-1" />
+      <config_parameter name="tokensLeakedPerPeriod" type="int" default="0" />
+      <config_parameter name="period" type="ACE_Time_Value" default="1" />
+      <config_parameter name="bytesPerToken" type="int" default="-1" />
+    </config_item>
+
+    <config_item name="DdsFlowController" parent="Miro::Config" final="false" instance="false" >
+      <config_parameter name="name" type="string" default="" />
+      <config_parameter name="schedulingPolicy" type="string" default="DDS_RR_FLOW_CONTROLLER_SCHED_POLICY" />
+      <config_parameter name="tokenBucket" type="TokenBucketParameters" />
+    </config_item>
+
+    <config_item name="DdsParticipant" parent="DdsEntity" final="false" instance="false" >
+      <config_parameter name="participantName" type="string" default="" />
+      <config_parameter name="domainId" type="int" default="0" />
+      <config_parameter name="discoveryPeersFiles" type="std::vector&lt;std::string&gt;" />
+      <config_parameter name="lbpdFile" type="string" />
+      <config_parameter name="lbpdLogVerbosity" type="int" default="0" />
+      <config_parameter name="lbedFile" type="string" />
+      <config_parameter name="lbedLogVerbosity" type="int" default="0" />
+      <config_parameter name="enableMonitor" type="bool" default="false" />
+      <config_parameter name="monitorLibrary" type="string" default="RtiMonitorQosLibrary" />
+      <config_parameter name="monitorProfile" type="string" default="RtiMonitorQosProfile" />
+      <config_parameter name="monitorDomainId" type="int" default="-1" />
+      <config_parameter name="types" type="std::vector&lt;std::string&gt;" />
+      <config_parameter name="flowControllers" type="std::vector&lt;DdsFlowControllerParameters&gt;" />
+    </config_item>
+
+    <config_item name="DdsNode" parent="DdsEntity" final="false" instance="false" >
+      <config_parameter name="name" type="string" inherited="true" default="&lt;ROBOTNAME&gt;" />
+      <config_parameter name="participant" type="string" default="Default" />
+      <config_parameter name="partition" type="string" default="&lt;ROBOTNAME&gt;" />
+    </config_item>
+
+    <config_item name="DdsTopic" parent="DdsEntity" final="false" instance="false" >
+      <config_parameter name="participant" type="string" default="Default" />
+      <config_parameter name="typeName" type="string" default="" />
+    </config_item>
+
+    <config_item name="DdsEntitiesFactory" parent="Miro::Config" final="true" instance="false" >
+      <config_parameter name="configFiles" type="std::vector&lt;std::string&gt;" measure=" url" />
+      <config_parameter name="defaultLibrary" type="string" default="RapidQosLibrary" />
+      <config_parameter name="defaultProfile" type="string" default="RapidDefaultQos" />
+      <config_parameter name="participants" type="std::vector&lt;DdsParticipantParameters&gt;" default="1" />
+      <config_parameter name="publishers" type="std::vector&lt;DdsNodeParameters&gt;" default="1" />
+      <config_parameter name="subscribers" type="std::vector&lt;DdsNodeParameters&gt;" default="1" />
+      <config_parameter name="topics" type="std::vector&lt;DdsTopicParameters&gt;" />
+      <constructor>
+        configFiles.push_back("RAPID_QOS_PROFILES.xml");
+      </constructor>
+    </config_item>
+
+    <config_item name="DdsEntitiesFactorySvc" parent="DdsEntitiesFactory" final="true" instance="true" >
+    </config_item>
+
+    <config_item name="DdsLeaf" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="topicSuffix" type="string" />
+      <config_parameter name="parentNode" type="string" unit="publisher/subscriber" />
+      <config_parameter name="profile" type="string" />
+      <config_parameter name="library" type="string" />
+    </config_item>
+
+    <config_item name="DdsConfigStateLeaf" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="topicSuffix" type="string" />
+      <config_parameter name="parentNode" type="string" unit="publisher/subscriber" />
+      <config_parameter name="configProfile" type="string" default="RapidConfigQos" />
+      <config_parameter name="stateProfile" type="string" default="RapidStateQos" />
+      <config_parameter name="library" type="string" />
+    </config_item>
+
+    <config_item name="DdsConfigSampleLeaf" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="topicSuffix" type="string" />
+      <config_parameter name="parentNode" type="string" unit="publisher/subscriber" />
+      <config_parameter name="configProfile" type="string" default="RapidConfigQos" />
+      <config_parameter name="sampleProfile" type="string" default="RapidSampleQos" />
+      <config_parameter name="library" type="string" />
+    </config_item>
+
+  </config_group>
+</config>
+

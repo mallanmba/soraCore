@@ -1,0 +1,18 @@
+<!DOCTYPE xml SYSTEM "MiroParameterDescription.dtd">
+<config>
+  <config_global name="namespace" value="kn" />
+  <config_global name="include" value="miro/Parameters.h" />
+
+  <config_group name="Rapid">
+
+    <config_item name="FetchPool" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="numFetchers" type="int" default="1" unit="fetcher" />
+      <config_parameter name="speedLimit" type="int" default="0" unit="bytes/sec" />
+      <config_parameter name="timeout" type="int" default="0" unit="msec" />
+      <config_parameter name="tempDirectory" type="string" default="/tmp" />
+      <config_parameter name="privateKey" type="string" default="fill/me/in/id_rsa" />
+      <config_parameter name="publicKey" type="string" default="fill/me/in/id_rsa.pub" />
+    </config_item>
+
+  </config_group>
+</config>

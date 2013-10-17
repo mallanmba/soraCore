@@ -1,0 +1,46 @@
+#ifndef rapid_ext_arc_GpsConfig_idl
+#define rapid_ext_arc_GpsConfig_idl
+
+#include "BaseTypes.idl"
+#include "Message.idl"
+
+module rapid
+{
+  module ext
+  {
+    module arc
+    {
+
+    //@copy-c-declaration class GpsConfigTypeSupport;
+    //@copy-c-declaration class GpsConfigDataWriter;
+    //@copy-c-declaration class GpsConfigDataReader;
+    //@copy-c-declaration struct GpsConfigSeq;
+
+      /**
+       * The status of a GPS sensor.
+       * 
+       * This is probably a bit over-specialized for the one that we have.
+       *
+       * @author Hans Utz
+       * @updated 21-May-2006 8:23:53 PM
+       */
+      valuetype GpsConfig : Message
+      {
+        //@copy-c-declaration #if RTI_DDS_VERSION_MAJOR < 4 || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR < 5) || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR  == 5 && RTI_DDS_VERSION_RELEASE != 'f' )
+        //@copy-c-declaration typedef GpsConfigTypeSupport TypeSupport;
+        //@copy-c-declaration typedef GpsConfigDataWriter DataWriter;
+        //@copy-c-declaration typedef GpsConfigDataReader DataReader;
+        //@copy-c-declaration typedef GpsConfigSeq Seq;
+        //@copy-c-declaration #endif
+        //@copy-c-declaration typedef GpsConfig Type;
+
+        public string sensorFrame;
+        public string referenceFrame;
+        
+        public string elipsoid;
+      };
+    };
+  };
+};
+
+#endif // rapid_ext_arc_GpsConfig_idl

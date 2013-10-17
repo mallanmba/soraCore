@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/usr/local/irg/apps/RTI/RTI_Routing_Service/resource/schema/rti_routing_service.xsd">
+ <types>
+  <include file="AccessControlState.xml" />
+  <include file="Ack.xml" />
+  <include file="AgentConfig.xml" />
+  <include file="AgentState.xml" />
+  <include file="Command.xml" />
+  <include file="CommandConfig.xml" />
+  <include file="FileAnnounce.xml" />
+  <include file="FileQueueConfig.xml" />
+  <include file="FileQueueEntryState.xml" />
+  <include file="FileQueueReceiverSample.xml" />
+  <include file="FileQueueSample.xml" />
+  <include file="FileQueueState.xml" />
+  <include file="Float32Config.xml" />
+  <include file="Float32Sample.xml" />
+  <include file="FrameStoreConfig.xml" />
+  <include file="GpsConfig.xml" />
+  <include file="GpsSample.xml" />
+  <include file="ImageSensorSample.xml" />
+  <include file="ImageSensorState.xml" />
+  <include file="JointConfig.xml" />
+  <include file="JointSample.xml" />
+  <include file="MacroConfig.xml" />
+  <include file="MacroState.xml" />
+  <include file="NavMapConfig.xml" />
+  <include file="NavMapSample.xml" />
+  <include file="PointCloudConfig.xml" />
+  <include file="PointCloudSample.xml" />
+  <include file="PositionConfig.xml" />
+  <include file="PositionSample.xml" />
+  <include file="ProcessIoSample.xml" />
+  <include file="ProcessManagerConfig.xml" />
+  <include file="ProcessManagerState.xml" />
+  <include file="QueueState.xml" />
+  <include file="RangeScanConfig.xml" />
+  <include file="RangeScanSample.xml" />
+  <include file="SystemInfoConfig.xml" />
+  <include file="SystemInfoSample.xml" />
+  <include file="Trajectory2DConfig.xml" />
+  <include file="Trajectory2DSample.xml" />
+  <include file="TrajectoryConfig.xml" />
+  <include file="TrajectorySample.xml" />
+  <include file="VEStopConfig.xml" />
+  <include file="VEStopState.xml" />
+ </types>
+ <!-- ################################################################### -->
+ <!-- ## RapidQosLibrary -->
+ <!-- ################################################################### -->
+
+ <!-- ********************************************************************** -->
+ <!-- Default configuration file for RTI Routing Service -->
+ <!-- ********************************************************************** -->
+ <routing_service name="K10Routes" group_name="HET">
+  <domain_route name="K10RedDomainRoute">
+   <participant_1>
+    <domain_id>0</domain_id>
+    <participant_qos base_name="RapidQosLibrary::RapidDefaultQos" />
+    <registered_type name="rapid::AccessControlState" type_name="rapid::AccessControlState" />
+    <registered_type name="rapid::Ack" type_name="rapid::Ack" />
+    <registered_type name="rapid::AgentConfig" type_name="rapid::AgentConfig" />
+    <registered_type name="rapid::CommandConfig" type_name="rapid::CommandConfig" />
+    <registered_type name="rapid::Command" type_name="rapid::Command" />
+    <registered_type name="rapid::FileAnnounce" type_name="rapid::FileAnnounce" />
+    <registered_type name="rapid::FileQueueConfig" type_name="rapid::FileQueueConfig" />
+    <registered_type name="rapid::FileQueueEntryState" type_name="rapid::FileQueueEntryState" />
+    <registered_type name="rapid::FileQueueReceiverSample" type_name="rapid::FileQueueReceiverSample" />
+    <registered_type name="rapid::FileQueueSample" type_name="rapid::FileQueueSample" />
+    <registered_type name="rapid::FileQueueState" type_name="rapid::FileQueueState" />
+    <registered_type name="rapid::ext::arc::Float32Config" type_name="rapid::ext::arc::Float32Config" />
+    <registered_type name="rapid::ext::arc::Float32Sample" type_name="rapid::ext::arc::Float32Sample" />
+    <registered_type name="rapid::FrameStoreConfig" type_name="rapid::FrameStoreConfig" />
+    <registered_type name="rapid::ext::arc::GpsConfig" type_name="rapid::ext::arc::GpsConfig" />
+    <registered_type name="rapid::ext::arc::GpsSample" type_name="rapid::ext::arc::GpsSample" />
+    <registered_type name="rapid::ImageSensorSample" type_name="rapid::ImageSensorSample" />
+    <registered_type name="rapid::ImageSensorState" type_name="rapid::ImageSensorState" />
+    <registered_type name="rapid::JointConfig" type_name="rapid::JointConfig" />
+    <registered_type name="rapid::JointSample" type_name="rapid::JointSample" />
+    <registered_type name="rapid::ext::MacroConfig" type_name="rapid::ext::MacroConfig" />
+    <registered_type name="rapid::ext::MacroState" type_name="rapid::ext::MacroState" />
+    <registered_type name="rapid::ext::NavMapConfig" type_name="rapid::ext::NavMapConfig" />
+    <registered_type name="rapid::ext::NavMapSample" type_name="rapid::ext::NavMapSample" />
+    <registered_type name="rapid::PointCloudConfig" type_name="rapid::PointCloudConfig" />
+    <registered_type name="rapid::PointCloudSample" type_name="rapid::PointCloudSample" />
+    <registered_type name="rapid::PositionConfig" type_name="rapid::PositionConfig" />
+    <registered_type name="rapid::PositionSample" type_name="rapid::PositionSample" />
+    <registered_type name="rapid::ext::ProcessIoSample" type_name="rapid::ext::ProcessIoSample" />
+    <registered_type name="rapid::ext::ProcessManagerConfig" type_name="rapid::ext::ProcessManagerConfig" />
+    <registered_type name="rapid::ext::ProcessManagerState" type_name="rapid::ext::ProcessManagerState" />
+    <registered_type name="rapid::QueueState" type_name="rapid::QueueState" />
+    <registered_type name="rapid::ext::RangeScanConfig" type_name="rapid::ext::RangeScanConfig" />
+    <registered_type name="rapid::ext::RangeScanSample" type_name="rapid::ext::RangeScanSample" />
+    <registered_type name="rapid::ext::SystemInfoConfig" type_name="rapid::ext::SystemInfoConfig" />
+    <registered_type name="rapid::ext::SystemInfoSample" type_name="rapid::ext::SystemInfoSample" />
+    <registered_type name="rapid::ext::Trajectory2DConfig" type_name="rapid::ext::Trajectory2DConfig" />
+    <registered_type name="rapid::ext::Trajectory2DSample" type_name="rapid::ext::Trajectory2DSample" />
+    <registered_type name="rapid::ext::TrajectoryConfig" type_name="rapid::ext::TrajectoryConfig" />
+    <registered_type name="rapid::ext::TrajectorySample" type_name="rapid::ext::TrajectorySample" />
+    <registered_type name="rapid::ext::VEStopConfig" type_name="rapid::ext::VEStopConfig" />
+    <registered_type name="rapid::ext::VEStopState" type_name="rapid::ext::VEStopState" />
+   </participant_1>
+   <participant_2>
+   <domain_id>1</domain_id>
+   <participant_qos base_name="RapidQosLibrary::RapidDefaultQos">
+    <!-- transport_builtin>
+                        <mask>MASK_NONE</mask>
+                    </transport_builtin>
+                    <property>
+                        <value>
+                            <element>
+                                <name>dds.transport.load_plugins</name>
+                                <value>dds.transport.TCPv4.tcp1</value>
+                            </element>
+                            <element>
+                                <name>dds.transport.TCPv4.tcp1.library</name>
+                                <value>nddstransporttcp</value>
+                            </element>
+                            <element>
+                                <name>dds.transport.TCPv4.tcp1.create_function</name>
+                                <value>NDDS_Transport_TCPv4_create</value>
+                            </element>
+                            <element>
+                                <name>
+                                    dds.transport.TCPv4.tcp1.parent.classid
+                                </name>
+                                <value>
+                                    NDDS_TRANSPORT_CLASSID_TCPV4_LAN
+                                </value>
+                            </element>
+                            <element>
+                                <name>dds.transport.TCPv4.tcp1.public_address</name>
+                                <value>127.0.0.1:7400</value>
+                            </element>
+                            <element>
+                                <name>
+                                    dds.transport.TCPv4.tcp1.server_bind_port
+                                </name>
+                                <value>7400</value>
+                            </element>
+                            <element>
+                                <name>
+                                    dds.transport.TCPv4.tcp1.disable_nagle
+                                </name>
+                                <value>1</value>
+                            </element>
+                            <element>
+                                <name>
+                                    dds.transport.TCPv4.tcp1.ignore_loopback_interface
+                                </name>
+                                <value>0</value>
+                            </element>
+                        </value>
+                    </property -->
+                </participant_qos>
+        <registered_type name="rapid::AccessControlState" type_name="rapid::AccessControlState"/>
+        <registered_type name="rapid::Ack" type_name="rapid::Ack" />
+        <registered_type name="rapid::AgentConfig" type_name="rapid::AgentConfig" />
+        <registered_type name="rapid::CommandConfig" type_name="rapid::CommandConfig" />
+        <registered_type name="rapid::Command" type_name="rapid::Command" />
+        <registered_type name="rapid::FileAnnounce" type_name="rapid::FileAnnounce" />
+        <registered_type name="rapid::FileQueueConfig" type_name="rapid::FileQueueConfig" />
+        <registered_type name="rapid::FileQueueEntryState" type_name="rapid::FileQueueEntryState" />
+        <registered_type name="rapid::FileQueueReceiverSample" type_name="rapid::FileQueueReceiverSample" />
+        <registered_type name="rapid::FileQueueSample" type_name="rapid::FileQueueSample" />
+        <registered_type name="rapid::FileQueueState" type_name="rapid::FileQueueState" />
+        <registered_type name="rapid::ext::arc::Float32Config" type_name="rapid::ext::arc::Float32Config" />
+        <registered_type name="rapid::ext::arc::Float32Sample" type_name="rapid::ext::arc::Float32Sample" />
+        <registered_type name="rapid::FrameStoreConfig" type_name="rapid::FrameStoreConfig" />
+        <registered_type name="rapid::ext::arc::GpsConfig" type_name="rapid::ext::arc::GpsConfig" />
+        <registered_type name="rapid::ext::arc::GpsSample" type_name="rapid::ext::arc::GpsSample" />
+        <registered_type name="rapid::ImageSensorSample" type_name="rapid::ImageSensorSample" />
+        <registered_type name="rapid::ImageSensorState" type_name="rapid::ImageSensorState" />
+        <registered_type name="rapid::JointConfig" type_name="rapid::JointConfig" />
+        <registered_type name="rapid::JointSample" type_name="rapid::JointSample" />
+        <registered_type name="rapid::ext::MacroConfig" type_name="rapid::ext::MacroConfig" />
+        <registered_type name="rapid::ext::MacroState" type_name="rapid::ext::MacroState" />
+        <registered_type name="rapid::ext::NavMapConfig" type_name="rapid::ext::NavMapConfig" />
+        <registered_type name="rapid::ext::NavMapSample" type_name="rapid::ext::NavMapSample" />
+        <registered_type name="rapid::PointCloudConfig" type_name="rapid::PointCloudConfig" />
+        <registered_type name="rapid::PointCloudSample" type_name="rapid::PointCloudSample" />
+        <registered_type name="rapid::PositionConfig" type_name="rapid::PositionConfig" />
+        <registered_type name="rapid::PositionSample" type_name="rapid::PositionSample" />
+        <registered_type name="rapid::ext::ProcessIoSample" type_name="rapid::ext::ProcessIoSample" />
+        <registered_type name="rapid::ext::ProcessManagerConfig" type_name="rapid::ext::ProcessManagerConfig" />
+        <registered_type name="rapid::ext::ProcessManagerState" type_name="rapid::ext::ProcessManagerState" />  
+        <registered_type name="rapid::QueueState" type_name="rapid::QueueState" />
+        <registered_type name="rapid::ext::RangeScanConfig" type_name="rapid::ext::RangeScanConfig" />
+        <registered_type name="rapid::ext::RangeScanSample" type_name="rapid::ext::RangeScanSample" />
+        <registered_type name="rapid::ext::SystemInfoConfig" type_name="rapid::ext::SystemInfoConfig" />
+        <registered_type name="rapid::ext::SystemInfoSample" type_name="rapid::ext::SystemInfoSample" />
+        <registered_type name="rapid::ext::Trajectory2DConfig" type_name="rapid::ext::Trajectory2DConfig" />
+        <registered_type name="rapid::ext::Trajectory2DSample" type_name="rapid::ext::Trajectory2DSample" />
+        <registered_type name="rapid::ext::TrajectoryConfig" type_name="rapid::ext::TrajectoryConfig" />
+        <registered_type name="rapid::ext::TrajectorySample" type_name="rapid::ext::TrajectorySample" />
+        <registered_type name="rapid::ext::VEStopConfig" type_name="rapid::ext::VEStopConfig" />
+        <registered_type name="rapid::ext::VEStopState" type_name="rapid::ext::VEStopState" />
+      </participant_2>
+      <session name="K10BlackSession">
+        <publisher_qos base_name="RapidQosLibrary::RapidDefaultQos">
+          <partition>
+            <name>
+              <element>Centaur2</element>
+            </name>
+          </partition>
+        </publisher_qos>
+        <subscriber_qos base_name="RapidQosLibrary::RapidDefaultQos">
+          <partition>
+            <name>
+              <element>Centaur2</element>
+            </name>
+          </partition>
+        </subscriber_qos>
+        <auto_topic_route name="AllSampleRoute">
+          <publish_with_original_info>true</publish_with_original_info>
+          <input participant="1">
+            <allow_topic_name_filter>rapid_*_sample*</allow_topic_name_filter>
+            <creation_mode>ON_DOMAIN_AND_ROUTE_MATCH</creation_mode>
+            <deny_topic_name_filter>rapid_filequeue_sample,rapid_navmap_sample*,rapid_processio_sample*</deny_topic_name_filter>
+            <registered_type_name>rapid::JointSample</registered_type_name>
+            <registered_type_name>rapid::PositionSample</registered_type_name>
+            <registered_type_name>rapid::FileQueueReceiverSample</registered_type_name>
+            <registered_type_name>rapid::ext::arc::Float32Sample</registered_type_name>
+            <registered_type_name>rapid::ext::GpsSample</registered_type_name>
+            <registered_type_name>rapid::PointCloudSample</registered_type_name>
+            <registered_type_name>rapid::ext::RangeScanSample</registered_type_name>
+            <registered_type_name>rapid::ext::SystemInfoSample</registered_type_name>
+            <registered_type_name>rapid::ext::Trajectory2DSample</registered_type_name>
+            <registered_type_name>rapid::ext::TrajectorySample</registered_type_name>
+            <datareader_qos base_name="RapidQosLibrary::RapidSampleQos">
+              <time_based_filter>
+                <minimum_separation>
+                  <nanosec>200000000</nanosec>
+                </minimum_separation>
+              </time_based_filter>
+            </datareader_qos>
+          </input>
+          <output>
+            <allow_topic_name_filter>rapid_*_sample*</allow_topic_name_filter>
+            <creation_mode>ON_DOMAIN_AND_ROUTE_MATCH</creation_mode>
+            <deny_topic_name_filter>rapid_filequeue_sample,rapid_navmap_sample*,rapid_processio_sample*</deny_topic_name_filter>
+            <registered_type_name>rapid::JointSample</registered_type_name>
+            <registered_type_name>rapid::PositionSample</registered_type_name>
+            <registered_type_name>rapid::FileQueueReceiverSample</registered_type_name>
+            <registered_type_name>rapid::ext::arc::Float32Sample</registered_type_name>
+            <registered_type_name>rapid::ext::arc::GpsSample</registered_type_name>
+            <registered_type_name>rapid::PointCloudSample</registered_type_name>
+            <registered_type_name>rapid::ext::RangeScanSample</registered_type_name>
+            <registered_type_name>rapid::ext::SystemInfoSample</registered_type_name>
+            <registered_type_name>rapid::ext::Trajectory2DSample</registered_type_name>
+            <registered_type_name>rapid::ext::TrajectorySample</registered_type_name>
+            <datawriter_qos base_name="RapidQosLibrary::RapidSampleQos"/>
+          </output>
+        </auto_topic_route>
+        <auto_topic_route name="NavMapSampleTilesRoute">
+          <publish_with_original_info>true</publish_with_original_info>
+          <input participant="1">
+            <allow_topic_name_filter>rapid_navmap_sample*</allow_topic_name_filter>
+            <creation_mode>ON_DOMAIN_AND_ROUTE_MATCH</creation_mode>
+            <registered_type_name>rapid::ext::NavMapSample</registered_type_name>
+            <datareader_qos base_name="RapidQosLibrary::RapidNavMapTilesSampleProfile" />
+          </input>
+          <output>
+            <allow_topic_name_filter>rapid_navmap_sample*</allow_topic_name_filter>
+            <creation_mode>ON_DOMAIN_AND_ROUTE_MATCH</creation_mode>
+            <registered_type_name>rapid::ext::NavMapSample</registered_type_name>
+           <datawriter_qos base_name="RapidQosLibrary::RapidNavMapTilesSampleProfile"/>
+          </output>
+        </auto_topic_route>
+        <auto_topic_route name="AllStateRoute">
+          <publish_with_original_info>true</publish_with_original_info>
+          <input participant="1">
+            <allow_topic_name_filter>rapid_*_state*</allow_topic_name_filter>
+            <creation_mode>ON_DOMAIN_AND_ROUTE_MATCH</creation_mode>
+            <registered_type_name>rapid::AccessControlState</registered_type_name>
+            <registered_type_name>rapid::AgentState</registered_type_name>
+            <registered_type_name>rapid::FileQueueEntryState</registered_type_name>
+            <registered_type_name>rapid::FileQueueState</registered_type_name>
+            <registered_type_name>rapid::ext::MacroState</registered_type_name>
+            <registered_type_name>rapid::ext::ProcessManagerState</registered_type_name>
+            <registered_type_name>rapid::QueueState</registered_type_name>
+            <registered_type_name>rapid::ext::VEStopState</registered_type_name>
+            <datareader_qos base_name="RapidQosLibrary::RapidConfigQos"/>
+          </input>
+          <output>
+            <allow_topic_name_filter>rapid_*_state*</allow_topic_name_filter>
+            <creation_mode>ON_DOMAIN_AND_ROUTE_MATCH</creation_mode>
+            <registered_type_name>rapid::AccessControlState</registered_type_name>
+            <registered_type_name>rapid::AgentState</registered_type_name>
+            <registered_type_name>rapid::FileQueueEntryState</registered_type_name>
+            <registered_type_name>rapid::FileQueueState</registered_type_name>
+            <registered_type_name>rapid::ext::MacroState</registered_type_name>
+            <registered_type_name>rapid::ext::ProcessManagerState</registered_type_name>
+            <registered_type_name>rapid::QueueState</registered_type_name>
+            <registered_type_name>rapid::ext::VEStopState</registered_type_name>
+            <datawriter_qos base_name="RapidQosLibrary::RapidConfigQos"/>
+          </output>
+        </auto_topic_route>
+        <auto_topic_route name="AllConfigRoute">
+          <publish_with_original_info>true</publish_with_original_info>
+          <input participant="1">
+            <allow_topic_name_filter>rapid_*_config*</allow_topic_name_filter>
+            <creation_mode>ON_DOMAIN_AND_ROUTE_MATCH</creation_mode>
+            <registered_type_name>rapid::AgentConfig</registered_type_name>
+            <registered_type_name>rapid::CommandConfig</registered_type_name>
+            <registered_type_name>rapid::FileQueueConfig</registered_type_name>
+            <registered_type_name>rapid::ext::arc::Float32Config</registered_type_name>
+            <registered_type_name>rapid::FrameStoreConfig</registered_type_name>
+            <registered_type_name>rapid::ext::arc::GpsConfig</registered_type_name>
+            <registered_type_name>rapid::JointConfig</registered_type_name>
+            <registered_type_name>rapid::ext::MacroConfig</registered_type_name>
+            <registered_type_name>rapid::ext::NavMapConfig</registered_type_name>
+            <registered_type_name>rapid::PointCloudConfig</registered_type_name>
+            <registered_type_name>rapid::PositionConfig</registered_type_name>
+            <registered_type_name>rapid::ext::ProcessManagerConfig</registered_type_name>
+            <registered_type_name>rapid::ext::RangeScanConfig</registered_type_name>
+            <registered_type_name>rapid::ext::SystemInfoConfig</registered_type_name>
+            <registered_type_name>rapid::ext::Trajectory2DConfig</registered_type_name>
+            <registered_type_name>rapid::ext::TrajectoryConfig</registered_type_name>
+            <registered_type_name>rapid::ext::VEStopConfig</registered_type_name>
+            <datareader_qos base_name="RapidQosLibrary::RapidReliableDurableQos"/>
+          </input>
+          <output>
+            <allow_topic_name_filter>rapid_*_config*</allow_topic_name_filter>
+            <creation_mode>ON_DOMAIN_AND_ROUTE_MATCH</creation_mode>
+            <registered_type_name>rapid::AgentConfig</registered_type_name>
+            <registered_type_name>rapid::CommandConfig</registered_type_name>
+            <registered_type_name>rapid::FileQueueConfig</registered_type_name>
+            <registered_type_name>rapid::ext::arc::Float32Config</registered_type_name>
+            <registered_type_name>rapid::FrameStoreConfig</registered_type_name>
+            <registered_type_name>rapid::ext::GpsConfig</registered_type_name>
+            <registered_type_name>rapid::JointConfig</registered_type_name>
+            <registered_type_name>rapid::Mext::acroConfig</registered_type_name>
+            <registered_type_name>rapid::ext::NavMapConfig</registered_type_name>
+            <registered_type_name>rapid::PointCloudConfig</registered_type_name>
+            <registered_type_name>rapid::PositionConfig</registered_type_name>
+            <registered_type_name>rapid::ext::ProcessManagerConfig</registered_type_name>
+            <registered_type_name>rapid::ext::RangeScanConfig</registered_type_name>
+            <registered_type_name>rapid::ext::SystemInfoConfig</registered_type_name>
+            <registered_type_name>rapid::ext::Trajectory2DConfig</registered_type_name>
+            <registered_type_name>rapid::ext::TrajectoryConfig</registered_type_name>
+            <registered_type_name>rapid::ext::VEStopConfig</registered_type_name>
+            <datawriter_qos base_name="RapidQosLibrary::RapidReliableDurableQos"/>
+          </output>
+        </auto_topic_route>
+        <auto_topic_route name="CommandRoute">
+          <publish_with_original_info>true</publish_with_original_info>
+          <input participant="2">
+            <creation_mode>ON_ROUTE_MATCH</creation_mode>
+            <allow_topic_name_filter>rapid_command*</allow_topic_name_filter>
+            <deny_topic_name_filter>rapid_command_config*</deny_topic_name_filter>
+            <registered_type_name>rapid::Command</registered_type_name>
+            <datareader_qos base_name="RapidQosLibrary::RapidReliableQos"/>
+          </input>
+          <output>
+            <creation_mode>ON_ROUTE_MATCH</creation_mode>
+            <allow_topic_name_filter>"rapid_command*"</allow_topic_name_filter>
+            <deny_topic_name_filter>rapid_command_config*</deny_topic_name_filter>
+            <registered_type_name>rapid::Command</registered_type_name>
+            <datawriter_qos base_name="RapidQosLibrary::RapidReliableQos"/>
+          </output>
+        </auto_topic_route>
+        <auto_topic_route name="AckRoute">
+          <publish_with_original_info>true</publish_with_original_info>
+          <input participant="1">
+            <creation_mode>ON_DOMAIN_AND_ROUTE_MATCH</creation_mode>
+            <allow_topic_name_filter>rapid_ack</allow_topic_name_filter>
+            <registered_type_name>rapid::Ack</registered_type_name>
+            <datareader_qos base_name="RapidQosLibrary::RapidReliableQos"/>
+          </input>
+          <output>
+            <creation_mode>ON_DOMAIN_AND_ROUTE_MATCH</creation_mode>
+            <allow_topic_name_filter>rapid_ack</allow_topic_name_filter>
+            <registered_type_name>rapid::Ack</registered_type_name>
+            <datawriter_qos base_name="RapidQosLibrary::RapidReliableQos"/>
+          </output>
+        </auto_topic_route>
+      </session>
+    </domain_route>
+  </routing_service>
+</dds>

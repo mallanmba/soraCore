@@ -1,0 +1,20 @@
+<!DOCTYPE xml SYSTEM "MiroParameterDescription.dtd">
+<config>
+  <config_global name="namespace" value="kn" />
+  <config_global name="include" value="knShare/StateMachine.h" />
+
+  <config_group name="kn">
+    <config_item name="StateMachine::Description::TransitionTriple" final="false" extern="true" >
+      <config_parameter name="sourceState" type="string" />
+      <config_parameter name="event" type="string" />
+      <config_parameter name="targetState" type="string" />
+    </config_item>
+    <config_item name="StateMachine::Description" final="false" extern="true">
+      <config_parameter name="startState" type="string" />
+      <config_parameter name="states" type="std::vector&lt;std::string&gt;" />
+      <config_parameter name="events" type="std::vector&lt;std::string&gt;" />
+      <config_parameter name="transitions" type="std::vector&lt;StateMachine::Description::TransitionTriple&gt;" />
+    </config_item>
+
+  </config_group>
+</config>

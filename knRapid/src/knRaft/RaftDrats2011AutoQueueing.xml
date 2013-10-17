@@ -1,0 +1,100 @@
+<!DOCTYPE MiroConfigDocument>
+<config>
+  <section name="Rapid" >
+    <parameter name="kn::FileQueueParameters" >
+      <parameter value="false" name="FileAnnounceRepeater" />
+      <parameter name="Rules" >
+        <parameter>
+          <parameter value="xml" name="Extension" />
+          <parameter value="Science" name="ChannelName" />
+          <parameter value="1" name="Priority" />
+          <parameter value="true" name="AutoAdd" />
+        </parameter>
+        <parameter>
+          <parameter value="xmp" name="Extension" />
+          <parameter value="Science" name="ChannelName" />
+          <parameter value="5" name="Priority" />
+          <parameter value="true" name="AutoAdd" />
+        </parameter>
+        <parameter>
+          <parameter value="txt" name="Extension" />
+          <parameter value="Science" name="ChannelName" />
+          <parameter value="10" name="Priority" />
+          <parameter value="true" name="AutoAdd" />
+        </parameter>
+        <parameter>
+          <parameter value="json" name="Extension" />
+          <parameter value="Science" name="ChannelName" />
+          <parameter value="10" name="Priority" />
+          <parameter value="true" name="AutoAdd" />
+        </parameter>
+        <parameter>
+          <parameter value="jpg" name="Extension" />
+          <parameter value="Science" name="ChannelName" />
+          <parameter value="15" name="Priority" />
+          <parameter value="true" name="AutoAdd" />
+        </parameter>
+        <parameter>
+          <parameter value="flv" name="Extension" />
+          <parameter value="Science" name="ChannelName" />
+          <parameter value="20" name="Priority" />
+          <parameter value="true" name="AutoAdd" />
+        </parameter>
+        <parameter>
+          <parameter value="*" name="Extension" />
+          <parameter value="Science" name="ChannelName" />
+          <parameter value="25" name="Priority" />
+          <parameter value="true" name="AutoAdd" />
+        </parameter>
+      </parameter>
+      <parameter name="FetchPool" >
+        <parameter value="/usr/local/irg/data/xgds/prefetched" name="TempDirectory" />
+        <parameter value="0" name="SpeedLimit" />
+        <parameter value="/home/tfmorse/.ssh/xgds_rsa" name="PrivateKey" />
+        <parameter value="/home/tfmorse/.ssh/xgds_rsa.pub" name="PublicKey" />
+      </parameter>
+      <parameter value="/usr/local/irg/data/xgds/completed" name="StateDirectory" />
+    </parameter>
+  </section>
+  <section name="Robot" >
+    <parameter name="kn::DdsEntitiesFactorySvcParameters" >
+      <parameter name="ConfigFiles" >
+        <parameter value="RAPID_QOS_PROFILES.xml" />
+        <parameter value="RAFT_QOS_PROFILES.xml" />
+      </parameter>
+      <parameter name="Participants" >
+        <parameter>
+          <parameter value="RapidDefaultQos" name="Profile" />
+          <parameter name="FlowControllers" >
+            <parameter>
+              <parameter value="RaftFlowController" name="Name" />
+              <parameter value="DDS_EDF_FLOW_CONTROLLER_SCHED_POLICY" name="SchedulingPolicy" />
+              <parameter name="TokenBucket" >
+                <parameter value="2" name="MaxTokens" />
+                <parameter value="2" name="TokensAddedPerPeriod" />
+                <parameter value="0" name="TokensLeakedPerPeriod" />
+                <parameter value="0.01" name="Period" />
+                <parameter value="5000" name="BytesPerToken" />
+              </parameter>
+            </parameter>
+            <parameter>
+              <parameter value="RaftMetaTrafficFlowController" name="Name" />
+              <parameter value="DDS_EDF_FLOW_CONTROLLER_SCHED_POLICY" name="SchedulingPolicy" />
+              <parameter name="TokenBucket" >
+                <parameter value="2" name="MaxTokens" />
+                <parameter value="2" name="TokensAddedPerPeriod" />
+                <parameter value="0" name="TokensLeakedPerPeriod" />
+                <parameter value="0.1" name="Period" />
+                <parameter value="5000" name="BytesPerToken" />
+              </parameter>
+            </parameter>
+          </parameter>
+        </parameter>
+      </parameter>
+    </parameter>
+    <parameter name="Miro::RobotParameters" >
+      <parameter value="RaftDrats11" name="Name" />
+      <parameter value="FileQueue" name="Type" />
+    </parameter>
+  </section>
+</config>

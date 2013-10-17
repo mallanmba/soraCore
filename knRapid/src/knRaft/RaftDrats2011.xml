@@ -1,0 +1,49 @@
+<!DOCTYPE MiroConfigDocument>
+<config>
+  <section name="Rapid" >
+    <parameter name="kn::FileQueueParameters" >
+      <parameter value="false" name="FileAnnounceRepeater" />
+    </parameter>
+  </section>
+  <section name="Robot" >
+    <parameter name="kn::DdsEntitiesFactorySvcParameters" >
+      <parameter name="ConfigFiles" >
+        <parameter value="RAPID_QOS_PROFILES.xml" />
+        <parameter value="RAFT_QOS_PROFILES.xml" />
+      </parameter>
+      <parameter name="Participants" >
+        <parameter>
+          <parameter value="RapidDefaultQos" name="Profile" />
+          <parameter name="FlowControllers" >
+            <parameter>
+              <parameter value="RaftFlowController" name="Name" />
+              <parameter value="DDS_EDF_FLOW_CONTROLLER_SCHED_POLICY" name="SchedulingPolicy" />
+              <parameter name="TokenBucket" >
+                <parameter value="2" name="MaxTokens" />
+                <parameter value="2" name="TokensAddedPerPeriod" />
+                <parameter value="0" name="TokensLeakedPerPeriod" />
+                <parameter value="0.01" name="Period" />
+                <parameter value="5000" name="BytesPerToken" />
+              </parameter>
+            </parameter>
+            <parameter>
+              <parameter value="RaftMetaTrafficFlowController" name="Name" />
+              <parameter value="DDS_EDF_FLOW_CONTROLLER_SCHED_POLICY" name="SchedulingPolicy" />
+              <parameter name="TokenBucket" >
+                <parameter value="2" name="MaxTokens" />
+                <parameter value="2" name="TokensAddedPerPeriod" />
+                <parameter value="0" name="TokensLeakedPerPeriod" />
+                <parameter value="0.1" name="Period" />
+                <parameter value="5000" name="BytesPerToken" />
+              </parameter>
+            </parameter>
+          </parameter>
+        </parameter>
+      </parameter>
+    </parameter>
+    <parameter name="Miro::RobotParameters" >
+      <parameter value="RaftDrats11" name="Name" />
+      <parameter value="FileQueue" name="Type" />
+    </parameter>
+  </section>
+</config>

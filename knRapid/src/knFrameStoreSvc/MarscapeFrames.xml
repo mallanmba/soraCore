@@ -1,0 +1,252 @@
+<!DOCTYPE MiroConfigDocument>
+<config>
+  <section name="Frames" >
+    <instance type="rapid::FrameRpyParameters" name="MarscapeSiteFrame" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="582670" name="X" />
+      <parameter value="4141480" name="Y" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="MarscapeSiteFrameZDown" >
+      <parameter value="MarscapeSiteFrame" name="Parent" />
+      <parameter value="180" name="Roll" />
+      <parameter value="90" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="W0" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141481.2" name="Y" />
+      <parameter value="582693.6" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="W1" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141479" name="Y" />
+      <parameter value="582681.5" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="W2" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141470" name="Y" />
+      <parameter value="582682" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="W3" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141467.8" name="Y" />
+      <parameter value="582687.5" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="W4" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141483.5" name="Y" />
+      <parameter value="582685.4" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="W5" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141481.2" name="Y" />
+      <parameter value="582673.3" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="W6" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141477.5" name="Y" />
+      <parameter value="582681.4" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="W7" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141470.5" name="Y" />
+      <parameter value="582700.2" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="W" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141464.5" name="Y" />
+      <parameter value="582707.1" name="X" />
+    </instance>
+
+    <instance type="rapid::FrameRpyParameters" name="Gate" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141490.0" name="Y" />
+      <parameter value="582696.9" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Field" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141499.0" name="Y" />
+      <parameter value="582700.8" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Shed" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141491.77" name="Y" />
+      <parameter value="582690.38" name="X" />
+    </instance>
+
+    <instance type="rapid::FrameRpyParameters" name="Wpt_00" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141475.38" name="Y" />
+      <parameter value="582697.04" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_01" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141460.47" name="Y" />
+      <parameter value="582715.13" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_02" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141480.32" name="Y" />
+      <parameter value="582685.99" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_03" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141477.42" name="Y" />
+      <parameter value="582689.95" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_04" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141474.81" name="Y" />
+      <parameter value="582693.48" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_05" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141472.04" name="Y" />
+      <parameter value="582697.31" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_06" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141469.47" name="Y" />
+      <parameter value="582700.96" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_07" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141466.67" name="Y" />
+      <parameter value="582704.83" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_08" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141462.97" name="Y" />
+      <parameter value="582702.68" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_09" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141465.95" name="Y" />
+      <parameter value="582698.88" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_10" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141468.63" name="Y" />
+      <parameter value="582694.96" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_11" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141471.46" name="Y" />
+      <parameter value="582691.01" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_12" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141473.99" name="Y" />
+      <parameter value="582687.41" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_13" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141476.81" name="Y" />
+      <parameter value="582683.52" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_14" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141463.11" name="Y" />
+      <parameter value="582707.69" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_15" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141459.84" name="Y" />
+      <parameter value="582710.77" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_16" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141458.57" name="Y" />
+      <parameter value="582705.39" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_17" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141459.42" name="Y" />
+      <parameter value="582700.34" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_18" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141462.07" name="Y" />
+      <parameter value="582696.46" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_19" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141472.66" name="Y" />
+      <parameter value="582680.55" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_20" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141469.13" name="Y" />
+      <parameter value="582677.80" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_21" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141465.85" name="Y" />
+      <parameter value="582681.38" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_22" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141462.19" name="Y" />
+      <parameter value="582684.84" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_23" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141459.25" name="Y" />
+      <parameter value="582688.21" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_24" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141456.31" name="Y" />
+      <parameter value="582684.97" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_25" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141452.88" name="Y" />
+      <parameter value="582688.69" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_26" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141449.58" name="Y" />
+      <parameter value="582692.14" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_27" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141446.11" name="Y" />
+      <parameter value="582695.72" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_28" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141449.26" name="Y" />
+      <parameter value="582698.80" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_29" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141465.03" name="Y" />
+      <parameter value="582689.00" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_30" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141469.01" name="Y" />
+      <parameter value="582684.52" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_31" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141459.19" name="Y" />
+      <parameter value="582681.29" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_32" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141456.06" name="Y" />
+      <parameter value="582678.55" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_33" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141452.80" name="Y" />
+      <parameter value="582681.95" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Wpt_34" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141449.50" name="Y" />
+      <parameter value="582685.66" name="X" />
+    </instance>
+  </section>
+</config>

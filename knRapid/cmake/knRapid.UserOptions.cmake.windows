@@ -1,0 +1,48 @@
+######################################################
+## 
+## Default rapid options file for Windows 
+##
+######################################################
+
+set( PACKAGES_DIR "C:/devel"   )
+
+set( BOOST_ROOT  ${PACKAGES_DIR}/boost-1.41-${ARCH_COMPILER} )
+
+if( MSVC90 ) # Visual Studio 2008 (vc90)
+  set( PTHREADS_ROOT_DIR ${PACKAGES_DIR}/pthreads-2.8.0-vc90 )
+endif( MSVC90 )
+
+if( MSVC100 ) # Visual Studio 2010 (vc100)
+  set( BOOST_ROOT           ${PACKAGES_DIR}/boost_1_53 )
+  set( EIGEN3_ROOT_DIR      ${PACKAGES_DIR}/Eigen-3.2.0 )
+  ## http://eigen.tuxfamily.org/bz/show_bug.cgi?id=83
+  add_definitions(-DEIGEN_DONT_ALIGN_STATICALLY=1)
+endif( MSVC100 )
+
+# if BOOST_ROOT env var 
+# is set, use that value
+########################
+set( BOOST_ROOT_ENV $ENV{BOOST_ROOT} )
+if( BOOST_ROOT_ENV )
+  set( BOOST_ROOT ${BOOST_ROOT_ENV} )
+endif( BOOST_ROOT_ENV )
+
+
+# Boost setup
+########################
+set( Boost_USE_STATIC_LIBS FALSE )
+set( Boost_USE_MULTITHREAD TRUE )
+
+add_definitions( -DBOOST_MEM_FN_ENABLE_CDECL ) # needed for boost::bind
+#add_definitions( -DBOOST_LIB_DIAGNOSTIC )
+
+if( NOT Boost_USE_STATIC_LIBS )
+  # dynamic linking boost on windows will not
+  # work at all without this magic define
+  add_definitions( -DBOOST_ALL_DYN_LINK )
+endif( NOT Boost_USE_STATIC_LIBS )
+
+# VisionWorkbench setup
+########################
+add_definitions( -DVW_ALL_DYN_LINK )
+

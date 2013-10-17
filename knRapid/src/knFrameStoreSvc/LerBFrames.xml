@@ -1,0 +1,36 @@
+<!DOCTYPE MiroConfigDocument>
+<config>
+  <section name="Frames" >
+    <!-- LER Frame -->
+    <!-- The <rover>Frame is the center of the robot. In K10's case,
+     that's the axle that the linkage swings around. It is directly on the ground. -->
+    <instance type="rapid::FrameRpyParameters" name="LerB" >
+      <parameter value="" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <!-- LerB Frames -->
+
+    <!-- PoseFrame -->
+    <instance type="rapid::FrameRpyParameters" name="poseFrame" >
+      <parameter value="LerB" name="Parent" />
+      <parameter value="180.0" name="Roll" />
+    </instance>
+
+    <!-- IBeo  -->
+    <instance type="rapid::FrameRpyParameters" name="IbeoFrame" >
+      <parameter value="LerB" name="Parent" />
+      <parameter value="2.8" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="-2.35" name="Z" />
+      <parameter value="181.5" name="Roll" />
+      <parameter value="-25.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+
+  </section>
+</config>

@@ -1,0 +1,120 @@
+<!DOCTYPE xml SYSTEM "MiroParameterDescription.dtd">
+<config>
+  <config_global name="include" value="miro/ConfigParameters.h" />
+  <config_global name="include" value="rapidIo/KeyTypeValue.h" />
+  <config_global name="include" value="rapidIo/RapidIoParameters.h" />
+
+  <config_global name="namespace" value="rapid" />
+  <config_global name="namespace" value="ext" />
+
+  <config_group name="Rapid">
+
+    <config_item name="NavMapLayer" parent="Miro::Config" final="false" >
+      <config_parameter name="offset" type="double" default="0." />
+      <config_parameter name="scale" type="float" default="1." />
+      <config_parameter name="entries" type="int" default="1" />
+      <config_parameter name="density" type="int" default="1" />
+      <config_parameter name="name" type="string" />
+    </config_item>
+
+    <config_item name="NavMapConfig" parent="Message" final="false" >
+      <config_parameter name="referenceFrame" type="string" default="RAPID_SITE_FRAME" />
+      <config_parameter name="offsetX" type="double" default="0." />
+      <config_parameter name="offsetY" type="double" default="0." />
+      <config_parameter name="cellSizeXY" type="double" default="0.1" />
+      <config_parameter name="numCellsXY" type="unsigned int" default="64" />
+      <config_parameter name="shortLayers" type="vector&lt;NavMapLayerParameters&gt;" />
+      <config_parameter name="octetLayers" type="vector&lt;NavMapLayerParameters&gt;" />
+    </config_item>
+
+    <config_item name="NavMapTopicPair" parent="TopicPair" final="false" >
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidNavMapConfigProfile" />
+      <config_parameter name="dataProfile" type="string" inherited="true" default="RapidNavMapSampleProfile" />
+      <config_parameter name="config" type="NavMapConfigParameters" />
+    </config_item>
+
+    <config_item name="RangeScanConfig" parent="Message" final="false" >
+      <config_parameter name="referenceFrame" type="string" default="RAPID_ROBOT_FRAME" />
+      <config_parameter name="scanLengths" type="vector&lt;short&gt;" />
+      <config_parameter name="scanDirection" type="string" default="SCAN_HORIZONTAL" />
+      <config_parameter name="scanAzimuth" type="vector&lt;short&gt;" />
+      <config_parameter name="scanAzimuthScale" type="float" default="1." />
+      <config_parameter name="scanElevation" type="vector&lt;short&gt;" />
+      <config_parameter name="scanElevationScale" type="float" default="1." />
+      <config_parameter name="rangeScale" type="float" default="1." />
+      <config_parameter name="intensityScale" type="float" default="1." />
+    </config_item>
+
+    <config_item name="RangeScanTopicPair" parent="TopicPair" final="false" >
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidRangeScanConfigProfile" />
+      <config_parameter name="dataProfile" type="string" inherited="true" default="RapidRangeScanSampleProfile" />
+      <config_parameter name="config" type="RangeScanConfigParameters" />
+    </config_item>
+
+    <config_item name="TrajectoryConfig" parent="Message" final="false">
+      <config_parameter name="referenceFrame" type="string" default="RAPID_SITE_FRAME" />
+    </config_item>
+
+    <config_item name="TrajectoryTopicPair" parent="TopicPair" final="false" >
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidTrajectory2DConfigProfile" />
+      <config_parameter name="dataProfile" type="string" inherited="true" default="RapidTrajectory2DSampleProfile" />
+      <config_parameter name="config" type="TrajectoryConfigParameters" />
+    </config_item>
+
+    <config_item name="Trajectory2DConfig" parent="Message" final="false">
+      <config_parameter name="referenceFrame" type="string" default="RAPID_SITE_FRAME" />
+      <config_parameter name="trajectoryInterp" type="string" default="RTRANS2D_RELATIVE_TO_ORIGIN" />
+      <config_parameter name="samplingInterval" type="ACE_Time_Value" default="0, 200000" />
+      <config_parameter name="trajectoryMetaKeys" type="vector&lt;KeyType&gt;" />
+    </config_item>
+
+    <config_item name="Trajectory2DTopicPair" parent="TopicPair" final="false" >
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidTrajectory2DConfigProfile" />
+      <config_parameter name="dataProfile" type="string" inherited="true" default="RapidTrajectory2DSampleProfile" />
+      <config_parameter name="config" type="Trajectory2DConfigParameters" />
+    </config_item>
+
+    <config_item name="VEStopConfig" parent="Message" final="false">
+      <config_parameter name="evaluationInterval" type="ACE_Time_Value" default="0, 200000" />
+    </config_item>
+
+    <config_item name="VEStopTopicPair" parent="TopicPair" final="false" >
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidConfigProfile" />
+      <config_parameter name="dataProfile" type="string" inherited="true" default="RapidStateProfile" />
+      <config_parameter name="config" type="VEStopConfigParameters" />
+    </config_item>
+
+  </config_group>
+  <config_group name="Processes">
+
+    <config_item name="ProcessConfig" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="name" type="string" default="" />
+      <config_parameter name="comment" type="string" default="" />
+      <config_parameter name="environment" type="std::vector&lt;std::string&gt;" />
+      <config_parameter name="workingDirectory" type="string" default="" />
+      <config_parameter name="binaryName" type="string" default="" />
+      <config_parameter name="commandLineParams" type="string" default="" />
+
+      <config_parameter name="selfTerminating" type="bool" default="false" />
+      <config_parameter name="startOnInit" type="bool" default="true" />
+      <config_parameter name="waitOnInit" type="bool" default="true" />
+      <config_parameter name="startupTimeout" type="ACE_Time_Value" default="0" />
+      <config_parameter name="runningMatch" type="string" default="" />
+      <config_parameter name="aliveInterface" type="string" default="" />
+
+      <config_parameter name="restartsOnFailure" type="int" default="0" />
+    </config_item>
+
+    <config_item name="ProcessManagerConfig" parent="rapid::Message" final="true" >
+      <config_parameter name="configName" type="string" default="" />
+      <config_parameter name="processes" type="vector&lt;ProcessConfigParameters&gt;" />
+    </config_item>
+
+    <config_item name="ProcessManagerTopicPair" parent="TopicPair" final="false" >
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidProcessManagerConfigProfile" />
+      <config_parameter name="dataProfile" type="string" inherited="true" default="RapidProcessManagerStateProfile" />
+      <config_parameter name="config" type="ProcessManagerConfigParameters" />
+    </config_item>
+
+  </config_group>
+</config>

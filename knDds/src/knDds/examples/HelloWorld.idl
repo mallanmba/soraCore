@@ -1,0 +1,22 @@
+
+
+//@copy  class HelloWorldTypeSupport;
+//@copy  class HelloWorldDataWriter;
+//@copy  class HelloWorldDataReader;
+//@copy  class HelloWorldSeq;
+
+struct HelloWorld
+{
+  //@copy-c-declaration #if RTI_DDS_VERSION_MAJOR < 4 || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR < 5) || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR  == 5 && RTI_DDS_VERSION_RELEASE != 'f' )
+  //@copy-c-declaration  typedef HelloWorldTypeSupport TypeSupport;
+  //@copy-c-declaration  typedef HelloWorldDataWriter DataWriter;
+  //@copy-c-declaration  typedef HelloWorldDataReader DataReader;
+  //@copy-c-declaration  typedef HelloWorldSeq Seq;
+  //@copy-c-declaration #endif
+  //@copy-c-declaration  typedef HelloWorld Type;
+
+  long id; 
+  string<128> msg;
+  sequence<octet, 500000> buffer;
+};
+

@@ -1,0 +1,25 @@
+<!DOCTYPE xml SYSTEM "MiroParameterDescription.dtd">
+<config>
+  <config_global name="include" value="miro/ConfigParameters.h" />
+  <config_global name="include" value="rapidIo/RapidIoParameters.h" />
+
+  <config_global name="namespace" value="rapid" />
+  <config_global name="namespace" value="ext" />
+  <config_global name="namespace" value="traclabs" />
+
+  <config_group name="Rapid">
+    <config_item name="NoticeItem" parent="Message" final="false">
+      <config_parameter name="itemId" type="string" />
+      <config_parameter name="itemDescription" type="string" />
+    </config_item>
+    <config_item name="NoticeConfig" parent="Message" final="false">
+      <config_parameter name="items" type="vector&lt;NoticeItemParameters&gt;" />
+      <config_parameter name="valueKeys" type="vector&lt;KeyTypeValue&gt;" />
+    </config_item>
+    <config_item name="NoticeTopicPair" parent="TopicPair" final="true">
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidConfigQos" />
+      <config_parameter name="dataProfile" inherited="true" type="string" default="RapidStateQos" />
+      <config_parameter name="config" type="NoticeConfigParameters" />
+    </config_item>
+  </config_group>
+</config>

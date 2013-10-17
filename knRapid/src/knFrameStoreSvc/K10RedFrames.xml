@@ -1,0 +1,285 @@
+<!DOCTYPE MiroConfigDocument>
+<config>
+  <section name="Frames" >
+    <!-- K10 RED Rover Frame -->
+    <!-- The <rover>Frame is the center of the robot. In K10's case,
+     that's the axle that the linkage swings around. It is directly on the ground. -->
+    <instance type="rapid::FrameRpyParameters" name="$MRN" >
+      <parameter value="" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="ZUp" >
+      <parameter value="$MRN" name="Parent" />
+      <parameter value="180.0" name="Roll" />
+    </instance>
+    <!-- Relative Origin Frame -->
+    <!-- The relative origin is the "wakeup" position of the rover and used for relative pose updates. -->
+    <instance type="rapid::FrameRpyParameters" name="RelativeOrigin" >
+      <parameter value="$MRN" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+
+    <!-- K10 RED Frames -->
+    <!-- linkageFrame is the center of the axle that the linkage swings around.
+     It is directly above the roverFrame. -->
+    <instance type="rapid::FrameRpyParameters" name="LinkageFrame" >
+      <parameter value="$MRN" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="-0.352" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <!-- The rocker frames are just the extension of the linkage axis out to the
+     sides of the rover. -->
+    <instance type="rapid::FrameRpyParameters" name="RightRocker" >
+      <parameter value="LinkageFrame" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="0.389" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="LeftRocker" >
+      <parameter value="LinkageFrame" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="-0.389" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="RightFrontSteerMount" >
+      <parameter value="RightRocker" name="Parent" />
+      <parameter value="0.406" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="RightRearSteerMount" >
+      <parameter value="RightRocker" name="Parent" />
+      <parameter value="-0.406" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="LeftFrontSteerMount" >
+      <parameter value="LeftRocker" name="Parent" />
+      <parameter value="0.406" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="LeftRearSteerMount" >
+      <parameter value="LeftRocker" name="Parent" />
+      <parameter value="-0.406" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <!-- The steer frames are tweaked as the wheels steer. Rotation is about z. -->
+    <instance type="rapid::FrameRpyParameters" name="RightFrontSteerFrame" >
+      <parameter value="RightFrontSteerMount" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="RightRearSteerFrame" >
+      <parameter value="RightRearSteerMount" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="LeftFrontSteerFrame" >
+      <parameter value="LeftFrontSteerMount" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="LeftRearSteerFrame" >
+      <parameter value="LeftRearSteerMount" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <!-- The wheel mounts are the actual wheel axles. -->
+    <instance type="rapid::FrameRpyParameters" name="RightFrontWheelMount" >
+      <parameter value="RightFrontSteerFrame" name="Parent" />
+      <parameter value="0.207" name="Z" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="RightRearWheelMount" >
+      <parameter value="RightRearSteerFrame" name="Parent" />
+      <parameter value="0.207" name="Z" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="LeftFrontWheelMount" >
+      <parameter value="LeftFrontSteerFrame" name="Parent" />
+      <parameter value="0.207" name="Z" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="LeftRearWheelMount" >
+      <parameter value="LeftRearSteerFrame" name="Parent" />
+      <parameter value="0.207" name="Z" />
+    </instance>
+    <!-- Finally, the wheel frames are the things that actually turn as we
+     drive. rotation about y axis. -->
+    <instance type="rapid::FrameRpyParameters" name="RightFrontWheelFrame" >
+      <parameter value="RightFrontWheelMount" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="RightRearWheelFrame" >
+      <parameter value="RightRearWheelMount" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="LeftFrontWheelFrame" >
+      <parameter value="LeftFrontWheelMount" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="LeftRearWheelFrame" >
+      <parameter value="LeftRearWheelMount" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <!-- Left Camera -->
+    <instance type="rapid::FrameRpyParameters" name="HazcamLeft" >
+      <parameter value="LinkageFrame" name="Parent" />
+      <parameter value="0.11" name="X" />
+      <parameter value="-0.075" name="Y" />
+      <parameter value="-1.02" name="Z" />
+      <parameter value="-35" name="Pitch" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="OpenCvHazcamLeft" >
+      <parameter value="HazcamLeft" name="Parent" />
+      <parameter value="90.0" name="Yaw" />
+      <parameter value="90" name="Roll" />
+    </instance>
+
+    <!-- Right Camera -->
+    <instance type="rapid::FrameRpyParameters" name="HazcamRight" >
+      <parameter value="HazcamLeft" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="0.15" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Pitch" />
+    </instance>
+    <!-- GPS antenna -->
+    <instance type="rapid::FrameRpyParameters" name="GpsAntenna" >
+      <parameter value="$MRN" name="Parent" />
+      <parameter value="-0.229" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="-1.2" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <!-- Dp PanTilt Unit mount location -->
+    <instance type="rapid::FrameRpyParameters" name="PanTiltUnit" >
+      <parameter value="$MRN" name="Parent" />
+      <parameter value="0." name="X" />
+      <parameter value="0." name="Y" />
+      <parameter value="-0.92" name="Z" />
+      <parameter value="0." name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <!-- Dp PanTilt Unit Pan -->
+    <instance type="rapid::FrameRpyParameters" name="Pan" >
+      <parameter value="PanTiltUnit" name="Parent" />
+      <parameter value="0." name="X" />
+      <parameter value="0." name="Y" />
+      <parameter value="-0.05" name="Z" />
+      <parameter value="0." name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <!-- Dp PanTilt Unit Tilt -->
+    <instance type="rapid::FrameRpyParameters" name="Tilt" >
+      <parameter value="PanTiltUnit/Pan" name="Parent" />
+      <parameter value="0." name="X" />
+      <parameter value="0." name="Y" />
+      <parameter value="-0.05" name="Z" />
+      <parameter value="0." name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <!-- Dp PanTilt Camera -->
+    <instance type="rapid::FrameRpyParameters" name="PanoramaCamera" >
+      <parameter value="PanTiltUnit/.../Tilt" name="Parent" />
+      <parameter value="0." name="X" />
+      <parameter value="0." name="Y" />
+      <parameter value="-0.05" name="Z" />
+      <parameter value="0." name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <!-- Inspect Camera -->
+    <instance type="rapid::FrameRpyParameters" name="InspectCamera" >
+      <parameter value="LinkageFrame" name="Parent" />
+      <parameter value="0." name="X" />
+      <parameter value="0." name="Y" />
+      <parameter value="-1.15" name="Z" />
+      <parameter value="0." name="Roll" />
+      <parameter value="-40.0" name="Pitch" />
+      <parameter value="180.0" name="Yaw" />
+    </instance>
+    <!-- Velodyne -->
+    <instance type="rapid::FrameRpyParameters" name="Velodyne" >
+      <parameter value="LinkageFrame" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="-1.15" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+  </section>
+</config>

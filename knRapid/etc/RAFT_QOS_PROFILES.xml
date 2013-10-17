@@ -1,0 +1,799 @@
+<?xml version="1.0"?>
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/usr/local/irg/apps/RTI/ndds.4.5d/resource/qos_profiles_4.5d/schema/rti_dds_qos_profiles.xsd">
+  <!-- ################################################################### -->
+  <!-- ## RAFTQosLibrary for Lunar time-delay (1.7sec one-way) -->
+  <!-- ################################################################### -->
+  <qos_library name="MoonRaftQosLibrary">
+    <qos_profile name="RapidDefaultQos" base_name="RapidQosLibrary::RapidDefaultQos">
+      <participant_qos>
+        <discovery_config>
+          <participant_liveliness_lease_duration>
+            <sec>1000</sec>
+            <nanosec>DURATION_ZERO_NSEC</nanosec>
+          </participant_liveliness_lease_duration>
+          <participant_liveliness_assert_period>
+            <sec>50</sec>
+            <nanosec>DURATION_ZERO_NSEC</nanosec>
+          </participant_liveliness_assert_period>
+          <initial_participant_announcements>5</initial_participant_announcements>
+          <min_initial_participant_announcement_period>
+            <sec>1</sec>
+            <nanosec>0</nanosec>
+          </min_initial_participant_announcement_period>
+          <max_initial_participant_announcement_period>
+            <sec>5</sec>
+            <nanosec>0</nanosec>
+          </max_initial_participant_announcement_period>
+        </discovery_config>
+        <property>
+          <value>
+            <!-- RTPS Overhead -->
+            <element>
+              <name>dds.participant.protocol.rtps_overhead</name>
+              <value>114</value>
+            </element>
+            <!-- maximum message size -->
+            <element>
+              <name>dds.transport.UDPv4.builtin.parent.message_size_max</name>
+              <value>1250</value>
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.send_socket_buffer_size</name>
+              <value>65535</value>
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.recv_socket_buffer_size</name>
+              <value>65535</value>
+            </element>
+            <!-- Big time delay setting -->
+            <element>
+              <name>dds.data_reader.protocol.round_trip_time_sec</name>
+              <value>3</value>
+            </element>
+            <element>
+              <name>dds.data_reader.protocol.round_trip_time_nanosec</name>
+              <value>400000000</value>
+            </element>
+            <!-- Big packet loss tracking window -->
+            <element>
+              <name>dds.data_reader.protocol.receive_window_size</name>
+              <value>10000</value>
+            </element>
+            <element>
+              <name>dds.participant.protocol.max_receive_window_size</name>
+              <value>10000</value>
+            </element>
+            <!-- allow/deny lists -->
+            <!-- we try to exclude all vmware virtual network interfaces -->
+            <element>
+              <name>dds.transport.UDPv4.builtin.parent.deny_interfaces</name>
+              <value>172.18.0.1, 192.9.206.1, 192.9.202.1</value>
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.parent.deny_multicast_interfaces</name>
+              <value>172.18.0.1, 192.9.206.1, 192.9.202.1</value>
+            </element>
+          </value>
+        </property>
+      </participant_qos>
+      <datareader_qos>
+        <reader_resource_limits>
+          <!-- revisit this policy for individual messages for better performance -->
+          <dynamically_allocate_fragmented_samples>1</dynamically_allocate_fragmented_samples>
+          <max_samples_per_read>2048</max_samples_per_read>
+        </reader_resource_limits>
+        <protocol>
+          <rtps_reliable_reader>
+            <max_heartbeat_response_delay>
+              <sec>0</sec>
+              <nanosec>500000000</nanosec>
+            </max_heartbeat_response_delay>
+          </rtps_reliable_reader>
+        </protocol>
+      </datareader_qos>
+      <datawriter_qos>
+        <protocol>
+          <rtps_reliable_writer>
+            <heartbeat_period>
+              <sec>3</sec>
+              <nanosec>400000000</nanosec>
+            </heartbeat_period>
+            <fast_heartbeat_period>
+              <sec>1</sec>
+              <nanosec>700000000</nanosec>
+            </fast_heartbeat_period>
+            <max_heartbeat_retries>100</max_heartbeat_retries>
+          </rtps_reliable_writer>
+        </protocol>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- Reliable base configuration -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidReliableQos" base_name="RapidDefaultQos">
+      <datareader_qos>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <kind>KEEP_ALL_HISTORY_QOS</kind>
+        </history>
+      </datareader_qos>
+      <datawriter_qos>
+        <publish_mode>
+          <flow_controller_name>RaftFlowController</flow_controller_name>
+        </publish_mode>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <!-- To implement strict reliability, we need to set the history to KEEP_ALL. That way, undelivered samples will 
+            not be overwritten. -->
+          <kind>KEEP_ALL_HISTORY_QOS</kind>
+        </history>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- Reliable, durable base configuration -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidReliableDurableQos" base_name="RapidDefaultQos">
+      <datareader_qos>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <durability>
+          <kind>TRANSIENT_LOCAL_DURABILITY_QOS</kind>
+        </durability>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>1</depth>
+        </history>
+      </datareader_qos>
+      <datawriter_qos>
+        <publish_mode>
+          <flow_controller_name>RaftMetaTrafficFlowController</flow_controller_name>
+        </publish_mode>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <durability>
+          <kind>TRANSIENT_LOCAL_DURABILITY_QOS</kind>
+        </durability>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>1</depth>
+        </history>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- Best Effort base configuration -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidBestEffortQos" base_name="RapidDefaultQos" />
+
+    <!-- ===================================================== -->
+    <!-- Generic per Topic Category Profiles -->
+    <!-- ===================================================== -->
+
+    <!-- Generic Config Profile -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidConfigQos" base_name="RapidReliableDurableQos" />
+    <!-- Generic State Profile -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidStateQos" base_name="RapidReliableDurableQos" />
+    <!-- Generic Sample Profile -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidSampleQos" base_name="RapidDefaultQos" />
+
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidAckProfile" base_name="RapidReliableQos" >
+      <datawriter_qos>
+        <protocol>
+          <rtps_object_id>134</rtps_object_id>
+        </protocol>
+        <publish_mode>
+          <flow_controller_name>DEFAULT_FLOW_CONTROLLER_NAME</flow_controller_name>
+        </publish_mode>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>262</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+    <!-- ===================================================== -->
+    <qos_profile name="RapidCommandProfile" base_name="RapidReliableQos" >
+      <datawriter_qos>
+        <protocol>
+          <rtps_object_id>135</rtps_object_id>
+        </protocol>
+        <publish_mode>
+          <flow_controller_name>DEFAULT_FLOW_CONTROLLER_NAME</flow_controller_name>
+        </publish_mode>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>263</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+    <!-- ===================================================== -->
+    <qos_profile name="RapidCommandConfigProfile" base_name="RapidConfigQos" >
+      <datawriter_qos>
+        <protocol>
+          <rtps_object_id>136</rtps_object_id>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>264</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+
+
+    <!-- ===================================================== -->
+    <!-- RAFT File Queue Profiles -->
+    <!-- ===================================================== -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileQueueConfigProfile" base_name="RapidConfigQos">
+      <datawriter_qos>
+        <protocol>
+          <rtps_object_id>128</rtps_object_id>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>256</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileQueueStateProfile" base_name="RapidStateQos">
+      <datawriter_qos>
+        <protocol>
+          <rtps_object_id>129</rtps_object_id>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>257</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileQueueEntryStateProfile" base_name="RapidStateQos">
+      <datawriter_qos>
+        <protocol>
+          <rtps_object_id>130</rtps_object_id>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>258</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- FileQueueSample -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileQueueSampleProfile" base_name="RapidReliableQos">
+      <datawriter_qos>
+        <resource_limits>
+          <max_samples>10000</max_samples>
+        </resource_limits>
+        <protocol>
+          <rtps_object_id>131</rtps_object_id>
+          <rtps_reliable_writer>
+            <heartbeats_per_max_samples>100</heartbeats_per_max_samples>
+          </rtps_reliable_writer>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <resource_limits>
+          <max_samples>10000</max_samples>
+          <initial_samples>10000</initial_samples>
+        </resource_limits>
+        <protocol>
+          <rtps_object_id>259</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- FileAnnounce -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileAnnounceProfile" base_name="RapidReliableDurableQos">
+      <datawriter_qos>
+        <resource_limits>
+          <max_samples>10000</max_samples>
+        </resource_limits>
+        <ownership>
+          <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+        </ownership>
+        <ownership_strength>
+          <value>100</value>
+        </ownership_strength>
+        <protocol>
+          <rtps_object_id>132</rtps_object_id>
+          <rtps_reliable_writer>
+            <heartbeats_per_max_samples>100</heartbeats_per_max_samples>
+          </rtps_reliable_writer>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <resource_limits>
+          <max_samples>10000</max_samples>
+          <initial_samples>10000</initial_samples>
+        </resource_limits>
+        <ownership>
+          <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+        </ownership>
+        <protocol>
+          <rtps_object_id>260</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- FileAnnounceRepeater -->
+    <!-- ===================================================== -->
+    <qos_profile name="RaftFileAnnounceRepeaterProfile" base_name="RapidFileAnnounceProfile">
+      <datawriter_qos>
+        <protocol>
+          <rtps_object_id>133</rtps_object_id>
+        </protocol>
+        <ownership_strength>
+          <value>50</value>
+        </ownership_strength>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>261</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- FileQueueReceiver -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileQueueReceiverSampleProfile" base_name="RapidSampleQos">
+      <datawriter_qos>
+        <protocol>
+          <rtps_object_id>137</rtps_object_id>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>265</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+    <qos_profile name="RapidFileQueueReceiverEntryStateProfile" base_name="RapidFileQueueEntryStateProfile">
+      <datawriter_qos>
+        <protocol>
+          <rtps_object_id>138</rtps_object_id>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>266</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- Process Manager -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidExtProcessIOProfile" base_name="RapidReliableDurableQos" >
+      <datareader_qos>
+        <history>
+          <depth>1000</depth>
+        </history>
+      </datareader_qos>
+      <datawriter_qos>
+        <publish_mode>
+          <flow_controller_name>Rctl2FlowController</flow_controller_name>
+        </publish_mode>
+        <history>
+          <depth>1000</depth>
+        </history>
+      </datawriter_qos>
+    </qos_profile>
+  </qos_library>
+
+  <!-- ################################################################### -->
+  <!-- ## RAFTQosLibrary for NEO time-delay (50sec one-way) -->
+  <!-- ################################################################### -->
+  <qos_library name="NeoRaftQosLibrary">
+    <qos_profile name="RapidDefaultQos" base_name="RapidQosLibrary::RapidDefaultQos">
+      <participant_qos>
+        <discovery_config>
+          <participant_liveliness_lease_duration>
+            <sec>1000</sec>
+            <nanosec>DURATION_ZERO_NSEC</nanosec>
+          </participant_liveliness_lease_duration>
+          <participant_liveliness_assert_period>
+            <sec>50</sec>
+            <nanosec>DURATION_ZERO_NSEC</nanosec>
+          </participant_liveliness_assert_period>
+          <initial_participant_announcements>5</initial_participant_announcements>
+          <min_initial_participant_announcement_period>
+            <sec>1</sec>
+            <nanosec>0</nanosec>
+          </min_initial_participant_announcement_period>
+          <max_initial_participant_announcement_period>
+            <sec>5</sec>
+            <nanosec>0</nanosec>
+          </max_initial_participant_announcement_period>
+        </discovery_config>
+        <property>
+          <value>
+            <!-- RTPS Overhead -->
+            <element>
+              <name>dds.participant.protocol.rtps_overhead</name>
+              <value>114</value>
+            </element>
+            <!-- maximum message size -->
+            <element>
+              <name>dds.transport.UDPv4.builtin.parent.message_size_max</name>
+              <value>1250</value>
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.send_socket_buffer_size</name>
+              <value>65535</value>
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.recv_socket_buffer_size</name>
+              <value>65535</value>
+            </element>
+            <!-- Big time delay setting -->
+            <element>
+              <name>dds.data_reader.protocol.round_trip_time_sec</name>
+              <value>100</value>
+            </element>
+            <element>
+              <name>dds.data_reader.protocol.round_trip_time_nanosec</name>
+              <value>0</value>
+            </element>
+            <!-- Big packet loss tracking window -->
+            <element>
+              <name>dds.data_reader.protocol.receive_window_size</name>
+              <value>330000</value>
+            </element>
+            <element>
+              <name>dds.participant.protocol.max_receive_window_size</name>
+              <value>330000</value>
+            </element>
+            <!-- allow/deny lists -->
+            <!-- we try to exclude all vmware virtual network interfaces -->
+            <element>
+              <name>dds.transport.UDPv4.builtin.parent.deny_interfaces</name>
+              <value>172.18.0.1, 192.9.206.1, 192.9.202.1</value>
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.parent.deny_multicast_interfaces</name>
+              <value>172.18.0.1, 192.9.206.1, 192.9.202.1</value>
+            </element>
+          </value>
+        </property>
+      </participant_qos>
+      <datareader_qos>
+        <reader_resource_limits>
+          <!-- revisit this policy for individual messages for better performance -->
+          <dynamically_allocate_fragmented_samples>1</dynamically_allocate_fragmented_samples>
+          <max_samples_per_read>4096</max_samples_per_read>
+        </reader_resource_limits>
+        <protocol>
+          <rtps_reliable_reader>
+            <max_heartbeat_response_delay>
+              <sec>1</sec>
+              <nanosec>0</nanosec>
+            </max_heartbeat_response_delay>
+          </rtps_reliable_reader>
+        </protocol>
+      </datareader_qos>
+      <datawriter_qos>
+        <protocol>
+          <rtps_reliable_writer>
+            <heartbeat_period>
+              <sec>100</sec>
+              <nanosec>0</nanosec>
+            </heartbeat_period>
+            <fast_heartbeat_period>
+              <sec>50</sec>
+              <nanosec>0</nanosec>
+            </fast_heartbeat_period>
+            <max_heartbeat_retries>100</max_heartbeat_retries>
+          </rtps_reliable_writer>
+        </protocol>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- Reliable base configuration -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidReliableQos" base_name="RapidDefaultQos">
+      <datareader_qos>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <kind>KEEP_ALL_HISTORY_QOS</kind>
+        </history>
+      </datareader_qos>
+      <datawriter_qos>
+        <publish_mode>
+          <flow_controller_name>RaftFlowController</flow_controller_name>
+        </publish_mode>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <!-- To implement strict reliability, we need to set the history to KEEP_ALL. That way, undelivered samples will 
+            not be overwritten. -->
+          <kind>KEEP_ALL_HISTORY_QOS</kind>
+        </history>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- Reliable, durable base configuration -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidReliableDurableQos" base_name="RapidDefaultQos">
+      <datareader_qos>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <durability>
+          <kind>TRANSIENT_LOCAL_DURABILITY_QOS</kind>
+        </durability>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>1</depth>
+        </history>
+      </datareader_qos>
+      <datawriter_qos>
+        <publish_mode>
+          <flow_controller_name>RaftMetaTrafficFlowController</flow_controller_name>
+        </publish_mode>
+                <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <durability>
+          <kind>TRANSIENT_LOCAL_DURABILITY_QOS</kind>
+        </durability>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>1</depth>
+        </history>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- Best Effort base configuration -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidBestEffortQos" base_name="RapidDefaultQos" />
+
+    <!-- ===================================================== -->
+    <!-- Generic per Topic Category Profiles -->
+    <!-- ===================================================== -->
+
+    <!-- Generic Config Profile -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidConfigQos" base_name="RapidReliableDurableQos" />
+    <!-- Generic State Profile -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidStateQos" base_name="RapidReliableDurableQos" />
+    <!-- Generic Sample Profile -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidSampleQos" base_name="RapidDefaultQos" />
+
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidAckProfile" base_name="RapidReliableQos" >
+      <datawriter_qos>
+        <protocol>
+          <rtps_object_id>134</rtps_object_id>
+        </protocol>
+        <publish_mode>
+          <flow_controller_name>DEFAULT_FLOW_CONTROLLER_NAME</flow_controller_name>
+        </publish_mode>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>262</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+    <!-- ===================================================== -->
+    <qos_profile name="RapidCommandProfile" base_name="RapidReliableQos" >
+      <datawriter_qos>
+        <protocol>
+          <rtps_object_id>135</rtps_object_id>
+        </protocol>
+        <publish_mode>
+          <flow_controller_name>DEFAULT_FLOW_CONTROLLER_NAME</flow_controller_name>
+        </publish_mode>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>263</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+    <!-- ===================================================== -->
+    <qos_profile name="RapidCommandConfigProfile" base_name="RapidConfigQos" >
+      <datawriter_qos>
+        <protocol>
+          <rtps_object_id>136</rtps_object_id>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>264</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- ===================================================== -->
+    <!-- RAFT File Queue Profiles -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileQueueConfigProfile" base_name="RapidConfigQos">
+      <datawriter_qos>
+        <protocol>
+          <rtps_object_id>128</rtps_object_id>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>256</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileQueueStateProfile" base_name="RapidStateQos">
+      <datawriter_qos>
+        <protocol>
+          <rtps_object_id>129</rtps_object_id>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>257</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileQueueEntryStateProfile" base_name="RapidStateQos">
+      <datawriter_qos>
+        <protocol>
+          <rtps_object_id>130</rtps_object_id>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>258</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- FileQueueSample -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileQueueSampleProfile" base_name="RapidReliableQos">
+      <datawriter_qos>
+        <resource_limits>
+          <max_samples>330000</max_samples>
+        </resource_limits>
+        <protocol>
+          <rtps_object_id>131</rtps_object_id>
+          <rtps_reliable_writer>
+            <heartbeats_per_max_samples>3300</heartbeats_per_max_samples>
+          </rtps_reliable_writer>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <resource_limits>
+          <max_samples>330000</max_samples>
+          <initial_samples>330000</initial_samples>
+        </resource_limits>
+         <protocol>
+          <rtps_object_id>259</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- FileAnnounce -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileAnnounceProfile" base_name="RapidReliableDurableQos">
+      <datawriter_qos>
+        <resource_limits>
+          <max_samples>33000</max_samples>
+        </resource_limits>
+        <ownership>
+          <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+        </ownership>
+        <ownership_strength>
+          <value>100</value>
+        </ownership_strength>
+        <protocol>
+          <rtps_object_id>132</rtps_object_id>
+          <rtps_reliable_writer>
+            <heartbeats_per_max_samples>330</heartbeats_per_max_samples>
+          </rtps_reliable_writer>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <resource_limits>
+          <max_samples>330000</max_samples>
+          <initial_samples>330000</initial_samples>
+        </resource_limits>
+        <ownership>
+          <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+        </ownership>
+        <protocol>
+          <rtps_object_id>260</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- FileAnnounceRepeater -->
+    <!-- ===================================================== -->
+    <qos_profile name="RaftFileAnnounceRepeaterProfile" base_name="RapidFileAnnounceProfile">
+      <datawriter_qos>
+         <protocol>
+          <rtps_object_id>133</rtps_object_id>
+        </protocol>
+        <ownership_strength>
+          <value>50</value>
+        </ownership_strength>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>261</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- FileQueueReceiver -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileQueueReceiverSampleProfile" base_name="RapidSampleQos">
+      <datawriter_qos>
+        <protocol>
+          <rtps_object_id>137</rtps_object_id>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>265</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+    <qos_profile name="RapidFileQueueReceiverEntryStateProfile" base_name="RapidFileQueueEntryStateProfile">
+      <datawriter_qos>
+        <protocol>
+          <rtps_object_id>138</rtps_object_id>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <protocol>
+          <rtps_object_id>266</rtps_object_id>
+        </protocol>
+      </datareader_qos>
+    </qos_profile>
+    <!-- Process Manager -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidExtProcessIOProfile" base_name="RapidReliableDurableQos" >
+      <datareader_qos>
+        <history>
+          <depth>1000</depth>
+        </history>
+      </datareader_qos>
+      <datawriter_qos>
+        <publish_mode>
+          <flow_controller_name>Rctl2FlowController</flow_controller_name>
+        </publish_mode>
+        <history>
+          <depth>1000</depth>
+        </history>
+      </datawriter_qos>
+    </qos_profile>
+  </qos_library>
+</dds>

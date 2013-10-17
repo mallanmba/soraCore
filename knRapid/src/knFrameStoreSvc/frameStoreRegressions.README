@@ -1,0 +1,7 @@
+running the regression test requires more command-line parameters
+than we like. - but eliminating them requires more development effort.
+so here is the command-line that created the frameStoreRegressions.txt
+file that is checked into the repository:
+
+./frameStoreRegressions -C -MCF ../etc/k10controller/k10Red.xml -s RoverscapeSiteFrameZDown > frameStoreRegressions.txt
+

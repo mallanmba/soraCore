@@ -1,0 +1,50 @@
+<!DOCTYPE MiroConfigDocument>
+<config>
+  <section name="Rapid" >
+    <parameter name="rapid::CommandGuiParameters" >
+      <parameter value="false" name="InitByConfig" />
+      <parameter name="Config" >
+        <parameter name="AvailableSubsystemTypes" >
+          <parameter>
+            <parameter value="ProcessManager" name="Name" />
+            <parameter name="Commands" >
+              <parameter>
+                <parameter value="start" name="Name" />
+                <parameter name="Parameters" >
+                  <parameter>
+                    <parameter value="processId" name="Key" />
+                    <parameter value="RAPID_INT" name="Type" />
+                  </parameter>
+                </parameter>
+              </parameter>
+              <parameter>
+                <parameter value="stop" name="Name" />
+                <parameter name="Parameters" >
+                  <parameter>
+                    <parameter value="processId" name="Key" />
+                    <parameter value="RAPID_INT" name="Type" />
+                  </parameter>
+                </parameter>
+              </parameter>
+              <parameter>
+                <parameter value="kill" name="Name" />
+                <parameter name="Parameters" >
+                  <parameter>
+                    <parameter value="processId" name="Key" />
+                    <parameter value="RAPID_INT" name="Type" />
+                  </parameter>
+                </parameter>
+              </parameter>
+            </parameter>
+          </parameter>
+        </parameter>
+        <parameter name="AvailableSubsystems" >
+          <parameter>
+            <parameter value="ProcessManager" name="Name" />
+            <parameter value="ProcessManager" name="SubsystemTypeName" />
+          </parameter>
+        </parameter>
+      </parameter>
+    </parameter>
+  </section>
+</config>

@@ -1,0 +1,89 @@
+<!DOCTYPE MiroConfigDocument>
+<config>
+  <section name="Frames" >
+    <instance type="rapid::FrameRpyParameters" name="UtmGrid12S" >
+      <parameter value="/Earth" name="Parent" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="BlackPoint2009SiteFrame" >
+      <parameter value="UtmGrid12S" name="Parent" />
+      <parameter value="457797" name="X" />
+      <parameter value="3949752" name="Y" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="BlackPoint2009SiteFrameZDown" >
+      <parameter value="BlackPoint2009SiteFrame" name="Parent" />
+      <parameter value="180" name="Roll" />
+      <parameter value="90" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="UtmGrid15R" >
+      <parameter value="/Earth" name="Parent" />
+    </instance>
+
+    <instance type="rapid::FrameRpyParameters" name="BasaltHillSiteFrame" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="669238" name="X" />
+      <parameter value="4098907" name="Y" />
+      <parameter value="374" name="Z" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="BasaltHillSiteFrameZDown" >
+      <parameter value="BasaltHillSiteFrame" name="Parent" />
+      <parameter value="180" name="Roll" />
+      <parameter value="90" name="Yaw" />
+    </instance>
+
+    <instance type="rapid::FrameRpyParameters" name="Drats2011SiteFrame" >
+      <parameter value="UtmGrid12S" name="Parent" />
+      <parameter value="458005.33" name="X" />
+      <parameter value="3949389.32  " name="Y" />
+      <parameter value="-1588" name="Z" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Drats2011SiteFrameZDown" >
+      <parameter value="Drats2011SiteFrame" name="Parent" />
+      <parameter value="180" name="Roll" />
+      <parameter value="90" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Drats2011SiteFrameTrueNorthNWU" >
+      <parameter value="Drats2011SiteFrame" name="Parent" />
+      <parameter value="180" name="Roll" />
+      <parameter value="0.27" name="Yaw" />
+    </instance>
+
+
+
+    <instance type="rapid::FrameRpyParameters" name="JscSiteFrame" > <!-- NED -->
+      <parameter value="UtmGrid15R" name="Parent" />
+      <parameter value="298370.44" name="X" />
+      <parameter value="3272370.7" name="Y" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="JscSiteFrameZDown" >
+      <parameter value="JscSiteFrame" name="Parent" />
+      <parameter value="180" name="Roll" />
+      <parameter value="90" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="JscSiteFrameTrueNorthNWU" >
+      <parameter value="JscSiteFrame" name="Parent" />
+      <parameter value="180" name="Roll" />
+      <parameter value="1.027" name="Yaw" />
+    </instance>
+
+
+    <instance type="rapid::FrameRpyParameters" name="UtmGrid16X" >
+      <parameter value="/Earth" name="Parent" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="HMP2007SiteFrame" >
+      <parameter value="UtmGrid16X" name="Parent" />
+      <parameter value="419660.0" name="X" />
+      <parameter value="8373890.0" name="Y" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="HMP2007SiteFrameZDown" >
+      <parameter value="HMP2007SiteFrame" name="Parent" />
+      <parameter value="180" name="Roll" />
+      <parameter value="90" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Core" >
+      <parameter value="HMP2007SiteFrameZDown" name="Parent" />
+      <parameter value="-5.411583 " name="X" />
+      <parameter value="-17.0442" name="Y" />
+      <parameter value="-38" name="Yaw" />
+    </instance>
+  </section>
+</config>

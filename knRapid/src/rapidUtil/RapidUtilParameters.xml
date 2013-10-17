@@ -1,0 +1,18 @@
+<!DOCTYPE xml SYSTEM "MiroParameterDescription.dtd">
+<config>
+  <config_global name="namespace" value="rapid" />
+  <config_global name="include" value="miro/ConfigParameters.h" />
+
+  <config_group name="Rapid">
+
+    <config_item name="TopicPair" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="topicSuffix" type="string" />
+      <config_parameter name="parentNode" type="string" unit="publisher/subscriber" />
+      <config_parameter name="configProfile" type="string" default="RapidConfigQos" />
+      <config_parameter name="dataProfile" type="string"  />
+      <config_parameter name="library" type="string" />
+      <config_parameter name="useConfigTopic" type="bool" default="true" />
+    </config_item>
+
+  </config_group>
+</config>

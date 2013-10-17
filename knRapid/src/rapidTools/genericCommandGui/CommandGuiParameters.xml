@@ -1,0 +1,49 @@
+<!DOCTYPE xml SYSTEM "MiroParameterDescription.dtd">
+<config>
+  <config_global name="namespace" value="rapid" />
+  <config_global name="include" value="miro/ConfigParameters.h" />
+  <config_group name="Rapid">
+
+    <config_item name="KeyType" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="key" type="string" />
+      <config_parameter name="type" type="string" />
+    </config_item>
+
+    <config_item name="CommandDef" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="name" type="string" default="" />
+      <config_parameter name="abortable" type="bool" default="false" />
+      <config_parameter name="suspendable" type="bool" default="false" />
+      <config_parameter name="parameters" type="std::vector&lt;KeyTypeParameters&gt;" />
+    </config_item>
+
+    <config_item name="SubsystemType" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="name" type="string" default="" />
+      <config_parameter name="commands" type="std::vector&lt;CommandDefParameters&gt;" />
+    </config_item>
+
+    <config_item name="Subsystem" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="name" type="string" default="" />
+      <config_parameter name="subsystemTypeName" type="string" default="" />
+    </config_item>
+
+
+<!-- ***************************************************** -->
+<!-- ***************************************************** -->
+
+    <config_item name="CommandConfig" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="availableSubsystemTypes" type="std::vector&lt;SubsystemTypeParameters&gt;" />
+      <config_parameter name="availableSubsystems" type="std::vector&lt;SubsystemParameters&gt;" />
+    </config_item>
+
+<!-- ***************************************************** -->
+<!-- ***************************************************** -->
+
+    <config_item name="CommandGui" parent="Miro::Config" final="true" instance="true">
+      <config_parameter name="initByConfig" type="bool" default="true" />
+      <config_parameter name="config" type="CommandConfigParameters" default="" />
+      <config_parameter name="srcName" type="std::string" default="DEFAULT" />
+    </config_item>
+
+  </config_group>
+</config>
+ 

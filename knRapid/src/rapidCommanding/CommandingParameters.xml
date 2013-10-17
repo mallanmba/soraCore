@@ -1,0 +1,72 @@
+<!DOCTYPE xml SYSTEM "MiroParameterDescription.dtd">
+<config>
+  <config_global name="namespace" value="rapid" />
+  <config_global name="include" value="miro/ConfigParameters.h" />
+  <config_global name="include" value="rapidIo/RapidIoParameters.h" />
+
+  <config_group name="Rapid">
+
+    <config_item name="AccessControlImpl" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="publisher" type="string" />
+      <config_parameter name="stateLibrary" type="string" default="RapidQosLibrary" />
+      <config_parameter name="stateProfile" type="string" default="RapidReliableDurableQos" />
+    </config_item>
+
+    <config_item name="MacroConsumer" parent="kn::DdsLeaf" final="true">
+      <config_parameter name="topicSuffix" inherited="true" type="string" default="-upload" />
+      <config_parameter name="profile" inherited="true" type="string"  default="RapidReliableQos"/>
+    </config_item>
+
+    <config_item name="MacroManager" parent="Miro::Config" final="true" instance="unmanaged" >
+      <config_parameter name="provider" type="rapid::MacroTopicPairParameters" />
+      <config_parameter name="configUpload" type="MacroConsumerParameters" />
+      <config_parameter name="persistencyFile" type="string" default="~/.MacroManagerConfig.xml" />
+    </config_item>
+
+    <config_item name="PersistentMacroManagerState" parent="Miro::Config" final="true" instance="unmanaged" >
+      <config_parameter name="macros" type="std::vector&lt;rapid::MacroConfigParameters&gt;" />
+    </config_item>
+
+    <config_item name="AckPublisher" parent="kn::DdsLeaf" final="false" instance="false">
+      <config_parameter name="profile" type="string" default="RapidAckProfile" inherited="true" />
+    </config_item>
+
+    <config_item name="QueueImpl" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="name" type="string" default="Sequencer" />
+      <config_parameter name="queuing" type="bool" default="true" />
+      <config_parameter name="startQueueSuspended" type="bool" default="false" />
+      <config_parameter name="suspendQueueOnIdle" type="bool" default="false" />
+      <config_parameter name="trackDirectCommandsInQueue" type="bool" default="true" />
+
+      <config_parameter name="publisher" type="string" />
+      <config_parameter name="stateProfile" type="string" default="RapidReliableDurableQos" />
+      <config_parameter name="library" type="string" default="RapidQosLibrary" />
+      <config_parameter name="macroMgr" type="MacroManagerParameters" />
+      <config_parameter name="ackPublisher" type="AckPublisherParameters" />
+    </config_item>
+
+    <config_item name="CommandManagerTopics" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="topicSuffix" type="string" />
+      <config_parameter name="publisherName" type="string" unit="publisher" />
+      <config_parameter name="subscriberName" type="string" unit="subscriber" />
+      <config_parameter name="library" type="string" />
+      <config_parameter name="cmdProfile" type="string" default="RapidCommandProfile" />
+      <config_parameter name="cmdConfigProfile" type="string" default="RapidCommandConfigProfile" />
+    </config_item>
+
+    <config_item name="CommandManager" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="dataBus" type="CommandManagerTopicsParameters" />
+      <config_parameter name="requeueMobilityCommand" type="bool" default="false" />
+      <config_parameter name="autoPurgeQueue" type="bool" default="true" />
+      <config_parameter name="queuePurgeCompletedTimeout" type="ACE_Time_Value" default="20" />
+      <config_parameter name="accessControl" type="bool" default="true" />
+      <config_parameter name="accessControlImpl" type="AccessControlImplParameters" />
+      <config_parameter name="queueImpl" type="QueueImplParameters" />
+    </config_item>
+
+
+    <config_item name="CommandManagerSvc" parent="CommandManager" final="true" instance="unmanaged" >
+    </config_item>
+
+  </config_group>
+</config>

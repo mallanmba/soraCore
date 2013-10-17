@@ -1,0 +1,146 @@
+<!DOCTYPE xml SYSTEM "MiroParameterDescription.dtd">
+<config>
+  <config_global name="namespace" value="rapid" />
+  <config_global name="include" value="rapidUtil/RapidUtilParameters.h" />
+  <config_global name="include" value="rapidIo/KeyTypeValue.h" />
+  <config_global name="include" value="knDds/KnDdsParameters.h" />
+
+  <config_group name="Rapid">
+    <config_item name="KeyType" final="false" extern="true">
+      <config_parameter name="key" type="string" />
+      <config_parameter name="type" type="string" />
+    </config_item>
+    <config_item name="TypeValue" final="false" extern="true">
+      <config_parameter name="type" type="string" />
+      <config_parameter name="value" type="string" />
+    </config_item>
+    <config_item name="KeyTypeValue" final="false" extern="true">
+      <config_parameter name="key" type="string" />
+      <config_parameter name="type" type="string" />
+      <config_parameter name="value" type="string" />
+    </config_item>
+
+    <config_item name="Header" parent="Miro::Config" final="false">
+      <config_parameter name="srcName" type="string" default="" />
+      <config_parameter name="assetName" type="string" default="" />
+      <config_parameter name="timeStamp" type="ACE_Time_Value" defautl="0"/>
+      <config_parameter name="statusCode" type="int" default="0" />
+      <config_parameter name="serial" type="int" default="0" />
+    </config_item>
+    <config_item name="Message" parent="Miro::Config" final="false">
+      <config_parameter name="hdr" type="HeaderParameters" />
+    </config_item>
+
+    <config_item name="AgentConfigBase" parent="Message" final="false">
+      <config_parameter name="agentTags" type="vector&lt;std::string&gt;"/>
+      <config_parameter name="topics" type="vector&lt;std::string&gt;"/>
+    </config_item>
+
+    <config_item name="AgentConfig" parent="AgentConfigBase" final="false">
+      <config_parameter name="valueKeys" type="vector&lt;KeyTypeValue&gt;"/>
+    </config_item>
+
+    <config_item name="AgentTopicPairBase" parent="TopicPair" final="false">
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidAgentConfigProfile"/>
+      <config_parameter name="dataProfile" type="string" inherited="true" default="RapidAgentStateProfile"/>
+    </config_item>
+
+    <config_item name="AgentTopicPair" parent="AgentTopicPairBase" final="false">
+      <config_parameter name="config" type="rapid::AgentConfigParameters"/>
+    </config_item>
+
+    <config_item name="CommandAckPair" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="topicSuffix" type="string" />
+      <config_parameter name="parentNode" type="string" unit="publisher/subscriber" />
+      <config_parameter name="commandProfile" type="string" default="RapidCommandProfile" />
+      <config_parameter name="ackProfile" type="string" default="RapidAckProfile" />
+      <config_parameter name="library" type="string" />
+    </config_item>
+
+    <config_item name="ImageSensorSampleTopic" parent="kn::DdsLeaf" final="false" instance="false">
+      <config_parameter name="profile" type="string" default="RapidImageSensorSampleProfile" inherited="true" />
+    </config_item>
+
+    <config_item name="ImageSensorProvider" parent="ImageSensorSampleTopic" final="false" instance="false">
+    </config_item>
+
+    <config_item name="PositionConfigBase" parent="Message" final="false">
+      <config_parameter name="controlledFrame" type="string" default="RAPID_ROVER_FRAME" />
+      <config_parameter name="referenceFrame" type="string" default="RAPID_SITE_FRAME" />
+      <config_parameter name="poseEncoding" type="int" default="1"/>
+      <config_parameter name="velocityEncoding" type="int" default="0" />
+    </config_item>
+
+    <config_item name="PositionConfig" parent="PositionConfigBase" final="false">
+      <config_parameter name="valueKeys" type="vector&lt;KeyTypeValue&gt;" />
+    </config_item>
+
+    <config_item name="PositionTopicPairBase" parent="TopicPair" final="false" >
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidPositionConfigProfile" />
+      <config_parameter name="dataProfile" type="string" inherited="true" default="RapidPositionSampleProfile" />
+    </config_item>
+
+    <config_item name="PositionTopicPair" parent="PositionTopicPairBase" final="false" >
+      <config_parameter name="config" type="rapid::PositionConfigParameters" />
+    </config_item>
+
+    <config_item name="JointDef" parent="Miro::Config" final="false">
+      <config_parameter name="frameName" type="string" default="" />
+      <config_parameter name="referenceFrame" type="string" default="" />
+      <config_parameter name="dof" type="string" />
+    </config_item>
+
+    <config_item name="JointConfig" parent="Message" final="false">
+      <config_parameter name="jointGroupName" type="string" default="" />
+      <config_parameter name="jointDefinitions" type="vector&lt;JointDefParameters&gt;" />
+    </config_item>
+
+    <config_item name="JointTopicPair" parent="TopicPair" final="false" >
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidJointConfigProfile" />
+      <config_parameter name="dataProfile" type="string" inherited="true" default="RapidJointSampleProfile" />
+      <config_parameter name="config" type="JointConfigParameters" />
+    </config_item>
+
+    <config_item name="MacroCommand" parent="Miro::Config" final="false">
+      <config_parameter name="cmdName" type="string" />
+      <config_parameter name="cmdIdSuffix" type="string" />
+      <config_parameter name="subsysName" type="string" />
+      <config_parameter name="arguments" type="vector&lt;TypeValue&gt;" />
+      <config_parameter name="metaData" type="vector&lt;TypeValue&gt;" />
+    </config_item>
+
+    <config_item name="MacroConfig" parent="Message" final="true">
+      <config_parameter name="name" type="string" />
+      <config_parameter name="commands" type="vector&lt;MacroCommandParameters&gt;" />
+      <config_parameter name="metaData" type="vector&lt;KeyTypeValue&gt;" />
+      <config_parameter name="commandMetaDataSpec" type="vector&lt;KeyType&gt;" />
+    </config_item>
+
+    <config_item name="MacroSet" parent="Miro::Config" final="false">
+      <config_parameter name="macros" type="vector&lt;MacroConfigParameters&gt;" />
+    </config_item>
+
+    <config_item name="MacroTopicPair" parent="TopicPair" final="true">
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidConfigQos" />
+      <config_parameter name="dataProfile" type="string" inherited="true" default="RapidStateQos" />
+      <config_parameter name="useConfigTopic" inherited="true" type="bool" default="false" />
+      <config_parameter name="config" type="rapid::MessageParameters" />
+    </config_item>
+
+    <config_item name="PointCloudConfig" parent="Message" final="false">
+      <config_parameter name="referenceFrame" type="string" default="RAPID_SITE_FRAME" />
+      <config_parameter name="xyzMode" type="string" />
+      <config_parameter name="attributeMode0" type="string" />
+      <config_parameter name="attributeMode1" type="string" />
+      <config_parameter name="attributes" type="vector&lt;KeyTypeValue&gt;" />
+    </config_item>
+
+    <config_item name="PointCloudTopicPair" parent="TopicPair" final="false" >
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidPointCloudConfigProfile" />
+      <config_parameter name="dataProfile" type="string" inherited="true" default="RapidPointCloudSampleProfile" />
+      <config_parameter name="config" type="PointCloudConfigParameters" />
+    </config_item>
+
+
+  </config_group>
+</config>

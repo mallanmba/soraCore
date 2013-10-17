@@ -1,0 +1,390 @@
+<?xml version="1.0"?>
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/usr/local/irg/apps/RTI/ndds.4.5d/resource/qos_profiles_4.5d/schema/rti_dds_qos_profiles.xsd">
+  <!-- ################################################################### -->
+  <!-- ## RapidQosLibrary -->
+  <!-- ################################################################### -->
+  <qos_library name="Centaur2QosLibrary">
+    <qos_profile name="RapidDefaultQos" is_default_qos="true">
+      <participant_qos>
+        <user_data>
+          <!--  version of Qos File MUST CONVERT TO UNICODE: -->
+          <!--  http://rishida.net/tools/conversion/ -->
+          <!--  On Mixed Input text box, enter: YYYYMMDD.HHMMSS.III-LOC  -->
+          <!--  where III = Initials (2 or 3 chars) LOC = 3 char location -->
+          <!--  Version: 20110629.094600.HU-ARC -->
+          <value>50, 48, 49, 49, 48, 54,0x32,0x39,0x2e,0x30,0x39,0x34,0x33,0x30,0x30,0x2e,0x48,0x55,0x2d,0x41,0x52,0x43</value>
+        </user_data>
+        <discovery>
+          <!-- By default, we do an explicit configuration through the discovery-peers files. -->
+          <!-- This limits accidental traffic on the robot-networks. -->
+          <!-- For the ground-side router, allowing unknown peers might be preferred. -->
+          <accept_unknown_peers>true</accept_unknown_peers>
+        </discovery>
+        <resource_limits>
+          <!-- increase max property size to accommodate flow controllers -->
+          <participant_property_string_max_length>4096</participant_property_string_max_length>
+          <!-- Type-codes don't work with overly restricted buffer size, so we disable it. -->
+          <!-- disabling type-code support -->
+          <type_code_max_serialized_length>0</type_code_max_serialized_length>
+        </resource_limits>
+
+        <property>
+          <value>
+            <!-- === Flow Controllers ===================================================================== -->
+            <!-- === note that each flow controller will add about 600 characters to the cumulative size of -->
+            <!-- === the property string, so resource_limits.participant_property_string_max_length must be -->
+            <!-- === increased to accommodate the larger size -->
+            <!-- NavMapFlowController -->
+            <element>
+              <name>dds.flow_controller.token_bucket.NavMapFlowController.scheduling_policy</name> 
+              <value>DDS_EDF_FLOW_CONTROLLER_SCHED_POLICY</value> 
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.NavMapFlowController.token_bucket.max_tokens</name>
+              <value>12</value> 
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.NavMapFlowController.token_bucket.tokens_added_per_period</name> 
+              <value>4</value> 
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.NavMapFlowController.token_bucket.tokens_leaked_per_period</name> 
+              <value>0</value> 
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.NavMapFlowController.token_bucket.bytes_per_token</name> 
+              <value>1250</value> 
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.NavMapFlowController.token_bucket.period.sec</name> 
+              <value>0</value> 
+            </element>
+            <element>
+              <name>dds.flow_controller.token_bucket.NavMapFlowController.token_bucket.period.nanosec</name> 
+              <value>5000000</value> 
+            </element>
+        
+            <!-- === Transport ============================================================================ -->
+            <!-- maximum message size -->
+            <element>
+              <name>dds.transport.UDPv4.builtin.parent.message_size_max</name>
+              <value>1250</value>
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.send_socket_buffer_size</name>
+              <value>65535</value>
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.recv_socket_buffer_size</name>
+              <value>65535</value>
+            </element>
+            <!-- maximum message size -->
+            <!-- allow/deny lists -->
+            <!-- we try to exclude all vmware virtual network interfaces -->
+            <element>
+              <name>dds.transport.UDPv4.builtin.parent.deny_interfaces</name>
+              <value>172.18.0.1,192.9.206.1,192.9.202.1,192.168.163.1,192.168.174.1,192.168.3.255,169.254.4.2,169.254.8.2,169.254.16.2</value>
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.parent.deny_multicast_interfaces</name>
+              <value>172.18.0.1,192.9.206.1,192.9.202.1,192.168.163.1,192.168.174.1,192.168.3.255,169.254.4.2,169.254.8.2,169.254.16.2</value>
+            </element>
+          </value>
+        </property>
+      </participant_qos>
+      <publisher_qos>
+      </publisher_qos>
+      <subscriber_qos>
+      </subscriber_qos>
+      <datareader_qos>
+        <reader_resource_limits>
+          <!-- revisit this policy for individual messages for better performance -->
+          <dynamically_allocate_fragmented_samples>1</dynamically_allocate_fragmented_samples>
+        </reader_resource_limits>
+        <reliability>
+          <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+        </reliability>
+      </datareader_qos>
+      <datawriter_qos>
+        <publish_mode>
+          <kind>ASYNCHRONOUS_PUBLISH_MODE_QOS</kind>
+        </publish_mode>
+        <!-- when using asynchronous publish mode, keep a history greater than 1 to reduce -->
+        <!-- the possibility of overwriting samples before the dds thread has a chance to send -->
+        <!-- it on the wire. For very fast publishers, history may need to be increased -->
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>3</depth>
+        </history>
+        <reliability>
+          <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+        </reliability>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- Best Effort base configuration -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidBestEffortQos" base_name="RapidDefaultQos" >
+      <datareader_qos>
+        <reliability>
+          <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>10</depth>
+        </history>
+      </datareader_qos>
+      <datawriter_qos>
+        <reliability>
+          <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>100</depth>
+        </history>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- Reliable base configuration -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidReliableQos" base_name="RapidDefaultQos">
+      <datareader_qos>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <kind>KEEP_ALL_HISTORY_QOS</kind>
+        </history>
+      </datareader_qos>
+      <datawriter_qos>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <!-- To implement strict reliability, we need to set the history to KEEP_ALL.
+          That way, undelivered samples will not be overwritten. -->
+          <kind>KEEP_ALL_HISTORY_QOS</kind>
+        </history>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- Reliable, durable base configuration -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidReliableDurableQos" base_name="RapidDefaultQos">
+      <datareader_qos>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <durability>
+          <kind>TRANSIENT_LOCAL_DURABILITY_QOS</kind>
+        </durability>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>1</depth>
+        </history>
+      </datareader_qos>
+      <datawriter_qos>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <durability>
+          <kind>TRANSIENT_LOCAL_DURABILITY_QOS</kind>
+        </durability>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>1</depth>
+        </history>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- ===================================================== -->
+    <!-- Generic per Topic Category Profiles -->
+    <!-- ===================================================== -->
+
+    <!-- Generic Config Profile -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidConfigQos" base_name="RapidReliableDurableQos" />
+    <!-- Generic State Profile -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidStateQos" base_name="RapidReliableDurableQos" />
+    <!-- Generic Sample Profile -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidSampleQos" base_name="RapidBestEffortQos" />
+
+
+    <!-- ===================================================== -->
+    <!-- Per Topic Profiles -->
+    <!-- ===================================================== -->
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidAckProfile" base_name="RapidReliableQos" />
+    <!-- ===================================================== -->
+    <qos_profile name="RapidAssetConfigProfile" base_name="RapidConfigQos" />
+    <!-- ===================================================== -->
+    <qos_profile name="RapidAssetStateProfile" base_name="RapidStateQos" />
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidCommandProfile" base_name="RapidReliableQos" />
+    <!-- ===================================================== -->
+    <qos_profile name="RapidCommandConfigProfile" base_name="RapidConfigQos" />
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFrameStoreConfigProfile" base_name="RapidConfigQos" />
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidImageSensorSampleProfile" base_name="RapidBestEffortQos" />
+    <!-- ===================================================== -->
+    <qos_profile name="RapidImageSensorStateProfile" base_name="RapidStateQos" />
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidJointConfigProfile" base_name="RapidConfigQos" />
+    <!-- ===================================================== -->
+    <qos_profile name="RapidJointSampleProfile" base_name="RapidSampleQos" />
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidNavMapConfigProfile" base_name="RapidConfigQos" />
+    <!-- ===================================================== -->
+    <qos_profile name="RapidNavMapSampleProfile" base_name="RapidSampleQos" >
+      <datawriter_qos>
+        <publish_mode>
+          <flow_controller_name>dds.flow_controller.token_bucket.NavMapFlowController</flow_controller_name>
+        </publish_mode>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidNavMapTilesConfigProfile" base_name="RapidConfigQos" />
+    <!-- ===================================================== -->
+    <qos_profile name="RapidNavMapTilesSampleProfile" base_name="RapidReliableDurableQos" >
+      <datawriter_qos>
+        <publish_mode>
+          <flow_controller_name>dds.flow_controller.token_bucket.NavMapFlowController</flow_controller_name>
+        </publish_mode>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>2</depth>
+        </history>
+	    <resource_limits>
+	        <max_instances>64</max_instances>
+	        <initial_instances>64</initial_instances>
+	        <instance_hash_buckets>80</instance_hash_buckets>
+	    </resource_limits>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidPointCloudConfigProfile" base_name="RapidConfigQos" />
+    <!-- ===================================================== -->
+    <qos_profile name="RapidPointCloudSampleProfile" base_name="RapidSampleQos">
+      <datawriter_qos>
+        <publish_mode>
+          <flow_controller_name>dds.flow_controller.token_bucket.NavMapFlowController</flow_controller_name>
+        </publish_mode>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>10</depth>
+        </history>
+      </datawriter_qos>
+      <datareader_qos>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>100</depth>
+        </history>
+      </datareader_qos>
+    </qos_profile>
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidPositionConfigProfile" base_name="RapidConfigQos" />
+    <!-- ===================================================== -->
+    <qos_profile name="RapidPositionSampleProfile" base_name="RapidSampleQos" />
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidQueueStateProfile" base_name="RapidStateQos" />
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidRangeScanConfigProfile" base_name="RapidConfigQos" />
+    <!-- ===================================================== -->
+    <qos_profile name="RapidRangeScanSampleProfile" base_name="RapidSampleQos">
+      <datareader_qos>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>1000</depth>
+        </history>
+      </datareader_qos>
+      <datawriter_qos>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>200</depth>
+        </history>
+      </datawriter_qos>
+    </qos_profile>
+
+    <!-- ===================================================== -->
+    <qos_profile name="RapidTextMessageProfile" base_name="RapidReliableDurableQos" />
+    <!-- ===================================================== -->
+    <qos_profile name="RapidAccessControlStateProfile" base_name="RapidStateQos" />
+
+    <!-- ImageSamples -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidSensorImageProfile" base_name="RapidReliableQos" />
+
+    <!-- ===================================================== -->
+    <!-- RAFT File Queue Profiles -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileQueueStateProfile" base_name="RapidStateQos" />
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileQueueEntryStateProfile" base_name="RapidStateQos" />
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileQueueConfigProfile" base_name="RapidConfigQos" />
+
+    <!-- FileQueueSample -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileQueueSampleProfile" base_name="RapidReliableQos">
+    </qos_profile>
+
+    <!-- FileAnnounce -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileAnnounceProfile" base_name="RapidReliableDurableQos">
+      <datawriter_qos>
+        <ownership>
+          <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+        </ownership>
+        <ownership_strength>
+          <value>100</value>
+        </ownership_strength>
+      </datawriter_qos>
+      <datareader_qos>
+        <ownership>
+          <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+        </ownership>
+      </datareader_qos>
+    </qos_profile>
+    <!-- FileAnnounceRepeater -->
+    <!-- ===================================================== -->
+    <qos_profile name="RaftFileAnnounceRepeaterProfile" base_name="RapidFileAnnounceProfile">
+      <datawriter_qos>
+        <ownership_strength>
+          <value>50</value>
+        </ownership_strength>
+      </datawriter_qos>
+    </qos_profile>
+    <!-- FileQueueReceiver -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidFileQueueReceiverSampleProfile" base_name="RapidSampleQos" />
+    <qos_profile name="RapidFileQueueReceiverEntryStateProfile" base_name="RapidFileQueueEntryStateProfile" />
+    <!-- Process Manager -->
+    <!-- ===================================================== -->
+    <qos_profile name="RapidExtProcessIOProfile" base_name="RapidReliableDurableQos" >
+      <datareader_qos>
+        <history>
+          <depth>1000</depth>
+        </history>
+      </datareader_qos>
+      <datawriter_qos>
+       <history>
+          <depth>1000</depth>
+        </history>
+      </datawriter_qos>
+    </qos_profile>
+  </qos_library>
+</dds>

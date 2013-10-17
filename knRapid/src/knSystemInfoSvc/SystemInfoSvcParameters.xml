@@ -1,0 +1,15 @@
+<!DOCTYPE xml SYSTEM "MiroParameterDescription.dtd">
+<config>
+  <config_global name="namespace" value="kn" />
+  <config_global name="include" value="miro/ConfigParameters.h" />
+  <config_global name="include" value="knSystemInfo/SystemInfoParameters.h" />
+
+  <config_group name="Rapid">
+
+    <config_item name="SystemInfoSvc" parent="SystemInfo" final="true" instance="unmanaged" >
+      <config_parameter name="topicSuffix" type="string" default="" />
+      <config_parameter name="updateInterval" type="ACE_Time_Value" default="1" />
+    </config_item>
+
+  </config_group>
+</config>

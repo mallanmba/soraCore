@@ -1,0 +1,95 @@
+<!DOCTYPE MiroConfigDocument>
+<config>
+  <section name="Frames" >
+    <!-- LER Frame -->
+    <!-- The <rover>Frame is the center of the robot. In K10's case,
+     that's the axle that the linkage swings around. It is directly on the ground. -->
+    <instance type="rapid::FrameRpyParameters" name="LerASim" >
+      <parameter value="" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+    <!-- LerB Frames -->
+
+    <!-- Xsens  -->
+    <instance type="rapid::FrameRpyParameters" name="XsensFrame" >
+      <parameter value="LerASim" name="Parent" />
+      <parameter value="2.578" name="X" />
+      <parameter value="0.26" name="Y" />
+      <parameter value="-2.474" name="Z" />
+      <parameter value="0.6" name="Roll" />
+      <parameter value="-0.5" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+
+    <!-- Hmr3000 compass -->
+    <instance type="rapid::FrameRpyParameters" name="HmrCompass" >
+      <parameter value="XsensFrame" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="-0.051" name="Y" />
+      <parameter value="0.0" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+
+    <!-- Xsens GPS antenna -->
+    <instance type="rapid::FrameRpyParameters" name="GpsAntenna" >
+      <parameter value="XsensFrame" name="Parent" />
+      <parameter value="-0.5" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="-0.3" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+
+    <!-- UTM lidar left -->
+    <instance type="rapid::FrameRpyParameters" name="UtmLeftLaserFrame" >
+      <parameter value="LerASim" name="Parent" />
+      <parameter value="2.556" name="X" />
+      <parameter value="-0.325" name="Y" />
+      <parameter value="-2.525" name="Z" />
+      <parameter value="-0.42" name="Roll" />
+      <parameter value="-30.73" name="Pitch" />
+      <parameter value="-16.03" name="Yaw" />
+    </instance>
+
+    <!-- UTM lidar right -->
+    <instance type="rapid::FrameRpyParameters" name="UtmRightLaserFrame" >
+      <parameter value="LerASim" name="Parent" />
+      <parameter value="2.642" name="X" />
+      <parameter value="0.715" name="Y" />
+      <parameter value="-2.565" name="Z" />
+      <parameter value="-1.12" name="Roll" />
+      <parameter value="-15.95" name="Pitch" />
+      <parameter value="16.12" name="Yaw" />
+    </instance>
+
+    <instance type="rapid::FrameRpyParameters" name="LmsLaserFrame" >
+      <parameter value="XsensFrame" name="Parent" />
+      <parameter value="0.4" name="X" />
+      <parameter value="-0.025" name="Y" />
+      <parameter value="0.23" name="Z" />
+      <parameter value="-0.5" name="Roll" />
+      <parameter value="-11.3" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+
+    <instance type="rapid::FrameRpyParameters" name="FwCameraCenter" >
+      <parameter value="XsensFrame" name="Parent" />
+      <parameter value="0.227" name="X" />
+      <parameter value="-0.027" name="Y" />
+      <parameter value="-0.364" name="Z" />
+      <parameter value="-2.1" name="Roll" />
+      <parameter value="-23.7" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
+
+
+  </section>
+</config>

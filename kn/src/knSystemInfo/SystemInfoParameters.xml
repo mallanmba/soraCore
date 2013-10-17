@@ -1,0 +1,98 @@
+<!DOCTYPE xml SYSTEM "MiroParameterDescription.dtd">
+<config>
+  <config_global name="namespace" value="kn" />
+  <config_global name="include" value="miro/ConfigParameters.h" />
+  <config_global name="include" value="knShare/Singleton.h" />
+
+  <config_group name="Sensors" >
+
+    <config_item name="AcAdapter" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="proc" type="string" default="/proc/acpi/ac_adapter/AC/state" unit="full path" />
+    </config_item>    
+    <config_item name="Battery" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="name" type="string" default="BAT0" unit="file" />
+      <config_parameter name="percentageLow" type="unsigned int" default="15" unit="percent" />   
+      <config_parameter name="percentageCritical" type="unsigned int" default="5" unit="percent" />         
+    </config_item>
+    <config_item name="BatteryInfo" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="proc" type="string" default="/proc/acpi/battery" unit="path" />
+      <config_parameter name="acAdapter" type="AcAdapterParameters" />
+      <config_parameter name="batteries" type="std::vector&lt;BatteryParameters&gt;" />
+    </config_item>
+
+    <config_item name="MemoryInfo" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="memoryLow" type="unsigned int" default="1024 * 1024" unit="kByte" />       
+      <config_parameter name="memoryCritical" type="unsigned int" default="1024" unit="kByte" />       
+      <config_parameter name="proc" type="string" default="/proc/meminfo" />
+    </config_item>
+
+    <config_item name="CpuInfo" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="busyHigh" type="unsigned int" default="50" unit="percent" />       
+      <config_parameter name="busyCritical" type="unsigned int" default="80" unit="percent" />         
+      <config_parameter name="proc" type="string" default="/proc/stat" unit="full path" />
+      <config_parameter name="numCpus" type="unsigned int" default="2" />  
+    </config_item>
+
+    <config_item name="Thermal" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="location" type="string" default="CPU" />
+      <config_parameter name="temperatureLow" type="float" default="10." unit="C" />
+      <config_parameter name="temperatureHigh" type="float" default="55." unit="C" />
+      <config_parameter name="temperatureLowCritical" type="float" default="5." unit="C" />
+      <config_parameter name="temperatureHighCritical" type="float" default="65." unit="C" />
+      <config_parameter name="id" type="string" default="THM0" />
+    </config_item>
+
+    <config_item name="ThermalInfo" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="proc" type="string" default="/proc/acpi/thermal_zone" unit="path" />  
+      <config_parameter name="sensors" type="std::vector&lt;ThermalParameters&gt;" />
+    </config_item>
+
+    <config_item name="NetTraffic" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="name" type="string" default="lo" />
+      <config_parameter name="netErrorWarn" type="unsigned int" default="5" unit="packets" />      
+      <config_parameter name="netErrorCritical" type="unsigned int" default="50" unit="packets" />      
+      <config_parameter name="rxBandwidth" type="int" default="100000" unit="kbps" />
+      <config_parameter name="txBandwidth" type="int" default="100000" unit="kbpps" />
+      <config_parameter name="rxHigh" type="unsigned int" default="20000" unit="kbps" />
+      <config_parameter name="rxCritical" type="unsigned int" default="50000" unit="kbps" />      
+      <config_parameter name="txHigh" type="unsigned int" default="20000" unit="kbps" />
+      <config_parameter name="txCritical" type="unsigned int" default="50000" unit="kbps" />      
+    </config_item>
+    <config_item name="NetTrafficInfo" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="proc" type="string" default="/proc/net/dev" unit="full path" />
+      <config_parameter name="interfaces" type="std::vector&lt;NetTrafficParameters&gt;" default="1" />  
+    </config_item>
+
+    <config_item name="Filesystem" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="name" type="string" default="lo" />
+      <config_parameter name="availableLow" type="unsigned int" default="1000" unit="MByte" />      
+      <config_parameter name="availableCritical" type="unsigned int" default="500" unit="MByte" />
+      <config_parameter name="path" type="string" default="/" />
+    </config_item>
+    <config_item name="FilesystemInfo" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="volumes" type="std::vector&lt;FilesystemParameters&gt;" default="1" />  
+    </config_item>
+
+
+    <config_item name="Wireless" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="name" type="string" default="wlan0" unit="file" />    
+      <config_parameter name="qualityLow" type="unsigned int" default="60" />         
+      <config_parameter name="qualityCritical" type="unsigned int" default="40"  /> 
+    </config_item>    
+    <config_item name="WirelessInfo" parent="Miro::Config" final="false" instance="false">
+      <config_parameter name="proc" type="string" default="/proc/net/wireless" unit="full path" />
+      <config_parameter name="interfaces" type="std::vector&lt;WirelessParameters&gt;" /> 
+   </config_item>    
+
+    <config_item name="SystemInfo" parent="Miro::Config" final="true" instance="kn::Singleton">
+      <config_parameter name="refreshInterval" type="ACE_Time_Value" default="1" unit="sec" />
+      <config_parameter name="batteryInfo"     type="BatteryInfoParameters" />
+      <config_parameter name="memoryInfo"      type="MemoryInfoParameters" />
+      <config_parameter name="cpuInfo"         type="CpuInfoParameters" />  
+      <config_parameter name="filesystemInfo"  type="FilesystemInfoParameters" />  
+      <config_parameter name="netTrafficInfo"  type="NetTrafficInfoParameters" />  
+      <config_parameter name="thermalInfo"     type="ThermalInfoParameters" />  
+      <config_parameter name="wirelessInfo"    type="WirelessInfoParameters" /> 
+    </config_item>
+  </config_group>
+</config>

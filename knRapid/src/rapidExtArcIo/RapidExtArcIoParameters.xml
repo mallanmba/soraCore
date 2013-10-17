@@ -1,0 +1,119 @@
+<!DOCTYPE xml SYSTEM "MiroParameterDescription.dtd">
+<config>
+  <config_global name="include" value="knDds/KnDdsParameters.h" />
+  <config_global name="include" value="rapidIo/RapidIoParameters.h" />
+  <config_global name="include" value="StateMachineDescriptionParameters.h" />
+
+  <config_global name="namespace" value="rapid" />
+  <config_global name="namespace" value="ext" />
+  <config_global name="namespace" value="arc" />
+
+  <config_group name="Rapid">
+    <config_item name="BatteryPackConfig" parent="Message" final="false">
+      <config_parameter name="controllerNames" type="vector&lt;std::string&gt;" />
+    </config_item>
+    <config_item name="BatteryPackTopicPair" parent="TopicPair" final="true">
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidConfigQos" />
+      <config_parameter name="dataProfile" inherited="true" type="string" default="RapidSampleQos" />
+      <config_parameter name="config" type="BatteryPackConfigParameters" />
+    </config_item>
+    
+    <config_item name="EphemerisConfigEntry" parent="Miro::Config" final="false" >
+        <config_parameter name="solutionName" type="string" default="Robot2Sun" />
+        <config_parameter name="referenceFrame" type="string" default="RAPID_ROVER_FRAME" />
+        <config_parameter name="sourceBody" type="string" default="EARTH" />
+        <config_parameter name="targetBody" type="string" default="SUN" />
+        <config_parameter name="timeOffset" type="ACE_Time_Value" default="0"/>
+        <config_parameter name="period" type="ACE_Time_Value" default="10"/>
+      </config_item>
+      
+    <config_item name="EphemerisConfig" parent="Message" final="false">
+      <config_parameter name="entries" type="vector&lt;EphemerisConfigEntryParameters&gt;" default="1" />
+    </config_item>
+    
+    <config_item name="EphemerisTopicPair" parent="TopicPair" final="true">
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidEphemerisConfigProfile" />
+      <config_parameter name="dataProfile" inherited="true" type="string" default="RapidEphemerisSampleProfile" />
+      <config_parameter name="config" type="EphemerisConfigParameters" />
+    </config_item>
+
+    <config_item name="Float32Config" parent="Message" final="false">
+      <config_parameter name="category" type="string"/>
+      <config_parameter name="metaData" type="vector&lt;KeyTypeValue&gt;"/>
+      <config_parameter name="dataKeys" type="vector&lt;std::string&gt;"/>
+    </config_item>
+    <config_item name="Float32TopicPairBase" parent="TopicPair" final="false">
+       <config_parameter name="configProfile" type="string" inherited="true" default="RapidFloat32ConfigProfile" />
+       <config_parameter name="dataProfile" type="string" inherited="true" default="RapidFloat32SampleProfile" />
+     </config_item>
+    <config_item name="Float32TopicPair" parent="Float32TopicPairBase" final="false">
+       <config_parameter name="config" type="Float32ConfigParameters" />
+     </config_item>
+
+
+     <config_item name="GenericConfig" parent="Message" final="false">
+      <config_parameter name="category" type="string"/>
+      <config_parameter name="metaData" type="vector&lt;KeyTypeValue&gt;"/>
+    </config_item>
+    <config_item name="GenericTopicPairBase" parent="TopicPair" final="false">
+       <config_parameter name="configProfile" type="string" inherited="true" default="RapidConfigQos" />
+       <config_parameter name="dataProfile" type="string" inherited="true" default="RapidSampleQos" />
+     </config_item>
+    <config_item name="GenericTopicPair" parent="GenericTopicPairBase" final="false">
+       <config_parameter name="config" type="GenericConfigParameters" />
+     </config_item>
+
+
+    <config_item name="GeometryConfigBase" parent="Message" final="false">
+      <config_parameter name="geometryId" type="int" default="-1"/>
+      <config_parameter name="geometryName" type="string"/>
+      <config_parameter name="refFrame" type="string" default="RAPID_SITE_FRAME"/>
+    </config_item>
+    <config_item name="GeometryConfig" parent="GeometryConfigBase" final="false">
+      <config_parameter name="metaData" type="vector&lt;KeyTypeValue&gt;" />
+    </config_item>
+    <config_item name="GeometryMeshTopicPairBase" parent="TopicPair" final="false">
+       <config_parameter name="configProfile" type="string" inherited="true" default="RapidConfigProfile" />
+       <config_parameter name="dataProfile" type="string" inherited="true" default="RapidSampleProfile" />
+     </config_item>
+    <config_item name="GeometryMeshTopicPair" parent="GeometryMeshTopicPairBase" final="false">
+       <config_parameter name="config" type="GeometryConfigParameters" />
+     </config_item>
+
+
+    <config_item name="GpsConfig" parent="Message" final="false" >
+      <config_parameter name="sensorFrame" type="string" default="GpsAntenna" />
+      <config_parameter name="referenceFrame" type="string" default="" />
+      <config_parameter name="elipsoid" type="string" default="WGS-84" />
+    </config_item>
+    <config_item name="GpsTopicPair" parent="TopicPair" final="false" >
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidGpsConfigProfile" />
+      <config_parameter name="dataProfile" inherited="true" type="string" default="RapidGpsSampleProfile" />
+      <config_parameter name="config" type="GpsConfigParameters" />
+    </config_item>
+
+
+     <config_item name="HydraTopicPair" parent="GenericTopicPair" final="false">
+      <constructor>
+          config.category = "ScienceInstrument";
+      </constructor>
+     </config_item>
+
+
+    <config_item name="MobilitySampleTopic" parent="kn::DdsLeaf" final="false" instance="false">
+      <config_parameter name="profile" type="string" default="RapidSampleQos" inherited="true" />
+    </config_item>
+
+    <config_item name="StateMachineConfig" parent="Message" final="false">
+      <config_parameter name="subsystem" type="string"/>
+      <config_parameter name="stateMachine" type="string" default="Subsystem" />
+      <config_parameter name="machineDescription" type="kn::StateMachine::Description"/>
+    </config_item>
+    <config_item name="StateMachineTopicPair" parent="TopicPair" final="true">
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidConfigQos" />
+      <config_parameter name="dataProfile" inherited="true" type="string" default="RapidStateQos" />
+      <config_parameter name="config" type="StateMachineConfigParameters" />
+    </config_item>
+
+  </config_group>
+</config>

@@ -1,0 +1,51 @@
+<LBPDiscoveryPluginProfile>
+    <participant name="RawWriter">
+        <key>
+            <!-- rtps_host_id>RTPS_AUTO_ID</rtps_host_id -->
+            <rtps_host_id>12345678</rtps_host_id>
+            <rtps_app_id>4900</rtps_app_id>
+            <rtps_instance_id>1</rtps_instance_id>
+            <participant_id>1</participant_id>
+            <!-- 128.102.107.28 hex: 80.66.6b.1C -->
+            <!-- rtps_host_id>2154195740</rtps_host_id>
+            <rtps_app_id>4900</rtps_app_id>
+            <rtps_instance_id>1</rtps_instance_id -->
+        </key>
+        <rtps_protocol_version>
+            <major>2</major>
+            <minor>1</minor>
+        </rtps_protocol_version>
+        <rtps_vendor_id>
+            <vendorId>1,1</vendorId>
+        </rtps_vendor_id>
+        <product_version>
+            <major>4</major>
+            <minor>4</minor>
+            <release>d</release>
+            <revision>0</revision>
+        </product_version>
+        <!-- dds_builtin_endpoints>60</dds_builtin_endpoints -->
+    </participant>
+    <participant name="RawReader">
+        <key>
+            <!-- rtps_host_id>RTPS_AUTO_ID</rtps_host_id -->
+           <rtps_host_id>12345678</rtps_host_id>
+           <rtps_app_id>5678</rtps_app_id>
+            <rtps_instance_id>1</rtps_instance_id>
+            <participant_id>0</participant_id>
+        </key>
+        <rtps_protocol_version>
+            <major>2</major>
+            <minor>1</minor>
+        </rtps_protocol_version>
+        <rtps_vendor_id>
+            <vendorId>1,1</vendorId>
+        </rtps_vendor_id>
+        <product_version>
+            <major>4</major>
+            <minor>4</minor>
+            <release>d</release>
+            <revision>0</revision>
+        </product_version>
+    </participant>
+</LBPDiscoveryPluginProfile>
