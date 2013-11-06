@@ -44,5 +44,6 @@ set( LIBRARY_NAMES
   knHydra
 )
 get_library_list(KNHW ${KNHW_LIBRARY_DIR} "d" "${LIBRARY_NAMES}")
+get_library_imports(knHw "${KNHW_LIBRARY_DIR}" "${LIBRARY_NAMES}")
 
 set( KNHW_FOUND TRUE )

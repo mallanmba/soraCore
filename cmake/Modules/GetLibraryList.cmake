@@ -136,8 +136,8 @@ macro( get_library_imports  PKG_NAME LIBRARY_DIR LIBRARY_NAMES )
   
   set(DEPEND_DIR  ${LIBRARY_DIR}/cmake)
   set(DEPEND_FILE ${DEPEND_DIR}/${PKG_NAME}.cmake)
-  #message(STATUS "  depend file is ${DEPEND_FILE}")
-  #message(STATUS "  ** LIBRARY_NAMES=${LIBRARY_NAMES}")
+  #message(STATUS "  (dbg) depend file is ${DEPEND_FILE}")
+  #message(STATUS "  (dbg) LIBRARY_NAMES=${LIBRARY_NAMES}")
   
   if( EXISTS ${DEPEND_FILE} )
     message(STATUS "  importing ${PKG_NAME} dependency info from ${DEPEND_FILE}")
@@ -148,7 +148,7 @@ macro( get_library_imports  PKG_NAME LIBRARY_DIR LIBRARY_NAMES )
     set(${PKG_PREFIX}_LIBRARIES "")
     
     foreach( LIBRARY_NAME ${LIBRARY_NAMES} ) 
-      #message(STATUS "  ** check ${PKG_PREFIX}_${LIBRARY_NAME}_LIBRARY = ${${PKG_PREFIX}_${LIBRARY_NAME}_LIBRARY}")
+      #message(STATUS "  (dbg) check ${PKG_PREFIX}_${LIBRARY_NAME}_LIBRARY = ${${PKG_PREFIX}_${LIBRARY_NAME}_LIBRARY}")
 
       # if the library was found, change the value to target name instead of lib path
       if( ${PKG_PREFIX}_${LIBRARY_NAME}_LIBRARY )

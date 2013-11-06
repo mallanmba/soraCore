@@ -59,6 +59,18 @@ macro( project_library TARGET_NAME )
   )
 endmacro( project_library )
 
+# script installation
+#===========================================================
+set( DEFAULT_SCRIPT_PERMISSIONS OWNER_READ OWNER_EXECUTE OWNER_WRITE 
+                                GROUP_READ GROUP_EXECUTE GROUP_WRITE 
+                                WORLD_READ WORLD_EXECUTE)
+                                
+macro( install_scripts INSTALL_DIR SCRIPT_FILES )
+  install(FILES       ${SCRIPT_FILES}
+          DESTINATION ${CMAKE_INSTALL_PREFIX}/${INSTALL_DIR}
+          PERMISSIONS ${DEFAULT_SCRIPT_PERMISSIONS} )
+endmacro( install_scripts )
+
 
 # install a project export file into /lib/cmake
 #===========================================================

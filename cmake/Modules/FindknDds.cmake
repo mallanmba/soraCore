@@ -24,6 +24,8 @@ set( LIBRARY_NAMES
 )
 get_library_list(KNDDS ${KNDDS_LIBRARY_DIR} "d" "${LIBRARY_NAMES}")
 
+get_library_imports(knDds "${KNDDS_LIBRARY_DIR}" "${LIBRARY_NAMES}")
+
 if( KNDDS_knDds_LIBRARY )
   set( KNDDS_FOUND TRUE )
 endif( KNDDS_knDds_LIBRARY )

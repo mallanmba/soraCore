@@ -17,7 +17,7 @@ include( SimplePackageFind )
 
 set( PACKAGE_NAME           JsonCpp )
 set( PACKAGE_DIRS           jsoncpp )
-set( PACKAGE_REQ_LIBRARY    json jsoncpp)
+set( PACKAGE_REQ_LIBRARY    jsoncpp)
 set( PACKAGE_REQ_INCLUDE    json/json.h jsoncpp/json/json.h )
 
 simple_package_find("${PACKAGE_NAME}" 
@@ -46,11 +46,8 @@ if( ${PACKAGE_FOUND} )
     set( LIBRARY_NAMES 
       ${PACKAGE_REQ_LIBRARY}
     )
-    message( STATUS "  FIXME: IGNORE WARNING BELOW" )
     get_library_list(JSONCPP ${JSONCPP_LIBRARY_DIR} "d" "${LIBRARY_NAMES}")
-    
-    message(STATUS "JSONCPP_LIBRARIES = ${JSONCPP_LIBRARIES}")
-    
+        
   else( JSONCPP_UNIQUE_HEADER ) 
   
     message( STATUS "  ** No, jsoncpp was NOT found (json-c was found, but that's not what we want)" )

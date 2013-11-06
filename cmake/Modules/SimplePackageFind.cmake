@@ -84,13 +84,13 @@ if( ${PACKAGE_BASE_LIBRARY} )
       message(STATUS "  ${PACKAGE_NAME} found in ${${PACKAGE_ROOT_DIR}}")
       string(REGEX REPLACE "/[^/]*$" "" FOUND_INCLUDE_DIR ${TEMP_INCLUDE_FILE} )
             
-      message(STATUS "  (dbg) PACKAGE_ADD_SCOPED_INCLUDE = ${PACKAGE_ADD_SCOPED_INCLUDE}")
+      #message(STATUS "  (dbg) PACKAGE_ADD_SCOPED_INCLUDE = ${PACKAGE_ADD_SCOPED_INCLUDE}")
       # FIXME: revisit this logic
       foreach(ONE_PACKAGE_REQ_INCLUDE ${PACKAGE_REQ_INCLUDE})
         string(REGEX REPLACE "/[^/]*$" "" REQ_INCLUDE_PATH ${ONE_PACKAGE_REQ_INCLUDE} )
         
-        message(STATUS "  (dbg) ONE_PACKAGE_REQ_INCLUDE = ${ONE_PACKAGE_REQ_INCLUDE}")
-        message(STATUS "  (dbg) REQ_INCLUDE_PATH = ${REQ_INCLUDE_PATH}")
+        #message(STATUS "  (dbg) ONE_PACKAGE_REQ_INCLUDE = ${ONE_PACKAGE_REQ_INCLUDE}")
+        #message(STATUS "  (dbg) REQ_INCLUDE_PATH = ${REQ_INCLUDE_PATH}")
 
         # if PACKAGE_REQ_INCLUDE included a relative path, strip it off FOUND_INCLUDE_DIR
         if( NOT PACKAGE_ADD_SCOPED_INCLUDE AND NOT ${ONE_PACKAGE_REQ_INCLUDE} STREQUAL REQ_INCLUDE_PATH )
@@ -98,7 +98,7 @@ if( ${PACKAGE_BASE_LIBRARY} )
           set(FOUND_INCLUDE_DIR ${BARE_INCLUDE_DIR})
           unset(BARE_INCLUDE_DIR)
         endif( NOT PACKAGE_ADD_SCOPED_INCLUDE AND NOT ${ONE_PACKAGE_REQ_INCLUDE} STREQUAL REQ_INCLUDE_PATH )
-        message(STATUS "  (dbg) FOUND_INCLUDE_DIR = ${FOUND_INCLUDE_DIR}")
+        #message(STATUS "  (dbg) FOUND_INCLUDE_DIR = ${FOUND_INCLUDE_DIR}")
       endforeach(ONE_PACKAGE_REQ_INCLUDE)
       
       # if PACKAGE_INCLUDE_SUFFIX was provided, strip it off FOUND_INCLUDE_DIR

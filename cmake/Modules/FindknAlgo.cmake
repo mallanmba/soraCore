@@ -25,11 +25,9 @@ set( LIBRARY_NAMES
   knLocomotionModel
   knSunTracker
   knStereo
-	knFieldDMap
+  knFieldDMap
 )
 get_library_list(KNALGO ${KNALGO_LIBRARY_DIR} "d" "${LIBRARY_NAMES}")
-
-# experimental:
 get_library_imports(knAlgo "${KNALGO_LIBRARY_DIR}" "${LIBRARY_NAMES}")
 
 

@@ -36,6 +36,8 @@ set( LIBRARY_NAMES
 )
 get_library_list(KNRAPID ${KNRAPID_LIBRARY_DIR} "d" "${LIBRARY_NAMES}")
 
+get_library_imports(knRapid "${KNRAPID_LIBRARY_DIR}" "${LIBRARY_NAMES}")
+
 if( KNRAPID_rapidDds_LIBRARY OR KNRAPID_rapidFrameStore_LIBRARY )
   set( KNRAPID_FOUND TRUE )
 endif( KNRAPID_rapidDds_LIBRARY OR KNRAPID_rapidFrameStore_LIBRARY )
