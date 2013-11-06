@@ -29,6 +29,8 @@
 #include <iostream>
 #include <vector>
 
+#include "knRapidConfig.h"
+
 using namespace std;
 using namespace kn;
 
@@ -75,7 +77,7 @@ void printATrans(ATrans3 const& atrans) {
 int main(int argc, char * argv[])
 {
   // setting global default configuration file
-  Miro::Configuration::init(argc, argv);
+  Miro::Configuration::init(argc, argv, KNRAPID_INSTALL_PREFIX "/etc");
   
   // configure log verbosity globally
   Miro::Log::init(argc, argv);

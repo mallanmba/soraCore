@@ -16,9 +16,7 @@
  * limitations under the License.
 
 ******************************************************************************/
-#include "Array2DView.h"
-
-#include "Time.h"
+#include "knShare/Array2DView.h"
 
 #include <string> 
 #include <vector>
@@ -30,7 +28,7 @@ struct Cell
 {
   char a;
 
-  Cell() : a('a') {}
+  Cell() : a('.') {}
 };
 
 std::ostream& operator<<(std::ostream& ostr, Cell const& rhs) {
@@ -51,7 +49,6 @@ void printMap(MapType const& m)
 
 int mapSizeX = 32;
 int mapSizeY = 32;
-int rounds = 1;
 
 int main(int argc, char * argv[])
 {
@@ -62,15 +59,9 @@ int main(int argc, char * argv[])
   if (argc > 2) {
     mapSizeY = atoi(argv[2]);
   }
-  if (argc > 3) {
-    rounds = atoi(argv[3]);
-  }
-  
 
   MapType m(mapSizeX, mapSizeY);
 
-  cout << "ATTETNTION: test performance of power-of-2 scrolling-map-indexer style usage" << endl;
-  cout << endl;
   cout << "sizeX " << m.sizeX() << endl;
   cout << "sizeY " << m.sizeY() << endl;
   cout << "sizeLog2 " << m.sizeLog2() << endl;
@@ -78,16 +69,24 @@ int main(int argc, char * argv[])
   cout << "numCells " << m.numCells() << endl;
 
 
-  kn::TimePoint before = kn::Clock::now();
-  for (int z = 0; z < rounds; ++z) {
-    for (size_t y = 0; y < m.sizeY(); ++y) {
-      for (size_t x = 0; x < m.sizeX(); ++x) {
-        ++m(x & m.indexMask(), y & m.indexMask()).a;
-      }
+  string cmd;
+  while (!cin.eof()) {
+    int x;
+    int y;
+    string a;
+
+    cout << "x: " << flush;
+    cin >> x;
+    cout << "y: " << flush;
+    cin >> y;
+    cout << "a: " << flush;
+    cin >> a;
+
+    if (!cin.eof()) {
+      m(x, y).a = a[0];
+      printMap(m);
     }
   }
-  kn::TimePoint after = kn::Clock::now();
-  cout << "time elapsed: " << after - before << endl;
-  
+
   return 0;
 }

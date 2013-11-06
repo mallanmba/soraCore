@@ -217,6 +217,8 @@ namespace rapid
         printFloat(event->targetSpeed);
         cout << ", ";
         printFloat(event->targetCurvatureRate);
+        cout << ", ";
+        printFloat(event->targetCrabRate);
         cout << "}";
 
         if (s_verbose > 1) {

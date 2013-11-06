@@ -31,11 +31,11 @@
 #include <ndds/ndds_utility_cpp.h>
 #include <ndds/ndds_namespace_cpp.h>
 
-#if defined(MIRO_HAS_DDS_LBPlugin) && defined(RTIDDS_LB_BETA_VERSION)
+#if defined(KNDDS_HAS_DDS_LBPlugin) && defined(RTIDDS_LB_BETA_VERSION)
 #  include <LBEDiscoveryPlugin++.h>
 #  include <LBPDiscoveryPlugin++.h>
 #endif
-#ifdef MIRO_HAS_DDS_Monitor
+#ifdef KNDDS_HAS_DDS_Monitor
 #  include <monitor/monitor_common.h>
 #endif
 
@@ -90,7 +90,7 @@ namespace kn
 
     // if configuration file is given, disable all other config options
     if (!m_params.configFiles.empty()) {
-      Miro::SearchPaths paths;
+      Miro::SearchPaths paths(KNDDS_INSTALL_PREFIX "/etc");
       paths.addMiroEtcPaths();
 
       dpfQos.profile.url_profile.maximum(m_params.configFiles.size());
@@ -195,7 +195,7 @@ namespace kn
             MIRO_LOG_OSTR(LL_NOTICE, qos.discovery.initial_peers[i]);
           }
         }
-#ifdef MIRO_HAS_DDS_Monitor
+#ifdef KNDDS_HAS_DDS_Monitor
         if (first->enableMonitor) {
           int rc;
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
@@ -233,7 +233,7 @@ namespace kn
         }
 #endif
 
-#if defined(MIRO_HAS_DDS_LBPlugin) && defined(RTIDDS_LB_BETA_VERSION)
+#if defined(KNDDS_HAS_DDS_LBPlugin) && defined(RTIDDS_LB_BETA_VERSION)
         // disable simple-endpoind discovery if static discovery modules are specified
         // we need to double-check if they can coexist peacefully...
         if (!first->lbpdFile.empty()) {
@@ -267,7 +267,7 @@ namespace kn
         }
 
 
-#if defined(MIRO_HAS_DDS_LBPlugin)
+#if defined(KNDDS_HAS_DDS_LBPlugin)
         // add static discovery modules if specified
         if (!first->lbpdFile.empty()) {
           MIRO_LOG(LL_NOTICE, "DDS Static Participant Discovery");
@@ -692,7 +692,7 @@ namespace kn
   {
     StringVector peers;
     
-    Miro::SearchPaths paths;
+    Miro::SearchPaths paths(KNDDS_INSTALL_PREFIX "/etc");
     paths.addMiroEtcPaths();
     
     string absFilePath = paths.findFile(filename);

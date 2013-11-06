@@ -51,21 +51,7 @@ target_link_libraries( ${LIB_NAME}
  ${Boost_CHRONO_LIBRARY}
 )
 
-set( TEST_TARGETS
-  stateMachineTest
-  array2DTest
-  array2DPerformance
-)
-
-foreach( TEST_TARGET ${TEST_TARGETS} )
-  add_executable( ${TEST_TARGET} 
-    ${TEST_TARGET}.cpp 
-  )
-  target_link_libraries( ${TEST_TARGET} ${LIB_NAME})
-endforeach( TEST_TARGET ${TEST_TARGETS} )
-
 install_library(  ${LIB_NAME} )
 install_files  ( /include/${DIR_NAME} FILES ${HEADERS} )
-install_targets( /tests ${TEST_TARGETS} )
 
 add_subdirectory( tests )

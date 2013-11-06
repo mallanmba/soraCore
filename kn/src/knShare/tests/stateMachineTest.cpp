@@ -16,7 +16,7 @@
  * limitations under the License.
 
 ******************************************************************************/
-#include "StateMachine.h"
+#include "knShare/StateMachine.h"
 
 #include <iostream>
 

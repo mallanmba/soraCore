@@ -93,8 +93,8 @@ module rapid
 
       struct BatteryController
       {
-        BatterySlot slots[8];
-        Battery batteries[8];
+        BatterySlot batterySlots[8];
+        Battery     batteries[8];
       };
 
       typedef sequence<BatteryController, 16> BatteryControllerSequence16;

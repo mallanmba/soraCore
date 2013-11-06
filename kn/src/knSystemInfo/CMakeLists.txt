@@ -45,6 +45,7 @@ include_directories(
   ${QT_QT_INCLUDE_DIR}
   ${QT_QTXML_INCLUDE_DIR}
   ${QT_QTCORE_INCLUDE_DIR}
+  ${Boost_INCLUDE_DIR}
 )
 
 add_definitions(-D${EXPORT_DEFINE})

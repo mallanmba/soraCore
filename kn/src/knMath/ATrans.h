@@ -70,8 +70,9 @@ namespace kn
 
   inline
   ATrans2
-  step(ATrans2 const& pose, double curvature, double speed, double interval, double epsilon = 0.0000001)
+  step(ATrans2 const& pose, double curvature, double /*crab*/, double speed, double interval, double epsilon = 0.0000001)
   {
+    // TODO: handle crab
     // set translation
     if (!isnan(curvature)) {
       double theta = 0.;

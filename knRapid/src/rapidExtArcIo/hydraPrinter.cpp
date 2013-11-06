@@ -40,7 +40,21 @@ namespace rapid
    {
       std::cout << "timestamp: " << RapidHelper::rapidTime2AceTimeValue(event.hdr.timeStamp) << std::endl;
 
-      if (s_verbose >=2)
+      if (s_verbose >= 2)
+      {
+         std::cout   << std::hex 
+                     << "soh:\t"   << "0x" << event.soh << std::endl
+                     << "sns:\t"   << "0x" << event.sns << std::endl
+                     << "cds:\t"   << "0x" << event.cds << std::endl
+                     << "cmr:\t"   << "0x" << event.cmr << std::endl
+                     << std::dec
+                     << "HV:\t"    << ((unsigned short) event.reading[78]) * 13 << " approx(V)" << std::endl
+                     << "ss[24]\t" << event.sn[24] << std::endl
+                     << "cd[24]\t" << event.cd[24] << std::endl
+                     << std::endl << std::endl;
+
+      }
+      if (s_verbose >= 3) 
       {
          ext::arc::HydraSample::TypeSupport::print_data(&event);
       }

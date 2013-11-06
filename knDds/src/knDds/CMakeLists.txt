@@ -69,20 +69,20 @@ target_link_libraries( ${LIB_NAME}
   ${RTIDDS_LIBRARIES}
 )
 
-if ( KN_HAS_DDS_LBPlugin )
+if ( KNDDS_HAS_DDS_LBPlugin )
   target_link_libraries( ${LIB_NAME}
     ${RTIDDS_LB_LIBRARIES}
   )
   include_directories(
     ${RTIDDS_LB_INCLUDE_DIR}
   )
-endif ( KN_HAS_DDS_LBPlugin )
+endif ( KNDDS_HAS_DDS_LBPlugin )
 
-if ( KN_HAS_DDS_Monitor )
+if ( KNDDS_HAS_DDS_Monitor )
   target_link_libraries( ${LIB_NAME}
     ${RTIDDS_MON_LIBRARIES}
   )
-endif ( KN_HAS_DDS_Monitor )
+endif ( KNDDS_HAS_DDS_Monitor )
 
 # make sure we build MakeParams before this 
 add_dependencies( ${LIB_NAME} MakeParams )

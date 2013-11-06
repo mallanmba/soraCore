@@ -6,18 +6,14 @@
 
 set( PACKAGES_DIR "C:/devel"   )
 
-set( BOOST_ROOT  ${PACKAGES_DIR}/boost-1.41-${ARCH_COMPILER} )
+set( MIRO_ROOT_DIR        ${PACKAGES_DIR}/Miro-3.1.2-${ARCH_COMPILER} )
+set( PTHREADS_ROOT_DIR    ${PACKAGES_DIR}/pthreads-2.8.0-${ARCH_COMPILER} )
 
-if( MSVC90 ) # Visual Studio 2008 (vc90)
-  set( PTHREADS_ROOT_DIR ${PACKAGES_DIR}/pthreads-2.8.0-vc90 )
-endif( MSVC90 )
+set( EIGEN3_ROOT_DIR      ${PACKAGES_DIR}/Eigen-3.2.0 )
+## http://eigen.tuxfamily.org/bz/show_bug.cgi?id=83
+add_definitions(-DEIGEN_DONT_ALIGN_STATICALLY=1)
 
-if( MSVC100 ) # Visual Studio 2010 (vc100)
-  set( BOOST_ROOT           ${PACKAGES_DIR}/boost_1_53 )
-  set( EIGEN3_ROOT_DIR      ${PACKAGES_DIR}/Eigen-3.2.0 )
-  ## http://eigen.tuxfamily.org/bz/show_bug.cgi?id=83
-  add_definitions(-DEIGEN_DONT_ALIGN_STATICALLY=1)
-endif( MSVC100 )
+set( BOOST_ROOT           ${PACKAGES_DIR}/boost_1_53 )
 
 # if BOOST_ROOT env var 
 # is set, use that value

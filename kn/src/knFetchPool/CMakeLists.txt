@@ -83,5 +83,5 @@ endforeach( TEST_TARGET ${TEST_TARGETS} )
 
 ##----------------------------------------
 install_library( ${LIB_NAME} )
-install_targets( /bin ${TEST_TARGETS} )
+install_targets( /tests ${TEST_TARGETS} )
 install_files  ( /include/${DIR_NAME} FILES ${HEADERS} )

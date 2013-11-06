@@ -24,6 +24,8 @@
 #include <ace/Time_Value.h>
 #include <ace/OS_NS_sys_time.h>
 
+#include <QDebug>
+
 #include <cstring>
 
 #include "knRapidConfig.h"
@@ -161,7 +163,7 @@ void CommandPublisher::sendCommand(QString subsystemName, QString cmdName, QList
   cmd.cmdId[63] = '\0';
 
   m_cmdPublisher->sendEvent();
-  qDebug(qPrintable("Sent "+cmdString));
+  qDebug() << "Sent " << qPrintable(cmdString);
 }
 
 

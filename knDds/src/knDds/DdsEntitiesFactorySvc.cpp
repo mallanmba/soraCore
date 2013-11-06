@@ -33,11 +33,11 @@
 #include <ndds/ndds_utility_cpp.h>
 #include <ndds/ndds_namespace_cpp.h>
 
-#if defined(MIRO_HAS_DDS_LBPlugin) && defined(RTIDDS_LB_BETA_VERSION)
+#if defined(KNDDS_HAS_DDS_LBPlugin) && defined(RTIDDS_LB_BETA_VERSION)
 #  include <LBEDiscoveryPlugin++.h>
 #  include <LBPDiscoveryPlugin++.h>
 #endif
-#ifdef MIRO_HAS_DDS_Monitor
+#ifdef KNDDS_HAS_DDS_Monitor
 #  include <monitor/monitor_common.h>
 #endif
 

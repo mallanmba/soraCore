@@ -25,6 +25,7 @@ module rapid
 
                 /**
                  * State of health number
+                 * not used in NSS
                  */
                 public unsigned short sohn;
 
@@ -50,21 +51,22 @@ module rapid
 
                 /**
                  * Command register data
+                 * not used in NSS
                  */
                 public unsigned short cmddat;
 
                 /**
-                 * Status of health number
+                 * Stainless Steel Channels
                  */
                 public sequence <unsigned short, 32> sn;
 
                 /**
-                 * Status of health number
+                 * Cadmium Channels
                  */
                 public sequence <unsigned short, 32> cd;
 
                 /**
-                 * The reading from HYDRA
+                 * The reading from HYDRA/NSS
                  */
                 public sequence <unsigned short, 89> reading;
             };

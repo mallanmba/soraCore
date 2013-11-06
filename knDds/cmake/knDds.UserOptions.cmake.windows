@@ -1,12 +1,13 @@
 ######################################################
 ## 
-## Default kn options file for Windows 
+## Default rapid options file for Windows 
 ##
 ######################################################
 
 set( PACKAGES_DIR "C:/devel"   )
 
 set( MIRO_ROOT_DIR        ${PACKAGES_DIR}/Miro-3.1.2-${ARCH_COMPILER} )
+
 set( EIGEN3_ROOT_DIR      ${PACKAGES_DIR}/Eigen-3.2.0 )
 ## http://eigen.tuxfamily.org/bz/show_bug.cgi?id=83
 add_definitions(-DEIGEN_DONT_ALIGN_STATICALLY=1)
@@ -20,6 +21,7 @@ set( BOOST_ROOT_ENV $ENV{BOOST_ROOT} )
 if( BOOST_ROOT_ENV )
   set( BOOST_ROOT ${BOOST_ROOT_ENV} )
 endif( BOOST_ROOT_ENV )
+
 
 # Boost setup
 ########################
@@ -38,3 +40,4 @@ endif( NOT Boost_USE_STATIC_LIBS )
 # VisionWorkbench setup
 ########################
 add_definitions( -DVW_ALL_DYN_LINK )
+

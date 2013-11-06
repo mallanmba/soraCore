@@ -33,6 +33,7 @@ include_directories(
   ${QT_QTXML_INCLUDE_DIR}
   ${QT_QTCORE_INCLUDE_DIR}
   ${RTIDDS_INCLUDE_DIR}
+  ${Boost_INCLUDE_DIR}
 )
 
 link_libraries(

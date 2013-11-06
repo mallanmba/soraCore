@@ -1,0 +1,16 @@
+#ifndef @PROJECT_NAME@Config_h
+#define @PROJECT_NAME@Config_h
+
+#define @PROJECT_UPPER@_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@"
+
+#cmakedefine KNDDS_HAS_DDS 1
+#cmakedefine KNDDS_HAS_DDS_LBPlugin 1
+#cmakedefine KNDDS_HAS_DDS_Monitor  1
+
+//==================================================
+#ifdef _WIN32
+#  include "win32_workarounds.h"
+#endif //_WIN32
+
+#endif // @PROJECT_NAME@Config_h
+

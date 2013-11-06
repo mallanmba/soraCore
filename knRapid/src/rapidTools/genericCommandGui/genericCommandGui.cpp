@@ -198,7 +198,7 @@ int main(int argc, char *argv[])
   try {
     Miro::Log::init(argc, argv);
     Miro::Robot::init(argc, argv);
-    Miro::Configuration::init(argc, argv);
+    Miro::Configuration::init(argc, argv, KNRAPID_INSTALL_PREFIX "/etc");
     
     kn::DdsEntitiesFactorySvcParameters * ddsParams =
             kn::DdsEntitiesFactorySvcParameters::instance();

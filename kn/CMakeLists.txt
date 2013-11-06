@@ -13,6 +13,7 @@ include( SetupBuildSwitch )
 include( SetupConfigureFile )
 include( SetupInstall )
 include( SetupRPATH )
+include( SetupCTest )
 include( UserOptions )
 include( SetupWarnLevel )
 include( SetupUtilities )
@@ -49,6 +50,7 @@ include_directories(
 ##--------------------------------------------
 setup_rpath()
 setup_configure_file()
+setup_ctest()
 
 # Defaults
 #-----------------------------------

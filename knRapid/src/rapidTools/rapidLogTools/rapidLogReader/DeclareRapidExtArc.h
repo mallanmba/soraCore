@@ -1,15 +1,12 @@
 #ifndef DeclareRapidExtArc_h
 #define DeclareRapidExtArc_h
 
-// NOTE: the 'slot' field in BatteryPackSample conflicts with 
-// the 'slot' keyword in Qt
-
-//#include <rapidExtArcDds/BatteryPackConfig.h>
-//#include <rapidExtArcDds/BatteryPackConfigPlugin.h>
-//#include <rapidExtArcDds/BatteryPackConfigSupport.h>
-//#include <rapidExtArcDds/BatteryPackSample.h>
-//#include <rapidExtArcDds/BatteryPackSamplePlugin.h>
-//#include <rapidExtArcDds/BatteryPackSampleSupport.h>
+#include <rapidExtArcDds/BatteryPackConfig.h>
+#include <rapidExtArcDds/BatteryPackConfigPlugin.h>
+#include <rapidExtArcDds/BatteryPackConfigSupport.h>
+#include <rapidExtArcDds/BatteryPackSample.h>
+#include <rapidExtArcDds/BatteryPackSamplePlugin.h>
+#include <rapidExtArcDds/BatteryPackSampleSupport.h>
 #include <rapidExtArcDds/DlpConfig.h>
 #include <rapidExtArcDds/DlpConfigPlugin.h>
 #include <rapidExtArcDds/DlpConfigSupport.h>
@@ -66,8 +63,8 @@
 
 namespace rapid {
 
-//  LOG_DATA_PROVIDER_DECLARE( BatteryPackConfig      , rapid::ext::arc::BatteryPackConfig      )  
-//  LOG_DATA_PROVIDER_DECLARE( BatteryPackSample      , rapid::ext::arc::BatteryPackSample      )
+  LOG_DATA_PROVIDER_DECLARE( BatteryPackConfig      , rapid::ext::arc::BatteryPackConfig      )  
+  LOG_DATA_PROVIDER_DECLARE( BatteryPackSample      , rapid::ext::arc::BatteryPackSample      )
   LOG_DATA_PROVIDER_DECLARE( DlpConfig              , rapid::ext::arc::DlpConfig              )
   LOG_DATA_PROVIDER_DECLARE( DlpSample              , rapid::ext::arc::DlpSample              )
   LOG_DATA_PROVIDER_DECLARE( EphemerisConfig        , rapid::ext::arc::EphemerisConfig        )
@@ -89,8 +86,8 @@ namespace rapid {
   class RapidExtArcLogDataProviderFactory : public LogDataProviderFactory {
   public:
     LogDataProvider* forTypeName(const QString& typeName, const QString& agentName, const QString& topicName) {
-      //LOG_DATA_PROVIDER_FACTORY( BatteryPackConfig      )  
-      //LOG_DATA_PROVIDER_FACTORY( BatteryPackSample      )
+      LOG_DATA_PROVIDER_FACTORY( BatteryPackConfig      )  
+      LOG_DATA_PROVIDER_FACTORY( BatteryPackSample      )
       LOG_DATA_PROVIDER_FACTORY( DlpConfig              )
       LOG_DATA_PROVIDER_FACTORY( DlpSample              )
       LOG_DATA_PROVIDER_FACTORY( EphemerisConfig        )

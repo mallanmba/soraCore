@@ -79,17 +79,24 @@ module rapid
          */
         public float crabAngle;
 
+        //! Time-derivative of crabAngle;
+        public float crabRate;
+
         //! Target curvature in rad.
         /** Note: fabs(curvature) >= 1000 is considered a point-turn. */
         public float targetCurvature;
         //! Target curvature rate ins rad/s.
         /** Unit: rad/s. */
         public float targetCurvatureRate;
+        //! Target crab rate in rad/s.
+        public float targetCrabRate;
         //! Target velocity along the curvature in m/s.
         public float targetSpeed;
         //! Target drive direction relative to primary vehicle axis.
         public float targetCrabAngle;
 
+        
+        
         //! State of the individual motors of the group.
         public MotorStateSequence32 motors;
         //! The status of the individual motors.

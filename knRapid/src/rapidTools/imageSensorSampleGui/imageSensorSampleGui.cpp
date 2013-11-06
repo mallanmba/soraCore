@@ -43,6 +43,8 @@
 #include <functional>
 #include <iostream>
 
+#include "knRapidConfig.h"
+
 using namespace std;
 using namespace rapid;
 
@@ -59,7 +61,7 @@ int main(int argc, char *argv[])
   try {
     Miro::Log::init(argc, argv);
     Miro::Robot::init(argc, argv);
-    Miro::Configuration::init(argc, argv);
+    Miro::Configuration::init(argc, argv, KNRAPID_INSTALL_PREFIX "/etc");
 
     kn::DdsEntitiesFactorySvcParameters * params =
       kn::DdsEntitiesFactorySvcParameters::instance();

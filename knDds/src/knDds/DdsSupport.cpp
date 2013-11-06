@@ -512,8 +512,8 @@ namespace kn
     
     // if participantName is empty, default to application name
     if (argc > 0) {
-      for(int i = 0; i < params->participants.size(); i++) {
-	if(params->participants[i].participantName.size() == 0) {
+      for (size_t i = 0; i < params->participants.size(); ++i) {
+	if (params->participants[i].participantName.size() == 0) {
 	  params->participants[i].participantName = argv[0];
 	}
       }
