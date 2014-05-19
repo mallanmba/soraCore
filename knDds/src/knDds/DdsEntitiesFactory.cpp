@@ -244,10 +244,16 @@ namespace kn
           int loggerId = (m_params.distLoggerDomainId >= 0) ?  m_params.distLoggerDomainId : first->domainId;
           RTI_DLDistLogger* dl = NULL;
           RTI_DLOptions     dlOptions;
+          // RTI_DLOptions API changed in RTI DDS 5.1.0
+#if (RTI_DDS_VERSION_MAJOR >= 5 && RTI_DDS_VERSION_MINOR > 0)
           rc = dlOptions.setDomainId(loggerId);
           assert (rc == DDS_RETCODE_OK);
           rc = dlOptions.setApplicationKind(qos.participant_name.name);
           assert (rc == DDS_RETCODE_OK);
+#else
+          dlOptions.setDomainId(loggerId);
+          dlOptions.setApplicationKind(qos.participant_name.name);
+#endif
           RTI_DLDistLogger::setOptions(dlOptions);
           dl = RTI_DLDistLogger::getInstance();
           if(dl) {
