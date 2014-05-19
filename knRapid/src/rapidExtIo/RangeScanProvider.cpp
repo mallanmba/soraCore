@@ -28,10 +28,11 @@ namespace rapid
     /**
      * ctor
      */
-    RangeScanProvider::RangeScanProvider(RangeScanTopicPairParameters const& params) :
+    RangeScanProvider::RangeScanProvider(RangeScanTopicPairParameters const& params, const std::string& entityName) :
       RangeScanProviderBase(RANGESCAN_CONFIG_TOPIC,
                             RANGESCAN_SAMPLE_TOPIC,
-                            params)
+                            params,
+                            entityName)
     {
     }
     

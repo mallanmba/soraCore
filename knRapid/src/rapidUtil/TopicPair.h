@@ -25,6 +25,9 @@
 
 namespace rapid
 {
+  /**
+   * TopicPair
+   */
   class rapidUtil_Export TopicPair
   {
   public:
@@ -36,8 +39,10 @@ namespace rapid
       m_dataTopic(d)
     {}
     virtual ~TopicPair();
-
+    
+    /** access Config object */
     std::string const& configTopic() const { return m_configTopic; }
+    /** access Sample or State object */
     std::string const& dataTopic() const { return m_dataTopic; }
 
   protected:

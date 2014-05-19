@@ -1,6 +1,10 @@
 #include "knDds/DdsSupport.h"
 #include "knDds/DdsTypedSupplier.h"
 #include "knDds/DdsEntitiesFactorySvc.h"
+
+#include "knShare/Thread.h"
+#include "knShare/Chrono.h"
+
 #include "miro/Robot.h"
 #include "miro/ShutdownHandler.h" // for Ctrl-C handler  and MNC parsing
 
@@ -33,7 +37,7 @@ int main(int argc, char * argv[])
       publisher.event().buffer.maximum(bufferSize);
       publisher.event().buffer.length(bufferSize);
       publisher.sendEvent();
-      ACE_OS::sleep(ACE_Time_Value(0, 10000));
+      kn::this_thread::sleep_for(kn::microseconds(10000));
       if (shutdownHandler.isShutdown()) {
 	break;
       }

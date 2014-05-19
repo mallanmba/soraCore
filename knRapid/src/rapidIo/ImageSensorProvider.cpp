@@ -38,14 +38,16 @@ namespace rapid
   /**
    * ctor
    */
-  ImageSensorProvider::ImageSensorProvider(ImageSensorProviderParameters const& params,
+  ImageSensorProvider::ImageSensorProvider(ImageSensorProviderParameters const& params, 
+                                           const std::string& entityName,
                                            char const * mT,
                                            ImageMetadata const * metadata) :
     m_sampleSupplier(new ImageSampleSupplier(IMAGESENSOR_SAMPLE_TOPIC +
                                              params.topicSuffix,
                                              params.parentNode,
                                              params.profile,
-                                             params.library)),
+                                             params.library,
+                                             entityName)),
     m_metadata(m_sampleSupplier->event().meta),
     m_mimeType(m_sampleSupplier->event().mimeType)                   
   {

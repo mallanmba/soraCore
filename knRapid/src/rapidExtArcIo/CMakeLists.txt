@@ -23,6 +23,8 @@ set( HEADERS
   GpsIo.h
   GpsProvider.h
   HydraProvider.h
+  SpectrumIo.h
+  SpectrumProvider.h
   StateMachineIo.h
   StateMachineProvider.h
 )
@@ -39,6 +41,8 @@ set( SOURCES
   GpsIo.cpp
   GpsProvider.cpp
   HydraProvider.cpp
+  SpectrumIo.cpp
+  SpectrumProvider.cpp
   StateMachineIo.cpp
   StateMachineProvider.cpp
 )
@@ -92,6 +96,7 @@ set( TARGETS
  gpsPrinter
  hydraPrinter
  mobilitySamplePrinter
+ spectrumPrinter
  stateMachinePrinter
  systemInfoConfigPrinter
  systemInfoSamplePrinter

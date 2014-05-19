@@ -22,6 +22,7 @@
 #include "ProcMgrImpl.h"
 
 #include "rapidExtDds/ExtConstants.h"
+#include "rapidExtDds/ExtCommandConstants.h"
 #include "rapidExtDds/ProcessIoSample.h"
 #include "rapidExtDds/ProcessIoSampleSupport.h"
 #include "rapidExtDds/ProcessManagerConfig.h"
@@ -46,7 +47,6 @@
 #include <ace/Pipe.h>
 #include <ace/Arg_Shifter.h>
 #include <ace/Get_Opt.h>
-#include <ace/OS_NS_unistd.h>
 
 #include <sstream>
 #include <iostream>
@@ -57,6 +57,8 @@ namespace kn
 {
   using namespace std;
   using namespace rapid;
+  
+  static const char* svcName = "ProcessManagerSvc";
 
   ProcessManagerSvc::ProcessManagerSvc() :
     m_mutex(),
@@ -110,16 +112,7 @@ namespace kn
                                           m_params->managerStateWriter.library);
     m_state = &m_statePublisher->event();
     RapidHelper::initHeader(m_state->hdr);
-
-    m_params->commandManager.queueImpl.queuing = false;
-    m_params->commandManager.accessControl = false;
-    
-    m_cmdMgr = new rapid::CommandManager(&m_params->commandManager);
-    RapidSubsystemPtr procMgrImpl(new  kn::ProcMgrImpl(this));
-    
-    m_cmdMgr->addSubsystem(procMgrImpl);
-    m_cmdMgr->activate();
-
+   
     rapid::ext::ProcessManagerConfig * config = 
       ProcessManagerHelper::createConfigFromParams(*m_configParams);
 
@@ -137,6 +130,11 @@ namespace kn
     //    ACE_Guard<ACE_Recursive_Thread_Mutex> guard(m_mutex);
     int rc = init(config);
     rapid::ext::ProcessManagerConfigTypeSupport::delete_data(config);
+
+    rapid::RapidSubsystemRepository * repo =  rapid::RapidSubsystemRepository::instance();
+    RapidSubsystemPtr procMgrImpl(new  kn::ProcMgrImpl(this));
+    repo->add(rapid::ext::PROCMGR, procMgrImpl);
+
 
     return rc;
   }
@@ -262,10 +260,6 @@ namespace kn
   {
     MIRO_LOG_DTOR("ProcessManagerSvc");
 
-    m_cmdMgr->thr_mgr()->cancel_task(m_cmdMgr);
-    m_cmdMgr->wait();
-    delete m_cmdMgr;
-
     shutdown(); 
 
     reactor()->cancel_timer(m_timerId);
@@ -389,8 +383,6 @@ namespace kn
       else
         arg_shifter.ignore_arg ();
     }
-
-    m_params->commandManager.dataBus.topicSuffix = "-" + m_params->name;
 
     // initialize parameters from config file
     Miro::ConfigDocument * doc = Miro::Configuration::document();

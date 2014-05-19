@@ -34,5 +34,18 @@ if( ${PACKAGE_FOUND} )
   )
   get_library_list(${PACKAGE_UPPER} ${${PACKAGE_LIBRARY_DIR}} "d" "${LIBRARY_NAMES}")
   
+  find_program( GPHOTO2CONFIG 
+                NAMES gphoto2-config 
+                PATHS ${GPHOTO2_ROOT_DIR}/bin 
+                NO_DEFAULT_PATH )  
+  if(GPHOTO2CONFIG)
+    execute_process( COMMAND ${GPHOTO2CONFIG} --version OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE GPHOTO2_VERSION_STRING )
+    string( REGEX REPLACE "^.*libgphoto2 ([0-9]+).*$" "\\1"                   GPHOTO2_VERSION_MAJOR "${GPHOTO2_VERSION_STRING}" )
+    string( REGEX REPLACE "^.*libgphoto2 [0-9]+\\.([0-9]+).*$" "\\1"          GPHOTO2_VERSION_MINOR "${GPHOTO2_VERSION_STRING}" )
+    string( REGEX REPLACE "^.*libgphoto2 [0-9]+\\.[0-9]+\\.([0-9]+).*$" "\\1" GPHOTO2_VERSION_PATCH "${GPHOTO2_VERSION_STRING}" )
+    set(GPHOTO2_VERSION "${GPHOTO2_VERSION_MAJOR}.${GPHOTO2_VERSION_MINOR}.${GPHOTO2_VERSION_PATCH}")
+    message(STATUS "  Found gphoto2 version ${GPHOTO2_VERSION} in ${GPHOTO2_ROOT_DIR}")
+  endif(GPHOTO2CONFIG)
+
 endif( ${PACKAGE_FOUND} )
 

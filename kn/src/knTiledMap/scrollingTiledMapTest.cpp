@@ -25,20 +25,22 @@
 
 using namespace std;
 
-//char c = 'a';
+namespace {
+  //char c = 'a';
 
-struct Cell
-{
-  char a;
+  struct Cell
+  {
+    char a;
+    
+    Cell() : a('.') {
+      //    if (c > 'z')
+      //      c = 'a';
+    }
+  };
 
-  Cell() : a('.') {
-    //    if (c > 'z')
-    //      c = 'a';
-  }
-};
-
-typedef kn::ScrollingMapTile<Cell, 1> TileType; // tile-size 2x2, num-tiles 4x4 , map-size 8x8
-typedef kn::ScrollingTiledMap<TileType> MapType;
+  typedef kn::ScrollingMapTile<Cell, 1> TileType; // tile-size 2x2, num-tiles 4x4 , map-size 8x8
+  typedef kn::ScrollingTiledMap<TileType> MapType;
+}
 
 void printMap(MapType& m)
 {

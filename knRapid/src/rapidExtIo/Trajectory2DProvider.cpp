@@ -28,10 +28,11 @@ namespace rapid
     /**
      * ctor
      */
-    Trajectory2DProvider::Trajectory2DProvider(Trajectory2DTopicPairParameters const& params) :
+    Trajectory2DProvider::Trajectory2DProvider(Trajectory2DTopicPairParameters const& params, const std::string& entityName) :
       Trajectory2DProviderBase(TRAJECTORY2D_CONFIG_TOPIC,
                                TRAJECTORY2D_SAMPLE_TOPIC,
-                               params)
+                               params,
+                               entityName)
     {
     }
     
@@ -41,5 +42,57 @@ namespace rapid
     Trajectory2DProvider::~Trajectory2DProvider() throw()
     {
     }
+    
+    void 
+    Trajectory2DProvider::publishTrajectory(kn::ATrans3 const& pose,
+                                            kn::ATrans2Vector const& path, unsigned int sampleSkip)
+    {
+      ext::Trajectory2DSample& sample = m_dataSupplier.event();
+      
+      // header
+      RapidHelper::updateHeader(sample.hdr);
+      
+      // set pose-field
+      for (int i = 0; i < 3; ++i) {
+        sample.origin.xyz[i] = pose.translation()[i];
+      }
+      int idx = 0;
+      for (int y = 0; y < 3; ++y) {
+        for (int x = 0; x < 3; ++x, ++idx) {                                              
+          sample.origin.rot[idx] = pose.rotation()(y, x);
+        }
+      }                                                                          
+      
+      // trajectory
+      kn::ATrans2Vector::const_iterator first, last = path.end();
+      int index = 0;
+      unsigned int skipCounter = sampleSkip + 1;
+      
+      // 512 is the current size-limit of a traj2D
+      sample.trajectory.length(std::min(size_t(512), path.size() / (sampleSkip + 1) + 1));
+      for (first = path.begin(); first != last; ++first) {
+        --skipCounter;
+        
+        if (skipCounter == 0 ) {
+          ext::RTrans2DMeta& trans = sample.trajectory[index];
+          trans.x = first->translation()[0];
+          trans.y = first->translation()[1];
+          trans.theta = atan2(first->rotation()(1,0), first->rotation()(0,0));
+          
+          // next index
+          ++index;
+          // cut off at max length
+          if (index ==  sample.trajectory.length())
+            break;
+          
+          // reset skip counter
+          skipCounter = sampleSkip + 1;
+        }
+      }
+      sample.trajectory.length(index);
+      
+      m_dataSupplier.sendEvent();
+    }
+    
   }
 }

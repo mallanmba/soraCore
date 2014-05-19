@@ -36,6 +36,14 @@ if( NOT ARCHITECTURE )
   # punt on the name of the windows compiler
   #---------------------------------------------------------
   if( MSVC )
+    # set architecture based on link flags
+    string(REGEX REPLACE ".*machine:([A-Za-z0-9]+).*" "\\1" MSVC_MACHINE ${CMAKE_EXE_LINKER_FLAGS})
+    if( MSVC_MACHINE MATCHES "X86" )
+      set( ARCH_CPU "x86" )
+    else( MSVC_MACHINE MATCHES "X86" )
+      set( ARCH_CPU "x86_64" )
+    endif( MSVC_MACHINE MATCHES "X86" )
+
     # visual studio, unknown version
     # the MSVC_VERSION number is odd (e.g. 1500 for msvc90)
     # so we override this below if we have better

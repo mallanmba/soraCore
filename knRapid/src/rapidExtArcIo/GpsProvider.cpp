@@ -33,8 +33,8 @@ namespace rapid
        * ctor
        */
       // no changes to constructor
-      GpsProvider::GpsProvider(GpsTopicPairParameters const& params) :
-        GpsProviderBase(GPS_CONFIG_TOPIC,GPS_SAMPLE_TOPIC, params)
+      GpsProvider::GpsProvider(GpsTopicPairParameters const& params, const std::string& entityName) :
+        GpsProviderBase(GPS_CONFIG_TOPIC,GPS_SAMPLE_TOPIC, params, entityName)
       {}
       
       void

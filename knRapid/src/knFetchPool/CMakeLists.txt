@@ -39,6 +39,7 @@ include_directories(
   ${QT_QTXML_INCLUDE_DIR}
   ${QT_QTCORE_INCLUDE_DIR}
   ${Boost_INCLUDE_DIR}
+  ${KN_INCLUDE_DIR}
 )
 
 link_directories( ${Boost_LIBRARY_DIRS} )
@@ -46,7 +47,8 @@ link_directories( ${Boost_LIBRARY_DIRS} )
 link_libraries (
   ${MIRO_miroXml_LIBRARY}
   ${MIRO_miroCore_LIBRARY}
-  ${Boost_LIBRARIES}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_THREAD_LIBRARY}
 )
 
 if( CURL_FOUND AND CURL_HAS_SSH )

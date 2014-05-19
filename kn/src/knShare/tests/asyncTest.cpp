@@ -1,4 +1,6 @@
-#include <ace/OS_NS_unistd.h>
+#include "../Thread.h"
+#include "../Chrono.h"
+#include "../Functional.h"
 
 #include <boost/thread.hpp>
 #include <boost/thread/future.hpp>
@@ -12,7 +14,7 @@ using namespace std;
 void doSomething(int i) {
   cout << "thread param " << i << endl;
   cout << "thread sleep" << endl;
-  ACE_OS::sleep(ACE_Time_Value(1));
+  kn::this_thread::sleep_for(kn::seconds(1));
   cout << "wake up" << endl;
   throw logic_error("maeh");
 
@@ -33,7 +35,7 @@ struct DoSomething
   void foo(int i) {
     cout << "object param " << i + d << endl;
     cout << "object sleep" << endl;
-    ACE_OS::sleep(ACE_Time_Value(1));
+    kn::this_thread::sleep_for(kn::seconds(1));
     cout << "wake up" << endl;
     boost::throw_exception(MyException("object maeh"));
   }
@@ -50,7 +52,7 @@ int main(int argc, char* argv[])
   boost::shared_ptr<BOOST_THREAD_FUTURE<void> > f;
 
   {
-    boost::packaged_task<void> pt(boost::bind(&doSomething, c));
+    boost::packaged_task<void> pt(kn::bind(&doSomething, c));
     c = -1;
     f.reset(new BOOST_THREAD_FUTURE<void>(pt.get_future()));
     boost::thread( boost::move(pt) ).detach();
@@ -61,7 +63,7 @@ int main(int argc, char* argv[])
   cout << "wait" << endl;
   while(!f->is_ready()) {
     cout << "." << flush;
-    ACE_OS::sleep(ACE_Time_Value(0, 100000));
+    kn::this_thread::sleep_for(kn::microseconds(100000));
   }
   try {
     f->get();
@@ -74,7 +76,7 @@ int main(int argc, char* argv[])
   DoSomething bar;
   bar.d = d;
   {
-    boost::packaged_task<void> pt(boost::bind(&DoSomething::foo, bar, d));
+    boost::packaged_task<void> pt(kn::bind(&DoSomething::foo, bar, d));
     c = -1;
     f.reset(new BOOST_THREAD_FUTURE<void>(pt.get_future()));
     boost::thread( boost::move(pt) ).detach();
@@ -83,7 +85,7 @@ int main(int argc, char* argv[])
   cout << "wait for object" << endl;
   while(!f->is_ready()) {
     cout << "." << flush;
-    ACE_OS::sleep(ACE_Time_Value(0, 100000));
+    kn::this_thread::sleep_for(kn::microseconds(100000));
   }
   try {
     f->get();

@@ -54,7 +54,8 @@ namespace kn
   {
     string key = guidString(event->key);
     string participantKey = guidString(event->participant_key);
-    string subscriberKey = guidString(event->subscriber_key);
+    string subscriberKey  = guidString(event->subscriber_key);
+    const char* subName   = event->subscription_name.name;
 
     if (!s_key.empty()) {
       if (s_key != key)
@@ -121,7 +122,14 @@ namespace kn
       }
 
       if (s_verbose > 2) {
-        cout << ", " << endl << "  version: " << event->product_version << endl;
+        cout << ", " << endl << "  version: " << event->product_version;
+      }
+
+      if (s_verbose > 2 && subName) {
+        cout << ", " << endl << "  subscription_name: " << subName << endl;
+      }
+      else {
+        cout << endl;
       }
 
       cout << " }" << endl;

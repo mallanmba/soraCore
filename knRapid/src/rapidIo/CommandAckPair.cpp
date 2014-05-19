@@ -37,12 +37,13 @@ namespace rapid
   using namespace std;
   using namespace kn;
 
-  CommandAckPair::CommandAckPair(CommandAckPairParameters const& params) :
+  CommandAckPair::CommandAckPair(CommandAckPairParameters const& params, std::string const& entityName) :
     m_params(params),
     m_commandSupplier(new CommandSupplier(COMMAND_TOPIC + m_params.topicSuffix,
                                           m_params.parentNode,
                                           m_params.commandProfile,
-                                          m_params.library)),
+                                          m_params.library,
+                                          entityName)),
     m_command(m_commandSupplier->event()),
     m_arguments(m_command.arguments)
   {
@@ -68,7 +69,7 @@ namespace rapid
   {
     assert(ack != NULL);
 
-    boost::unique_lock<boost::mutex> guard(m_mutex);
+    kn::unique_lock<kn::mutex> guard(m_mutex);
     if (strcmp(m_command.cmdId, ack->cmdId) == 0) {
       m_status = ack->status;
       m_completedStatus = ack->completedStatus;
@@ -80,7 +81,7 @@ namespace rapid
   rapid::AckCompletedStatus
   CommandAckPair::waitForCompletion(kn::TimePoint const& deadline) 
   {
-    boost::unique_lock<boost::mutex> guard(m_mutex);
+    kn::unique_lock<kn::mutex> guard(m_mutex);
     while (m_completedStatus == rapid::ACK_COMPLETED_NOT) {
       if (kn::Clock::now() > deadline) {
         boost::throw_exception(std::runtime_error("Timeout"));
@@ -133,7 +134,7 @@ namespace rapid
     id << m_cmdSrc << ACE_OS::gettimeofday();
 
     {
-      boost::unique_lock<boost::mutex> guard(m_mutex);
+      kn::unique_lock<kn::mutex> guard(m_mutex);
       strcpy(m_command.cmdId, id.str().c_str());
       m_command.cmdAction = action;
       strncpy(m_command.targetCmdId, targetCmdId.c_str(), 63);

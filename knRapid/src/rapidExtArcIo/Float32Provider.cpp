@@ -33,8 +33,8 @@ namespace rapid
        * ctor
        */
       // no changes to constructor
-      Float32Provider::Float32Provider(Float32TopicPairParameters const& params) :
-        Float32ProviderBase(FLOAT32_CONFIG_TOPIC, FLOAT32_SAMPLE_TOPIC, params)
+      Float32Provider::Float32Provider(Float32TopicPairParameters const& params, const std::string& entityName) :
+        Float32ProviderBase(FLOAT32_CONFIG_TOPIC, FLOAT32_SAMPLE_TOPIC, params, entityName)
       {}
       
       

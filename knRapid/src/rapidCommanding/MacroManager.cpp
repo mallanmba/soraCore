@@ -23,29 +23,38 @@
 #include "rapidDds/RapidConstants.h"
 
 #include "knDds/DdsEventLoop.h"
+#include "knShare/Functional.h"
 #include "miro/ConfigDocument.h"
 
 #include <QFile>
 #include <QTextStream>
 #include <QIODevice>
 
-#include <boost/bind.hpp>
 
 namespace rapid
 {
   using namespace std;
   using namespace Miro;
 
-  MacroManager::MacroManager(MacroManagerParameters const& params) :
+  namespace {
+    // wrap delete_data because after 5.1.0, the method
+    // takes two arguments and can't be used as a deleter
+    DDS_ReturnCode_t delete_MacroConfig(rapid::MacroConfig* ptr) {
+      return MacroConfigTypeSupport::delete_data(ptr);
+    }
+  }
+
+
+  MacroManager::MacroManager(MacroManagerParameters const& params, const std::string& entityName) :
     m_params(params),
-    m_provider(params.provider)
+    m_provider(params.provider, entityName)
   {
 
     // load macros from disk
     // publish state
 
     MacroPtr conf(rapid::MacroConfig::TypeSupport::create_data(),
-                  rapid::MacroConfig::TypeSupport::delete_data);
+                  delete_MacroConfig);
 
     {
       ConfigDocument document;
@@ -54,7 +63,7 @@ namespace rapid
       // get previous macro manager state
       PersistentMacroManagerStateParameters state;
       document.getParameters("kn::PersistentMacroManagerStateParameters", state);
-      
+
       // publish them one by one
       vector<MacroConfigParameters>::const_iterator first, last = state.macros.end();
       for (first = state.macros.begin(); first != last; ++first) {
@@ -89,7 +98,7 @@ namespace rapid
   MacroManager::connect(kn::DdsEventLoop& eventLoop)
   {
      eventLoop.connect<rapid::MacroConfig>(this,
-                                                rapid::MACRO_CONFIG_TOPIC + 
+                                                rapid::MACRO_CONFIG_TOPIC +
                                                 m_params.configUpload.topicSuffix,
                                                 m_params.configUpload.parentNode,
                                                 m_params.configUpload.profile,
@@ -101,7 +110,7 @@ namespace rapid
   {
     rapid::MacroProvider::MacroConfigVector macros;
     macros.reserve(m_macros.size());
-    
+
     MacroMap::const_iterator first, last = m_macros.end();
     for (first = m_macros.begin(); first != last; ++first) {
       macros.push_back(first->second);
@@ -141,7 +150,7 @@ namespace rapid
     }
 
     MacroPtr m(rapid::MacroConfig::TypeSupport::create_data(),
-               rapid::MacroConfig::TypeSupport::delete_data);
+               delete_MacroConfig);
     rapid::MacroConfig::TypeSupport::copy_data(m.get(), &macro);
     m_macros[macro.name] = m;
 
@@ -166,7 +175,7 @@ namespace rapid
     saveMacros();
   }
 
-  MacroManager::MacroPtr 
+  MacroManager::MacroPtr
   MacroManager::retreiveMacro(std::string const& name, int serial){
     MacroMap::const_iterator iter = m_macros.find(name);
     if (iter == m_macros.end()) {
@@ -175,10 +184,10 @@ namespace rapid
     if (iter->second->hdr.serial != serial) {
       stringstream ostr;
       ostr << "Trying to load wrong version of macro "
-           << name 
+           << name
            << ": "
            << serial
-           << ". - Current version is: " 
+           << ". - Current version is: "
            << iter->second->hdr.serial;
       boost::throw_exception(EExecFailed(ostr.str()));
     }
@@ -205,7 +214,7 @@ namespace rapid
     for (first = m_macros.begin(); first != last; ++first) {
       MacroConfigParameters m;
       *first->second >>= m;
-      
+
       state.macros.push_back(m);
     }
 
@@ -229,7 +238,7 @@ namespace rapid
   {
     string fileName;
     if (m_params.persistencyFile == "~/.MacroManagerConfig.xml") {
-      // read from file    
+      // read from file
       char const * const home = getenv("HOME");
       fileName = home;
       if (fileName.length() > 0)

@@ -24,16 +24,14 @@
 #include "miro/RobotParameters.h"
 
 #include <cmath>
-#include <iostream>
 
 namespace rapid
 {
   using namespace std;
 
   void
-  RapidHelper::initHeader(rapid::Header& header,
-                          std::string const& source, std::string const& name,
-                          ACE_Time_Value const& timestamp, ACE_INT32 status, ACE_INT32 serial)
+  RapidHelper::initHeader(rapid::Header& header, const std::string& source, const std::string& name, 
+                          const ACE_Time_Value& timestamp, int32_t status, int32_t serial)
   {
     strncpy(header.srcName, source.empty()? Miro::RobotParameters::instance()->name.c_str() : source.c_str(), 32);
     header.srcName[31] = 0;
@@ -43,8 +41,20 @@ namespace rapid
   }
 
   void
+  RapidHelper::initHeader(rapid::Header& header,
+                          std::string const& source, std::string const& name,
+                          kn::TimePoint const& timestamp, int32_t status, int32_t serial)
+  {
+      strncpy(header.srcName, source.empty()? Miro::RobotParameters::instance()->name.c_str() : source.c_str(), 32);
+      header.srcName[31] = 0;
+      strncpy(header.assetName, name.empty()? Miro::RobotParameters::instance()->name.c_str() : name.c_str(), 32);
+      header.assetName[31] = 0;
+      updateHeader(header, timestamp, status, serial);
+  }
+  
+  void
   RapidHelper::updateHeader(rapid::Header& header,
-                            ACE_Time_Value const& timestamp, ACE_INT32 status, ACE_INT32 serial)
+                            ACE_Time_Value const& timestamp, int32_t status, int32_t serial)
   {
     if (serial == 0) {
       serial = header.serial;
@@ -57,4 +67,18 @@ namespace rapid
     header.serial = serial;
   }
   
+  void
+  RapidHelper::updateHeader(rapid::Header& header,
+                            kn::TimePoint const& timestamp, int32_t status, int32_t serial)
+  {
+      if (serial == 0) {
+          serial = header.serial;
+      }
+      else if (serial < 0) {
+          serial = kn::duration_cast<kn::seconds>(timestamp.time_since_epoch()).count();
+      }
+      header.timeStamp = knTimePoint2RapidTime(timestamp);
+      header.statusCode = status;
+      header.serial = serial;
+  }
 } // namespace rapid

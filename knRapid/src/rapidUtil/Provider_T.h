@@ -32,6 +32,9 @@
 
 namespace rapid
 {
+  /**
+   * ProviderBase
+   */
   class rapidUtil_Export ProviderBase : public TopicPair
   {
   public:
@@ -53,20 +56,31 @@ namespace rapid
     typedef kn::DdsTypedSupplier<Config> ConfigSupplier;
     typedef kn::DdsTypedSupplier<Data> DataSupplier;
     
+    /**
+     * If params.useConfigTopic is true, config will be 
+     * published automatically 
+     */
     Provider_T(std::string const& configTopic,
                std::string const& dataTopic,
-               Parameters const& params)  :
+               Parameters  const& params,
+               std::string const& entityName) :
       ProviderBase(configTopic, dataTopic),
       m_configSupplier(configTopic + 
                        params.topicSuffix,
                        params.parentNode,
                        params.configProfile,
-                       params.library),
+                       params.library,
+                       NULL,
+                       DDS_STATUS_MASK_NONE,
+                       entityName),
       m_dataSupplier(dataTopic + 
-                      params.topicSuffix,    
-                      params.parentNode,
-                      params.dataProfile,
-                      params.library)
+                       params.topicSuffix,    
+                       params.parentNode,
+                       params.dataProfile,
+                       params.library,
+                       NULL,
+                       DDS_STATUS_MASK_NONE,
+                       entityName)
     {
       Config& config = m_configSupplier.event();
       config <<= params.config;
@@ -79,12 +93,15 @@ namespace rapid
       HeaderTypeSupport::copy_data(&data.hdr, &config.hdr);
     }
     
+    /** configSupplier */
     ConfigSupplier& configSupplier() { return m_configSupplier; }
     ConfigSupplier const& configSupplier() const { return m_configSupplier; }
     
+    /** dataSupplier */
     DataSupplier& dataSupplier() { return m_dataSupplier; }
     DataSupplier const& dataSupplier() const { return m_dataSupplier; }
     
+    /** publishConfig */
     void publishConfig() {
       Config& config = m_configSupplier.event();
       RapidHelper::updateHeader(config.hdr);
@@ -93,7 +110,7 @@ namespace rapid
     
   protected:
     ConfigSupplier m_configSupplier;
-    DataSupplier m_dataSupplier;
+    DataSupplier   m_dataSupplier;
   };
 }
 #endif // miro_Provider_T_h

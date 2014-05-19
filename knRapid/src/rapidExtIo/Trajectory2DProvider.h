@@ -16,8 +16,8 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef kn_Trajectory2DProvider_h
-#define kn_Trajectory2DProvider_h
+#ifndef rapid_Trajectory2DProvider_h
+#define rapid_Trajectory2DProvider_h
 
 #include "rapidExtIo_Export.h"
 #include "Trajectory2DIo.h"
@@ -28,6 +28,8 @@
 #include "rapidExtDds/Trajectory2DSampleSupport.h"
 #include "rapidExtDds/Trajectory2DConfig.h"
 #include "rapidExtDds/Trajectory2DConfigSupport.h"
+
+#include "knMath/ATrans.h"
 
 namespace rapid
 {
@@ -41,9 +43,11 @@ namespace rapid
     class rapidExtIo_Export Trajectory2DProvider : public Trajectory2DProviderBase
     {
     public:
-      Trajectory2DProvider(Trajectory2DTopicPairParameters const& params);
+      Trajectory2DProvider(Trajectory2DTopicPairParameters const& params, const std::string& entityName);
       virtual ~Trajectory2DProvider() throw();
+      
+      void publishTrajectory(kn::ATrans3 const& pose, kn::ATrans2Vector const& path, unsigned int sampleSkip = 0);
     };
   }
 }
-#endif // kn_Trajectory2DProvider_h
+#endif // rapid_Trajectory2DProvider_h

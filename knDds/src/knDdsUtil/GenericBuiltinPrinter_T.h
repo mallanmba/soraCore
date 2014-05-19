@@ -62,7 +62,7 @@ namespace kn
     ~GenericBuiltinPrinter_T() throw()
     {}
 
-    void run(char const * topicName) {
+    void run(char const * topicName, std::string const& entityName = "") {
       kn::DdsDomainParticipantRepository * pr = kn::DdsDomainParticipantRepository::instance();
       
       DDS::DomainParticipant * dp = pr->get("Default");
@@ -73,12 +73,12 @@ namespace kn
 
       Printer printer;
       kn::DdsSampleCallbackFunctor<T, Printer> dataHandler(printer);
-      kn::DdsEventLoop eventLoop;
+      kn::DdsEventLoop eventLoop(entityName);
       
       eventLoop.createStatusEventHandler<T>(dataHandler, *dataReader, kn::DdsTake());
 
       while (!m_shutdownHandler.isShutdown()) {
-        eventLoop.processEvents(ACE_Time_Value(0, 100000));
+        eventLoop.processEvents(microseconds(100000));
       }
     }
   };

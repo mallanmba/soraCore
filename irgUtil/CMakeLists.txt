@@ -9,12 +9,16 @@ include( SetupConfigureFile )
 include( SetupInstall )
 include( SetupRPATH )
 include( SetupWarnLevel )
+include( SetupUtilities )
 
 ## we have to play some tricks to get install
 ## path to "stick" in Windows
 ##------------------------------------------------
 set( IRGUTIL_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "irgUtil install path")
 set( CMAKE_INSTALL_PREFIX ${IRGUTIL_INSTALL_PREFIX} CACHE INTERNAL "" )
+
+find_package(GTest)
+find_package(Doxygen)
 
 ## find the packages we depend on 
 find_package(ACE)
@@ -29,6 +33,7 @@ setup_configure_file()
 # Defaults
 #-----------------------------------
 add_subdirectory( src )
+add_subdirectory( doc )
 
 # install the export file
 #------------------------------------

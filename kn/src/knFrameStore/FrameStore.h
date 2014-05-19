@@ -24,8 +24,8 @@
 #include "FrameTreeNode.h"
 
 #include "knMath/Vector.h"
-
-#include <boost/thread.hpp>
+#include "knShare/Thread.h"
+#include "knShare/Mutex.h"
 
 namespace kn
 {
@@ -336,7 +336,7 @@ namespace kn
     typedef std::vector<FrameTreeNode *> FrameTreeNodeVector;
 
     /** Mutex to ensure exclusive access to framestore operations. */
-    mutable boost::mutex m_mutex;
+    mutable mutex m_mutex;
     /** The vector of root nodes. */
     FrameTreeNodeVector m_root_nodes;
   };

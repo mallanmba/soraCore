@@ -22,13 +22,14 @@
 #include "knShare_Export.h"
 
 #include "Singleton.h"
-
-#include <boost/thread/mutex.hpp>
+#include "Mutex.h"
 
 #include <map>
 #include <string>
 #include <iostream>
 #include <stdexcept>
+
+#include <boost/signals2.hpp>
 
 namespace kn
 {
@@ -52,6 +53,7 @@ namespace kn
     // private types
     //--------------------------------------------------------------------------
     typedef Repository<T> Self;
+    typedef lock_guard<mutex> Lock;
 
   public:
     //--------------------------------------------------------------------------
@@ -62,6 +64,9 @@ namespace kn
     typedef std::map<std::string, Type> InstanceMap;
     typedef kn::Singleton<Self> SingletonType;
 
+    typedef boost::signals2::signal<void (const std::string&, const T&)> InstanceAddedSignal;
+    typedef typename InstanceAddedSignal::slot_type                      InstanceAddedSlotType;
+    typedef boost::signals2::signal<void (const std::string&)>           InstanceRemovedSignal;
     //--------------------------------------------------------------------------
     // public methods
     //--------------------------------------------------------------------------
@@ -77,8 +82,26 @@ namespace kn
 
     //! Get read-only access to the whole repository.
     InstanceMap exportMap() const {
-      boost::lock_guard<boost::mutex> guard(m_mutex);
+      Lock guard(m_mutex);
       return m_instances;
+    }
+
+    InstanceAddedSignal& instanceAddedSignal() {
+      return m_signalInstanceAdded;
+    }
+    InstanceRemovedSignal& instanceRemovedSignal() {
+      return m_signalInstanceRemoved;
+    }
+
+    /**
+     * Fill contents of outMap with current repository contents and
+     * connect subscriber to instanceAddedSignal
+     */
+    boost::signals2::connection connectInstanceAdded(InstanceMap& outMap,
+                                                     const InstanceAddedSlotType& subscriber) {
+      Lock guard(m_mutex);
+      outMap = m_instances;
+      return m_signalInstanceAdded.connect(subscriber);
     }
 
     //--------------------------------------------------------------------------
@@ -99,10 +122,13 @@ namespace kn
     //--------------------------------------------------------------------------
     // protected data
     //--------------------------------------------------------------------------
-    mutable boost::mutex m_mutex;
+    mutable mutex m_mutex;
 
     //! Map to associate an instance name with an instance.
     InstanceMap m_instances;
+
+    InstanceAddedSignal    m_signalInstanceAdded;
+    InstanceRemovedSignal  m_signalInstanceRemoved;
 
   protected:
     //--------------------------------------------------------------------------
@@ -140,7 +166,7 @@ namespace kn
   void
   Repository<T>::clear()
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    Lock guard(m_mutex);
     m_instances.clear();
   }
 
@@ -149,12 +175,16 @@ namespace kn
   void
   Repository<T>::add(std::string const& name, T const& instance)
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
-    if (m_instances.find(name) == m_instances.end()) {
-      m_instances.insert(std::make_pair(name, instance));
-      return;
+    {
+      Lock guard(m_mutex);
+      if (m_instances.find(name) == m_instances.end()) {
+        m_instances.insert(std::make_pair(name, instance));
+      }
+      else {
+        throw std::logic_error("Repository::add() failed: \"" + name + "\" already in repository");
+      }
     }
-    throw std::logic_error("Repository::add() failed: \"" + name + "\" already in repository");
+    m_signalInstanceAdded(name, instance);
   }
 
   /**
@@ -166,7 +196,7 @@ namespace kn
   T const&
   Repository<T>::get(const std::string& name) const
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    Lock guard(m_mutex);
     typename InstanceMap::const_iterator i = m_instances.find(name);
     if (i != m_instances.end())
       return i->second;
@@ -181,13 +211,17 @@ namespace kn
   void
   Repository<T>::remove(const std::string& name)
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
-    typename InstanceMap::iterator i = m_instances.find(name);
-    if (i != m_instances.end()) {
-      m_instances.erase(i);
-      return;
+    {
+      Lock guard(m_mutex);
+      typename InstanceMap::iterator i = m_instances.find(name);
+      if (i != m_instances.end()) {
+        m_instances.erase(i);
+      }
+      else {
+        throw std::logic_error("Repository::remove() failed: \"" + name + "\" not in repository");
+      }
     }
-    throw std::logic_error("Repository::remove() failed: \"" + name + "\" not in repository");
+    m_signalInstanceRemoved(name);
   }
 
   /**
@@ -197,7 +231,7 @@ namespace kn
   void
   Repository<T>::printToStream(std::ostream& ostr) const
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    Lock guard(m_mutex);
     typename InstanceMap::const_iterator first, last = m_instances.end();
     for (first = m_instances.begin(); first != last; ++first) {
       ostr << first->first << std::endl;
@@ -213,5 +247,3 @@ namespace kn
   }
 }
 #endif // kn_Repository_h
-
-

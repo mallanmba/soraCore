@@ -41,7 +41,7 @@ namespace rapid
     class rapidExtIo_Export TrajectoryProvider : public TrajectoryProviderBase
     {
     public:
-      TrajectoryProvider(TrajectoryTopicPairParameters const& params);
+      TrajectoryProvider(TrajectoryTopicPairParameters const& params, const std::string& entityName);
       virtual ~TrajectoryProvider() throw();
     };
   }

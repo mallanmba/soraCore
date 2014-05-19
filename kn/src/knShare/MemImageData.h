@@ -43,14 +43,14 @@ namespace kn
     
     MemImageData& operator=(MemImageData const& rhs);
 
-    virtual void dump(const std::string &fn) const {};
+    virtual void dump(const std::string &fn) const;
     virtual void writePgm(const std::string &fn) const;
-    virtual unsigned char *data() const { return m_data.get(); }
-    virtual uint32_t width()  const { return m_width; }
-    virtual uint32_t height() const { return m_height; }
-    virtual uint32_t depth() const { return m_depth; }
-    virtual ACE_Time_Value timestamp() const { return m_timestamp; }
-    virtual bool valid() const { return m_data.get() != NULL; }
+    virtual unsigned char *data() const;
+    virtual uint32_t width()  const;
+    virtual uint32_t height() const;
+    virtual uint32_t depth() const;
+    virtual ACE_Time_Value timestamp() const;
+    virtual bool valid() const;
 
   protected:
     boost::scoped_array<unsigned char> m_data;

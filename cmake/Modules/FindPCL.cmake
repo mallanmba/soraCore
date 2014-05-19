@@ -44,16 +44,12 @@ if( PCL_COMMON_LIB )
   )
   #message(STATUS "  (dbg) PCL_CONFIG_FILE=${PCL_CONFIG_FILE}")
 
-  # Sigh. ROS puts PCL ROS message includes in include/pcl and puts
-  # the *actual* PCL headers in include/pcl-1.6/pcl. Nice, guys. 
-  # Whatever... for the time being, just give up if pcl_config.h 
-  # is not found
   if( PCL_CONFIG_FILE )  
-
     file(STRINGS ${PCL_CONFIG_FILE} PCL_VERSIONS_TMP REGEX "^#define PCL_[A-Z]+_VERSION[ \t]+[0-9]+$")
-    string(REGEX REPLACE ".*#define PCL_MAJOR_VERSION[ \t]+([0-9]+).*" "\\1" PCL_VERSION_MAJOR ${PCL_VERSIONS_TMP})
-    string(REGEX REPLACE ".*#define PCL_MINOR_VERSION[ \t]+([0-9]+).*" "\\1" PCL_VERSION_MINOR ${PCL_VERSIONS_TMP})  
-    set(PCL_VERSION "${PCL_VERSION_MAJOR}.${PCL_VERSION_MINOR}")
+    string(REGEX REPLACE ".*#define PCL_MAJOR_VERSION[ \t]+([0-9]+).*" "\\1"    PCL_VERSION_MAJOR ${PCL_VERSIONS_TMP})
+    string(REGEX REPLACE ".*#define PCL_MINOR_VERSION[ \t]+([0-9]+).*" "\\1"    PCL_VERSION_MINOR ${PCL_VERSIONS_TMP})  
+    string(REGEX REPLACE ".*#define PCL_REVISION_VERSION[ \t]+([0-9]+).*" "\\1" PCL_VERSION_PATCH ${PCL_VERSIONS_TMP})  
+    set(PCL_VERSION "${PCL_VERSION_MAJOR}.${PCL_VERSION_MINOR}.${PCL_VERSION_PATCH}")
 
     string(REGEX REPLACE "/[^/]*/[^/]*$" "" PCL_INCLUDE_DIR ${PCL_CONFIG_FILE})
     #message(STATUS "  (dbg) PCL_INCLUDE_DIR=${PCL_INCLUDE_DIR}")

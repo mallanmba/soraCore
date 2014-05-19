@@ -38,7 +38,7 @@ namespace kn
   void
   FrameStore::clone_tree(FrameTree & tree, FrameHandle rootFrame) const
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     tree.clear();
     if (rootFrame.node == NULL) {
@@ -67,7 +67,7 @@ namespace kn
   FrameTreeNode *
   FrameStore::clone_tree(FrameHandle rootFrame) const
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (rootFrame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
@@ -78,7 +78,7 @@ namespace kn
   std::string const&
   FrameStore::name(FrameHandle frame) const
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
@@ -89,7 +89,7 @@ namespace kn
   std::string
   FrameStore::full_name(FrameHandle frame) const
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
@@ -107,7 +107,7 @@ namespace kn
   Frame::Extras *
   FrameStore::get_extras(FrameHandle frame) const
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
@@ -119,7 +119,7 @@ namespace kn
   void
   FrameStore::set_extras(FrameHandle frame, Frame::Extras * extras)
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
@@ -199,7 +199,7 @@ namespace kn
   std::vector<std::string>
   FrameStore::frame_names() const
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     vector<string> names;
 
@@ -217,7 +217,7 @@ namespace kn
   FrameHandle
   FrameStore::parent(FrameHandle frame) const
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
@@ -228,7 +228,7 @@ namespace kn
   FrameHandle
   FrameStore::root(FrameHandle frame) const
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
@@ -243,7 +243,7 @@ namespace kn
   FrameStore::FrameHandleVector
   FrameStore::children(FrameHandle frame) const
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL) {
       return FrameHandleVector(m_root_nodes.begin(), m_root_nodes.end());
@@ -269,7 +269,7 @@ namespace kn
   void
   FrameStore::add(FrameTreeNode * node, FrameHandle parent)
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (node == NULL)
       throw std::invalid_argument("NULL pointer not allowed as node parameter.");
@@ -297,7 +297,7 @@ namespace kn
   void
   FrameStore::del(FrameHandle frame, bool recursive)
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
@@ -329,7 +329,7 @@ namespace kn
   void
   FrameStore::set_parent(FrameHandle frame, FrameHandle parent)
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
@@ -360,7 +360,7 @@ namespace kn
   bool
   FrameStore::is_root(FrameHandle frame) const
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
@@ -371,7 +371,7 @@ namespace kn
   bool
   FrameStore::is_leaf(FrameHandle frame) const
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
@@ -382,7 +382,7 @@ namespace kn
   bool
   FrameStore::is_ancestor_of(FrameHandle frame, FrameHandle pop) const
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
@@ -394,7 +394,7 @@ namespace kn
   ATrans3
   FrameStore::get_transform_of(FrameHandle frame, FrameHandle source, ATrans3 const& trans)
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
@@ -406,7 +406,7 @@ namespace kn
   Vector3
   FrameStore::get_position_of(FrameHandle frame, FrameHandle source, Vector3 const& trans)
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL || source.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
@@ -417,7 +417,7 @@ namespace kn
   ATrans3
   FrameStore::get_transform(FrameHandle frame, FrameHandle source)
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (source.node == NULL)
       std::logic_error("NULL handle not allowed as source parameter.");
@@ -428,7 +428,7 @@ namespace kn
   void
   FrameStore::set_transform(FrameHandle frame, FrameHandle wrt_frame, ATrans3 const& update)
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
@@ -439,7 +439,7 @@ namespace kn
   void
   FrameStore::set_transform_rel(FrameHandle frame, ATrans3 const& update)
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
@@ -450,7 +450,7 @@ namespace kn
   bool
   FrameStore::is_member(FrameHandle frame) const throw()
   {
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
     return is_member(frame.node);
   }
 
@@ -490,7 +490,7 @@ namespace kn
     transforms.clear();
     transforms.reserve(frames.size());
 
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
     FrameHandleVector::const_iterator first, last = frames.end();
     for (first = frames.begin(); first != last; ++first) {
       transforms.push_back(first->node->data().transform());
@@ -503,7 +503,7 @@ namespace kn
     if (frames.size() != transforms.size())
       std::invalid_argument("Parameter vectors not of same size.");
 
-    boost::lock_guard<boost::mutex> guard(m_mutex);
+    lock_guard<mutex> guard(m_mutex);
     FrameHandleVector::const_iterator first, last = frames.end();
     ATrans3Vector::const_iterator trans = transforms.begin();
     for (first = frames.begin(); first != last; ++first, ++trans) {

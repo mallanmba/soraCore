@@ -40,8 +40,8 @@ namespace rapid
   class rapidUtil_Export TopicPairAppBase : public TopicPair
   {
   public:
-    TopicPairAppBase(int& argc, char * argv[], TopicPairParameters& m_params);
-    TopicPairAppBase(TopicPairParameters& m_params);
+    TopicPairAppBase(int& argc, char * argv[], TopicPairParameters& m_params, std::string const& entityName);
+    TopicPairAppBase(TopicPairParameters& m_params, std::string const& entityName);
     ~TopicPairAppBase();
 
     static int s_verbose;
@@ -51,12 +51,13 @@ namespace rapid
 
     int parseArgs(int& argc, char* argv[]);
 
-  protected:
-    kn::DdsEntitiesFactorySvc m_ddsEntities;
-    Miro::ShutdownHandler m_shutdownHandler;
-    
   private:
-    TopicPairParameters& m_params;
+    TopicPairParameters&      m_params;
+  protected:
+    std::string               m_entityName;
+    kn::DdsEntitiesFactorySvc m_ddsEntities;
+    Miro::ShutdownHandler     m_shutdownHandler;
+    
   };
   
  
@@ -80,12 +81,12 @@ namespace rapid
       
       Printer(std::string const& configTopic,
               std::string const& dataTopic,
-              Parameters const& params)  :
+              Parameters  const& params)  :
         Super(configTopic, dataTopic, params)
       {
         if (Super::m_configured) {
           printConfig(Super::m_config);
-      }
+        }
       }
       
       /** Please customize to your own pretty-printing needs by partial specialization */
@@ -125,13 +126,13 @@ namespace rapid
       }
     };
     
-    TopicPairApp_T(int& argc, char * argv[], Parameters& params) :
-      TopicPairAppBase(argc, argv, params),
+    TopicPairApp_T(int& argc, char * argv[], Parameters& params, std::string const& entityName = "") :
+      TopicPairAppBase(argc, argv, params, entityName),
       m_params(params)
     {}
 
-    TopicPairApp_T(Parameters& params) :
-      TopicPairAppBase(params),
+    TopicPairApp_T(Parameters& params, std::string const& entityName = "") :
+      TopicPairAppBase(params, entityName),
       m_params(params)
     {}
 
@@ -153,11 +154,11 @@ namespace rapid
       }
       
       Printer printer(configTopic, dataTopic, m_params);
-      kn::DdsEventLoop eventLoop;
+      kn::DdsEventLoop eventLoop(m_entityName);
       
       printer.connect(eventLoop);
       while (!m_shutdownHandler.isShutdown()) {
-        eventLoop.processEvents(ACE_Time_Value(0, 100000));
+        eventLoop.processEvents(kn::microseconds(100000));
       }
     }
 

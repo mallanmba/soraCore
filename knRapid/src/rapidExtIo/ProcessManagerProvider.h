@@ -41,7 +41,7 @@ namespace rapid
     class rapidExtIo_Export ProcessManagerProvider : public ProcessManagerProviderBase
     {
     public:
-      ProcessManagerProvider(ProcessManagerTopicPairParameters const& params);
+      ProcessManagerProvider(ProcessManagerTopicPairParameters const& params, const std::string& entityName);
       virtual ~ProcessManagerProvider() throw();
     };
   }

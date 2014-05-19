@@ -41,6 +41,7 @@ namespace kn
   knDdsUtil_Export std::ostream& operator<<(std::ostream& ostr, PrintIp const& rhs);  
   knDdsUtil_Export std::ostream& operator<<(std::ostream& ostr, DDS_Locator_t const& rhs);
   knDdsUtil_Export std::ostream& operator<<(std::ostream& ostr, DDS_ProductVersion_t const& rhs);
+  
   knDdsUtil_Export std::string guidString(DDS_BuiltinTopicKey_t const& key);
 }
 

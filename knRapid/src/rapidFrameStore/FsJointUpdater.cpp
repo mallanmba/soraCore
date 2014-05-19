@@ -41,6 +41,12 @@ namespace rapid
   using namespace kn;
 
   namespace {
+    // wrap delete_data because after 5.1.0, the method
+    // takes two arguments and can't be used as a deleter
+    DDS_ReturnCode_t delete_JointConfig(rapid::JointConfig* ptr) {
+      return JointConfigTypeSupport::delete_data(ptr);
+    }
+
     struct NameTypePair {
       char const * const name;
       FsJointUpdater::Axis param;
@@ -80,7 +86,7 @@ namespace rapid
     m_frameStore(fs)
   {
 
-    JointConfigPtr c(JointConfigTypeSupport::create_data(), JointConfigTypeSupport::delete_data);
+    JointConfigPtr c(JointConfigTypeSupport::create_data(), delete_JointConfig);
     for (unsigned int i = 0; i < m_params.configParameters.size(); ++i) {
       (*c) <<= m_params.configParameters[i];
       (*this)(c.get());
@@ -92,14 +98,14 @@ namespace rapid
   }
 
   void
-  FsJointUpdater::connect(kn::DdsEventLoop& eventLoop) 
+  FsJointUpdater::connect(kn::DdsEventLoop& eventLoop)
   {
     eventLoop.connect<JointSample>(this,  rapid::JOINT_SAMPLE_TOPIC +
                                    m_params.topicSuffix,
                                    m_params.parentNode,
                                    m_params.sampleProfile,
                                    m_params.library);
-    
+
     if (m_params.configParameters.empty()) {
       eventLoop.connect<JointConfig>(this,  rapid::JOINT_CONFIG_TOPIC +
                                      m_params.topicSuffix,
@@ -114,7 +120,7 @@ namespace rapid
   {
     MIRO_LOG(LL_NOTICE, "JointConfig update.");
 
-    JointConfigPtr c(JointConfigTypeSupport::create_data(), JointConfigTypeSupport::delete_data);
+    JointConfigPtr c(JointConfigTypeSupport::create_data(), delete_JointConfig);
     JointConfigTypeSupport::copy_data(c.get(), config);
 
     m_robotConfigs[config->hdr.srcName] = c;
@@ -131,7 +137,8 @@ namespace rapid
         m_robotConfigs.find(sample->hdr.srcName);
       if (configIter == m_robotConfigs.end()) {
         MIRO_LOG_OSTR(LL_NOTICE,
-                      "FsJointUpdater - received sample for unknown robot: " <<
+                      "FsJointUpdater(topicSuffix=" << m_params.topicSuffix
+                      << ") - received sample for unknown robot: " <<
                       sample->hdr.srcName);
         return;
       }
@@ -149,7 +156,8 @@ namespace rapid
 
         if (handle == FrameHandle::NULL_HANDLE) {
           MIRO_LOG_OSTR(LL_NOTICE,
-                        "FsJointUpdater - Error adding position frame for " <<
+                        "FsJointUpdater(topicSuffix=" << m_params.topicSuffix
+                        << ") - Error adding position frame for " <<
                         config->hdr.srcName << ":" << endl <<
                         "FsJointUpdater - unknown frame name: " <<
                         config->jointDefinitions[i].frameName);
@@ -157,7 +165,8 @@ namespace rapid
         }
 
         MIRO_LOG_OSTR(LL_NOTICE,
-                      "FsJointUpdater - adding position frame for " <<
+                      "FsJointUpdater(topicSuffix=" << m_params.topicSuffix
+                      << ") - adding position frame for " <<
                       config->hdr.srcName << ":" << endl <<
                       m_frameStore.full_name(handle));
 
@@ -185,7 +194,8 @@ namespace rapid
 
     if ((int)joints.handles.size() != sample->anglePos.length()) {
       MIRO_LOG_OSTR(LL_NOTICE,
-                    "FsJointUpdater - received sample with non-matching joint number: " << sample->anglePos.length()  << ", " <<
+                    "FsJointUpdater(topicSuffix=" << m_params.topicSuffix
+                    << ") - received sample with non-matching joint number: " << sample->anglePos.length()  << ", " <<
                     sample->hdr.srcName << " suffix " << m_params.topicSuffix);
 
       return;
@@ -231,7 +241,7 @@ namespace rapid
       prevFrame = joints.handles.front();
     }
     updateRotation(*atrans, updates);
-    
+
 
     m_frameStore.set_frame_transforms(joints.uniqueHandles, transforms);
   }

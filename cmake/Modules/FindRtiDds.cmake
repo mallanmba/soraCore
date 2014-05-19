@@ -26,12 +26,22 @@
 # RTIDDS_LIBRARY_DIR    : library path
 # RTIDDS_IDL_COMMAND    : full path to IDL compiler
 # RTIDDS_DEFINE_FLAGS   : (DEPRECATED) Necessary platform defines (put add_definitions(${RTIDDS_DEFINE_FLAGS}) in your CMakeLists))
-
+#
 # Limited Bandwidth Plugin Variables:
 # -----------------------
 # RTIDDS_LB_FOUND       : true if Limited Bandwidth plugin found
 # RTIDDS_LB_LIBRARIES   : all Limited Bandwidth plugin libraries
 # RTIDDS_LB_INCLUDE_DIR : include path for Limited Bandwidth plugin
+#
+# Monitoring Variables:
+# -----------------------
+# RTIDDS_MON_FOUND       : true if Monitoring library found
+# RTIDDS_MON_LIBRARIES   : all Monitoring libraries
+#
+# Distributed Logger Variables:
+# -----------------------
+# RTIDDS_DLOGGER_FOUND       : true if Distributed Logger library found
+# RTIDDS_DLOGGER_LIBRARIES   : all Distributed Logger libraries
 #
 ######################################################################
 message(STATUS "Looking for RTI DDS")
@@ -284,7 +294,7 @@ if( RTIDDS_IDL_COMMAND )
   
   if( RTIDDS_LB_MISSING_LIBRARIES )
     set( RTIDDS_LB_FOUND FALSE )
-    message(STATUS "  RTI DDS Limited Bandwidth Plugin was not found.")
+    message(STATUS "  RTI DDS Limited Bandwidth Plugin was NOT found.")
   else( RTIDDS_LB_MISSING_LIBRARIES ) 
   
     if(RTIDDS_LB_BETA_VERSION) # more hackish stuff for the 4.5d beta plugin. This should be removed at some point. 
@@ -319,11 +329,29 @@ if( RTIDDS_IDL_COMMAND )
   
   if( RTIDDS_MON_MISSING_LIBRARIES )
     set( RTIDDS_MON_FOUND FALSE )
-    message(STATUS "  RTI DDS Monitoring Library was not found.")
+    message(STATUS "  RTI DDS Monitoring Library was NOT found.")
   else( RTIDDS_MON_MISSING_LIBRARIES ) 
     set( RTIDDS_MON_FOUND TRUE )
     message(STATUS "  RTI DDS Monitoring Library found in ${RTIDDS_ROOT_DIR}")
   endif( RTIDDS_MON_MISSING_LIBRARIES )
+  
+  
+  ###################################################
+  ## RTI Distributed Logger Library
+  ###################################################
+  set( RTIDDS_DLOGGER_LIBRARY_NAMES
+    rtidlc
+    rtidlcpp
+  )
+  get_library_list(RTIDDS_DLOGGER ${RTIDDS_LIBRARY_DIR} "d" "${RTIDDS_DLOGGER_LIBRARY_NAMES}" TRUE)
+  
+  if( RTIDDS_DLOGGER_MISSING_LIBRARIES )
+    set( RTIDDS_DLOGGER_FOUND FALSE )
+    message(STATUS "  RTI DDS Distributed Logging Library was NOT found.")
+  else( RTIDDS_DLOGGER_MISSING_LIBRARIES ) 
+    set( RTIDDS_DLOGGER_FOUND TRUE )
+    message(STATUS "  RTI DDS Distributed Logging Library found in ${RTIDDS_ROOT_DIR}")
+  endif( RTIDDS_DLOGGER_MISSING_LIBRARIES )
   
   
 else( RTIDDS_IDL_COMMAND )

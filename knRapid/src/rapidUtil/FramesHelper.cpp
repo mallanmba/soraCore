@@ -24,8 +24,6 @@
 
 #include "miro/RobotParameters.h"
 
-// compiling this gives us an instance of the ACE_Singleton<FrameStore> template
-
 namespace
 {
   kn::FrameHandle s_robot;

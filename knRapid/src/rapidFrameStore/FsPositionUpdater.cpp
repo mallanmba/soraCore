@@ -106,8 +106,9 @@ namespace rapid
         m_robotConfigs.find(sample->hdr.srcName);
       if (configIter == m_robotConfigs.end()) {
         MIRO_LOG_OSTR(LL_NOTICE,
-                      "FsPositionUpdater - received sample for unknown robot: " <<
-                      sample->hdr.srcName);
+                      "FsPositionUpdater(topicSuffix=" << m_params.topicSuffix 
+                      << ") - received sample for unknown robot: \"" 
+                      << sample->hdr.srcName << "\"");
         return;
       }
 
@@ -126,7 +127,8 @@ namespace rapid
 
       if (handle == FrameHandle::NULL_HANDLE) {
         MIRO_LOG_OSTR(LL_NOTICE,
-                      "FsPositionUpdater - Error adding position frame for " <<
+                      "FsPositionUpdater(topicSuffix=" << m_params.topicSuffix 
+                      << ") - Error adding position frame for " <<
                       config->hdr.srcName << ":" << endl <<
                       "FsPositionUpdater - unknown frame name: " << config->frameName <<
                       " " << config->hdr.srcName);
@@ -134,7 +136,8 @@ namespace rapid
       }
 
       MIRO_LOG_OSTR(LL_NOTICE,
-                    "FsPositionUpdater - adding position frame for " <<
+                    "FsPositionUpdater(topicSuffix=" << m_params.topicSuffix 
+                    << ") - adding position frame for " <<
                     config->hdr.srcName << ":" << endl <<
                     m_frameStore.full_name(handle));
 

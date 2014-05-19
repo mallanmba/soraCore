@@ -26,6 +26,9 @@
 #include "knDds/DdsEntitiesFactorySvc.h"
 #include "knDds/KnDdsParameters.h"
 
+#include "knShare/Thread.h"
+#include "knShare/Chrono.h"
+
 #include <ace/Service_Config.h>
 #include <ace/Get_Opt.h>
 #include <ace/Service_Gestalt.h>
@@ -126,7 +129,7 @@ main(int argc, char *argv[])
       MIRO_LOG(LL_NOTICE, "Entering server loop.");
       Miro::ShutdownHandler shutdownHandler;
       while(!shutdownHandler.isShutdown()) {
-        ACE_OS::sleep(ACE_Time_Value(0, 100000));
+        kn::this_thread::sleep_for(kn::microseconds(100000));
       }
       MIRO_LOG(LL_NOTICE, "End of server loop.");
     }

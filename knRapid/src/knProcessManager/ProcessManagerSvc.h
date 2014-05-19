@@ -40,8 +40,6 @@ class ACE_Process_Manager;
 
 namespace rapid
 {
-  class CommandManager;
-
   namespace ext
   {
     class ProcessManagerConfig;
@@ -110,8 +108,6 @@ namespace kn
     long m_timerId;
     ACE_Process_Manager * m_processManager;
     int m_processId;
-
-    rapid::CommandManager * m_cmdMgr;
 
     rapid::ext::ProcessManagerConfig * m_config;
     rapid::ext::ProcessManagerState * m_state;

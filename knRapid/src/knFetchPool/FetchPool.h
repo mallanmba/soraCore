@@ -19,22 +19,22 @@
 #ifndef kn_FetchPool_h
 #define kn_FetchPool_h
 
-#include <iostream>
+#include "knFetchPool_Export.h"
+#include "knFetchPool/FetchPoolParameters.h"
 
+#include "knShare/Thread.h"
+#include "knShare/SmartPtr.h"
+#include "knShare/Mutex.h"
+
+#include <boost/noncopyable.hpp>
+#include <boost/tuple/tuple.hpp>
+
+#include <iostream>
 #include <string>
 #include <map>
 #include <deque>
 #include <set>
 #include <utility>
-
-#include <boost/noncopyable.hpp>
-#include <boost/thread.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/tuple/tuple.hpp>
-
-#include "FetchPoolParameters.h"
-
-#include "knFetchPool_Export.h"
 
 namespace kn {
 namespace fetcher {
@@ -47,7 +47,7 @@ public:
   virtual void success() = 0;
 };
 
-typedef boost::shared_ptr<Callback> CallbackPtr;
+typedef kn::shared_ptr<Callback> CallbackPtr;
 
 class knFetchPool_Export Finished {
 public:
@@ -62,10 +62,10 @@ class knFetchPool_Export FetcherPool
     private boost::noncopyable
 {
 private:
-  typedef boost::recursive_mutex Mutex;
-  typedef boost::lock_guard<Mutex> Guard;
+  typedef kn::recursive_mutex Mutex;
+  typedef kn::lock_guard<Mutex> Guard;
 
-  typedef boost::shared_ptr<Fetcher> FetcherPtr;
+  typedef kn::shared_ptr<Fetcher> FetcherPtr;
 
   typedef boost::tuple<FetcherPtr, CallbackPtr> Operation;
   typedef boost::tuple<std::string, std::string, CallbackPtr> QueuedOperation;

@@ -33,6 +33,21 @@ if( ${PACKAGE_FOUND} )
     proj
   )
   get_library_list(${PACKAGE_UPPER} ${${PACKAGE_LIBRARY_DIR}} "d" "${LIBRARY_NAMES}")
+  
+  set( PROJ4_VERSION_HEADER ${PROJ4_INCLUDE_DIR}/proj_api.h )
+  if( EXISTS ${PROJ4_VERSION_HEADER} )
+    file(STRINGS ${PROJ4_VERSION_HEADER} PROJ4_TEMP REGEX "^#define PJ_VERSION[ \t]+[0-9]+$")
+    string(REGEX REPLACE ".*#define PJ_VERSION[ \t]+([0-9]).*" "\\1"           PROJ4_VERSION_MAJOR ${PROJ4_TEMP})
+    string(REGEX REPLACE ".*#define PJ_VERSION[ \t]+[0-9]([0-9]).*" "\\1"      PROJ4_VERSION_MINOR ${PROJ4_TEMP})
+    string(REGEX REPLACE ".*#define PJ_VERSION[ \t]+[0-9][0-9]([0-9]).*" "\\1" PROJ4_VERSION_PATCH ${PROJ4_TEMP})
+    set(PROJ4_VERSION ${PROJ4_VERSION_MAJOR}.${PROJ4_VERSION_MINOR}.${PROJ4_VERSION_PATCH})
+    message(STATUS "  Found Proj4 version ${PROJ4_VERSION} in ${PROJ4_ROOT_DIR}")
+
+  else( EXISTS ${PROJ4_VERSION_HEADER} )
+    message(STATUS "  WARNING: Could not find Proj4 version header ${PROJ4_VERSION_HEADER}")
+  endif( EXISTS ${PROJ4_VERSION_HEADER} )
+  
+
 endif( ${PACKAGE_FOUND} )
 
 

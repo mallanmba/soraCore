@@ -22,6 +22,7 @@ set( HEADERS
   RangeScanProvider.h
   Trajectory2DIo.h
   Trajectory2DProvider.h
+  Trajectory2DReceiver.h
   TrajectoryIo.h
   TrajectoryProvider.h
   VEStopIo.h
@@ -39,6 +40,7 @@ set( SOURCES
   RangeScanProvider.cpp
   Trajectory2DIo.cpp
   Trajectory2DProvider.cpp
+  Trajectory2DReceiver.cpp
   TrajectoryIo.cpp
   TrajectoryProvider.cpp
   VEStopIo.cpp

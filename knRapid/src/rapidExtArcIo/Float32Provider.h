@@ -48,7 +48,7 @@ namespace rapid
       class rapidExtArcIo_Export Float32Provider : Float32ProviderBase
       {
       public:
-        Float32Provider(Float32TopicPairParameters const& params);
+        Float32Provider(Float32TopicPairParameters const& params, const std::string& entityName);
         
         //     void publish(const ACE_Time_Value &time, const int status, const rapid::FloatSequence32 &d);
         void publish(const ACE_Time_Value &time, const int status, const std::vector<float>& d);

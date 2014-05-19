@@ -51,6 +51,7 @@ set( TEST_TARGETS
   ddsTopicPrinter
   ddsPublicationPrinter
   ddsSubscriptionPrinter
+  ddsPubSubPrinter
 )
 
 foreach( TEST_TARGET ${TEST_TARGETS} )

@@ -21,38 +21,46 @@
 
 #include "knShare_Export.h"
 
-#include <ace/Time_Value.h>
-#include <boost/chrono.hpp>
+#include "Chrono.h"
+
+#include <iosfwd>
 
 namespace kn
 {
-  typedef boost::chrono::system_clock Clock;
-  typedef boost::chrono::system_clock::duration Duration;
-  typedef boost::chrono::system_clock::time_point TimePoint;
+  typedef system_clock Clock;
+  typedef system_clock::duration Duration;
+  typedef system_clock::time_point TimePoint;
+  typedef duration_values<Duration> DurationValues;
 
-  typedef boost::chrono::duration<double> DurationD;
-
-  inline
-  ACE_Time_Value toAceTime(Duration const& d) {
-    timeval v;
-    v.tv_sec = (d.count() * Duration::period::num) / Duration::period::den;
-    v.tv_usec = ((d.count() * Duration::period::num) % Duration::period::den) * 1000000 / Duration::period::den;
+  typedef duration<double> DurationD;
   
-    return ACE_Time_Value(v);
-  }
-
   inline
-  ACE_Time_Value toAceTime(TimePoint const& t) {
-    return toAceTime(t.time_since_epoch());
-  }
-
-  inline
-  Duration fromAceTime(ACE_Time_Value const& t) 
+  Duration absDiff(const TimePoint & time1, const TimePoint & time2)
   {
-    Duration::rep d = t.sec() * Duration::period::den + t.usec() * (Duration::period::den / 1000000);
-    
-    return Duration(d);
+    if (time1 > time2) {
+      return time1 - time2;
+    }
+    return time2 - time1;
   }
+  
+  class Time6;
+  knShare_Export std::ostream& operator<<(std::ostream& ostr, Time6 const& timestamp);
+  
+  class knShare_Export Time6
+  {
+  public:
+    Time6(Duration const& t) :
+      m_timestamp(t)
+    {}
+    Time6(TimePoint const& t) :
+      m_timestamp(t.time_since_epoch())
+    {}
+    
+  protected:
+    Duration m_timestamp;
+    
+    friend knShare_Export std::ostream& operator<<(std::ostream& ostr, Time6 const& timestamp);
+  };
 }
 
 #endif

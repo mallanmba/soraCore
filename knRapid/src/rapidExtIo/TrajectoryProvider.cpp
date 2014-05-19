@@ -28,10 +28,11 @@ namespace rapid
     /**
      * ctor
      */
-    TrajectoryProvider::TrajectoryProvider(TrajectoryTopicPairParameters const& params) :
+    TrajectoryProvider::TrajectoryProvider(TrajectoryTopicPairParameters const& params, const std::string& entityName) :
       TrajectoryProviderBase(TRAJECTORY_CONFIG_TOPIC,
                              TRAJECTORY_SAMPLE_TOPIC,
-                             params)
+                             params,
+                             entityName)
     {
     }
     

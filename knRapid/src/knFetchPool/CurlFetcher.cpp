@@ -104,7 +104,7 @@ public:
     curl_easy_setopt(m_curl, CURLOPT_FRESH_CONNECT, 0);
     curl_easy_setopt(m_curl, CURLOPT_WRITEDATA, m_file);
 
-    m_thread = boost::thread(CurlInternal::do_fetch, this, uri, filename, c);
+    m_thread = kn::thread(CurlInternal::do_fetch, this, uri, filename, c);
     return true;
   }
 
@@ -218,7 +218,7 @@ private:
   }
 
   FetchPoolParameters m_options;
-  boost::thread m_thread;
+  kn::thread m_thread;
 
   bool m_cancel;
   bool m_running;

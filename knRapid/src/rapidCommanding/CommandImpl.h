@@ -30,7 +30,7 @@
 #include <ace/Time_Value.h>
 #include <ace/OS_NS_sys_time.h>
 
-#include <boost/shared_ptr.hpp>
+#include "knShare/SmartPtr.h"
 #include <boost/thread.hpp>
 
 #include <string>
@@ -43,14 +43,14 @@ namespace rapid
 
   class CommandImpl;
 
-  typedef boost::shared_ptr<CommandImpl> RapidSubsystemPtr;
+  typedef kn::shared_ptr<CommandImpl> RapidSubsystemPtr;
   typedef kn::Repository<RapidSubsystemPtr> RapidSubsystemRepository;
 
   class rapidCommanding_Export CommandImpl
   {
   public:    
     typedef boost::BOOST_THREAD_FUTURE<void> Future;
-    typedef boost::shared_ptr<Future> FuturePtr;
+    typedef kn::shared_ptr<Future> FuturePtr;
 
     CommandImpl(std::string const& name,
                 rapid::SubsystemType const * type);

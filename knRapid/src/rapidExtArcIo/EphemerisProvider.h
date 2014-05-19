@@ -44,7 +44,7 @@ namespace rapid
       class rapidExtArcIo_Export EphemerisProvider : EphemerisProviderBase
       {
       public:
-        EphemerisProvider(EphemerisTopicPairParameters const& params);
+        EphemerisProvider(EphemerisTopicPairParameters const& params, const std::string& entityName);
         
         void publish(ACE_Time_Value const& solutionTime, double lat, double lon, rapid::Vec3f vec);
       };

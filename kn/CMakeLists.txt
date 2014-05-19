@@ -3,11 +3,6 @@ cmake_minimum_required(VERSION 2.6)
 
 set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
 
-if( CMAKE_COMPILER_IS_GNUCXX )
-  message( STATUS "** disable strict aliasing for vw **")
-  set( WARN_FLAG_ADDITIONS "-fno-strict-aliasing" )
-endif( CMAKE_COMPILER_IS_GNUCXX )
-
 include( SetArchitecture )
 include( SetupBuildSwitch )
 include( SetupConfigureFile )
@@ -25,14 +20,12 @@ set( ${PROJECT_UPPER}_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" 
 set( CMAKE_INSTALL_PREFIX ${${PROJECT_UPPER}_INSTALL_PREFIX} CACHE INTERNAL "" )
 
 # find dependencies
-find_package( ACE )
-find_package( Miro )
 
+find_package( ACE )
 find_package( Eigen3 )
 find_package( Boost 1.50 COMPONENTS REQUIRED program_options signals thread system chrono )
-find_package( CURL )
-find_package( Qt4 )
 
+find_package( GTest )
 find_package( Doxygen )
 
 minimum_requirements( Boost_FOUND )
@@ -54,7 +47,15 @@ setup_ctest()
 
 # Defaults
 #-----------------------------------
-# everything needs to link to ACE, so set it
+# everything needs to include boost headers, so set it
+# up at the top level for convinience
+##-----------------------------------------------
+include_directories(
+  ${Boost_INCLUDE_DIR}
+)
+
+#-----------------------------------
+# everything needs to include ACE export macros, so set it
 # up at the top level for convinience
 ##-----------------------------------------------
 include_directories(
@@ -70,6 +71,7 @@ endif( WIN32 )
 
 #-----------------------------------
 add_subdirectory( src )
+add_subdirectory( doc )
 
 # install the export file
 #------------------------------------

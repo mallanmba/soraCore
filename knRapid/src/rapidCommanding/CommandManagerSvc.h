@@ -24,7 +24,7 @@
 #include <ace/Service_Object.h>
 #include <ace/Service_Config.h>
 
-#include <boost/shared_ptr.hpp>
+#include "knShare/SmartPtr.h"
 
 #include <vector>
 
@@ -51,7 +51,7 @@ namespace rapid
     CommandManagerSvcParameters * m_params;
     int m_verbose;
 
-    boost::shared_ptr<CommandManager> m_cmdMgr;
+    kn::shared_ptr<CommandManager> m_cmdMgr;
 
     CommandManagerSvc(CommandManagerSvc const&);
     CommandManagerSvc& operator = (CommandManagerSvc const&);

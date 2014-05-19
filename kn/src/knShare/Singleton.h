@@ -21,15 +21,16 @@
 
 #include "knShare_Export.h"
 
-#include <boost/thread.hpp>
-#include <boost/scoped_ptr.hpp>
+#include "Thread.h"
+#include "SmartPtr.h"
+#include "Mutex.h"
 
 namespace kn
 {
   class knShare_Export SingletonBase
   {
   protected:
-    static boost::recursive_mutex s_mutex;
+    static mutex s_mutex;
   };
 
 
@@ -66,7 +67,7 @@ namespace kn
      *  Just adding it here to keep some flexibility for bad compilers/linkers.
      */
     void close() {
-      boost::lock_guard<boost::recursive_mutex> lock(s_mutex);
+      lock_guard<mutex> lock(s_mutex);
       s_instance.reset();
     }
 
@@ -76,7 +77,7 @@ namespace kn
      * Interestingly enough, this should alsow work out fine
      * with dynamic libraries.
      */
-    static boost::scoped_ptr<TYPE> s_instance;
+    static scoped_ptr<TYPE> s_instance;
   };
 
   //--------------------------------------------------------------------------
@@ -88,7 +89,7 @@ namespace kn
   Singleton<TYPE>::operator()()
   {
     if (!s_instance) {
-      boost::lock_guard<boost::recursive_mutex> lock(s_mutex);
+      lock_guard<mutex> lock(s_mutex);
       if (!s_instance) {
         s_instance.reset(new TYPE());
       }
@@ -97,7 +98,7 @@ namespace kn
   }
 
   template <class TYPE>
-  boost::scoped_ptr<TYPE> Singleton<TYPE>::s_instance;
+  scoped_ptr<TYPE> Singleton<TYPE>::s_instance;
 }
 
 #endif // kn_Singleton_h

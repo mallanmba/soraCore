@@ -16,8 +16,8 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef miro_DdsDataHandler_h
-#define miro_DdsDataHandler_h
+#ifndef knDds_DdsDataHandler_h
+#define knDds_DdsDataHandler_h
 
 #include "knDds_Export.h"
 
@@ -116,4 +116,4 @@ namespace kn
   };
 }
 
-#endif // miro_DdsDataHandler_h
+#endif // knDds_DdsDataHandler_h

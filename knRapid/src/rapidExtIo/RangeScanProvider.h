@@ -41,7 +41,7 @@ namespace rapid
     class rapidExtIo_Export RangeScanProvider : public RangeScanProviderBase
     {
     public:
-      RangeScanProvider(RangeScanTopicPairParameters const& params);
+      RangeScanProvider(RangeScanTopicPairParameters const& params, const std::string& entityName);
       virtual ~RangeScanProvider() throw();
     };
   }

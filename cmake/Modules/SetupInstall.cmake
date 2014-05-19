@@ -36,14 +36,14 @@ macro( install_library TARGET_NAME )
   append_internal_list( INSTALL_LIBRARY_LIST ${TARGET_NAME} )
   
   # if soversion variables have been set, set the property
-  # e.g. FOO_SOVERSION = 3.0.0, FOO_SOVERSION_MAJOR = 3
-  if( DEFINED ${PROJECT_UPPER}_SOVERSION AND DEFINED ${PROJECT_UPPER}_SOVERSION_MAJOR )
+  # e.g. FOO_SOVERSION = 3.0.0
+  if( DEFINED ${PROJECT_UPPER}_SOVERSION )
     set_target_properties( ${TARGET_NAME}
       PROPERTIES
         VERSION   ${${PROJECT_UPPER}_SOVERSION}
-        SOVERSION ${${PROJECT_UPPER}_SOVERSION_MAJOR}
+        SOVERSION ${${PROJECT_UPPER}_SOVERSION}
     )
-  endif( DEFINED ${PROJECT_UPPER}_SOVERSION AND DEFINED ${PROJECT_UPPER}_SOVERSION_MAJOR )
+  endif( DEFINED ${PROJECT_UPPER}_SOVERSION )
   
 endmacro( install_library )
 

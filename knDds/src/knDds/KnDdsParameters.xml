@@ -1,5 +1,5 @@
 <!DOCTYPE xml SYSTEM "MiroParametersDescriptionDocument.dtd">
-<config> 
+<config>
   <config_global name="namespace" value="kn" />
   <config_global name="include" value="miro/ConfigParameters.h" />
 
@@ -60,6 +60,8 @@
       <config_parameter name="publishers" type="std::vector&lt;DdsNodeParameters&gt;" default="1" />
       <config_parameter name="subscribers" type="std::vector&lt;DdsNodeParameters&gt;" default="1" />
       <config_parameter name="topics" type="std::vector&lt;DdsTopicParameters&gt;" />
+      <config_parameter name="enableDistLogger" type="bool" default="true" doc="enable RTI Distributed Logger" />
+      <config_parameter name="distLoggerDomainId" type="int" default="-1" />
       <constructor>
         configFiles.push_back("RAPID_QOS_PROFILES.xml");
       </constructor>
@@ -73,8 +75,10 @@
       <config_parameter name="parentNode" type="string" unit="publisher/subscriber" />
       <config_parameter name="profile" type="string" />
       <config_parameter name="library" type="string" />
+      <!-- config_parameter name="entityName" type="string" / -->
     </config_item>
 
+    <!-- DEPRECATED: use TopicPair parameters. DdsConfigStateLeaf still used by VEStopParameters -->
     <config_item name="DdsConfigStateLeaf" parent="Miro::Config" final="false" instance="false">
       <config_parameter name="topicSuffix" type="string" />
       <config_parameter name="parentNode" type="string" unit="publisher/subscriber" />
@@ -83,6 +87,7 @@
       <config_parameter name="library" type="string" />
     </config_item>
 
+    <!-- DEPRECATED: use TopicPair parameters. DdsConfigSampleLeaf still used by RapidTrajectoryParameters, RapidTilingParameters -->
     <config_item name="DdsConfigSampleLeaf" parent="Miro::Config" final="false" instance="false">
       <config_parameter name="topicSuffix" type="string" />
       <config_parameter name="parentNode" type="string" unit="publisher/subscriber" />

@@ -44,7 +44,7 @@ namespace rapid
       class rapidExtArcIo_Export GpsProvider : public GpsProviderBase
       {
       public:
-        GpsProvider(GpsTopicPairParameters const& params);
+        GpsProvider(GpsTopicPairParameters const& params, const std::string& entityName);
         
         void publish(const ACE_Time_Value& time, 
                      const int status,

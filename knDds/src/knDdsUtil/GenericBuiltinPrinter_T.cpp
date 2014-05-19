@@ -22,8 +22,11 @@
 #include "knDds/KnDdsParameters.h"
 
 #include "miro/Robot.h" // for MNC parsing
+#include "miro/SearchPaths.h" 
 
 #include <stdexcept>
+
+#include "knDdsConfig.h"
 
 namespace kn
 {
@@ -34,6 +37,8 @@ namespace kn
 
   GenericBuiltinPrinterBase::GenericBuiltinPrinterBase(int& argc, char * argv[]) 
   {
+    Miro::SearchPaths::prependMiroEtcPath(KNDDS_INSTALL_PREFIX"/etc");
+    
     // for naming context
     Miro::Log::init(argc, argv);
     Miro::Robot::init(argc, argv);

@@ -16,8 +16,8 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef miro_DdsPushConsumerBase_h
-#define miro_DdsPushConsumerBase_h
+#ifndef knDds_DdsPushConsumer_h
+#define knDds_DdsPushConsumer_h
 
 #include <ndds/ndds_cpp.h>
 #include <ndds/ndds_namespace_cpp.h>
@@ -27,6 +27,10 @@
 namespace kn
 {
 
+  /**
+   * wraps DDS::DataReaderListener. Default callback implementations
+   * write log messages
+   */
   class knDds_Export DdsPushConsumer : public DDS::DataReaderListener
   {
   public:
@@ -63,4 +67,4 @@ namespace kn
   };
 } // namespace kn
 
-#endif // miro_DdsPushConsumerBase_h
+#endif // knDds_DdsPushConsumer_h

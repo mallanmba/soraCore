@@ -23,7 +23,7 @@
 
 #include <ace/Time_Value.h>
 
-#include <boost/shared_ptr.hpp>
+#include "knShare/SmartPtr.h"
 
 namespace kn
 {
@@ -39,7 +39,8 @@ namespace rapid
   class rapidIo_Export ImageSensorProvider
   {
   public:
-    ImageSensorProvider(ImageSensorProviderParameters const& params,
+    ImageSensorProvider(ImageSensorProviderParameters const& params, 
+                        const std::string& entityName, 
                         char const * mT = NULL,
                         rapid::ImageMetadata const * metaData = NULL);
 
@@ -55,7 +56,7 @@ namespace rapid
   protected:
     typedef kn::DdsTypedSupplier<rapid::ImageSensorSample> ImageSampleSupplier;
     // scoped-ptr would be good enough, but requires full type at declaration
-    typedef boost::shared_ptr<ImageSampleSupplier> ImageSampleSupplierPtr;
+    typedef kn::shared_ptr<ImageSampleSupplier> ImageSampleSupplierPtr;
 
     ImageSampleSupplierPtr m_sampleSupplier;
     rapid::ImageMetadata& m_metadata;

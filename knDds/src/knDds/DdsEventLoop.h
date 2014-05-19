@@ -16,21 +16,21 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef miro_DdsEventLoop_h
-#define miro_DdsEventLoop_h
+#ifndef knDds_DdsEventLoop_h
+#define knDds_DdsEventLoop_h
 
 #include "knDds_Export.h"
 #include "DdsDataHandler.h"
 #include "DdsEventHandler.h"
 #include "DdsTypedConsumer.h"
 
+#include "knShare/Time.h"
+
 #include <ndds/ndds_cpp.h>
 #include <ndds/ndds_namespace_cpp.h>
 
 #include <map>
 #include <vector>
-
-class ACE_Time_Value;
 
 namespace kn
 {
@@ -54,9 +54,27 @@ namespace kn
       DDS_REQUESTED_DEADLINE_MISSED_STATUS |
       DDS_REQUESTED_INCOMPATIBLE_QOS_STATUS |
       DDS_LIVELINESS_CHANGED_STATUS;
+    
+    /**
+     * ctor
+     * @param entityName name will be inserted into the EntityName qos
+     *                         for all DataReaders spawned by this DdsEventLoop
+     */
+    DdsEventLoop(const std::string& entityName)
+      :
+      m_entityName(entityName) 
+    {
+      if(m_entityName.length() > KNDDS_MAX_ENTITY_NAME_LENGTH)
+        m_entityName.resize(KNDDS_MAX_ENTITY_NAME_LENGTH);
+    }
 
     //! Dtor cleaning up all owned objects.
     ~DdsEventLoop() throw();
+    
+    const std::string& entityName() const {
+      return m_entityName;
+    }
+    
     //! Connect a callback with a specifig topic.
     /** This creates an DdsTypedConsumer and DdsEventHandler instances
      * that the EventLoop keeps ownership of.
@@ -136,14 +154,17 @@ namespace kn
     void addEventHandler(DdsEventHandlerBase * handler);
 
     //! The even-loop processor
-    /** Waits up to maxSlice second on the arrival of new events.
+    /** 
+     * Waits up to maxSlice second on the arrival of new events.
      * Will return after all events triggered are processed.
      * Returns the remaining time of the slice or 0 if all time elapsed.
      *
      * Note that if processing of events takes a lot of time, the method
      * can take more than maxSlice time to return.
+     * @param maxSlice timeout when waiting for events to arrive
+     * @returns remaining time of the slice or 0 if all time elapsed.
      */
-    ACE_Time_Value processEvents(ACE_Time_Value const& maxSlice);
+    Duration processEvents(Duration const& maxSlice);
 
   private:
     typedef std::map<DDS::Condition *, DdsEventHandlerBase *> EventHandlerMap;
@@ -155,7 +176,10 @@ namespace kn
     EventHandlerMap m_eventHandlers;
     EventHandlerVector m_ownedHandlers;
     ReceiverVector m_ownedReceivers;
+
+    std::string m_entityName;
   };
+
 
   template<typename T, typename H>
   DdsStatusEventHandler<T, DdsSampleCallbackFunctor<T, H>, DdsTake> * 
@@ -168,7 +192,7 @@ namespace kn
                         DDS::StatusMask mask)
   {
     DdsTypedConsumer<T> * receiver =
-      new DdsTypedConsumer<T>(topic, subscriber, profile, library);
+      new DdsTypedConsumer<T>(topic, subscriber, profile, library, m_entityName);
     m_ownedReceivers.push_back(receiver);
     return this->createStatusEventHandler<T>(DdsSampleCallbackFunctor<T, H>(*callback),
                                              receiver->dataReader(),
@@ -187,7 +211,7 @@ namespace kn
                         DDS::StatusMask mask)
   {
     DdsTypedConsumer<T> * receiver =
-      new DdsTypedConsumer<T>(topic, subscriber, profile, library);
+      new DdsTypedConsumer<T>(topic, subscriber, profile, library, m_entityName);
     m_ownedReceivers.push_back(receiver);
     return this->createStatusEventHandler<T>(C(*callback),
                                              receiver->dataReader(),
@@ -206,7 +230,7 @@ namespace kn
                                  DDS::Long maxSamples)
   {
     DdsTypedConsumer<T> * receiver =
-      new DdsTypedConsumer<T>(topic, subscriber, profile, library);
+      new DdsTypedConsumer<T>(topic, subscriber, profile, library, m_entityName);
     m_ownedReceivers.push_back(receiver);
 
     return this->createQueryEventHandler<T>(DdsSampleCallbackFunctor<T, H>(*callback),
@@ -260,4 +284,4 @@ namespace kn
   }
 }
 
-#endif // miro_DdsEventLoop_h
+#endif // knDds_DdsEventLoop_h

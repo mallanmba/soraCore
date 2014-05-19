@@ -23,8 +23,7 @@
 
 #include "knShare/StateMachine.h"
 #include "knShare/StateMachineRepository.h"
-
-#include <boost/bind.hpp>
+#include "knShare/Functional.h"
 
 namespace rapid
 {
@@ -38,8 +37,9 @@ namespace rapid
        * ctor
        */
       StateMachineProvider::StateMachineProvider(StateMachineTopicPairParameters const& params,
-                                                 std::string const& name) :
-        StateMachineProviderBase(STATEMACHINE_CONFIG_TOPIC, STATEMACHINE_STATE_TOPIC, fillInMachineDescription(params, name))
+                                                 std::string const& name, 
+                                                 std::string const&entityName) :
+        StateMachineProviderBase(STATEMACHINE_CONFIG_TOPIC, STATEMACHINE_STATE_TOPIC, fillInMachineDescription(params, name), entityName)
       {
         rapid::ext::arc::StateMachineConfig& config = m_configSupplier.event();
         rapid::ext::arc::StateMachineState& state = m_dataSupplier.event();
@@ -59,7 +59,7 @@ namespace rapid
         kn::StateMachine * stateMachine = repo->get(name);
     
         m_stateUpdateConnection = 
-          stateMachine->transitionSignal().connect(boost::bind(&StateMachineProvider::publish, this, _1, _2, _3, _4, _5));
+          stateMachine->transitionSignal().connect(kn::bind(&StateMachineProvider::publish, this, _1, _2, _3, _4, _5));
 
         stateMachine->resignal();
       }

@@ -45,7 +45,8 @@ namespace kn
 {
   using namespace std;
   
-
+  const char* svcName = "FrameStoreConfigSvc";
+  
   FrameStoreConfigSvc::FrameStoreConfigSvc() :
       m_params(NULL),
       m_verbose(false),
@@ -72,8 +73,8 @@ namespace kn
     string const& robotName = Miro::RobotParameters::instance()->name;
     rapid::FrameStoreInit frameStoreInit(*Miro::Configuration::document(),
                                          kn::FrameStoreSingleton::instance(),
-					 robotName,
-					 m_params->siteFrame);
+                                         robotName,
+                                         m_params->siteFrame);
 
     // connect robot frame to chosen site frame
     FrameStore * fs = frameStoreInit.getFrameStore();
@@ -101,7 +102,8 @@ namespace kn
       m_fsConfigPublisher = new FsConfigPublisher(rapid::FRAMESTORE_CONFIG_TOPIC,
           m_params->publisher,
           m_params->profile,
-          m_params->library);
+          m_params->library,
+          svcName);
 
       rapid::FrameStoreConfig * config =
         frameStoreInit.createFrameStoreConfig();

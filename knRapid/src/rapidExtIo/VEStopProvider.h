@@ -41,7 +41,7 @@ namespace rapid
     class rapidExtIo_Export VEStopProvider : public VEStopProviderBase
     {
     public:
-      VEStopProvider(VEStopTopicPairParameters const& params);
+      VEStopProvider(VEStopTopicPairParameters const& params, const std::string& entityName);
       virtual ~VEStopProvider() throw();
     };
   }

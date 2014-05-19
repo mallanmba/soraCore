@@ -26,10 +26,11 @@ namespace rapid
   /**
    * ctor
    */
-  AgentProvider::AgentProvider(AgentTopicPairParameters const& params) :
+  AgentProvider::AgentProvider(AgentTopicPairParameters const& params, const std::string& entityName) :
     AgentProviderBase(AGENT_CONFIG_TOPIC,
                       AGENT_STATE_TOPIC,
-                      params)
+                      params,
+                      entityName)
   {
   }
 

@@ -41,7 +41,7 @@ namespace rapid
          class rapidExtArcIo_Export HydraProvider : public HydraProviderBase 
          {
          public:
-            HydraProvider(HydraTopicPairParameters const& params);
+            HydraProvider(HydraTopicPairParameters const& params, const std::string& entityName);
 
          };
       }

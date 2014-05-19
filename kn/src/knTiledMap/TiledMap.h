@@ -124,11 +124,11 @@ namespace kn
         int maxY = y = first->second->originY();
           
         for (++first; first != last; ++first) {
-          x = min(x, first->second->originX());
-          y = min(y, first->second->originY());
+          x = std::min(x, first->second->originX());
+          y = std::min(y, first->second->originY());
           
-          maxX = max(maxX, first->second->originX());
-          maxY = max(maxY, first->second->originY());
+          maxX = std::max(maxX, first->second->originX());
+          maxY = std::max(maxY, first->second->originY());
         }
         
         

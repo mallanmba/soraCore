@@ -44,8 +44,7 @@ get_package_lib_search_path( "${PACKAGE_NAME}" "${PACKAGE_DIRS}" "${PACKAGE_ROOT
 #-----------------------------------------
 find_library( ${PACKAGE_BASE_LIBRARY} 
   NAMES ${PACKAGE_REQ_LIBRARY}
-  PATHS ${LIB_SEARCH_PATH}
-  NO_DEFAULT_PATH
+  HINTS ${LIB_SEARCH_PATH}
   DOC "${PACKAGE_NAME} library"
 )
 
@@ -56,30 +55,43 @@ if( ${PACKAGE_BASE_LIBRARY} )
   
   # remove lib name and lib dir to get root
   #-----------------------------------------------
+  string(REGEX REPLACE "/[^/]*$" "" ${PACKAGE_LIBRARY_DIR} ${${PACKAGE_BASE_LIBRARY}} )
+  
+  #message(STATUS "  (dbg) ${PACKAGE_LIBRARY_DIR} = ${${PACKAGE_LIBRARY_DIR}}" )
+
   string(REGEX REPLACE "/[^/]*/[^/]*$" "" _${PACKAGE_ROOT_DIR} ${${PACKAGE_BASE_LIBRARY}} )
+  
   if( _${PACKAGE_ROOT_DIR} ) # only resolve if non-empty
     get_filename_component(${PACKAGE_ROOT_DIR} "${_${PACKAGE_ROOT_DIR}}" REALPATH)
   else ( _${PACKAGE_ROOT_DIR} )
     set( ${PACKAGE_ROOT_DIR} "/" )
   endif( _${PACKAGE_ROOT_DIR} )
   
-  #message( STATUS "  ${PACKAGE_ROOT_DIR}=${${PACKAGE_ROOT_DIR}}" )
-
-  set( ${PACKAGE_LIBRARY_DIR} "${${PACKAGE_ROOT_DIR}}/lib" )
+  #message( STATUS "  (dbg) ${PACKAGE_ROOT_DIR}=${${PACKAGE_ROOT_DIR}}" )
+  if( NOT EXISTS "${${PACKAGE_ROOT_DIR}}/include/" )
+    # if PACKAGE_LIBRARY_DIR/../include is not a directory, then it's likely 
+    # the lib is in a multiarch dir. Pop up one more directory.
+    string(REGEX REPLACE "/[^/]*$" "" _TEMP ${${PACKAGE_ROOT_DIR}} )
+    set(${PACKAGE_ROOT_DIR} ${_TEMP})
+    #message( STATUS "  (dbg) ${PACKAGE_ROOT_DIR}=${${PACKAGE_ROOT_DIR}}" )
+  endif( NOT EXISTS "${${PACKAGE_ROOT_DIR}}/include/" )
   
-  set( ROOT_INCLUDE_DIR "${${PACKAGE_ROOT_DIR}}/include" )
-  #set( ${PACKAGE_INCLUDE_DIR} "${${PACKAGE_ROOT_DIR}}/include" CACHE PATH "${PACKAGE_NAME} include path")
-  
+  set( ROOT_INCLUDE_DIR "${${PACKAGE_ROOT_DIR}}/include" )  
   if( PACKAGE_REQ_INCLUDE )
     find_file( TEMP_INCLUDE_FILE 
       NAMES ${PACKAGE_REQ_INCLUDE}
-      PATHS ${ROOT_INCLUDE_DIR}
+      HINTS ${ROOT_INCLUDE_DIR}
       PATH_SUFFIXES "" ${PACKAGE_INCLUDE_SUFFIX}
       NO_DEFAULT_PATH
     )
     
     if ( TEMP_INCLUDE_FILE ) 
-    
+      #if( NOT ${TEMP_INCLUDE_FILE} MATCHES "^${ROOT_INCLUDE_DIR}.*" )
+      #  message(STATUS "  (dbg) header path does not match guessed include root")
+      #  string( REPLACE "/${PACKAGE_REQ_INCLUDE}" "" TEMP_INCLUDE_DIR ${TEMP_INCLUDE_FILE} )
+      #  set( ROOT_INCLUDE_DIR "${TEMP_INCLUDE_DIR}")
+      #endif()
+          
       set( ${PACKAGE_FOUND} TRUE )
       message(STATUS "  ${PACKAGE_NAME} found in ${${PACKAGE_ROOT_DIR}}")
       string(REGEX REPLACE "/[^/]*$" "" FOUND_INCLUDE_DIR ${TEMP_INCLUDE_FILE} )
@@ -113,6 +125,8 @@ if( ${PACKAGE_BASE_LIBRARY} )
         set( ${PACKAGE_INCLUDE_DIR} "${ROOT_INCLUDE_DIR};${FOUND_INCLUDE_DIR}" CACHE PATH "${PACKAGE_NAME} include path")
       endif(FOUND_INCLUDE_DIR STREQUAL ROOT_INCLUDE_DIR )
       
+      #message(STATUS "  (dbg) ${PACKAGE_INCLUDE_DIR} = ${${PACKAGE_INCLUDE_DIR}}")
+      
     else ( TEMP_INCLUDE_FILE ) 
     
       set( ${PACKAGE_FOUND} FALSE )
@@ -139,5 +153,8 @@ else( ${PACKAGE_BASE_LIBRARY} )
 endif( ${PACKAGE_BASE_LIBRARY} )
 
 unset( ${PACKAGE_BASE_LIBRARY} CACHE )
+
+#message(STATUS "  (dbg) ${PACKAGE_INCLUDE_DIR} = ${${PACKAGE_INCLUDE_DIR}}")
+#message(STATUS "  (dbg) ${PACKAGE_LIBRARY_DIR} = ${${PACKAGE_LIBRARY_DIR}}")
 
 endmacro( simple_package_find )

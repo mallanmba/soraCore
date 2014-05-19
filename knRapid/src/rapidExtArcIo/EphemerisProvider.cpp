@@ -33,8 +33,8 @@ namespace rapid
        * ctor
        */
       // no changes to constructor
-      EphemerisProvider::EphemerisProvider(EphemerisTopicPairParameters const& params) :
-        EphemerisProviderBase(EPHEMERIS_CONFIG_TOPIC,EPHEMERIS_SAMPLE_TOPIC, params)
+      EphemerisProvider::EphemerisProvider(EphemerisTopicPairParameters const& params, const std::string& entityName) :
+        EphemerisProviderBase(EPHEMERIS_CONFIG_TOPIC,EPHEMERIS_SAMPLE_TOPIC, params, entityName)
       {}
       
       void

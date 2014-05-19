@@ -28,10 +28,11 @@ namespace rapid
     /**
      * ctor
      */
-    VEStopProvider::VEStopProvider(VEStopTopicPairParameters const& params) :
+    VEStopProvider::VEStopProvider(VEStopTopicPairParameters const& params, const std::string& entityName) :
       VEStopProviderBase(VESTOP_CONFIG_TOPIC,
                          VESTOP_STATE_TOPIC,
-                         params)
+                         params,
+                         entityName)
     {
     }
     

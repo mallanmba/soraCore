@@ -39,7 +39,7 @@ namespace rapid
   class rapidIo_Export JointProvider : public JointProviderBase
   {
   public:
-    JointProvider(JointTopicPairParameters const& params);
+    JointProvider(JointTopicPairParameters const& params, const std::string& entityName);
     virtual ~JointProvider() throw();
   };
 }

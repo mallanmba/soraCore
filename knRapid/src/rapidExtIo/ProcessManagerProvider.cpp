@@ -28,10 +28,11 @@ namespace rapid
     /**
      * ctor
      */
-    ProcessManagerProvider::ProcessManagerProvider(ProcessManagerTopicPairParameters const& params) :
+    ProcessManagerProvider::ProcessManagerProvider(ProcessManagerTopicPairParameters const& params, const std::string& entityName) :
       ProcessManagerProviderBase(PROCESSMANAGER_CONFIG_TOPIC,
                                  PROCESSMANAGER_STATE_TOPIC,
-                                 params)
+                                 params,
+                                 entityName)
     {
     }
     

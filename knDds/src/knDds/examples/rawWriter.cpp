@@ -1,6 +1,8 @@
+#include "knShare/Thread.h"
+#include "knShare/Chrono.h"
+
 #include <ace/INET_Addr.h>
 #include <ace/SOCK_Dgram.h>
-#include <ace/OS_NS_unistd.h>
 
 #include <iostream>
 
@@ -192,7 +194,7 @@ int main (int argc, char * argv[])
   }
 
   cout << "F" << flush;
-  ACE_OS::sleep(ACE_Time_Value(2, 500000));
+  kn::this_thread::sleep_for(kn::microseconds(2500000));
 
   //------------------------
   // topic header
@@ -233,7 +235,7 @@ int main (int argc, char * argv[])
     }
 
     // delay
-    ACE_OS::sleep(ACE_Time_Value(0, 500000));
+    kn::this_thread::sleep_for(kn::microseconds(500000));
     ++seq;
     ++counter;
     cout << "." << flush;

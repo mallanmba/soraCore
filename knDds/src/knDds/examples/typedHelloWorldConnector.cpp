@@ -2,7 +2,10 @@
 #include "knDds/DdsTypedConnector.h"
 #include "knDds/DdsEntitiesFactorySvc.h"
 
-#include  "miro/ShutdownHandler.h" // for Ctrl-C handler  and MNC parsing
+#include "knShare/Thread.h"
+#include "knShare/Chrono.h"
+
+#include "miro/ShutdownHandler.h" // for Ctrl-C handler  and MNC parsing
 
 #include "HelloWorld.h"
 #include "HelloWorldSupport.h"
@@ -36,7 +39,7 @@ int main(int argc, char * argv[])
     /* Main loop */
     cout << "waiting for Ctrl-C" << endl;
     while (!shutdownHander.isShutdown()) {
-      ACE_OS::sleep(ACE_Time_Value(0, 100000));
+      kn::this_thread::sleep_for(kn::microseconds(100000));
     }
   }
   ddsEntities.fini();

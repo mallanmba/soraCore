@@ -53,8 +53,6 @@ include_directories(
   ${QT_INCLUDE_DIR}
   ${QT_QTXML_INCLUDE_DIR}
   ${QT_QTCORE_INCLUDE_DIR}
-  ${EIGEN3_INCLUDE_DIR}
-  ${Boost_INCLUDE_DIR}
   ${RAPID_INCLUDE_DIR}
   ${RTIDDS_INCLUDE_DIR}
 )
@@ -65,8 +63,10 @@ add_target_definitions( ${LIB_NAME} ${EXPORT_DEFINE} )
 add_srcdir_definitions( ${RTIDDS_DEFINES} )
 
 target_link_libraries( ${LIB_NAME}
-  miroXml
+  ${ACE_LIBRARIES}
+  ${MIRO_miroXml_LIBRARY}
   ${RTIDDS_LIBRARIES}
+  ${KN_knShare_LIBRARY}
 )
 
 if ( KNDDS_HAS_DDS_LBPlugin )
@@ -84,10 +84,14 @@ if ( KNDDS_HAS_DDS_Monitor )
   )
 endif ( KNDDS_HAS_DDS_Monitor )
 
-# make sure we build MakeParams before this 
-add_dependencies( ${LIB_NAME} MakeParams )
+if ( KNDDS_HAS_RTI_DistLogger )
+  target_link_libraries( ${LIB_NAME}
+    ${RTIDDS_DLOGGER_LIBRARIES}
+  )
+endif ( KNDDS_HAS_RTI_DistLogger )
 
 add_subdirectory(examples)
 
 install_library( ${LIB_NAME}  )
 install_files  ( /include/knDds FILES ${HEADERS} )
+

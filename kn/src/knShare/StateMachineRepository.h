@@ -32,4 +32,4 @@ namespace kn
 
 KNSHARE_SINGLETON_DECLARATION(kn::Singleton<kn::Repository<kn::StateMachine *> >);
 
-#endif // kn_StateMachineRepositoryx_h
+#endif // kn_StateMachineRepository_h

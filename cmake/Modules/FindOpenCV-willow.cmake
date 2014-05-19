@@ -24,6 +24,7 @@
 #
 ## 3: Version
 #
+# 2013/12/11 Mark Allan, add search for opencv2 include directory and warn about include path
 # 2010/10/19 Mark Allan, remove conditional around 'backwards comatibility' because those variables are conventional
 # 2010/09/15 Mark Allan, Improve find behavior for rpm installs of OpenCV
 # 2010/04/07 Benoit Rat, Correct a bug when OpenCVConfig.cmake is not found.
@@ -52,6 +53,7 @@ cmake_minimum_required(VERSION 2.6.3) # 'unset' command was added in version 2.6
 
 find_path(OpenCV_DIR "OpenCVConfig.cmake" DOC "Root directory of OpenCV")
 
+#message(STATUS "  (dbg) OpenCVConfig_FILE = ${OpenCVConfig_FILE}")
 # OpenCVConfig may not be in root dir, so look for
 # in in a few other places
 find_file(OpenCVConfig_FILE "OpenCVConfig.cmake"
@@ -63,6 +65,7 @@ find_file(OpenCVConfig_FILE "OpenCVConfig.cmake"
                 /opt/local/lib/cmake
           DOC "Full path of OpenCVConfig.cmake"
           NO_DEFAULT_PATH)
+#message(STATUS "  (dbg) OpenCVConfig_FILE = ${OpenCVConfig_FILE}")
 
 # if OpenCV_DIR is not set but OpenCVConfig.cmake was found, try to
 # find cv.h and use it to set OpenCV_DIR
@@ -71,11 +74,25 @@ if(NOT OpenCV_DIR AND EXISTS ${OpenCVConfig_FILE})
   string( REGEX REPLACE "/[^/]*/[^/]*/[^/]*$" ""       TMP_OPENCV_ROOT_1  ${OpenCVConfig_FILE} )
   string( REGEX REPLACE "/[^/]*/[^/]*/[^/]*/[^/]*$" "" TMP_OPENCV_ROOT_2  ${OpenCVConfig_FILE} )
   string( REGEX REPLACE "/[^/]*$" ""                   TMP_OPENCV_ROOT_3  ${OpenCVConfig_FILE} )
+  
   find_file(TMP_OPENCV_CV_H_FILE "cv.h"
             PATHS "${TMP_OPENCV_ROOT_1}" "${TMP_OPENCV_ROOT_2}" "${TMP_OPENCV_ROOT_3}"
-            PATH_SUFFIXES "include/opencv"
+            PATH_SUFFIXES "include/opencv" 
             DOC "tmp"
             NO_DEFAULT_PATH )
+            
+  # mallan: cv.h is a deprecated header. Look for new version...
+  if( NOT EXISTS ${TMP_OPENCV_CV_H_FILE} )
+    set( HAVE_OLD_OPENCV_HEADERS FALSE )
+    find_file(TMP_OPENCV_CV_H_FILE "opencv.hpp"
+              PATHS "${TMP_OPENCV_ROOT_1}" "${TMP_OPENCV_ROOT_2}" "${TMP_OPENCV_ROOT_3}"
+              PATH_SUFFIXES "include/opencv2" 
+              DOC "tmp"
+              NO_DEFAULT_PATH )
+  else( NOT EXISTS ${TMP_OPENCV_CV_H_FILE} )
+    set( HAVE_OLD_OPENCV_HEADERS TRUE )
+  endif( NOT EXISTS ${TMP_OPENCV_CV_H_FILE} )
+  
   if( EXISTS ${TMP_OPENCV_CV_H_FILE} )
     # remove include/opencv/cv.h and set root dir
     string ( REGEX REPLACE "/[^/]*/[^/]*/[^/]*$" "" TMP_OPENCV_ROOT ${TMP_OPENCV_CV_H_FILE} )
@@ -225,9 +242,24 @@ endif(NOT OpenCV_FOUND)
 #if(OpenCV_FOUND)
 #option(OpenCV_BACKWARD_COMPA "Add some variable to make this script compatible with the other version of FindOpenCV.cmake" false)
 #if(OpenCV_BACKWARD_COMPA)
+
         #find_path(OpenCV_INCLUDE_DIRS "cv.h" PATHS "${OpenCV_DIR}" PATH_SUFFIXES "include" "include/opencv" DOC "Include directory")
-        find_path(OpenCV_INCLUDE_DIR "opencv/cv.h" PATHS "${OpenCV_DIR}" PATH_SUFFIXES "include" "include/opencv" DOC "Include directory")
+        if( HAVE_OLD_OPENCV_HEADERS )
+          find_path(OpenCV_INCLUDE_DIR "opencv/cv.h" HINTS "${OpenCV_DIR}" PATH_SUFFIXES "include" "include/opencv" DOC "Include directory")
+        else( HAVE_OLD_OPENCV_HEADERS )
+          find_path(OpenCV_INCLUDE_DIR "opencv2/opencv.hpp" HINTS "${OpenCV_DIR}" PATH_SUFFIXES "include" DOC "Include directory")
+        endif( HAVE_OLD_OPENCV_HEADERS )
         set(OpenCV_LIBRARIES "${OpenCV_LIBS}" CACHE STRING "" FORCE)
+
 #endif(OpenCV_BACKWARD_COMPA)
 #endif(OpenCV_FOUND)
 ##====================================================
+if(OpenCV_FOUND)
+  if(HAVE_OLD_OPENCV_HEADERS) 
+    message(STATUS "  NOTE: The old OpenCV headers exist (i.e. include/opencv/cv.h) but these are deprecated")
+    message(STATUS "         and should not be used. Use include/opencv2/opencv.hpp")
+  else(HAVE_OLD_OPENCV_HEADERS) 
+    message(STATUS "  NOTE: OpenCV was found, but the old-style headers (i.e. include/opencv/cv.h) do not exist")
+    message(STATUS "        That is fine, as long as all code has already been updated to use the new headers.")
+  endif(HAVE_OLD_OPENCV_HEADERS) 
+endif(OpenCV_FOUND)

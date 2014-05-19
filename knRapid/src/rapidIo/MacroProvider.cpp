@@ -43,8 +43,8 @@ namespace rapid
    * ctor
    */
   // no changes to constructor
-  MacroProvider::MacroProvider(MacroTopicPairParameters const& params) :
-    MacroProviderBase(MACRO_CONFIG_TOPIC, MACRO_STATE_TOPIC, params)
+  MacroProvider::MacroProvider(MacroTopicPairParameters const& params, const std::string& entityName) :
+    MacroProviderBase(MACRO_CONFIG_TOPIC, MACRO_STATE_TOPIC, params, entityName)
   {}
 
   void

@@ -16,8 +16,8 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef miro_DdsTypedSupplier_h
-#define miro_DdsTypedSupplier_h
+#ifndef knDds_DdsTypedSupplier_h
+#define knDds_DdsTypedSupplier_h
 
 // XXX mallan: the following is necessary to prevent compile problems
 // XXX in OS_NS_Thread on Win32. Looks like ace is pulled in through
@@ -40,6 +40,9 @@
 
 namespace kn
 {
+  /**
+   * DdsSupplierBase
+   */
   class knDds_Export DdsSupplierBase
   {
   public:
@@ -54,6 +57,9 @@ namespace kn
   };
 
   //! use DdsSupport DATA_TYPE_TRAITS as template parameter
+  /**
+   * DdsTypedSupplier
+   */
   template<class T>
   class DdsTypedSupplier : public DdsSupplierBase
   {
@@ -74,6 +80,7 @@ namespace kn
     //--------------------------------------------------------------------------
 
     /**
+     * DdsTypedSupplier
      * @param topic The topic name in DDS domain.
      * @param publisher The publisher to use. 
      *                  This class is named publisher for consistency with Notification Service,
@@ -81,13 +88,26 @@ namespace kn
      *                  Publishers are created by the DdsEntitiesFactorySvc at startup.
      * @param profile   In case this publisher needs a non-default profile, specify the xml-profile name.
      * @param library   In case this publisher needs a non-default profile, specify the xml-library name.
+     * @param entityName optional name to insert into DataWriterQos.EntityNameQosPolicy
      */
-    DdsTypedSupplier(std::string const& topic,
-                      std::string const& publisher = "",
-                      std::string const& profile = "",
-                      std::string const& library = "");
-    DdsTypedSupplier(std::string const& topic,
-                      DdsLeafParameters const& params);
+    DdsTypedSupplier( std::string const& topic,
+                      std::string const& publisher  = "",
+                      std::string const& profile    = "",
+                      std::string const& library    = "",
+                      DDS::DataWriterListener* listener = NULL,
+                      DDS::StatusMask mask          = DDS_STATUS_MASK_NONE,
+                      std::string const& entityName = "");
+                      
+    DdsTypedSupplier( std::string const& topic,
+                      std::string const& publisher,
+                      std::string const& profile,
+                      std::string const& library,
+                      std::string const& entityName);
+                      
+    DdsTypedSupplier( std::string const& topic,
+                      DdsLeafParameters const& params,
+                      std::string const& entityName);
+                      
     virtual ~DdsTypedSupplier() throw();
 
     Type const& event() const throw();
@@ -97,6 +117,10 @@ namespace kn
     virtual DataWriter& dataWriter() throw() {
       return dynamic_cast<DataWriter&>(*m_writer);
     }
+  
+  protected:
+    /** hook to modify qos immediately before creation of DataWriter. Default implementation does nothing. */
+    virtual void customizeQos(DDS::DataWriterQos& qos) {}
 
   private:
     //--------------------------------------------------------------------------
@@ -105,51 +129,88 @@ namespace kn
     void init(std::string const& topic,
               std::string const& publisher,
               std::string const& profile,
-              std::string const& library);
+              std::string const& library,
+              DDS::DataWriterListener* listener,
+              DDS::StatusMask mask,
+              std::string const& entityName);
 
     //--------------------------------------------------------------------------
     // private data
     //--------------------------------------------------------------------------
 
     DDS::Topic * m_topic;
-    Type * m_instance;
+    Type *       m_instance;
   };
 
+  /**
+   * ctor
+   */
   template<class T>
   DdsTypedSupplier<T>::DdsTypedSupplier(std::string const& topic,
                                           std::string const& publisher,
                                           std::string const& profile,
-                                          std::string const& library) :
+                                          std::string const& library,
+                                          DDS::DataWriterListener* listener,
+                                          DDS::StatusMask mask,
+                                          std::string const& entityName) :
       m_topic(NULL),
       m_instance(NULL)
   {
-    init(topic, publisher, profile, library);
+    init(topic, publisher, profile, library, listener, mask, entityName);
   }
 
+  /**
+   * ctor
+   */
   template<class T>
   DdsTypedSupplier<T>::DdsTypedSupplier(std::string const& topic,
-                                          DdsLeafParameters const& params) :
+                                        std::string const& publisher,
+                                        std::string const& profile,
+                                        std::string const& library,
+                                        std::string const& entityName) :
+      m_topic(NULL),
+      m_instance(NULL)
+  {
+    init(topic, publisher, profile, library, NULL, DDS_STATUS_MASK_NONE, entityName);
+  }
+
+  /**
+   * ctor
+   */
+  template<class T>
+  DdsTypedSupplier<T>::DdsTypedSupplier(std::string const& topic,
+                                        DdsLeafParameters const& params,
+                                        std::string const& entityName) :
       m_topic(NULL),
       m_instance(NULL)
   {
     init(topic + params.topicSuffix, 
          params.parentNode,
          params.profile,
-         params.library);
+         params.library,
+         NULL,
+         DDS_STATUS_MASK_NONE,
+         entityName);
   }
 
+  /**
+   * ctor implementation
+   */
   template<class T>
   void
   DdsTypedSupplier<T>::init(std::string const& topic,
                              std::string const& publisher,
                              std::string const& profile,
-                             std::string const& library) 
+                             std::string const& library,
+                             DDS::DataWriterListener* listener,
+                             DDS::StatusMask mask,
+                             std::string const& entityName) 
   {
     std::string p = (publisher.empty()) ?
       Miro::RobotParameters::instance()->name : publisher;
 
     DdsPublisherRepository * repo = NULL;
-    DDS::Publisher * pub = NULL;
+    DDS::Publisher *         pub  = NULL;
     DDS::DomainParticipant * part = NULL;
 
     try {
@@ -169,18 +230,28 @@ namespace kn
     char const * prof = profile.empty() ? NULL : profile.c_str();
     char const * lib = library.empty() ? NULL : library.c_str();
 
-    DDS::DataWriter * writer =
-      (prof) ?
-      pub->create_datawriter_with_profile(m_topic,
-                                          lib, // default library
-                                          prof, // passed in profile
-                                          NULL /* listener */,
-                                          DDS::STATUS_MASK_NONE) :
-      pub->create_datawriter(m_topic,
-                             DDS_DATAWRITER_QOS_DEFAULT, // passed in profile
-                             NULL /* listener */,
-                             DDS::STATUS_MASK_NONE);
-
+    DDS::DataWriter*   writer;
+    DDS::DataWriterQos qos;
+    if(prof) {
+      DDS::DomainParticipantFactory* dpf = DDS::DomainParticipantFactory::get_instance();
+      dpf->get_datawriter_qos_from_profile(qos, lib, prof);
+    }
+    else {
+      pub->get_default_datawriter_qos(qos);
+    } 
+    if(!entityName.empty()) {
+      if(entityName.length() < KNDDS_MAX_ENTITY_NAME_LENGTH)
+        qos.publication_name.name = DDS_String_dup(entityName.c_str());
+      else
+        qos.publication_name.name = DDS_String_dup(entityName.substr(0,KNDDS_MAX_ENTITY_NAME_LENGTH).c_str());
+    }
+    customizeQos(qos);
+    
+    writer = pub->create_datawriter(m_topic,
+                                    qos,
+                                    listener,
+                                    mask);
+    
     if (writer == NULL) {
       throw Miro::Exception("create_datawriter error");
     }
@@ -198,6 +269,9 @@ namespace kn
 
   }
 
+  /**
+   * dtor 
+   */
   template<class T>
   DdsTypedSupplier<T>::~DdsTypedSupplier() throw()
   {
@@ -224,6 +298,9 @@ namespace kn
   }
 
 
+  /**
+   * @returns reference to local data instance
+   */
   template<class T>
   typename T::Type&
   DdsTypedSupplier<T>::event() throw()
@@ -231,13 +308,19 @@ namespace kn
     return *m_instance;
   }
 
+  /**
+   * @returns const reference to local data instance
+   */
   template<class T>
   typename T::Type const&
   DdsTypedSupplier<T>::event() const throw()
   {
     return *m_instance;
   }
-
+  
+  /**
+   * publish passed-in data
+   */ 
   template<class T>
   void
   DdsTypedSupplier<T>::sendEvent(Type const& data, DDS::InstanceHandle_t const& handle) throw(Miro::Exception)
@@ -248,7 +331,10 @@ namespace kn
       throw Miro::Exception(std::string("write error: ") + DdsSupport::getError(rc));
     }
   }
-
+  
+  /**
+   * publish local data instance
+   */
   template<class T>
   void
   DdsTypedSupplier<T>::sendEvent() throw(Miro::Exception)
@@ -261,4 +347,4 @@ namespace kn
   }
 } // namespace kn
 
-#endif // miro_DdsTypedSupplier_h
+#endif // knDds_DdsTypedSupplier_h

@@ -26,6 +26,10 @@
 #include "knDds/DdsSupport.h"
 #include "knDds/DdsEntitiesFactorySvc.h"
 #include "knDds/KnDdsParameters.h"
+
+#include "knShare/Thread.h"
+#include "knShare/Chrono.h"
+
 #include "miro/ShutdownHandler.h" // Ctrl-C handler
 
 // stdlib includes
@@ -60,7 +64,7 @@ int main(int argc, char * argv[])
     sysInfo.init(argc, argv);
     
     while(!ctrlCHandler.isShutdown()) {
-      ACE_OS::sleep(ACE_Time_Value(0, 100000));
+      kn::this_thread::sleep_for(kn::microseconds(100000));
     }
     sysInfo.fini();
   }

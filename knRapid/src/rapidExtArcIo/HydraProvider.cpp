@@ -27,8 +27,8 @@ namespace rapid
    {
       namespace arc
       {
-         HydraProvider::HydraProvider(HydraTopicPairParameters const& params):
-            HydraProviderBase(HYDRA_CONFIG_TOPIC, HYDRA_SAMPLE_TOPIC, params)
+         HydraProvider::HydraProvider(HydraTopicPairParameters const& params, const std::string& entityName):
+            HydraProviderBase(HYDRA_CONFIG_TOPIC, HYDRA_SAMPLE_TOPIC, params, entityName)
          {}
            
       }

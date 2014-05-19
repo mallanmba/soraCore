@@ -43,10 +43,11 @@ namespace rapid
     /**
      * ctor
      */
-    NavMapProvider::NavMapProvider(NavMapTopicPairParameters const& params) :
+    NavMapProvider::NavMapProvider(NavMapTopicPairParameters const& params, const std::string& entityName) :
       NavMapProviderBase(NAVMAP_CONFIG_TOPIC,
                          NAVMAP_SAMPLE_TOPIC,
-                         params)
+                         params,
+                         entityName)
     {
       NavMapSample& sample = m_dataSupplier.event();
 

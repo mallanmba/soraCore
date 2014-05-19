@@ -16,8 +16,8 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef miro_DdsEntitiesFactory_h
-#define miro_DdsEntitiesFactory_h
+#ifndef knDds_DdsEntitiesFactory_h
+#define knDds_DdsEntitiesFactory_h
 
 #include "knDds_Export.h"
 #include "knDds/KnDdsParameters.h"
@@ -50,4 +50,4 @@ namespace kn
   };
 }
 
-#endif // miro_DdsEntitiesFactory_h
+#endif // knDds_DdsEntitiesFactory_h

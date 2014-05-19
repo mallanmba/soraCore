@@ -30,6 +30,8 @@ set( LIBRARY_NAMES
   rapidExtIo
   rapidExtArcIo
   knFrameStoreSvc
+  knFetchPool
+  knSystemInfo
   knSystemInfoSvc
   knRaft
   knProcessManager

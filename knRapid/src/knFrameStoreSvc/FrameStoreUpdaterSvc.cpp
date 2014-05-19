@@ -48,13 +48,13 @@
 #include <ace/OS_NS_string.h>
 #include <ace/Get_Opt.h>
 
-#include <boost/scoped_ptr.hpp>
-#include <boost/shared_ptr.hpp>
+#include "knShare/SmartPtr.h"
 
 namespace kn
 {
   using namespace std;
   
+  static const char* svcName = "FrameStoreUpdaterSvc";
 
   FrameStoreUpdaterSvc::FrameStoreUpdaterSvc() :
     m_params(NULL),
@@ -119,13 +119,13 @@ namespace kn
     // set up RAPID frame-updaters
     rapid::FsConfigUpdater fsConfigUpdater(*m_frameStore);
 
-    typedef boost::shared_ptr<rapid::FsPositionUpdater> FsPositionUpdaterPtr;
-    typedef boost::shared_ptr<rapid::FsJointUpdater> FsJointUpdaterPtr;
+    typedef kn::shared_ptr<rapid::FsPositionUpdater> FsPositionUpdaterPtr;
+    typedef kn::shared_ptr<rapid::FsJointUpdater> FsJointUpdaterPtr;
 
     std::vector<FsPositionUpdaterPtr>  fsPositionUpdaters;
     std::vector<FsJointUpdaterPtr> fsJointUpdaters;
     
-    kn::DdsEventLoop eventLoop;
+    kn::DdsEventLoop eventLoop(svcName);
     
     
     // connect RAPID frame-updaters for local-robot updates
@@ -155,7 +155,7 @@ namespace kn
     while (!mgr->testcancel(mgr->thr_self())) {
 
       // 10Hz processing
-      eventLoop.processEvents(ACE_Time_Value(0, 100000));
+      eventLoop.processEvents(kn::microseconds(100000));
     }
 
     MIRO_LOG(LL_NOTICE, "Exiting (detached) rapid framestore updater loop.");

@@ -16,8 +16,8 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef miro_DdsSupport_h
-#define miro_DdsSupport_h
+#ifndef knDds_DdsSupport_h
+#define knDds_DdsSupport_h
 
 #include "knDds_Export.h"
 #include "miro/Exception.h"
@@ -25,12 +25,15 @@
 
 #include <ndds/ndds_cpp.h>
 
-#include <ace/Basic_Types.h>
 #include <ace/Recursive_Thread_Mutex.h>
 #include <ace/Guard_T.h>
 
 #include <iosfwd>
 #include <string>
+
+#include <stdint.h>
+
+#define KNDDS_MAX_ENTITY_NAME_LENGTH 255
 
 #define MIRO_DDS_TYPE_TRAITS(DATA_TYPE) \
   class DATA_TYPE ## Traits \
@@ -91,7 +94,7 @@ namespace kn
     static char const * getError(int rc) throw();
 
     static void printReaderStatus(std::ostream& ostr,
-                                  DDSDataReader& reader, ACE_UINT32 mask);
+                                  DDSDataReader& reader, int32_t mask);
 
     static DDS_Long maxNumInstances(DDSDataWriter& writer);
     

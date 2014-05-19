@@ -38,10 +38,13 @@ namespace rapid
                        rapid::ext::NavMapSample,
                        NavMapTopicPairParameters> NavMapProviderBase;
   
+    /**
+     * NavMapProvider
+     */
     class rapidExtIo_Export NavMapProvider : public NavMapProviderBase
     {
     public:
-      NavMapProvider(NavMapTopicPairParameters const& params);
+      NavMapProvider(NavMapTopicPairParameters const& params, const std::string& entityName);
       virtual ~NavMapProvider() throw();
     };
   }

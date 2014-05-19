@@ -26,9 +26,10 @@
 #include "rapidDds/Ack.h"
 
 #include "knShare/Time.h"
-
-#include <boost/shared_ptr.hpp>
-#include <boost/thread.hpp>
+#include "knShare/SmartPtr.h"
+#include "knShare/Thread.h"
+#include "knShare/Mutex.h"
+#include "knShare/ConditionVariable.h"
 
 #include <string>
 
@@ -48,7 +49,7 @@ namespace rapid
   class rapidIo_Export CommandAckPair
   {
   public:
-    CommandAckPair(CommandAckPairParameters const& params);
+    CommandAckPair(CommandAckPairParameters const& params, std::string const& entityName);
     ~CommandAckPair() throw();
 
     CommandAckPairParameters const& parameters() const { return m_params; }
@@ -73,7 +74,7 @@ namespace rapid
 
   protected:
     typedef kn::DdsTypedSupplier<rapid::Command> CommandSupplier;
-    typedef boost::shared_ptr<CommandSupplier> CommandSupplierPtr;
+    typedef kn::shared_ptr<CommandSupplier> CommandSupplierPtr;
 
     CommandAckPairParameters const& m_params;                           
     CommandSupplierPtr m_commandSupplier;
@@ -84,8 +85,8 @@ namespace rapid
     std::string m_subsysName;
     std::string m_cmdName;
 
-    boost::mutex m_mutex;
-    boost::condition_variable m_condition;
+    kn::mutex m_mutex;
+    kn::condition_variable m_condition;
 
     rapid::AckStatus m_status;
     rapid::AckCompletedStatus m_completedStatus;

@@ -26,20 +26,23 @@
 
 using namespace std;
 
-//char c = 'a';
-
-struct Cell
+namespace 
 {
-  char a;
-
-  Cell() : a('.') {
-    //    if (c > 'z')
-    //      c = 'a';
-  }
-};
-
-typedef kn::MultiResTile<Cell, 1> TileType; // tile-size 2x2, num-tiles 4x4 , map-size 8x8
-typedef kn::TiledMap<TileType> MapType;
+  //char c = 'a';
+  
+  struct Cell
+  {
+    char a;
+    
+    Cell() : a('.') {
+      //    if (c > 'z')
+      //      c = 'a';
+    }
+  };
+  
+  typedef kn::MultiResTile<Cell, 1> TileType; // tile-size 2x2, num-tiles 4x4 , map-size 8x8
+  typedef kn::TiledMap<TileType> MapType;
+}
 
 void printMap(MapType const& m)
 {

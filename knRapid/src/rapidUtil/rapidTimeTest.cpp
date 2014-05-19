@@ -31,6 +31,7 @@ int main (int argc, char * argv[])
   int sec = 0;
   int usec = 0;
 
+  // take timestamp from command-line
   if (argc > 1)
     sec = atoi(argv[1]);
   if (argc > 2)
@@ -39,22 +40,27 @@ int main (int argc, char * argv[])
   aceT.sec(sec);
   aceT.usec(usec);
 
+  // take current time
   if (argc == 1)
     aceT = ACE_OS::gettimeofday();
 
   ACE_Time_Value before = ACE_OS::gettimeofday();
   DDS_LongLong rapidT;
   ACE_Time_Value aceT2;
+  kn::TimePoint tp;
   for (int i = 0; i < 10000000; ++i) {
     rapidT = rapid::RapidHelper::aceTimeValue2RapidTime(aceT);
-   aceT2 = rapid::RapidHelper::rapidTime2AceTimeValue(rapidT);
+    aceT2 = rapid::RapidHelper::rapidTime2AceTimeValue(rapidT);
   }
   ACE_Time_Value after = ACE_OS::gettimeofday();
 
+  tp = rapid::RapidHelper::rapidTime2knTimePoint(rapidT);
   cout << "elapsed: " << after - before  << endl;
   cout << "ace:   " << aceT  << endl;
   cout << "ace2:  " << aceT2 << endl;
   cout << "rapid: " << rapidT << endl;
+  cout << "kn:    " << tp << endl;
+  cout << "rapid: " << rapid::RapidHelper::knTimePoint2RapidTime(tp) << endl;
 
   return 0;
 }

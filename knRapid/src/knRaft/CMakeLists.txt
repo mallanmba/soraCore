@@ -40,7 +40,7 @@ link_directories( ${Boost_LIBRARY_DIRS} )
 
 link_libraries(
   rapidCommanding
-  ${KN_knFetchPool_LIBRARY}
+  knFetchPool
   ${RTIDDS_LIBRARIES}
 )
 

@@ -88,12 +88,12 @@ namespace rapid
       }
       
       Printer printer;
-      kn::DdsEventLoop eventLoop;
+      kn::DdsEventLoop eventLoop("GenericPrinter");
       
-      eventLoop.connect<T>(&printer, topicName, subs, m_profile);
+      eventLoop.connect<T>(&printer, topicName, subs, m_profile, "");
 
       while (!m_shutdownHandler.isShutdown()) {
-        eventLoop.processEvents(ACE_Time_Value(0, 100000));
+        eventLoop.processEvents(kn::microseconds(100000));
       }
     }
   };

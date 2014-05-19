@@ -29,7 +29,6 @@
 #include <ndds/dds_c/dds_c_infrastructure.h>
 #include <ndds/ndds_cpp.h>
 #include <ndds/ndds_namespace_cpp.h>
-#include <boost/iterator/iterator_concepts.hpp>
 
 #include <vector>
 
@@ -704,7 +703,7 @@ namespace kn
 
   void
   DdsSupport::printReaderStatus(std::ostream& ostr,
-                                 DDS::DataReader & reader, ACE_UINT32 mask)
+                                 DDS::DataReader & reader, int32_t mask)
   {
     DDS::ReturnCode_t rc = DDS_RETCODE_OK;
 

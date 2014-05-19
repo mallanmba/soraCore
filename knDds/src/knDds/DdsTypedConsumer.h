@@ -16,8 +16,8 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef miro_DdsTypedConsumer_h
-#define miro_DdsTypedConsumer_h
+#ifndef knDds_DdsTypedConsumer_h
+#define knDds_DdsTypedConsumer_h
 
 // XXX mallan: the following is necessary to prevent compile problems
 // XXX in OS_NS_Thread on Win32. Looks like ace is pulled in through
@@ -37,8 +37,6 @@
 
 #include <ndds/ndds_cpp.h>
 #include <ndds/ndds_namespace_cpp.h>
-
-#include <iostream>
 
 namespace kn
 {
@@ -75,18 +73,38 @@ namespace kn
     //--------------------------------------------------------------------------
 
     DdsTypedConsumer(std::string const& topic,
-                       std::string const& subscriber = "",
-                       std::string const& profile = "",
-                       std::string const& library = "",
-                       DDS::DataReaderListener * listener = NULL,
-                       DDS::StatusMask mask = DDS_STATUS_MASK_ALL);
+                     std::string const& subscriber     = "",
+                     std::string const& profile        = "",
+                     std::string const& library        = "",
+                     DDS::DataReaderListener* listener = NULL,
+                     DDS::StatusMask mask              = DDS_STATUS_MASK_ALL,
+                     std::string const& entityName     = "");
+                     
+    DdsTypedConsumer(std::string const& topic,
+                     std::string const& subscriber,
+                     std::string const& profile,
+                     std::string const& library,
+                     std::string const& entityName);
+                     
     virtual ~DdsTypedConsumer() throw();
 
     virtual DataReader& dataReader() throw() {
       return dynamic_cast<DataReader&>(*m_reader);
     }
+  
+  protected:
+    /** hook to modify qos immediately before creation of DataReader. Default implementation does nothing. */
+    virtual void customizeQos(DDS::DataReaderQos& qos) {}
 
   private:
+    void init(std::string const& topic,
+              std::string const& subscriber,
+              std::string const& profile,
+              std::string const& library,
+              DDS::DataReaderListener* listener,
+              DDS::StatusMask mask,
+              std::string const& entityName);
+    
     //--------------------------------------------------------------------------
     // private data
     //--------------------------------------------------------------------------
@@ -96,12 +114,37 @@ namespace kn
 
   template<class T>
   DdsTypedConsumer<T>::DdsTypedConsumer(std::string const& topic,
-      std::string const& subscriber,
-      std::string const& profile,
-      std::string const& library,
-      DDS::DataReaderListener * listener,
-      DDS::StatusMask mask) :
+                                        std::string const& subscriber,
+                                        std::string const& profile,
+                                        std::string const& library,
+                                        DDS::DataReaderListener * listener,
+                                        DDS::StatusMask mask,
+                                        std::string const& entityName) :
       m_topic(NULL)
+  {
+    init(topic, subscriber, profile, library, listener, mask, entityName);
+  }
+
+  template<class T>
+  DdsTypedConsumer<T>::DdsTypedConsumer(std::string const& topic,
+                                        std::string const& subscriber,
+                                        std::string const& profile,
+                                        std::string const& library,
+                                        std::string const& entityName) :
+      m_topic(NULL)
+  {
+    init(topic, subscriber, profile, library, NULL, DDS_STATUS_MASK_ALL, entityName);
+  }
+
+  template<class T>
+  void
+  DdsTypedConsumer<T>::init(std::string const& topic,
+                            std::string const& subscriber,
+                            std::string const& profile,
+                            std::string const& library,
+                            DDS::DataReaderListener * listener,
+                            DDS::StatusMask mask,
+                            std::string const& entityName)
   {
     std::string s = (subscriber.empty()) ?
       Miro::RobotParameters::instance()->name : subscriber;
@@ -115,22 +158,28 @@ namespace kn
 
     /* To customize data writer Qos, use
        publisher->get_default_datawriter_qos() */
-
+    
     char const * prof = profile.empty() ? NULL : profile.c_str();
     char const * lib = library.empty() ? NULL : library.c_str();
-
-    DDS::DataReader * reader =
-      (prof) ?
-      sub->create_datareader_with_profile(m_topic,
-                                          lib, // default library
-                                          prof, // passed in profile
-                                          listener,
-                                          mask) :
-      sub->create_datareader(m_topic,
-                             DDS_DATAREADER_QOS_DEFAULT, // passed in profile
-                             listener,
-                             mask);
-
+    
+    DDS::DataReader*   reader;
+    DDS::DataReaderQos qos;
+    if(prof) {
+      DDS::DomainParticipantFactory* dpf = DDS::DomainParticipantFactory::get_instance();
+      dpf->get_datareader_qos_from_profile(qos, lib, prof);
+    }
+    else {
+      sub->get_default_datareader_qos(qos);
+    }
+    if(!entityName.empty()) {
+      qos.subscription_name.name = DDS_String_dup(entityName.c_str());
+    }
+    customizeQos(qos);
+    
+    reader = sub->create_datareader(m_topic,
+                                   qos,
+                                   listener,
+                                   mask);
 
     if (reader == NULL) {
       throw Miro::Exception("create_datawriter error");
@@ -154,4 +203,4 @@ namespace kn
 
 } // namespace kn
 
-#endif // miro_DdsTypedConsumer_h
+#endif // knDds_DdsTypedConsumer_h

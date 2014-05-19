@@ -21,6 +21,7 @@
 #include "knMath/Matrix.h"
 #include "knMath/EulerAngles.h"
 
+#include <stdexcept>
 #include <iostream>
 #include <cmath>
 
@@ -39,10 +40,6 @@ namespace rapid
   Transform3DHelper::transform3DToATrans3(kn::ATrans3& atrans, Transform3D const& trans, rapid::RotationEncoding encoding)
   {
     kn::Matrix3x3 rotation;
-
-    atrans.translation()[0] = trans.xyz[0];
-    atrans.translation()[1] = trans.xyz[1];
-    atrans.translation()[2] = trans.xyz[2];
 
     switch (encoding) {
     case rapid::RAPID_ROT_NONE:
@@ -74,13 +71,16 @@ namespace rapid
     case rapid::RAPID_ROT_ZYZ:
       rotation = kn::eulerXyzToRotationMatrix(trans.rot[0], trans.rot[1], trans.rot[2]);
       break;
+    case rapid::RAPID_ROT_VEL:
+      throw std::runtime_error("Transform3DHelper encoding RAPID_ROT_VEL not supported.");
+      break;
     default:
-      {
-        bool const supportedRotationFormat = false;
-        assert(supportedRotationFormat == true);
-      }
+      throw std::runtime_error("Transform3DHelper unknown encoding.");
     }
 
+    atrans.translation()[0] = trans.xyz[0];
+    atrans.translation()[1] = trans.xyz[1];
+    atrans.translation()[2] = trans.xyz[2];
     for (int y = 0; y < 3; ++y) {
       for (int x = 0; x < 3; ++x) {
         atrans.matrix()(y, x) = rotation(y, x);

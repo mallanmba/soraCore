@@ -29,7 +29,7 @@
 #include "rapidDds/MacroState.h"
 #include "rapidDds/MacroStateSupport.h"
 
-#include <boost/shared_ptr.hpp>
+#include "knShare/SmartPtr.h"
 
 namespace rapid
 {
@@ -41,10 +41,10 @@ namespace rapid
   class rapidIo_Export MacroProvider : public MacroProviderBase
   {
   public:
-    typedef boost::shared_ptr<MacroConfig> MacroConfigPtr;
+    typedef kn::shared_ptr<MacroConfig> MacroConfigPtr;
     typedef std::vector<MacroConfigPtr> MacroConfigVector;
     
-    MacroProvider(MacroTopicPairParameters const& params);
+    MacroProvider(MacroTopicPairParameters const& params, const std::string& entityName);
     
     void publishMacroConfig(MacroConfigParameters const& params);
     

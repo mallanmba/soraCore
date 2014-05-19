@@ -26,10 +26,11 @@ namespace rapid
   /**
    * ctor
    */
-  JointProvider::JointProvider(JointTopicPairParameters const& params) :
+  JointProvider::JointProvider(JointTopicPairParameters const& params, const std::string& entityName) :
     JointProviderBase(JOINT_CONFIG_TOPIC,
                       JOINT_SAMPLE_TOPIC,
-                      params)
+                      params,
+                      entityName)
   {
   }
 

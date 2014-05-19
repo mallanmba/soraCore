@@ -21,10 +21,11 @@
 #include "DdsSupport.h"
 #include "DdsTypeRegistrator.h"
 
-#include "miro/Log.h"
-#include "miro/Configuration.h"
-#include "miro/RobotParameters.h"
-#include "miro/Exception.h"
+#include <miro/Configuration.h>
+#include <miro/RobotParameters.h>
+#include <miro/Exception.h>
+
+#include <knShare/Log.h>
 
 #include "knDdsConfig.h"
 
@@ -38,6 +39,10 @@
 #ifdef KNDDS_HAS_DDS_Monitor
 #  include <monitor/monitor_common.h>
 #endif
+#ifdef KNDDS_HAS_RTI_DistLogger
+#  include <rti_dl/rti_dl_cpp.h>
+#endif
+
 
 #include <ace/OS_NS_strings.h>
 #include <ace/Get_Opt.h>
@@ -55,8 +60,7 @@ namespace kn
   typedef vector<DdsTopicParameters> TopicVector;
   typedef vector<string> StringVector;
 
-  struct DdsEntitiesFactory::Data
-  {
+  struct DdsEntitiesFactory::Data {
     //! DDS topics registered by the factory.
     /** They are remembered for later cleanup. */
     std::vector<DDS::Topic *> topics;
@@ -101,29 +105,29 @@ namespace kn
       dpfQos.profile.ignore_resource_profile = true;
 
       for (unsigned int i = 0; i < m_params.configFiles.size(); ++i) {
-	string absFilePath = paths.findFile(m_params.configFiles[i]);
-	if (absFilePath.empty()) {
+        string absFilePath = paths.findFile(m_params.configFiles[i]);
+        if (absFilePath.empty()) {
           ostr << "DdsSupport::init() - DDS config file given not found (" << m_params.configFiles[i] << ")";
           throw Miro::Exception(ostr.str());
-	}
+        }
 
-	dpfQos.profile.url_profile[i] =  DDS_String_dup(("file://" + absFilePath).c_str());
+        dpfQos.profile.url_profile[i] =  DDS_String_dup(("file://" + absFilePath).c_str());
 
       }
       if ((rc = dpf->set_qos(dpfQos)) != DDS_RETCODE_OK) {
-	ostr << "DdsSupport::init() - Failed to set Qos: " << DdsSupport::getError(rc);
-	throw Miro::Exception(ostr.str());
+        ostr << "DdsSupport::init() - Failed to set Qos: " << DdsSupport::getError(rc);
+        throw Miro::Exception(ostr.str());
       }
     }
 
     if (!m_params.defaultLibrary.empty() &&
-                (rc = dpf->set_default_library(m_params.defaultLibrary.c_str())) != DDS_RETCODE_OK) {
+        (rc = dpf->set_default_library(m_params.defaultLibrary.c_str())) != DDS_RETCODE_OK) {
       ostr << "DdsSupport::init() - Failed to set default library: " << DdsSupport::getError(rc);
       throw Miro::Exception(ostr.str());
     }
     if (!m_params.defaultProfile.empty() &&
-                (rc = dpf->set_default_profile(m_params.defaultLibrary.c_str(),
-                                               m_params.defaultProfile.c_str())) != DDS_RETCODE_OK) {
+        (rc = dpf->set_default_profile(m_params.defaultLibrary.c_str(),
+                                       m_params.defaultProfile.c_str())) != DDS_RETCODE_OK) {
       ostr << "DdsSupport::init() - Failed to set default library: " << DdsSupport::getError(rc);
       throw Miro::Exception(ostr.str());
     }
@@ -143,7 +147,7 @@ namespace kn
         DDS::DomainParticipantQos qos;
         DDS_DomainParticipantQos_initialize(&qos);
         if (profile == NULL &&
-           (m_params.defaultLibrary.empty() || m_params.defaultProfile.empty())) {
+            (m_params.defaultLibrary.empty() || m_params.defaultProfile.empty())) {
           DDS::ReturnCode_t rc = dpf->get_default_participant_qos(qos);
           if (rc != DDS_RETCODE_OK) {
             ostr << "Get default participant Qos profile: " << DdsSupport::getError(rc);
@@ -165,11 +169,11 @@ namespace kn
 
         // handle discovery-peers processing
         // just print the stuff as a first step...
-        
+
         if (!first->discoveryPeersFiles.empty())  {
           DDS_DiscoveryQosPolicy& discovery = qos.discovery;
 
-          
+
           StringVector peers;
 
           StringVector::const_iterator f, l = first->discoveryPeersFiles.end();
@@ -195,40 +199,62 @@ namespace kn
             MIRO_LOG_OSTR(LL_NOTICE, qos.discovery.initial_peers[i]);
           }
         }
+
 #ifdef KNDDS_HAS_DDS_Monitor
         if (first->enableMonitor) {
           int rc;
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-                                                       "rti.monitor.library",
-                                                        "rtimonintoring",
-                                                        DDS_BOOLEAN_FALSE);
+               "rti.monitor.library",
+               "rtimonintoring",
+               DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
           char valueBuffer[17];
           sprintf(valueBuffer, "%p", RTIDefaultMonitor_create);
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-                                                       "rti.monitor.create_function_ptr",
-                                                        valueBuffer,
-                                                        DDS_BOOLEAN_FALSE);
+               "rti.monitor.create_function_ptr",
+               valueBuffer,
+               DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
 
-          int id = (first->monitorDomainId >= 0)?
-            first->monitorDomainId : first->domainId + 1;
-          sprintf(valueBuffer, "%i", id);
+          int monitorId = (first->monitorDomainId >= 0) ? first->monitorDomainId : first->domainId + 1;
+          sprintf(valueBuffer, "%i", monitorId);
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-                                                       "rti.monitor.config.new_participant_domain_id",
-                                                        valueBuffer,
-                                                        DDS_BOOLEAN_FALSE);
+               "rti.monitor.config.new_participant_domain_id",
+               valueBuffer,
+               DDS_BOOLEAN_FALSE);
           if (!first->monitorLibrary.empty()) {
             rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-                                                          "rti.monitor.config.qos_library",
-                                                          first->monitorLibrary.c_str(),
-                                                          DDS_BOOLEAN_FALSE);
+                 "rti.monitor.config.qos_library",
+                 first->monitorLibrary.c_str(),
+                 DDS_BOOLEAN_FALSE);
             assert (rc == DDS_RETCODE_OK);
             rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-                                                          "rti.monitor.config.qos_profile",
-                                                          first->monitorProfile.c_str(),
-                                                          DDS_BOOLEAN_FALSE);
+                 "rti.monitor.config.qos_profile",
+                 first->monitorProfile.c_str(),
+                 DDS_BOOLEAN_FALSE);
             assert (rc == DDS_RETCODE_OK);
+          }
+        }
+#endif
+
+#if defined(KNDDS_HAS_RTI_DistLogger)
+        if(m_params.enableDistLogger) {
+          // Initialize the distributed logger. If distLoggerDomainId is less than
+          // 0, use the domain of the first participant
+          int loggerId = (m_params.distLoggerDomainId >= 0) ?  m_params.distLoggerDomainId : first->domainId;
+          RTI_DLDistLogger* dl = NULL;
+          RTI_DLOptions     dlOptions;
+          rc = dlOptions.setDomainId(loggerId);
+          assert (rc == DDS_RETCODE_OK);
+          rc = dlOptions.setApplicationKind(qos.participant_name.name);
+          assert (rc == DDS_RETCODE_OK);
+          RTI_DLDistLogger::setOptions(dlOptions);
+          dl = RTI_DLDistLogger::getInstance();
+          if(dl) {
+            dl->info("DdsEntitiesFactory initialized RTI Distributed Logger");
+          }
+          else {
+            KN_ERROR("RTI Distributed Logger - getInstance() returned NULL");
           }
         }
 #endif
@@ -277,34 +303,34 @@ namespace kn
           pPlugin->registerPlugin(participant);
 #  else
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-                                                       "dds.discovery.participant.lbpdiscovery.library",
-                                                        "rtilbpdisc",
-                                                        DDS_BOOLEAN_FALSE);
+               "dds.discovery.participant.lbpdiscovery.library",
+               "rtilbpdisc",
+               DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-                                                       "dds.discovery.participant.lbpdiscovery.create_function",
-                                                        "DDS_LBPDiscoveryPlugin_create",
-                                                        DDS_BOOLEAN_FALSE);
-          assert (rc == DDS_RETCODE_OK);
-
-          rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-                                                       "dds.discovery.participant.lbpdiscovery.config_file",
-                                                        first->lbpdFile.c_str(),
-                                                        DDS_BOOLEAN_FALSE);
+               "dds.discovery.participant.lbpdiscovery.create_function",
+               "DDS_LBPDiscoveryPlugin_create",
+               DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
 
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-                                                       "dds.discovery.participant.load_plugin",
-                                                       "dds.discovery.endpoint.lbpdiscovery",
-                                                        DDS_BOOLEAN_FALSE);
+               "dds.discovery.participant.lbpdiscovery.config_file",
+               first->lbpdFile.c_str(),
+               DDS_BOOLEAN_FALSE);
+          assert (rc == DDS_RETCODE_OK);
+
+          rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
+               "dds.discovery.participant.load_plugin",
+               "dds.discovery.endpoint.lbpdiscovery",
+               DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
 
           char valueBuffer[18];
           sprintf(valueBuffer, "%i", first->lbedLogVerbosity);
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-                                                       "dds.discovery.participant.lbpdiscovery.verbosity",
-                                                        valueBuffer,
-                                                        DDS_BOOLEAN_FALSE);
+               "dds.discovery.participant.lbpdiscovery.verbosity",
+               valueBuffer,
+               DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
 #  endif
         }
@@ -316,34 +342,34 @@ namespace kn
           ePlugin->registerPlugin(participant);
 #  else
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-                                                       "dds.discovery.endpoint.lbediscovery.library",
-                                                        "rtilbedisc",
-                                                        DDS_BOOLEAN_FALSE);
+               "dds.discovery.endpoint.lbediscovery.library",
+               "rtilbedisc",
+               DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-                                                       "dds.discovery.endpoint.lbediscovery.create_function",
-                                                        "DDS_LBEDiscoveryPlugin_create",
-                                                        DDS_BOOLEAN_FALSE);
-          assert (rc == DDS_RETCODE_OK);
-
-          rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-                                                       "dds.discovery.endpoint.lbediscovery.config_file",
-                                                        first->lbedFile.c_str(),
-                                                        DDS_BOOLEAN_FALSE);
+               "dds.discovery.endpoint.lbediscovery.create_function",
+               "DDS_LBEDiscoveryPlugin_create",
+               DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
 
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-                                                       "dds.discovery.endpoint.load_plugin",
-                                                       "dds.discovery.endpoint.lbediscovery",
-                                                        DDS_BOOLEAN_FALSE);
+               "dds.discovery.endpoint.lbediscovery.config_file",
+               first->lbedFile.c_str(),
+               DDS_BOOLEAN_FALSE);
+          assert (rc == DDS_RETCODE_OK);
+
+          rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
+               "dds.discovery.endpoint.load_plugin",
+               "dds.discovery.endpoint.lbediscovery",
+               DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
 
           char valueBuffer[18];
           sprintf(valueBuffer, "%i", first->lbedLogVerbosity);
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-                                                       "dds.discovery.endpoint.lbediscovery.verbosity",
-                                                        valueBuffer,
-                                                        DDS_BOOLEAN_FALSE);
+               "dds.discovery.endpoint.lbediscovery.verbosity",
+               valueBuffer,
+               DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
 #  endif
         }
@@ -406,11 +432,11 @@ namespace kn
             (f->schedulingPolicy == "DDS_RR_FLOW_CONTROLLER_SCHED_POLICY")?
             DDS_RR_FLOW_CONTROLLER_SCHED_POLICY : DDS_EDF_FLOW_CONTROLLER_SCHED_POLICY;
           property.token_bucket.max_tokens = (f->tokenBucket.maxTokens < 0)?
-            DDS_LENGTH_UNLIMITED : f->tokenBucket.maxTokens;
+                                             DDS_LENGTH_UNLIMITED : f->tokenBucket.maxTokens;
           property.token_bucket.tokens_added_per_period = (f->tokenBucket.tokensAddedPerPeriod < 0)?
-            DDS_LENGTH_UNLIMITED : f->tokenBucket.tokensAddedPerPeriod;
+              DDS_LENGTH_UNLIMITED : f->tokenBucket.tokensAddedPerPeriod;
           property.token_bucket.tokens_leaked_per_period = (f->tokenBucket.tokensLeakedPerPeriod < 0)?
-            DDS_LENGTH_UNLIMITED : f->tokenBucket.tokensLeakedPerPeriod;
+              DDS_LENGTH_UNLIMITED : f->tokenBucket.tokensLeakedPerPeriod;
           if (f->tokenBucket.period > ACE_Time_Value::zero) {
             property.token_bucket.period.sec = f->tokenBucket.period.sec();
             property.token_bucket.period.nanosec = f->tokenBucket.period.usec() * 1000;
@@ -419,7 +445,7 @@ namespace kn
             property.token_bucket.period = DDS_DURATION_INFINITE;
           }
           property.token_bucket.bytes_per_token = (f->tokenBucket.bytesPerToken < 0)?
-            DDS_LENGTH_UNLIMITED : f->tokenBucket.bytesPerToken;
+                                                  DDS_LENGTH_UNLIMITED : f->tokenBucket.bytesPerToken;
           participant->create_flowcontroller(DDS::String_dup(f->name.c_str()), property);
         }
         DDS_DomainParticipantQos_finalize(&qos);
@@ -449,7 +475,7 @@ namespace kn
         DDS::PublisherQos qos;
         DDS_PublisherQos_initialize(&qos);
         if (profile == NULL &&
-           (m_params.defaultLibrary.empty() || m_params.defaultProfile.empty())) {
+            (m_params.defaultLibrary.empty() || m_params.defaultProfile.empty())) {
           DDS::ReturnCode_t rc = participant->get_default_publisher_qos(qos);
           if (rc != DDS_RETCODE_OK) {
             ostr << "Get default publisher Qos profile: " << DdsSupport::getError(rc);
@@ -465,7 +491,7 @@ namespace kn
         }
 
         char const * partition = (first->partition.empty() || first->partition == "<NONE>")?
-          NULL : first->partition.c_str();
+                                 NULL : first->partition.c_str();
 
         if (partition != NULL) {
           qos.partition.name.maximum(1);
@@ -527,7 +553,7 @@ namespace kn
         DDS_SubscriberQos_initialize(&qos);
 
         if (profile == NULL &&
-           (m_params.defaultLibrary.empty() || m_params.defaultProfile.empty())) {
+            (m_params.defaultLibrary.empty() || m_params.defaultProfile.empty())) {
           DDS::ReturnCode_t rc = participant->get_default_subscriber_qos(qos);
           if (rc != DDS_RETCODE_OK) {
             ostr << "Get default subscriber Qos profile: " << DdsSupport::getError(rc);
@@ -542,33 +568,33 @@ namespace kn
           }
         }
         char const * partition = (first->partition.empty() || first->partition == "<NONE>")?
-          NULL : first->partition.c_str();
+                                 NULL : first->partition.c_str();
 
         if (partition != NULL) {
           if (strcmp("<TEAM>", partition) == 0) {
             Miro::RobotParameters * rp = Miro::RobotParameters::instance();
 
-	    if (!rp->teamMembers.empty()) {
-	      qos.partition.name.maximum(rp->teamMembers.size());
-	      qos.partition.name.length(rp->teamMembers.size());
-	      for (unsigned int i = 0; i < rp->teamMembers.size(); ++i) {
-		qos.partition.name[i] = DDS_String_dup(rp->teamMembers[i].c_str());
-	      }
-	    }
-	    else {
-	      MIRO_LOG(LL_WARNING, "Team partition requested, but RobotParameters::teamMembers is empty, assuming ALL.");
+            if (!rp->teamMembers.empty()) {
+              qos.partition.name.maximum(rp->teamMembers.size());
+              qos.partition.name.length(rp->teamMembers.size());
+              for (unsigned int i = 0; i < rp->teamMembers.size(); ++i) {
+                qos.partition.name[i] = DDS_String_dup(rp->teamMembers[i].c_str());
+              }
+            }
+            else {
+              MIRO_LOG(LL_WARNING, "Team partition requested, but RobotParameters::teamMembers is empty, assuming ALL.");
 
-	      qos.partition.name.maximum(1);
-	      qos.partition.name.length(1);
-	      qos.partition.name[0] = DDS_String_dup("*");
-	    }
-	  }
-	  else {
-	    qos.partition.name.maximum(1);
-	    qos.partition.name.length(1);
-	    qos.partition.name[0] = DDS_String_dup(partition);
-	  }
-	}
+              qos.partition.name.maximum(1);
+              qos.partition.name.length(1);
+              qos.partition.name[0] = DDS_String_dup("*");
+            }
+          }
+          else {
+            qos.partition.name.maximum(1);
+            qos.partition.name.length(1);
+            qos.partition.name[0] = DDS_String_dup(partition);
+          }
+        }
 
         DDS::Subscriber * subscriber =
           participant->create_subscriber(qos,
@@ -624,11 +650,11 @@ namespace kn
           (profile  ||
            (!m_params.defaultLibrary.empty() && !m_params.defaultProfile.empty())) ?
           participant->create_topic_with_profile(first->name.c_str(),
-                                                 first->typeName.c_str(),
-                                                 library,
-                                                 profile,
-                                                 NULL /* listener */,
-                                                 DDS::STATUS_MASK_NONE) :
+              first->typeName.c_str(),
+              library,
+              profile,
+              NULL /* listener */,
+              DDS::STATUS_MASK_NONE) :
           participant->create_topic(first->name.c_str(),
                                     first->typeName.c_str(),
                                     DDS_TOPIC_QOS_DEFAULT,
@@ -646,7 +672,7 @@ namespace kn
   {
     MIRO_LOG_DTOR("kn::DdsEntitiesFactory");
 
-   // delete all topics we created
+    // delete all topics we created
     {
       vector<DDS::Topic *>::const_iterator first, last = m_data->topics.end();
       for (first = m_data->topics.begin(); first != last; ++first) {
@@ -678,6 +704,15 @@ namespace kn
         }
       }
     }
+
+#if defined(KNDDS_HAS_RTI_DistLogger)
+    MIRO_LOG(LL_NOTICE, "Stop RTI Distributed Logger...");
+    RTI_DLDistLogger* dl = RTI_DLDistLogger::getInstance();
+    if(dl) {
+      dl->finalizeInstance();
+    }
+#endif
+
     MIRO_LOG(LL_NOTICE, "Cleaning up DDS participants...");
     DdsDomainParticipantRepository::SingletonType::ACE_Singleton_Type::close();
     DDS::DomainParticipantFactory * dpf =
@@ -685,38 +720,38 @@ namespace kn
     dpf->finalize_instance();
 
     delete m_data;
-  }
+}
 
   vector<string>
   DdsEntitiesFactory::parseDiscoveryPeersFile(string const& filename)
   {
     StringVector peers;
-    
+
     Miro::SearchPaths paths(KNDDS_INSTALL_PREFIX "/etc");
     paths.addMiroEtcPaths();
-    
+
     string absFilePath = paths.findFile(filename);
     if (absFilePath.empty()) {
       stringstream ostr;
       ostr << "DdsSupport::init() - DDS config file given not found (" << filename << ")";
       throw Miro::Exception(ostr.str());
     }
-    
+
     ifstream file(absFilePath.c_str());
     string line;
     while (std::getline(file, line)) {
       size_t begin = line.find_first_not_of(" \t");
-      
+
       if (begin != string::npos) {
         // cut comments and trailing whitesapce or comments
         size_t end = line.find_first_of(" \t;", begin);
-        
+
         // only add none-blank lines
         if (begin != end) {
           peers.push_back(line.substr(begin, end));
         }
       }
-    }   
+    }
     return peers;
   }
 }

@@ -30,6 +30,7 @@ set( LIBRARY_NAMES
   knSimMotor
   knProtoMotor
   knMala
+  knNirvss
   knPicservo
   knSerial
   knSimMotor

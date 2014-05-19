@@ -39,6 +39,11 @@
 #include "knDds/KnDdsParameters.h"
 #include "knDds/DdsTypedSupplier.h"
 #include "knDds/DdsTypedConsumer.h"
+
+#include "knShare/Thread.h"
+#include "knShare/Chrono.h"
+
+
 #include "miro/Log.h"
 #include "miro/TimeHelper.h"
 
@@ -754,7 +759,7 @@ namespace kn
     MIRO_LOG(LL_NOTICE, "Entering (detached) file-queue loop.");
     ACE_Thread_Manager * mgr = this->thr_mgr();
 
-    ACE_Time_Value tv(0, 100000);
+    kn::Duration tv(kn::microseconds(100000));
 
     rapid::FileAnnounce announceSample;
     rapid::FileAnnounceTypeSupport::initialize_data(&announceSample);
@@ -851,7 +856,7 @@ namespace kn
       }
 
       if (idle) {
-        ACE_OS::sleep(ACE_Time_Value(0, 100000));
+        kn::this_thread::sleep_for(kn::microseconds(100000));
       }
       */
 
@@ -874,7 +879,7 @@ namespace kn
 
       if (!m_connected) {
         MIRO_LOG(LL_DEBUG, "FileQueue::svc no readers - sleeping.");
-        ACE_OS::sleep(tv);
+        kn::this_thread::sleep_for(tv);
         continue;
       }
 
@@ -882,7 +887,7 @@ namespace kn
       //    * sleep
       // @TODO thread safety.
       if (!anyChannelActive() || !anyChannelNotEmpty()) {
-        ACE_OS::sleep(tv);
+        kn::this_thread::sleep_for(tv);
         continue;
       }
 
@@ -897,7 +902,7 @@ namespace kn
       }
       if (wire_status.send_window_size == 0) {
         MIRO_LOG(LL_DEBUG, "FileQueue::svc no room in the queue - sleeping.");
-        ACE_OS::sleep(tv);
+        kn::this_thread::sleep_for(tv);
         continue;
       }
 
@@ -908,7 +913,7 @@ namespace kn
       }
       if ((qos.resource_limits.max_samples - cache_status.sample_count) == 0) {
         MIRO_LOG(LL_DEBUG, "FileQueue::svc no room in the queue - sleeping.");
-        ACE_OS::sleep(tv);
+        kn::this_thread::sleep_for(tv);
         continue;
       }
 

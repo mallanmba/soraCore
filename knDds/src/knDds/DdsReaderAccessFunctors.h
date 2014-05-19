@@ -16,8 +16,8 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef miro_ReaderAccessFunctors_h
-#define miro_ReaderAceessFunctors_h
+#ifndef knDds_ReaderAccessFunctors_h
+#define knDds_ReaderAceessFunctors_h
 
 #include <ndds/ndds_cpp.h>
 #include <ndds/ndds_namespace_cpp.h>
@@ -114,4 +114,4 @@ namespace kn
 
 }
 
-#endif // miro_ReaderAceessFunctors_h
+#endif // knDds_ReaderAceessFunctors_h

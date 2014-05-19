@@ -17,6 +17,10 @@
 
 ******************************************************************************/
 #include "ProcessManagerSvc.h"
+#include "knSystemInfoSvc/SystemInfoSvc.h"
+
+#include "knShare/Thread.h"
+#include "knShare/Chrono.h"
 
 #include "miro/Log.h"
 #include "miro/Robot.h"
@@ -37,8 +41,13 @@ using namespace kn;
 
 string procDirective = "ProcessManagerSvc ";
 string sysInfoDirective = "SystemInfoSvc ";
+string commandManagerDirective = "CommandManagerSvc -s rctld -Q -C ";
 bool systemInfo = false;
+bool cmdMgr = true;
 int verbose = 0;
+
+kn::ProcessManagerSvc svcDummy;
+kn::SystemInfoSvc svcDummy2;
 
 int
 parseArgs(int& argc, char* argv[])
@@ -46,7 +55,7 @@ parseArgs(int& argc, char* argv[])
   int rc = 0;
   int c;
 
-  ACE_Get_Opt get_opts(argc, argv, "P:I:iv?");
+  ACE_Get_Opt get_opts(argc, argv, "C:P:I:iv?");
 
   while ((c = get_opts()) != -1) {
     switch (c) {
@@ -55,6 +64,8 @@ parseArgs(int& argc, char* argv[])
         break;
       case 'I':
         sysInfoDirective = get_opts.optarg;
+      case 'C':
+        commandManagerDirective = get_opts.optarg;
       case 'i':
         systemInfo = true;
         break;
@@ -76,9 +87,12 @@ parseArgs(int& argc, char* argv[])
   if (verbose) {
     procDirective += " -v";
     sysInfoDirective += " -v";
+    commandManagerDirective += " -v";
     cout << "ProcessManager directive: " << procDirective << endl;
     if (systemInfo)
       cout << "SystemInfo directive: " << sysInfoDirective << endl;
+    if (cmdMgr)
+      cout << "CommandManager directive: " << commandManagerDirective << endl;
   }
 
   return rc;
@@ -134,10 +148,17 @@ main(int argc, char *argv[])
         }
       }
     
+      if (cmdMgr) {
+        string cmdMgrCmd = "static CommandManagerSvc \"" + commandManagerDirective + "\"";
+        if (svcs->process_directive(cmdMgrCmd.c_str()) != 0) {
+          return 1;
+        }
+      }
+    
       MIRO_LOG(LL_NOTICE, "Entering server loop.");
       Miro::ShutdownHandler shutdownHandler;
       while(!shutdownHandler.isShutdown()) {
-        ACE_OS::sleep(ACE_Time_Value(0, 100000));
+        kn::this_thread::sleep_for(kn::microseconds(100000));
       }
       MIRO_LOG(LL_NOTICE, "End of server loop.");
     }

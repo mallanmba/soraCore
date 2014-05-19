@@ -59,13 +59,18 @@ if( ${PACKAGE_FOUND} )
   set( OpenCV_LIBRARY_DIR  ${OPENCV_LIBRARY_DIR} )
   set( OPENCV_LIB_COMPONENTS ${LIBRARY_NAMES} )
   set( OpenCV_DIR          ${OPENCV_ROOT_DIR} )
-  
-  #Find OpenCV version by looking at cvver.h
-  file(STRINGS ${OpenCV_INCLUDE_DIR}/opencv2/core/version.hpp OpenCV_VERSIONS_TMP REGEX "^#define CV_[A-Z]+_VERSION[ \t]+[0-9]+$")
-  string(REGEX REPLACE ".*#define CV_MAJOR_VERSION[ \t]+([0-9]+).*" "\\1" OpenCV_VERSION_MAJOR ${OpenCV_VERSIONS_TMP})
-  string(REGEX REPLACE ".*#define CV_MINOR_VERSION[ \t]+([0-9]+).*" "\\1" OpenCV_VERSION_MINOR ${OpenCV_VERSIONS_TMP})
-  string(REGEX REPLACE ".*#define CV_SUBMINOR_VERSION[ \t]+([0-9]+).*" "\\1" OpenCV_VERSION_PATCH ${OpenCV_VERSIONS_TMP})
-  set(OpenCV_VERSION ${OpenCV_VERSION_MAJOR}.${OpenCV_VERSION_MINOR}.${OpenCV_VERSION_PATCH} CACHE STRING "" FORCE)
+    
+  #Find OpenCV version 
+  find_file( OPENCV_VERSION_H opencv2/core/version.hpp PATHS ${OpenCV_INCLUDE_DIR} NO_DEFAULT_PATH)
+  if(OPENCV_VERSION_H)
+    file(STRINGS ${OPENCV_VERSION_H} OpenCV_VERSIONS_TMP REGEX "^#define CV_[A-Z]+_VERSION[ \t]+[0-9]+$")
+    string(REGEX REPLACE ".*#define CV_MAJOR_VERSION[ \t]+([0-9]+).*" "\\1" OpenCV_VERSION_MAJOR ${OpenCV_VERSIONS_TMP})
+    string(REGEX REPLACE ".*#define CV_MINOR_VERSION[ \t]+([0-9]+).*" "\\1" OpenCV_VERSION_MINOR ${OpenCV_VERSIONS_TMP})
+    string(REGEX REPLACE ".*#define CV_SUBMINOR_VERSION[ \t]+([0-9]+).*" "\\1" OpenCV_VERSION_PATCH ${OpenCV_VERSIONS_TMP})
+    set(OpenCV_VERSION ${OpenCV_VERSION_MAJOR}.${OpenCV_VERSION_MINOR}.${OpenCV_VERSION_PATCH} CACHE STRING "" FORCE)
+  else(OPENCV_VERSION_H)
+    message( SEND_ERROR "  Could not find OpenCV version header")
+  endif(OPENCV_VERSION_H)
   
 endif( ${PACKAGE_FOUND} ) 
 

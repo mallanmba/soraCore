@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Top level configuration and build for rapidCollection
+# Top level configuration and build for soraCore
 #
 # The script is insensitive from where it is run.
 # Run with -h to get all the options.
@@ -351,12 +351,12 @@ build_module "knRapid" "${BUILD_TYPE} \
                       ${acetao_flag}"
 
 echo
-echo "=== Initial RoverSW Configuration and Build Completed."
+echo "=== Initial soraCore Configuration and Build Completed."
 echo 
 echo "    Later builds can also be performed using:"
 echo "      make [install clean]"
 echo "    from the build tree:"
 echo "      ${build_path}"
 echo
-echo "=== Enjoy RoverSW !"
+echo "=== Enjoy soraCore !"
 echo

@@ -6,6 +6,7 @@
 #cmakedefine KNDDS_HAS_DDS 1
 #cmakedefine KNDDS_HAS_DDS_LBPlugin 1
 #cmakedefine KNDDS_HAS_DDS_Monitor  1
+#cmakedefine KNDDS_HAS_RTI_DistLogger 1
 
 //==================================================
 #ifdef _WIN32

@@ -30,7 +30,7 @@
 #include "rapidExtArcDds/StateMachineState.h"
 #include "rapidExtArcDds/StateMachineStateSupport.h"
 
-#include <boost/signal.hpp>
+#include <boost/signals2.hpp>
 
 class ACE_Time_Value;
 
@@ -49,14 +49,14 @@ namespace rapid
       class rapidExtArcIo_Export StateMachineProvider : public StateMachineProviderBase
       {
       public:
-        StateMachineProvider(StateMachineTopicPairParameters const& params, std::string const& name);
+        StateMachineProvider(StateMachineTopicPairParameters const& params, std::string const& name, std::string const&entityName);
         
         void publish(ACE_Time_Value const& time, int sourceState, int event, int targetState, int status);
         
       protected:
         StateMachineTopicPairParameters fillInMachineDescription(StateMachineTopicPairParameters const& params, std::string const& name);
         
-        boost::signals::scoped_connection m_stateUpdateConnection;
+        boost::signals2::scoped_connection m_stateUpdateConnection;
       };
     }
   }

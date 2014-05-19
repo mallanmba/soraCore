@@ -37,7 +37,7 @@ include_directories(
 )
 
 link_libraries(
-  ${KN_knSystemInfo_LIBRARY}
+  knSystemInfo
   rapidUtil
   rapidDds
   rapidExtDds

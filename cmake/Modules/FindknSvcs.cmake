@@ -28,6 +28,7 @@ set( LIBRARY_NAMES
   knFieldDMapping
   knFrameManager     
   knFrameNotify      
+  knHydraSvc
   knIlrisLidarSvc    
   knLmsLidarSvc
   knLocalMap
@@ -35,7 +36,6 @@ set( LIBRARY_NAMES
   knMalaSvc         
   knMissionSvc
   knMotorSvcs
-  knMrsImpl          
   knNavigation       
   knOldMath
   knPicMotorGroup    

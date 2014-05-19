@@ -10,8 +10,7 @@
 #include <ndds/ndds_cpp.h>
 #include <ndds/ndds_namespace_cpp.h>
 
-#include <boost/function.hpp>
-#include <boost/bind.hpp>
+#include "knShare/Functional.h"
 
 #include "DdsTime.h"
 #include "TypedLogDataListener.h"
@@ -50,8 +49,8 @@ namespace rapid {
   public:
     typedef typename TType::TypeSupport TypeSupport;
     
-    typedef boost::function<unsigned int(void)>                     GetSerializedSampleMaxSizeFunc;
-    typedef boost::function<RTIBool(TType**,struct RTICdrStream *)> DeserializeFunc;
+    typedef kn::function<unsigned int(void)>                     GetSerializedSampleMaxSizeFunc;
+    typedef kn::function<RTIBool(TType**,struct RTICdrStream *)> DeserializeFunc;
 
   protected: 
     char*     m_cdrBuffer;

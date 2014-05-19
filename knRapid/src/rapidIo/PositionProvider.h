@@ -48,7 +48,7 @@ namespace rapid
   class rapidIo_Export PositionProvider : public PositionProviderBase
   {
   public:
-    PositionProvider(PositionTopicPairParameters const& params);
+    PositionProvider(PositionTopicPairParameters const& params, const std::string& entityName);
 
     void 
     publish(const ACE_Time_Value &time, const int status, 

@@ -25,6 +25,7 @@ set( PACKAGE_DIRS           "gdal" )
 set( PACKAGE_REQ_LIBRARY    "gdal;gdal_i-${VCN}" )
 set( PACKAGE_REQ_INCLUDE    "gdal.h" )
 set( PACKAGE_INCLUDE_SUFFIX "gdal" )
+
 set( PACKAGE_ADD_SCOPED_INCLUDE TRUE )
 
 simple_package_find("${PACKAGE_NAME}" 
@@ -32,6 +33,7 @@ simple_package_find("${PACKAGE_NAME}"
                     "${PACKAGE_REQ_LIBRARY}"
                     "${PACKAGE_REQ_INCLUDE}"
 )
+unset( PACKAGE_ADD_SCOPED_INCLUDE )
 
 ##
 ## find paths to package libraries

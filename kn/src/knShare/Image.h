@@ -22,8 +22,7 @@
 #include "knShare_Export.h"
 #include "knConfig.h"
 #include "ImageData.h"
-
-#include <boost/shared_ptr.hpp>
+#include "SmartPtr.h"
 
 #include <string>
 #include <vector>
@@ -62,7 +61,7 @@ namespace kn {
     Image(ImageData * data);
     
   private:
-    boost::shared_ptr<ImageData> m_data;
+    shared_ptr<ImageData> m_data;
   };
 
   typedef std::vector<Image> ImageVector;

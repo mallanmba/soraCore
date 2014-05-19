@@ -18,13 +18,14 @@
 ******************************************************************************/
 #include "FrameStoreConfigSvc.h"
 
+#include "knShare/Thread.h"
+#include "knShare/Chrono.h"
+
 #include "miro/Log.h"
 #include "miro/Robot.h"
 #include "knDds/DdsSupport.h"
 #include "knDds/DdsEntitiesFactorySvc.h"
 #include "miro/ShutdownHandler.h" // Ctrl-C handler
-
-#include <ace/OS_NS_unistd.h>
 
 #include <iostream>
 
@@ -46,7 +47,7 @@ int main(int argc, char * argv[])
     /* Main loop */
     std::cout << "waiting for Ctrl-C" << std::endl;
     while (!shutdownHandler.isShutdown())
-      ACE_OS::sleep(ACE_Time_Value(0, 200000));
+      kn::this_thread::sleep_for(kn::microseconds(200000));
   }
   fscSvc.fini();
   ddsEntities.fini();

@@ -2,6 +2,9 @@
 #include "knDds/DdsEntitiesFactorySvc.h"
 #include "knDds/DdsTypedSupplier.h"
 
+#include "knShare/Thread.h"
+#include "knShare/Chrono.h"
+
 #include "HelloWorld.h"
 #include "HelloWorldSupport.h"
 
@@ -22,7 +25,7 @@ int main(int argc, char * argv[])
     /* Modify the data to be sent here */
     sprintf(event->msg, "Hello World! (%d)", i);
     publisher.sendEvent(*event);
-    ACE_OS::sleep(ACE_Time_Value(0, 10000));
+    kn::this_thread::sleep_for(kn::microseconds(10000));
   }
 
   HelloWorldTypeSupport::finalize_data(event);

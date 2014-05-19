@@ -43,6 +43,7 @@ include_directories (
 
 link_libraries (
   rapidCommanding
+  rapidExtIo
 )
 
 add_library(${LIB_NAME} SHARED
@@ -68,9 +69,9 @@ set( TARGETS
 link_libraries (
  ${LIB_NAME}
 )
-if ( KN_knSystemInfo_LIBRARY )
+if (  KNRAPID_BUILD_knSystemInfoSvc )
   link_libraries( knSystemInfoSvc )
-endif ( KN_knSystemInfo_LIBRARY )
+endif (  KNRAPID_BUILD_knSystemInfoSvc )
 
 foreach( TARGET ${TARGETS} ) 
   add_executable( ${TARGET} 

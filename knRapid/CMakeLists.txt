@@ -9,6 +9,12 @@ if( CMAKE_COMPILER_IS_GNUCXX )
   message( STATUS "** strict-aliasing warnings in DDS generated files")
   message( STATUS "****************************************************")
   set( WARN_FLAGS "-fno-strict-aliasing -Wall -Woverloaded-virtual -Wno-write-strings" )
+ 
+  if( NOT SETUP_WARN_LEVEL_HAS_RUN )
+    message( STATUS "** disable --as-needed because k10controller *wants* 'unecessary' shared libs to be linked **")
+    set( CMAKE_EXE_LINKER_FLAGS    "-Wl,--no-as-needed" CACHE STRING "" FORCE )
+  endif( NOT SETUP_WARN_LEVEL_HAS_RUN )
+  
 endif( CMAKE_COMPILER_IS_GNUCXX )
 
 include( SetArchitecture )
@@ -35,23 +41,29 @@ find_package_if( RtiDds KNRAPID_BUILD_WITH_DDS  )
 find_package( ACE )
 find_package( Qt4 )
 find_package( PThreads-win32 )
+find_package( CURL )
 
-find_package( Boost 1.50.0 COMPONENTS program_options filesystem system bind function)
+find_package( Boost 1.50.0 COMPONENTS program_options filesystem system thread bind function)
 find_package( Eigen3 )
+find_package( Threads )
 
 find_package( IrgUtil )
 find_package( Miro )
 find_package( kn )
 find_package( knDds )
 
+find_package( Doxygen )
+
 build_with_var( WITH_DDS  RTIDDS_FOUND )
 
 ## We must add the in-source and out-of-source
 ## include paths 
+## Boost include path is also required everywhere
 ##--------------------------------------------
 include_directories(
   ${PROJECT_SOURCE_DIR}/src
   ${PROJECT_BINARY_DIR}/src
+  ${Boost_INCLUDE_DIR}
 )
 
 ## Set up RPATH and *Config.h
@@ -63,6 +75,8 @@ setup_configure_file()
 
 # Defaults
 #-----------------------------------
+link_libraries( ${CMAKE_THREAD_LIBS_INIT} )
+
 if( WIN32 )
   link_directories( ${Boost_LIBRARY_DIRS} )
 endif( WIN32 )
@@ -70,6 +84,7 @@ endif( WIN32 )
 #-----------------------------------
 add_subdirectory( etc )
 add_subdirectory( src )
+add_subdirectory( doc )
 
 add_build_switch( examples BUILD_DEFAULT_TRUE )
 

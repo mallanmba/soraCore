@@ -24,7 +24,7 @@
 
 #include "rapidIo/MacroProvider.h"
 
-#include <boost/shared_ptr.hpp>
+#include "knShare/SmartPtr.h"
 
 #include <map>
 #include <string>
@@ -40,10 +40,10 @@ namespace rapid
   class MacroManager
   {
   public:
-    typedef boost::shared_ptr<rapid::MacroConfig> MacroPtr;
+    typedef kn::shared_ptr<rapid::MacroConfig> MacroPtr;
     typedef std::map<std::string, MacroPtr> MacroMap;
 
-    MacroManager(MacroManagerParameters const& params);
+    MacroManager(MacroManagerParameters const& params, const std::string& entityName);
 
     void connect(kn::DdsEventLoop& eventLoop);
     

@@ -1,6 +1,8 @@
 #ifndef DeclareDataProvider_h
 #define DeclareDataProvider_h
 
+#include "knShare/Functional.h"
+
 #include <cstring>
 
 #include "TypedLogDataProvider.h"
@@ -12,12 +14,12 @@
   public:                                                                                      \
     SHORTNAME##DataProvider(const QString& agentName, const QString& topicName)                \
       : TypedLogDataProvider<FULLNAME>(agentName, topicName,                                   \
-                                   boost::bind(FULLNAME##Plugin_get_serialized_sample_max_size,\
+                                   kn::bind(FULLNAME##Plugin_get_serialized_sample_max_size,   \
                                                (PRESTypePluginEndpointData)NULL,               \
                                                RTI_TRUE,                                       \
                                                RTI_CDR_ENCAPSULATION_ID_CDR_BE,                \
                                                (unsigned int)0),                               \
-                                   boost::bind(FULLNAME##Plugin_deserialize,                   \
+                                   kn::bind(FULLNAME##Plugin_deserialize,                      \
                                                (PRESTypePluginEndpointData)NULL,               \
                                                _1,                                             \
                                                (RTIBool*)NULL,                                 \

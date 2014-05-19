@@ -35,13 +35,13 @@ namespace rapid
     static void transform3DToATrans2(kn::ATrans2& atrans, Transform3D const& trans);
 
     static void tranform3DToVector3(kn::Vector3& pos, Transform3D const& trans);
-    static void transform3DToATrans3(kn::ATrans3& atrans, Transform3D const& trans, rapid::RotationEncoding encoding = rapid::RAPID_ROT_M33);
+    static void transform3DToATrans3(kn::ATrans3& atrans, Transform3D const& trans, rapid::RotationEncoding encoding);
 
     static void vector2ToTransform3D(Transform3D& trans, kn::Vector2 const& pos);
     static void atrans2ToTransform3D(Transform3D& trans, kn::ATrans2 const& atrans);
 
     static void vector3ToTransform3D(Transform3D& trans, kn::Vector3 const& pos);
-    static void atrans3ToTransform3D(Transform3D& trans, kn::ATrans3 const& atrans, rapid::RotationEncoding encoding = rapid::RAPID_ROT_M33);
+    static void atrans3ToTransform3D(Transform3D& trans, kn::ATrans3 const& atrans, rapid::RotationEncoding encoding);
     
     static void identity(Vec3d& xyz);
     static void identity(Mat33f& rot);

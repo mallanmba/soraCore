@@ -37,6 +37,9 @@
 #include "knDds/DdsTypedConsumer.h"
 #include "knDds/KnDdsParameters.h"
 
+#include "knShare/Thread.h"
+#include "knShare/Chrono.h"
+
 #include <ace/Time_Value.h>
 #include <ace/OS_NS_sys_time.h>
 
@@ -457,7 +460,7 @@ int main(int argc, char * argv[])
       ++cmdId;
       
       try {
-        ACE_OS::sleep(ACE_Time_Value(1));
+        kn::this_thread::sleep_for(kn::seconds(1));
         
         
         cerr << "cmd mode: " << (queuing? "QUEUEING" : "ASYNC") << endl

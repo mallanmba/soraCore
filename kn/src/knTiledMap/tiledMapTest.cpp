@@ -25,15 +25,17 @@
 
 using namespace std;
 
-struct Cell
-{
-  char a;
+namespace {
+  struct Cell
+  {
+    char a;
 
-  Cell() : a('.') {}
-};
+    Cell() : a('.') {}
+  };
 
-typedef kn::Tile<Cell, 1> TileType;
-typedef kn::TiledMap<TileType> MapType;
+  typedef kn::Tile<Cell, 1> TileType;
+  typedef kn::TiledMap<TileType> MapType;
+}
 
 void printMap(MapType const& m)
 {

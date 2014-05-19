@@ -24,6 +24,7 @@
 #include <Eigen/Geometry>
 #include <vector>
 #include <iosfwd>
+#include <limits>
 
 #include "knConfig.h"
 #include "knMath_Export.h"
@@ -38,9 +39,15 @@ namespace kn
   typedef std::vector<ATrans2, Eigen::aligned_allocator<ATrans2> > ATrans2Vector;
   typedef std::vector<ATrans3, Eigen::aligned_allocator<ATrans3> > ATrans3Vector;
 
-  ATrans3 aTrans2to3(ATrans2 const& rhs);
-  ATrans2 aTrans3to2(ATrans3 const& rhs);
+  // not implemented:
+  //  knMath_Export ATrans3 aTrans2to3(ATrans2 const& rhs);
+  //  knMath_Export ATrans2 aTrans3to2(ATrans3 const& rhs);
 
+  //! Helper class for @ref ATrans2 ostream operator.
+  /**
+   * As Eigen already defines output operators we can't just provide one for ATrans2.
+   * But their formatting does not work well with roversw debug output.
+   */
   struct ATrans2Out
   {
     ATrans2Out(ATrans2 const& atrans) :
@@ -53,6 +60,11 @@ namespace kn
     ATrans2 const& m_atrans;
   };
 
+  //! Helper class for @ref ATrans3 ostream operator.
+  /**
+   * As Eigen already defines output operators we can't just provide one for ATrans3.
+   * But their formatting does not work well with roversw debug output.
+   */
   struct ATrans3Out
   {
     ATrans3Out(ATrans3 const& atrans) :
@@ -70,25 +82,35 @@ namespace kn
 
   inline
   ATrans2
-  step(ATrans2 const& pose, double curvature, double /*crab*/, double speed, double interval, double epsilon = 0.0000001)
+  step(ATrans2 const& pose, double curvature, double crab, double crabRate, double speed, double interval)
   {
-    // TODO: handle crab
-    // set translation
-    if (!isnan(curvature)) {
-      double theta = 0.;
-      Vector2 x(speed * interval, 0.);
-      if (fabs(curvature) > epsilon) {
-        theta = curvature * x.x();
+    if (isnan(curvature))
+      // Wheels are aligning, cannot calculate new pose
+      return pose;
+
+    double theta = 0.;
+    Vector2 x(speed * interval, 0.);
+
+    if (fabs(speed) > std::numeric_limits<double>::epsilon()) {
+      double effectiveCurvature = curvature + 2 * crabRate / speed;
+      if (fabs(effectiveCurvature) > std::numeric_limits<double>::epsilon()) {
+        theta = effectiveCurvature * x.x();
         x.x() = sin(theta);
         x.y() = (1 - cos(theta));
-        x /= curvature;
+        x /= effectiveCurvature;
       }
-
+    }
+    
+    if (fabs(crab) > std::numeric_limits<double>::epsilon()) 
+    {
+      ATrans2 delta(Eigen::Rotation2D<double>(-crab) * Eigen::Translation2d(x) * Eigen::Rotation2D<double>(theta+crab));
+      return pose * delta;
+    }
+    else
+    {
       ATrans2 delta(Eigen::Translation2d(x) * Eigen::Rotation2D<double>(theta));
       return pose * delta;
     }
-
-    return pose;
   }
 }
 

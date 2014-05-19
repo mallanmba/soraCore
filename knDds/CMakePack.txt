@@ -10,6 +10,7 @@ endif( "${CMAKE_BUILD_TYPE}" MATCHES "Debug" )
 include( GatherDlls )
 gather_dlls( ${GATHER_WHAT} 
   ${PTHREAD_LIBRARIES} 
+  ${MIRO_LIBRARIES} 
 )
 gather_dlls_install()
 

@@ -36,6 +36,8 @@ module rapid {
       const String64 HYDRA_CONFIG_TOPIC         = "rapid_hydra_config";
       const String64 BATTERYPACK_CONFIG_TOPIC   = "rapid_batterypack_config";
       const String64 BATTERYPACK_SAMPLE_TOPIC   = "rapid_batterypack_sample";
+      const String64 SPECTRUM_CONFIG_TOPIC      = "rapid_spectrum_config";
+      const String64 SPECTRUM_SAMPLE_TOPIC      = "rapid_spectrum_sample";
       const String64 STATEMACHINE_CONFIG_TOPIC  = "rapid_statemachine_config";
       const String64 STATEMACHINE_STATE_TOPIC   = "rapid_statemachine_state";
       const String64 MOBILITY_SAMPLE_TOPIC      = "rapid_mobility_sample";

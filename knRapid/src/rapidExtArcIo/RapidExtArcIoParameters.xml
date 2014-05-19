@@ -50,7 +50,6 @@
        <config_parameter name="config" type="Float32ConfigParameters" />
      </config_item>
 
-
      <config_item name="GenericConfig" parent="Message" final="false">
       <config_parameter name="category" type="string"/>
       <config_parameter name="metaData" type="vector&lt;KeyTypeValue&gt;"/>
@@ -102,6 +101,23 @@
 
     <config_item name="MobilitySampleTopic" parent="kn::DdsLeaf" final="false" instance="false">
       <config_parameter name="profile" type="string" default="RapidSampleQos" inherited="true" />
+    </config_item>
+
+    <config_item name="NamedIndexRange" parent="Miro::Config" final="flase">
+        <config_parameter name="name" type="string"/>
+        <config_parameter name="start" type="short"/>
+        <config_parameter name="end" type="short"/>
+    </config_item>
+
+    <config_item name="SpectrumConfig" parent= "Message" final = "false">
+        <config_parameter name="name" type="string" />
+        <config_parameter name="valueKeys" type="vector&lt;KeyTypeValue&gt;"/>
+        <config_parameter name="indexRanges" type="vector&lt;NamedIndexRangeParameters&gt;"/>
+    </config_item>
+    <config_item name="SpectrumTopicPair" parent = "TopicPair" final = "false">
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidConfigQos" />
+      <config_parameter name="dataProfile" inherited="true" type="string" default="RapidSampleQos" />
+      <config_parameter name="config" type="SpectrumConfigParameters"/>
     </config_item>
 
     <config_item name="StateMachineConfig" parent="Message" final="false">

@@ -39,7 +39,7 @@ namespace rapid
   class rapidIo_Export AgentProvider : public AgentProviderBase
   {
   public:
-    AgentProvider(AgentTopicPairParameters const& params);
+    AgentProvider(AgentTopicPairParameters const& params, const std::string& entityName);
     virtual ~AgentProvider() throw();
   };
 }

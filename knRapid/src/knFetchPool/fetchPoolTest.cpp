@@ -19,6 +19,7 @@
 #include <iostream>
 
 #include "CurlFetcher.h"
+#include "knShare/Chrono.h"
 
 using namespace kn;
 using namespace kn::fetcher;
@@ -76,7 +77,7 @@ int main(int argc, char* argv[]) {
   //tp.cancel("sftp://tfmorse@m.ndc.nasa.gov/home/tfmorse/vim.tar");
 
   while (!tp.isFinished()) {
-    ACE_OS::sleep(ACE_Time_Value(1));
+    kn::this_thread::sleep_for(kn::seconds(1));
   }
 
   return 0;

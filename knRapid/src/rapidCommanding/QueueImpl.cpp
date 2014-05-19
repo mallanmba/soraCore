@@ -47,34 +47,46 @@ namespace rapid
 {
   using namespace std;
 
+  namespace {
+    // wrap delete_data because after 5.1.0, the method
+    // takes two arguments and can't be used as a deleter
+    DDS_ReturnCode_t delete_Ack(rapid::Ack* ptr) {
+      return AckTypeSupport::delete_data(ptr);
+    }
+    DDS_ReturnCode_t delete_Command(rapid::Command* ptr) {
+      return CommandTypeSupport::delete_data(ptr);
+    }
+  }
+
   QueueImpl::CmdAckPair::CmdAckPair() :
     cmd(rapid::Command::TypeSupport::create_data(),
-        rapid::Command::TypeSupport::delete_data),
+        delete_Command),
     ack(rapid::Ack::TypeSupport::create_data(),
-        rapid::Ack::TypeSupport::delete_data)
+        delete_Ack)
   {}
-  
+
   QueueImpl::CmdAckPair::CmdAckPair(CmdAckPair const& rhs) :
     cmd(rhs.cmd),
     ack(rhs.ack)
   {}
- 
+
   QueueImpl::CmdAckPair::CmdAckPair(CommandPtr const& c) :
     cmd(c),
     ack(rapid::Ack::TypeSupport::create_data(),
-        rapid::Ack::TypeSupport::delete_data)
+        delete_Ack)
   {
     rapid::HeaderTypeSupport::copy_data(&(ack->hdr), &(cmd->hdr));
     strncpy(ack->cmdId, cmd->cmdId, 64);
     ack->status = rapid::ACK_QUEUED;
     ack->completedStatus = rapid::ACK_COMPLETED_NOT;
-  } 
+  }
 
 
   /**
    * ctor
    */
   QueueImpl::QueueImpl(QueueImplParameters const& params,
+                       std::string const& entityName,
                        SubsystemMap const& subsystems,
                        AccessControlImplPtr const& accessControl) :
     CommandImpl(QUEUE, typeDescription()),
@@ -82,16 +94,17 @@ namespace rapid
     m_subsystems(subsystems),
     m_accessControl(accessControl),
     m_status(params.startQueueSuspended? QUEUE_SUSPENDED : QUEUE_IDLE),
-    m_ackSupplier(new AckSupplier(rapid::ACK_TOPIC, m_params.ackPublisher)),
-    m_statePublisher(params.queuing?
+    m_ackSupplier(new AckSupplier(rapid::ACK_TOPIC, m_params.ackPublisher, entityName)),
+    m_statePublisher(params.queuing ?
                      new QueueStateSupplier(QUEUE_STATE_TOPIC,
                                             params.publisher,
                                             params.stateProfile,
-                                            params.library) :
-                     0),
-    m_macroMgr(params.queuing? 
-               new MacroManager(params.macroMgr) :
-               0)
+                                            params.library,
+                                            entityName) :
+                     NULL),
+    m_macroMgr(params.queuing ?
+               new MacroManager(params.macroMgr, entityName) :
+               NULL)
   {
     string const& assetName = Miro::RobotParameters::instance()->name;
 
@@ -105,8 +118,8 @@ namespace rapid
     if (m_statePublisher != NULL) {
       QueueState& state = m_statePublisher->event();
       RapidHelper::initHeader(state.hdr);
-      
-      m_statePublisher->sendEvent();    
+
+      m_statePublisher->sendEvent();
     }
   }
 
@@ -245,7 +258,7 @@ namespace rapid
         MIRO_LOG_OSTR(LL_ERROR, "Delete queue entry for unknown cmdId: " << cmdId);
         break;
       }
-      
+
       // if already done, don't bother
       if (iter->second.ack->status == rapid::ACK_COMPLETED) {
         break;
@@ -254,19 +267,19 @@ namespace rapid
       // if command is executing, try to abort exection
       if (iter->second.ack->status == rapid::ACK_EXECUTING) {
         SubsystemMap::const_iterator s = m_subsystems.find(iter->second.cmd->subsysName);
-        
+
         assert(s != m_subsystems.end());
-        
+
         RapidSubsystemPtr const subsys = s->second;
         if (subsys->isAbortable(iter->second.cmd->cmdName)) {
           try {
-            //      /* Miro::AmiHelper * */ 
+            //      /* Miro::AmiHelper * */
             subsys->abort();
           }
           catch(...) {
             MIRO_LOG_OSTR(LL_ERROR, "QueueImpl: abort subsystem[" << s->first << "]->" << iter->second.cmd->cmdName << "() raised exception.");
           }
-          
+
           // the ack will flow in through the asynchronous command token
           break;
         }
@@ -274,19 +287,19 @@ namespace rapid
           MIRO_LOG_OSTR(LL_WARNING, "The active command is not abortable: " << s->first);
         }
       }
-      
+
       acks.reserve(1);
       acks.push_back(iter->second.ack);
       acks.back()->status = rapid::ACK_COMPLETED;
       acks.back()->completedStatus = rapid::ACK_COMPLETED_CANCELED;
-      
+
       // if this is the last active command, queue order wont change
       // so we can stop
       CommandMap::const_iterator next = m_commands.find(iter->second.cmd->targetCmdId);
       if (next != m_commands.end() && next->second.ack->status == rapid::ACK_COMPLETED) {
         break;
       }
-      
+
       // walk all commands
       // forward-link all targetCmdId's pointing to the cmdId to the cmd's targetCmdId
       CommandMap::const_iterator first, last = m_commands.end();
@@ -299,7 +312,7 @@ namespace rapid
         m_headCmdId = iter->second.cmd->targetCmdId;
       }
 
-      
+
       // move the command to the end of the completed queue
       CommandMap::const_iterator queueEnd = lastNonCompletedCmd();
       if (queueEnd != m_commands.end()) {
@@ -326,7 +339,7 @@ namespace rapid
     {
       StringVector::const_reverse_iterator first, last = commands.rend();
       for (first = commands.rbegin(); first != last; ++first) {
-        AckVector const a = cancelCmd(*first); 
+        AckVector const a = cancelCmd(*first);
         acks.insert(acks.end(), a.begin(), a.end());
       }
     }
@@ -336,7 +349,7 @@ namespace rapid
       for (first = m_commands.begin(); first != last; ++first) {
         if (first->second.cmd->cmdAction == rapid::QUEUE_BYPASS &&
             first->second.ack->status != rapid::ACK_COMPLETED) {
-          AckVector const a = cancelCmd(first->first); 
+          AckVector const a = cancelCmd(first->first);
           acks.insert(acks.end(), a.begin(), a.end());
         }
       }
@@ -379,10 +392,10 @@ namespace rapid
 
       // @FIXME: can this really never fail?
       CommandMap::iterator iter = m_commands.find(cmd->targetCmdId);
-      
+
       strcpy(cmd->targetCmdId, iter->second.cmd->targetCmdId);
       strcpy(iter->second.cmd->targetCmdId, cmd->cmdId);
-      
+
       AckVector const tmp = cancelCmd(iter->first);
       acks.insert(acks.end(), tmp.begin(), tmp.end());
     }
@@ -404,13 +417,13 @@ namespace rapid
 
       rc = false;
 
-      // make sure the cmd is not connected into any list      
+      // make sure the cmd is not connected into any list
       ca.cmd->targetCmdId[0] = 0;
 
       ca.ack->status = rapid::ACK_COMPLETED;
       ca.ack->completedStatus = rapid::ACK_COMPLETED_BAD_SYNTAX;
       stringstream s;
-      s <<"RAPID access violation: " << ca.cmd->cmdSrc 
+      s <<"RAPID access violation: " << ca.cmd->cmdSrc
         << "!= queue controller (" << m_accessControl->controller() << ")";
       MIRO_LOG(LL_ERROR, s.str().c_str());
       strncpy(ca.ack->message, s.str().c_str(), 127);
@@ -429,13 +442,13 @@ namespace rapid
 
       rc = false;
 
-      // make sure the cmd is not connected into any list      
+      // make sure the cmd is not connected into any list
       ca.cmd->targetCmdId[0] = 0;
 
       ca.ack->status = rapid::ACK_COMPLETED;
       ca.ack->completedStatus = rapid::ACK_COMPLETED_BAD_SYNTAX;
       stringstream s;
-      s <<"Trying to queue command: " << ca.cmd->cmdSrc 
+      s <<"Trying to queue command: " << ca.cmd->cmdSrc
         << ". - Not suported on this command topic.";
       strncpy(ca.ack->message, s.str().c_str(), 127);
       ca.ack->message[127] = 0;
@@ -445,14 +458,14 @@ namespace rapid
   }
 
 
-  QueueImpl::CommandAckVector 
+  QueueImpl::CommandAckVector
   QueueImpl::executableCommands()
   {
     CommandAckVector executableCmds;
     StringVector completedIds;
-    
+
     CommandMap::const_iterator first, last = m_commands.end();
-    
+
     // get all completed commands
     for (first = m_commands.begin(); first != last; ++first) {
       if (first->second.ack->status == rapid::ACK_COMPLETED) {
@@ -460,23 +473,23 @@ namespace rapid
       }
     }
     sort(completedIds.begin(), completedIds.end());
-    
+
     // get all commands with completed targetCmdIds
     for (first = m_commands.begin(); first != last; ++first) {
       CmdAckPair const& ca = first->second;
       string const targetCmdId = ca.cmd->targetCmdId;
       CommandMap::const_iterator iter = m_commands.find(targetCmdId);
-      
+
       bool const pending = ca.ack->status == ACK_QUEUED || ca.ack->status == ACK_REQUEUED;
       bool const notblocked = targetCmdId.empty() || iter == m_commands.end() ||
         iter->second.ack->status == rapid::ACK_COMPLETED;
       bool const executable = pending && notblocked && (ca.cmd->cmdAction == QUEUE_BYPASS || m_status != QUEUE_SUSPENDED);
-      
+
       if (executable) {
         executableCmds.push_back(first->second);
       }
     }
-        
+
     return executableCmds;
   }
 
@@ -517,8 +530,8 @@ namespace rapid
     return iter;
   }
 
- 
-  QueueImpl::StringVector 
+
+  QueueImpl::StringVector
   QueueImpl::queuedCommands() const
   {
     StringVector cmds;
@@ -539,7 +552,7 @@ namespace rapid
     return cmds;
   }
 
-  QueueImpl::StringVector 
+  QueueImpl::StringVector
   QueueImpl::commandSequence() const
   {
     StringVector cmds;
@@ -585,7 +598,7 @@ namespace rapid
     };
   }
 
-  QueueImpl::AckVector 
+  QueueImpl::AckVector
   QueueImpl::purgeCommands(ACE_Time_Value const& deadline, bool allCompleted)
   {
     StringVector completedIds;
@@ -597,7 +610,7 @@ namespace rapid
     // that are older as deadline
     {
       CommandMap::const_iterator first, last = m_commands.end();
-      
+
       for (first = m_commands.begin(); first != last; ++first) {
         if (first->second.ack->completedStatus != rapid::ACK_COMPLETED_NOT)
           completedIds.push_back(first->first);
@@ -613,7 +626,7 @@ namespace rapid
         for (first = m_commands.begin(); first != last; ++first) {
           string const& targetCmdId = first->second.cmd->targetCmdId;
           StringVector::iterator iter = lower_bound(completedIds.begin(), completedIds.end(), targetCmdId);
-          
+
           if (first->second.ack->status != ACK_COMPLETED &&
               iter != completedIds.end() &&
               *iter == targetCmdId) {
@@ -625,13 +638,13 @@ namespace rapid
           }
         }
       }
-      
+
       // don't delete macros until they are fully completed
       {
         sort(macroBaseCmdIds.begin(), macroBaseCmdIds.end());
         StringVector::iterator duplicates = unique(macroBaseCmdIds.begin(), macroBaseCmdIds.end());
         macroBaseCmdIds.erase(duplicates, macroBaseCmdIds.end());
-        
+
         StringVector::const_iterator first, last = macroBaseCmdIds.end();
         for (first = macroBaseCmdIds.begin(); first != last; ++first) {
 
@@ -642,7 +655,7 @@ namespace rapid
         }
       }
     }
-    
+
     // collect all associated acks
     AckVector purgedCmds;
     purgedCmds.reserve(completedIds.size());
@@ -697,12 +710,12 @@ namespace rapid
     static int const NUM_REQUEUE_ARGUMENTS = sizeof(requeueArguments) / sizeof(rapid::KeyTypePair);
 
     static int const ZERO_ARGUMENTS = 0;
-    struct Cmd 
+    struct Cmd
     {
       char const * name;
       int argumentNum;
       rapid::KeyTypePair * arguments;
-    };  
+    };
 
     static Cmd const commands[] = {
       { rapid::QUEUE_METHOD_CANCELALL, ZERO_ARGUMENTS, NULL },
@@ -779,7 +792,7 @@ namespace rapid
         acks.reserve(m_commands.size());
         CommandMap::const_iterator first, last = m_commands.end();
         for (first = m_commands.begin(); first != last; ++first) {
-          // delete all but 
+          // delete all but
           if (strcmp(cmd.cmdId, first->second.cmd->cmdId) != 0) {
             acks.push_back(first->second.ack);
           }
@@ -791,7 +804,7 @@ namespace rapid
         ++iter;
         m_commands.erase(iter, m_commands.end());
         m_headCmdId.clear();
-        
+
         if (m_status == QUEUE_ACTIVE) {
           m_status = m_params.suspendQueueOnIdle? QUEUE_SUSPENDED : QUEUE_IDLE;
         }
@@ -836,7 +849,7 @@ namespace rapid
     }
 
     evalQueueState();
-    publishQueueState();    
+    publishQueueState();
 
     return result;
   }
@@ -875,7 +888,7 @@ namespace rapid
     return changed;
   }
 
-  QueueImpl::CommandAckVector 
+  QueueImpl::CommandAckVector
   QueueImpl::executingCommands(bool directToo)
   {
     CommandAckVector cmds;
@@ -884,12 +897,12 @@ namespace rapid
     // get all successfully active commands
     CommandMap::const_iterator first, last = m_commands.end();
     for (first = m_commands.begin(); first != last; ++first) {
-      if (first->second.ack->status == rapid::ACK_EXECUTING && 
+      if (first->second.ack->status == rapid::ACK_EXECUTING &&
           (directToo || first->second.cmd->cmdAction != rapid::QUEUE_BYPASS) ) {
         cmds.push_back(first->second);
       }
     }
-        
+
     return cmds;
   }
 
@@ -907,14 +920,14 @@ namespace rapid
 
       if (directToo || first->cmd->cmdAction != rapid::QUEUE_BYPASS) {
         cancelCmd(first->cmd->cmdId);
-        
 
-        // manipulate state to trigger requeing 
+
+        // manipulate state to trigger requeing
         if (requeue && first->cmd->cmdAction != rapid::QUEUE_BYPASS) {
           first->ack->status = rapid::ACK_REQUEUED;
         }
       }
-    }   
+    }
   }
 
   void
@@ -964,7 +977,7 @@ namespace rapid
     }
   }
 
-  void 
+  void
   QueueImpl::publishQueueState()
   {
     if (m_statePublisher == NULL) {
@@ -992,10 +1005,10 @@ namespace rapid
       assert(iter != m_commands.end());
 
       rapid::AckStatus const as = iter->second.ack->status;
-      
+
       if (as != rapid::ACK_QUEUED && as != rapid::ACK_REQUEUED)
         break;
-      
+
       // check for full queue
       if (idx < 64) {
        setQueueState(state.pending.queue[idx], iter->second);
@@ -1014,10 +1027,10 @@ namespace rapid
       CommandMap::const_iterator iter = m_commands.find(*first);
 
       assert(iter != m_commands.end());
-      
+
       if (iter->second.ack->status != rapid::ACK_EXECUTING)
         break;
-      
+
       // bail out on full queue
       if (idx < 64) {
         setQueueState(state.active.queue[idx], iter->second);
@@ -1054,9 +1067,9 @@ namespace rapid
     state.completed.queue.ensure_length(min((int)(m_commands.size() - state.pending.queue.length()), 64), 64); // max possible
     for (idx = 0; first != last; ++first, ++idx) {
       CommandMap::const_iterator iter = m_commands.find(*first);
-      
+
       assert(iter != m_commands.end());
-      
+
       // bail out on full queue
       if (idx < 64) {
         setQueueState(state.completed.queue[idx], iter->second);
@@ -1065,7 +1078,7 @@ namespace rapid
         MIRO_LOG_OSTR(LL_WARNING, "RAPID Sequencer: completed queue full, incomplete state reporting: " << idx);
       }
     }
-      
+
     // add direct commands if enabled
     if (m_params.trackDirectCommandsInQueue) {
       CommandMap::const_iterator f, l = m_commands.end();
@@ -1096,7 +1109,7 @@ namespace rapid
       return;
 
     // command syntax is already asserted
-    
+
     std::string name = cmd.arguments[0]._u.s;
     int serial = cmd.arguments[1]._u.i;
 
@@ -1106,9 +1119,9 @@ namespace rapid
       rapid::MacroCommand const& srcCmd = macro->commands[i];
 
       CommandPtr dstCmd(rapid::Command::TypeSupport::create_data(),
-                        rapid::Command::TypeSupport::delete_data);
+                        delete_Command);
       rapid::Command::TypeSupport::copy_data(dstCmd.get(), &cmd);
-      
+
       int cmdIdBaseLen = strlen(dstCmd->cmdId);
 
       if (cmdIdBaseLen > 31) {
@@ -1170,7 +1183,7 @@ namespace rapid
     m_ackSupplier->dataWriter().unregister_instance(*ack, DDS_HANDLE_NIL);
   }
 
-  QueueImpl::CommandPtr 
+  QueueImpl::CommandPtr
   QueueImpl::command(string const& cmdId) const
   {
     CommandMap::const_iterator iter = m_commands.find(cmdId);

@@ -54,7 +54,8 @@ namespace kn
     string key = guidString(event->key);
     string participantKey = guidString(event->participant_key);
     string publicationKey = guidString(event->publisher_key);
-
+    const char* pubName   = event->publication_name.name;
+    
     if (!s_key.empty()) {
       if (s_key != key)
         return;
@@ -120,7 +121,14 @@ namespace kn
       }
 
       if (s_verbose > 2) {
-        cout << ", " << endl << "  version: " << event->product_version << endl;
+        cout << ", " << endl << "  version: " << event->product_version;
+      }
+
+      if (s_verbose > 2 && pubName) {
+        cout << ", " << endl << "  publication_name: " << pubName << endl;
+      }
+      else {
+        cout << endl;
       }
 
       cout << " }" << endl;

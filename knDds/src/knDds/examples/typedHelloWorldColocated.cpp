@@ -3,7 +3,10 @@
 #include "knDds/DdsTypedConnector.h"
 #include "knDds/DdsEntitiesFactorySvc.h"
 
-#include  "miro/ShutdownHandler.h" // for Ctrl-C handler  and MNC parsing
+#include "knShare/Thread.h"
+#include "knShare/Chrono.h"
+
+#include "miro/ShutdownHandler.h" // for Ctrl-C handler  and MNC parsing
 
 #include "HelloWorld.h"
 #include "HelloWorldSupport.h"
@@ -38,7 +41,7 @@ int main(int argc, char * argv[])
       /* Modify the data to be sent here */
       sprintf(publisher.event().msg, "Hello World! (%d)", i);
       publisher.sendEvent();
-      ACE_OS::sleep(ACE_Time_Value(0, 10000));
+      kn::this_thread::sleep_for(kn::microseconds(10000));
       if (shutdownHander.isShutdown()) {
 	break;
       }

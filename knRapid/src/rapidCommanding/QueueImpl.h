@@ -32,7 +32,7 @@
 
 #include "knDds/DdsTypedSupplier.h"
 
-#include <boost/shared_ptr.hpp>
+#include "knShare/SmartPtr.h"
 
 #include <map>
 #include <string>
@@ -51,8 +51,8 @@ namespace rapid
   class rapidCommanding_Export QueueImpl : public CommandImpl
   {
   public:
-    typedef boost::shared_ptr<rapid::Command> CommandPtr;
-    typedef boost::shared_ptr<rapid::Ack> AckPtr;
+    typedef kn::shared_ptr<rapid::Command> CommandPtr;
+    typedef kn::shared_ptr<rapid::Ack> AckPtr;
     struct CmdAckPair
     {
       CommandPtr cmd;
@@ -66,10 +66,11 @@ namespace rapid
     typedef std::map<std::string, CmdAckPair> CommandMap; // commands currently known to queue
     typedef std::vector<CmdAckPair> CommandAckVector;
     typedef std::vector<AckPtr> AckVector;
-    typedef boost::shared_ptr<AccessControlImpl> AccessControlImplPtr;
+    typedef kn::shared_ptr<AccessControlImpl> AccessControlImplPtr;
     typedef std::map<std::string, RapidSubsystemPtr> SubsystemMap;
 
     QueueImpl(QueueImplParameters const& params,
+              std::string const& entityName,
               SubsystemMap const& subsystems,
               AccessControlImplPtr const& accessControl);
     virtual ~QueueImpl() throw();

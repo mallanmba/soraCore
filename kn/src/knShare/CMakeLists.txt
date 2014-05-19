@@ -12,23 +12,34 @@ string( TOUPPER  "${EXPORT}_BUILD_DLL" EXPORT_DEFINE )
 set( SOURCES
   Image.cpp
   ImageData.cpp
+  FileImageData.cpp
   MemImageData.cpp
   Array2DView.cpp
   Singleton.cpp
   StateMachine.cpp
   StateMachineRepository.cpp
+  Time.cpp
 )
 
 set( HEADERS
   ${EXPORT_FILE}
+  Chrono.h
+  ConditionVariable.h
+  Functional.h
   Image.h
   ImageData.h
+  FileImageData.h
+  Log.h
   MemImageData.h
+  Mutex.h
+  LruPool.h
   Repository.h
   Array2DView.h
   Singleton.h
+  SmartPtr.h
   StateMachine.h
   StateMachineRepository.h
+  Thread.h
   Time.h
 )
 

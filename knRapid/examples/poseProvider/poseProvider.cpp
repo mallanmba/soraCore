@@ -1,5 +1,3 @@
-#include <ace/OS_NS_unistd.h>
-
 #include <miro/Log.h>
 #include <miro/Robot.h>
 
@@ -9,6 +7,9 @@
 #include "rapidIo/RapidIoParameters.h"
 #include "knDds/DdsEntitiesFactory.h"
 #include "knDds/KnDdsParameters.h"
+#include "knDds/DdsSupport.h"
+#include "knShare/Thread.h"
+#include "knShare/Chrono.h"
 
 
 using namespace std;
@@ -90,7 +91,7 @@ int main ( int argc, char** argv )
   topicParams.config.controlledFrame = "RAPID_ROVER_NAME";
   topicParams.useConfigTopic = true;
   
-  PositionProvider provider ( topicParams );
+  PositionProvider provider ( topicParams, argv[0] );
   
   ACE_Time_Value timestamp;
   int            status = 0;
@@ -112,6 +113,6 @@ int main ( int argc, char** argv )
     cout << "sent position: " << xfm << endl;
 
     // sleep for 100 milliseconds
-    ACE_OS::sleep ( ACE_Time_Value ( 0, 100000 ) );
+    kn::this_thread::sleep_for(kn::microseconds(100000));
   }
 }

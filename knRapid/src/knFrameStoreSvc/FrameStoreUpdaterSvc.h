@@ -47,7 +47,7 @@ namespace kn
 
   private:
     int parseArgs(int& argc, char * argv[]);
-
+    
     // this holds which listeners to start etc
     std::string m_configName;
     FrameStoreUpdaterSvcParameters * m_params;

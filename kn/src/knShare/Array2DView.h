@@ -29,18 +29,41 @@ namespace kn
 {
   using namespace std;
 
+  //! Base class for the @ref Array2DView template.
+  /**
+   * This base-class just provides a set of member functions
+   * and data members,
+   * which are independent of the template parameter.
+   *
+   * Will hopefully save some compile time
+   */
   class knShare_Export Array2DViewBase
   {
   public:
+    //! Default constructor initialized class to array of size zero.
+    /** 
+     * Can't be easily implemented with default params for initializing constructor,
+     * due to internal logic of calculating size.
+     */
     Array2DViewBase();
+    //! Initializing constructor.
+    /**
+     * Takes size in x & y as parameters. 
+     */
     Array2DViewBase(size_t x, size_t y);
 
+    //! 2D array access operator.
     size_t index(int x, int y) const { return (y << m_sizeLog2) | x; }
 
     size_t sizeX() const { return m_sizeX; }
     size_t sizeY() const { return m_sizeY; }
+    //! Log2 size in X dimension.
     int sizeLog2() const { return m_sizeLog2; }
     size_t indexMask() const { return m_indexMask; }
+    //! Total size of array representing the map.
+    /**
+     * Includes the hidden cells included from log2 alignment of x.
+     */
     size_t numCells() const { return m_numCells; }
 
     static int iLog2(int x);
@@ -60,6 +83,9 @@ namespace kn
   /** This is a not very space efficient representation, as it 
    * allocates up to 2 times the required memory. 
    * So use it carefully.
+   *
+   * This template allows for a very efficient implementation of a 
+   * scrolling map type.
    */
   template<typename C>
   class Array2DView : public Array2DViewBase

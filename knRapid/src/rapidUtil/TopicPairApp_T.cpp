@@ -30,8 +30,10 @@ namespace rapid
   int TopicPairAppBase::s_csv = 0;
 
   TopicPairAppBase::TopicPairAppBase(int& argc, char * argv[],
-                                     TopicPairParameters& p) :
-    m_params(p)
+                                     TopicPairParameters& p,
+                                     std::string const& entityName) :
+    m_params(p),
+    m_entityName(entityName)
   {
     // for naming context
     Miro::Log::init(argc, argv);
@@ -60,8 +62,10 @@ namespace rapid
     m_ddsEntities.init(params);
   }
 
-  TopicPairAppBase::TopicPairAppBase(TopicPairParameters& p) :
-    m_params(p)
+  TopicPairAppBase::TopicPairAppBase(TopicPairParameters& p, 
+                                     std::string const& entityName) :
+    m_params(p),
+    m_entityName(entityName)
   {
     kn::DdsEntitiesFactorySvcParameters * params =
       kn::DdsEntitiesFactorySvcParameters::instance();

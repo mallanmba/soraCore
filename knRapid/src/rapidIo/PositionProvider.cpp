@@ -39,8 +39,8 @@ namespace rapid
   /**
    * ctor
    */
-  PositionProvider::PositionProvider(PositionTopicPairParameters const& params) :
-    PositionProviderBase(POSITION_CONFIG_TOPIC, POSITION_SAMPLE_TOPIC, params)
+  PositionProvider::PositionProvider(PositionTopicPairParameters const& params, const std::string& entityName) :
+    PositionProviderBase(POSITION_CONFIG_TOPIC, POSITION_SAMPLE_TOPIC, params, entityName)
   {
   }
 

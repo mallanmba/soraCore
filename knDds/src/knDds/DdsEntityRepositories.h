@@ -16,8 +16,8 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef miro_DdsEntityRepositories_h
-#define miro_DdsEntityRepositories_h
+#ifndef knDds_DdsEntityRepositories_h
+#define knDds_DdsEntityRepositories_h
 
 #include "knDds_Export.h"
 
@@ -28,13 +28,13 @@
 namespace kn
 {
   //! Base class for repositories of DDS entities.
-  /** 
-   * The Miro DdsEntitiesFactorySvc creates a static set of 
+  /**
+   * The DdsEntitiesFactorySvc creates a static set of
    * DomainParticipant, Publishers and Subscriber instances.
    * Those are stored in repositories for lookup by name.
    *
    * As C++ symbol resolution for global instances with template patameters is a mess
-   * we copy/paste implement those repositories here, instead of using 
+   * we copy/paste implement those repositories here, instead of using
    * partial template specialization on the Miro::Repository template.
    */
   class knDds_Export DdsEntityRepository : public Miro::RepositoryBase
@@ -128,14 +128,14 @@ namespace kn
     virtual ~DdsDomainParticipantRepository() throw();
 
     //! Look up an instance by name.
-    virtual Type * get(std::string const& name) throw(ENotRegistered);
+    virtual Type * get(std::string const& name = "Default") throw(ENotRegistered);
     //! Remove instance from the repository, deleting it.
     virtual void remove(std::string const& name) throw(ENotRegistered);
 
     //! Singleton instance accessor wrapper.
     static SingletonType instance;
 
- 
+
     // this should be private, but somehow gcc is not accepting the friend declaration
     // private:
     //! There is only one Repository instance.
@@ -223,13 +223,13 @@ namespace kn
   };
 
   typedef
-  ACE_Unmanaged_Singleton<DdsDomainParticipantRepository, ACE_SYNCH_RECURSIVE_MUTEX> 
+  ACE_Unmanaged_Singleton<DdsDomainParticipantRepository, ACE_SYNCH_RECURSIVE_MUTEX>
   DdsDomainParticipantRepositorySingleton;
   typedef
-  ACE_Unmanaged_Singleton<DdsPublisherRepository, ACE_SYNCH_RECURSIVE_MUTEX> 
+  ACE_Unmanaged_Singleton<DdsPublisherRepository, ACE_SYNCH_RECURSIVE_MUTEX>
   DdsPublisherRepositorySingleton;
   typedef
-  ACE_Unmanaged_Singleton<DdsSubscriberRepository, ACE_SYNCH_RECURSIVE_MUTEX> 
+  ACE_Unmanaged_Singleton<DdsSubscriberRepository, ACE_SYNCH_RECURSIVE_MUTEX>
   DdsSubscriberRepositorySingleton;
 
 }
@@ -238,4 +238,4 @@ KNDDS_SINGLETON_DECLARE(ACE_Unmanaged_Singleton, kn::DdsDomainParticipantReposit
 KNDDS_SINGLETON_DECLARE(ACE_Unmanaged_Singleton, kn::DdsPublisherRepository, ACE_SYNCH_RECURSIVE_MUTEX);
 KNDDS_SINGLETON_DECLARE(ACE_Unmanaged_Singleton, kn::DdsSubscriberRepository, ACE_SYNCH_RECURSIVE_MUTEX);
 
-#endif // miro_DdsEntityRepository_h
+#endif // knDds_DdsEntityRepository_h

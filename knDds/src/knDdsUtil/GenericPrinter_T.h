@@ -74,7 +74,7 @@ namespace kn
     ~GenericPrinter_T() throw()
     {}
 
-    void run(std::string const& event, std::string const& subs = "") {
+    void run(std::string const& event, std::string const& subs = "", std::string const& entityName = "") {
 
       std::string topicName = m_topicName;
       if(topicName.empty())
@@ -88,12 +88,12 @@ namespace kn
       }
       
       Printer printer;
-      kn::DdsEventLoop eventLoop;
+      kn::DdsEventLoop eventLoop(entityName);
       
       eventLoop.connect<T>(&printer, topicName, subs, m_profile);
 
       while (!m_shutdownHandler.isShutdown()) {
-        eventLoop.processEvents(ACE_Time_Value(0, 100000));
+        eventLoop.processEvents(microseconds(100000));
       }
     }
   };

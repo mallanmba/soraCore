@@ -23,7 +23,7 @@
 
 #include "knFrameStore/FrameStore.h"
 
-#include <boost/shared_ptr.hpp>
+#include "knShare/SmartPtr.h"
 
 #include <map>
 #include <string>
@@ -67,7 +67,7 @@ namespace rapid
       std::vector<Axis> axis;
       FrameHandleVector uniqueHandles;
     };
-    typedef boost::shared_ptr<JointConfig> JointConfigPtr;
+    typedef kn::shared_ptr<JointConfig> JointConfigPtr;
     typedef std::map<std::string, FsJointVector> StringJointVectorMap;
     typedef std::map<std::string, JointConfigPtr> StringConfigMap;
 

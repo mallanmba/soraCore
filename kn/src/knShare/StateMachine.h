@@ -22,9 +22,9 @@
 #include "knShare_Export.h"
 #include "Repository.h"
 
-#include "ace/Time_Value.h"
+#include <ace/Time_Value.h>
 
-#include "boost/signal.hpp"
+#include <boost/signals2.hpp>
 
 #include <iosfwd>
 #include <string>
@@ -92,7 +92,7 @@ namespace kn
       int eventIdx(std::string const& event) const;
     };
 
-    typedef boost::signal5<void, ACE_Time_Value const&, int, int, int, int> TransitionSignal;
+    typedef boost::signals2::signal5<void, ACE_Time_Value const&, int, int, int, int> TransitionSignal;
 
     StateMachine(std::string const& name = "Subsystem");
     virtual ~StateMachine() throw();

@@ -62,8 +62,6 @@ target_link_libraries( ${LIB_NAME}
   rapidDds
   rapidIo
   rapidUtil
-  ${KNRAPID_rapidDds_LIBRARY}
-  ${KNRAPID_rapidIo_LIBRARY}
   ${KN_knShare_LIBRARY}
   ${KNDDS_knDds_LIBRARY}  
   ${MIRO_miroXml_LIBRARY}

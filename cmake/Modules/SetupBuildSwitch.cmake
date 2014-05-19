@@ -75,6 +75,9 @@ macro( log_build_switch BUILD_SWITCH_NAME ARGUMENTS )
   file( APPEND ${BUILD_SWITCH_LOG_FILEPATH} "\n" )
 endmacro( log_build_switch BPREFIX ) 
 
+## Create a cache switch to turn on/off building a particular
+## subdirectory. A variable <PROJECT>_BUILD_<subdirectory> is 
+## created to reflect state of build switch
 ##==========================================================
 macro( add_build_switch SUBDIR )
   if( NOT DEFINED BUILD_PREFIX )
@@ -109,14 +112,21 @@ endmacro( add_build_switch )
 ## This does not add a cache switch - it just evaluates
 ## the conditional and calls add_subdirectory if true. 
 ## Useful for chaining off another cache switch
+## A <PROJECT>_BUILD_<subdirectory> is created 
 ##==========================================================
 macro( add_build_slave SUBDIR )
   if( NOT DEFINED BUILD_PREFIX )
     message(SEND_ERROR "BUILD_PREFIX not defined in SetupBuildSwitch.cmake")
   endif( NOT DEFINED BUILD_PREFIX )
 
+  # create build var for consistency w/ add_build_switch
+  set( BUILD_SWITCH_NAME ${BUILD_PREFIX}_BUILD_${SUBDIR} )
+
   if( ${ARGN} )
+    set( ${BUILD_SWITCH_NAME} TRUE )
     add_subdirectory( ${SUBDIR} )
+  else( ${ARGN} )
+    set( ${BUILD_SWITCH_NAME} FALSE )
   endif( ${ARGN} )
   
 endmacro( add_build_slave )

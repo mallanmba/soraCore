@@ -21,6 +21,8 @@
 
 #include "rapidUtil_Export.h"
 
+#include "knShare/Time.h"
+
 #include "miro/Log.h"
 
 #include <ndds/ndds_cpp.h>
@@ -34,12 +36,17 @@
 
 #include <cstdio>
 
+#include <stdint.h>
+
 namespace rapid
 {
   class Header;
 
    namespace RapidHelper
    {
+     rapidUtil_Export DDS::LongLong knTimePoint2RapidTime(kn::TimePoint const& time) throw();
+     rapidUtil_Export kn::TimePoint rapidTime2knTimePoint(DDS::LongLong n) throw();
+       
      rapidUtil_Export DDS::LongLong aceTimeValue2RapidTime(ACE_Time_Value const& time) throw();
      rapidUtil_Export ACE_Time_Value rapidTime2AceTimeValue(DDS::LongLong n) throw();
      
@@ -47,11 +54,46 @@ namespace rapid
                                       std::string const& source = "",
                                       std::string const& name = "",
                                       ACE_Time_Value const& timestamp = ACE_OS::gettimeofday(),
-                                      ACE_INT32 status = 0, ACE_INT32 serial = -1);
+                                      int32_t status = 0, int32_t serial = -1);
+     rapidUtil_Export void initHeader(rapid::Header& header,
+                                      std::string const& source,
+                                      std::string const& name,
+                                      kn::TimePoint const& timestamp,
+                                      int32_t status = 0, int32_t serial = -1);
      rapidUtil_Export void updateHeader(rapid::Header& header,
                                         ACE_Time_Value const& timestamp = ACE_OS::gettimeofday(),
-                                        ACE_INT32 status = 0, ACE_INT32 serial = 0);
+                                        int32_t status = 0, int32_t serial = 0);
+     rapidUtil_Export void updateHeader(rapid::Header& header,
+                                        kn::TimePoint const& timestamp,
+                                        int32_t status = 0, int32_t serial = 0);
    }
+   
+   inline
+   DDS::LongLong
+   RapidHelper::knTimePoint2RapidTime(kn::TimePoint const& timePoint) throw()
+   { 
+     kn::microseconds us = 
+       kn::duration_cast<kn::microseconds>(timePoint.time_since_epoch());
+     return us.count();
+   }
+   
+   inline
+   kn::TimePoint
+   RapidHelper::rapidTime2knTimePoint(DDS::LongLong n) throw()
+   {
+       const long long thirtyYears = 946713600000000LL; // offset from 1970 to 2000 in microseconds
+       //  const long long oneYear     =  31536000000000LL; // one year in microseconds
+       const long long oneWeek     =    604800000000LL; // one week in microseconds
+       
+       if(llabs(n) > oneWeek && llabs(n) < thirtyYears) { // chances are extremely good that we have a timestamp in milliseconds
+           MIRO_LOG_OSTR(LL_WARNING, "RapidHelper: timestamp appears to be in milliseconds; multiplying by 1000: " << n);
+           n *= 1000;
+       }
+       
+       kn::microseconds us(n);
+       return kn::TimePoint(us);
+   }
+   
   
   inline
   DDS::LongLong

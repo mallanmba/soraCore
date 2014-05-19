@@ -46,7 +46,7 @@ namespace rapid
     typedef D Data;
     typedef P Parameters;
     typedef CRTP Derived;
-    
+
     Receiver_T(std::string const& configTopic,
                std::string const& dataTopic,
                Parameters const& params)  :
@@ -68,19 +68,21 @@ namespace rapid
     {
       if (m_params.useConfigTopic) {
         eventLoop.connect<Config>(static_cast<Derived *>(this),
-                                  m_configTopic +
-                                  m_params.topicSuffix,
+                                  m_configTopic + m_params.topicSuffix,
                                   m_params.parentNode,
                                   m_params.configProfile,
-                                  m_params.library);
+                                  m_params.library,
+                                  -1,
+                                  kn::DdsEventLoop::DEFAULT_MASK);
       }
 
       eventLoop.connect<Data>(static_cast<Derived *>(this),
-                              m_dataTopic +
-                              m_params.topicSuffix,
+                              m_dataTopic + m_params.topicSuffix,
                               m_params.parentNode,
                               m_params.dataProfile,
-                              m_params.library);
+                              m_params.library,
+                              -1,
+                              kn::DdsEventLoop::DEFAULT_MASK);
     }
 
     bool configured() const {
@@ -89,7 +91,7 @@ namespace rapid
 
     bool config(Config& config)
     {
-      Config::TypesSupport::copy_data(&config, &m_config);
+      Config::TypeSupport::copy_data(&config, &m_config);
       return m_configured;
     }
 
@@ -99,7 +101,7 @@ namespace rapid
       Config::TypeSupport::copy_data(&m_config, config);
       m_configured = true;
     }
-    
+
   protected:
     Parameters m_params;
 

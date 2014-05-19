@@ -35,6 +35,10 @@ module rapid {
     typedef sequence<long,32>        LongSequence32;
     typedef sequence<long,64>        LongSequence64;
     typedef sequence<long,128>       LongSequence128;
+    typedef sequence<long,256>       LongSequence256;
+    typedef sequence<long,512>       LongSequence512;
+    typedef sequence<long,1024>      LongSequence1K;
+    typedef sequence<long,2048>      LongSequence2K;
     
     typedef sequence<long long,32>   LongLongSequence32;
     typedef sequence<long long,64>   LongLongSequence64;
@@ -43,10 +47,16 @@ module rapid {
     typedef sequence<float,32>       FloatSequence32;
     typedef sequence<float,64>       FloatSequence64;
     typedef sequence<float,128>      FloatSequence128;
+    typedef sequence<float,256>      FloatSequence256;
+    typedef sequence<float,512>      FloatSequence512;
+    typedef sequence<float,1024>     FloatSequence1K;
     
     typedef sequence<double,32>      DoubleSequence32;
     typedef sequence<double,64>      DoubleSequence64;
     typedef sequence<double,128>     DoubleSequence128;
+    typedef sequence<double,256>     DoubleSequence256;
+    typedef sequence<double,512>     DoubleSequence512;
+    typedef sequence<double,1024>    DoubleSequence1K;
 
     typedef string<16>               String16;
     typedef string<32>               String32;

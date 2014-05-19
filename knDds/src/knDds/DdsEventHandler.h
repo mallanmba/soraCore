@@ -16,13 +16,16 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef miro_DdsEventHandler_h
-#define miro_DdsEventHandler_h
+#ifndef knDds_DdsEventHandler_h
+#define knDds_DdsEventHandler_h
 
 #include "knDds_Export.h"
 #include "DdsDataHandler.h"
 #include "DdsSupport.h"
 #include "DdsReaderAccessFunctors.h"
+
+#include "knShare/Thread.h"
+#include "knShare/Chrono.h"
 
 #include "miro/Log.h"
 
@@ -92,13 +95,13 @@ namespace kn
         
         if (rc != DDS::RETCODE_OK) {
           MIRO_LOG_OSTR(LL_CRITICAL, Type::TypeSupport::get_type_name() << " - DDS take error: " << DdsSupport::getError(rc));
-          ACE_OS::sleep(ACE_Time_Value(0, 100000)); // Sleep to avoid busy loop
+          kn::this_thread::sleep_for(kn::microseconds(100000)); // Sleep to avoid busy loop
         }
         
         length = m_samples.length();
         if (length == 0) {
           MIRO_LOG_OSTR(LL_CRITICAL,  Type::TypeSupport::get_type_name() << " - DDS take of 0 samples!");
-          ACE_OS::sleep(ACE_Time_Value(0, 100000)); // Sleep to avoid busy loop
+          kn::this_thread::sleep_for(kn::microseconds(100000)); // Sleep to avoid busy loop
         }
         
         if (length > 100) {
@@ -111,7 +114,7 @@ namespace kn
         rc = m_accessFunctor.dataReader().return_loan(m_samples, m_infos);
         if (rc != DDS::RETCODE_OK) {
           MIRO_LOG_OSTR(LL_ERROR, Type::TypeSupport::get_type_name() << " - DDS return loan error: " << DdsSupport::getError(rc));
-          ACE_OS::sleep(ACE_Time_Value(0, 100000)); // Sleep to avoid busy loop
+          kn::this_thread::sleep_for(kn::microseconds(100000)); // Sleep to avoid busy loop
           break;
         }
       }
@@ -243,4 +246,4 @@ namespace kn
   };
 }
 
-#endif // miro_DdsEventHandler_h
+#endif // knDds_DdsEventHandler_h

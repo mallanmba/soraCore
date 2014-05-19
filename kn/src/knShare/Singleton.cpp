@@ -20,5 +20,5 @@
 
 namespace kn
 {
-  boost::recursive_mutex SingletonBase::s_mutex;
+  mutex SingletonBase::s_mutex;
 }

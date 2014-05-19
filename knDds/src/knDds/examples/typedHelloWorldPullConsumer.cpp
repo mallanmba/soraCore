@@ -1,11 +1,14 @@
 #include "HelloWorld.h"
 #include "HelloWorldSupport.h"
 
-#include "miro/ShutdownHandler.h"
-
 #include "knDds/DdsSupport.h"
 #include "knDds/DdsTypedConsumer.h"
 #include "knDds/DdsEntitiesFactorySvc.h"
+
+#include "knShare/Thread.h"
+#include "knShare/Chrono.h"
+
+#include "miro/ShutdownHandler.h"
 
 #include <functional>
 #include <iostream>
@@ -42,7 +45,7 @@ int main(int argc, char * argv[])
         HelloWorld::TypeSupport::print_data(&sample);
       }
       else {
-        ACE_OS::sleep(ACE_Time_Value(0, 30000));
+        kn::this_thread::sleep_for(kn::microseconds(30000));
       }
     }
   }

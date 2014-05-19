@@ -45,12 +45,19 @@ namespace kn
     bool operator!=(FrameHandle const& rhs) const throw() {
       return this->node != rhs.node;
     }
-
+    
     /**
      * A static instance to a NULL handle, for reference.
      */
     static FrameHandle const NULL_HANDLE;
-        
+    
+    /**
+     * @return true if handle is not null
+     */
+    inline bool isValid() const {
+      return *this != NULL_HANDLE;
+    }
+
     friend class FrameStore;
   };
 }

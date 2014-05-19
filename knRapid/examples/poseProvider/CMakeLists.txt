@@ -11,6 +11,7 @@ include_directories(
   ${KN_INCLUDE_DIR}
   ${MIRO_INCLUDE_DIR}
   ${ACE_INCLUDE_DIR}
+  ${Boost_INCLUDE_DIR}
   ${RTIDDS_INCLUDE_DIR}
   ${EIGEN3_INCLUDE_DIR}
   ${QT_INCLUDE_DIR}

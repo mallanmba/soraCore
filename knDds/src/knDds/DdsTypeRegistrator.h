@@ -16,8 +16,8 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef miro_DdsTypeRegistrator_h
-#define miro_DdsTypeRegistrator_h
+#ifndef knDds_DdsTypeRegistrator_h
+#define knDds_DdsTypeRegistrator_h
 
 #include "knDds_Export.h"
 

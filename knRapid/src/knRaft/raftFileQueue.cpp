@@ -156,7 +156,7 @@ int main(int argc, char * argv[])
       cmdMgrParams.queueImpl.queuing = false;
       cmdMgrParams.accessControl = false;
       
-      cmdMgr = new rapid::CommandManager(&cmdMgrParams);
+      cmdMgr = new rapid::CommandManager(&cmdMgrParams, argv[0]);
       rapid::RapidSubsystemPtr raftImpl(new kn::RaftImpl(&queue));
       
       cmdMgr->addSubsystem(raftImpl);

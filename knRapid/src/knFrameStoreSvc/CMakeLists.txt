@@ -76,10 +76,8 @@ set (CONFIG_FILES
   FieldTestSiteFrames.xml
   K10RedFrames.xml
   K10RedUpdaterConfig.xml
-  K10BlackFrames.xml
-  K10BlackUpdaterConfig.xml
-  KRexFrames.xml
-  KRexUpdaterConfig.xml
+  KRex2Frames.xml
+  KRex2UpdaterConfig.xml
   LerAFrames.xml
   LerBFrames.xml
   K11Frames.xml

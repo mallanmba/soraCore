@@ -3,7 +3,6 @@
   <config_global name="namespace" value="kn" />
   <config_global name="include" value="knDds/KnDdsParameters.h" />
   <config_global name="include" value="rapidExtIo/RapidExtIoParameters.h" />
-  <config_global name="include" value="rapidCommanding/CommandingParameters.h" />
 
   <config_group name="Processes" >
 
@@ -25,7 +24,7 @@
       <config_parameter name="managerConfigWriter" type="ProcMgrConfigLeafParameters" />
       <config_parameter name="managerStateWriter" type="ProcMgrStateLeafParameters" />
       <config_parameter name="ioSampleWriter" type="ProcIoSampleLeafParameters" />
-      <config_parameter name="commandManager" type="rapid::CommandManagerParameters" />
+      <config_parameter name="commandInterface" type="bool" default="false" />
       <config_parameter name="defaultConfig" type="string" default="RctldConfig" />
     </config_item>
 

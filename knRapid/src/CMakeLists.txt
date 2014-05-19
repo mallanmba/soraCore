@@ -14,8 +14,10 @@ add_build_switch( rapidExtTraclabsIo  KNRAPID_HAS_DDS AND EIGEN3_FOUND )
 add_build_switch( rapidCommanding     KNRAPID_HAS_DDS ) #AND NOT WIN32 ) # compile failure in ACE_NS_Thread.inl
 add_build_switch( rapidFrameStore     EIGEN3_FOUND)
 add_build_switch( knFrameStoreSvc     EIGEN3_FOUND )
-add_build_switch( knSystemInfoSvc     KNRAPID_HAS_DDS AND KN_knSystemInfo_LIBRARY )
-add_build_switch( knRaft              KNRAPID_BUILD_rapidCommanding AND IRGUTIL_irgSha1_LIBRARY AND KN_knFetchPool_LIBRARY )
+add_build_switch( knSystemInfo        MIRO_miroXml_LIBRARY AND NOT APPLE AND UNIX )
+add_build_switch( knSystemInfoSvc     KNRAPID_HAS_DDS AND KNRAPID_BUILD_knSystemInfo )
+add_build_switch( knFetchPool         MIRO_miroXml_LIBRARY AND QT_FOUND )
+add_build_switch( knRaft              KNRAPID_BUILD_rapidCommanding AND IRGUTIL_irgSha1_LIBRARY AND KNRAPID_BUILD_knFetchPool )
 add_build_switch( knProcessManager    KNRAPID_HAS_DDS AND UNIX )
 
 

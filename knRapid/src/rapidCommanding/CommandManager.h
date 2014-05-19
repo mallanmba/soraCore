@@ -24,8 +24,7 @@
 
 #include "ace/Task.h"
 
-#include <boost/shared_ptr.hpp>
-#include <boost/scoped_ptr.hpp>
+#include "knShare/SmartPtr.h"
 #include <boost/thread.hpp>
 
 #include <string>
@@ -44,7 +43,7 @@ namespace rapid
   class rapidCommanding_Export CommandManager : public ACE_Task_Base
   {
   public:
-    CommandManager(CommandManagerParameters const * params);
+    CommandManager(CommandManagerParameters const * params, const std::string& entityName);
     ~CommandManager() throw();
 
     void addSubsystem(RapidSubsystemPtr const& subsystem);
@@ -61,11 +60,13 @@ namespace rapid
     virtual int svc();
 
   protected:
+    std::string m_entityName;
+    
     typedef boost::unique_future<void> Future;
-    typedef boost::shared_ptr<Future> FuturePtr;
-    typedef boost::shared_ptr<rapid::Ack> AckPtr;
-    typedef boost::shared_ptr<rapid::Command> CommandPtr;
-    typedef boost::shared_ptr<AccessControlImpl> AccessControlImplPtr;
+    typedef kn::shared_ptr<Future> FuturePtr;
+    typedef kn::shared_ptr<rapid::Ack> AckPtr;
+    typedef kn::shared_ptr<rapid::Command> CommandPtr;
+    typedef kn::shared_ptr<AccessControlImpl> AccessControlImplPtr;
 
     struct PendingCommand
     {

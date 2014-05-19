@@ -22,9 +22,6 @@
 #include "miro/Log.h"
 #include "miro/Exception.h"
 
-#include <ace/Time_Value.h>
-#include <ace/OS_NS_sys_time.h>
-
 #include <utility>
 
 namespace kn
@@ -64,15 +61,17 @@ namespace kn
     }
   }
 
-  ACE_Time_Value
-  DdsEventLoop::processEvents(ACE_Time_Value const& maxSlice)
+  Duration
+  DdsEventLoop::processEvents(Duration const& maxSlice)
   {
-    ACE_Time_Value before = ACE_OS::gettimeofday();
+    TimePoint before = Clock::now();
 
     DDS::ReturnCode_t retcode;
     DDS::Duration_t timeout;
-    timeout.sec = maxSlice.sec();
-    timeout.nanosec = maxSlice.usec() * 1000;
+    kn::seconds sec(kn::duration_cast<kn::seconds>(maxSlice));
+    kn::nanoseconds nsec(kn::duration_cast<kn::nanoseconds>(maxSlice));
+    timeout.sec = sec.count();
+    timeout.nanosec = nsec.count() - (sec.count() * 1000000000);
     DDS::ConditionSeq activeConditions; 
 
     retcode = m_waitSet.wait(activeConditions, timeout);
@@ -91,9 +90,9 @@ namespace kn
       throw Miro::Exception(); // todo
     }
 
-    ACE_Time_Value after =  ACE_OS::gettimeofday();
-    ACE_Time_Value elapsed = after - before;
-    return (elapsed < maxSlice)? maxSlice - elapsed : ACE_Time_Value::zero;
+    TimePoint after =  Clock::now();
+    Duration elapsed = after - before;
+    return (elapsed < maxSlice)? maxSlice - elapsed : Duration();
   }
 
 }

@@ -16,8 +16,8 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef miro_DdsTypedConnector_h
-#define miro_DdsTypedConnector_h
+#ifndef knDds_DdsTypedConnector_h
+#define knDds_DdsTypedConnector_h
 
 #include "DdsPushConsumer.h"
 #include "DdsEventHandler.h"
@@ -55,7 +55,8 @@ namespace kn
                       std::string const& topic,
                       std::string const& subscriber = "",
                       std::string const& profile = "",
-                      std::string const& library = "");
+                      std::string const& library = "", 
+                      std::string const& entityName = "");
     ~DdsTypedConnector() throw();
 
     TypedEventHandler& eventHandler() throw() {
@@ -91,9 +92,10 @@ namespace kn
       std::string const& topic,
       std::string const& subscriber,
       std::string const& profile,
-      std::string const& library) :
+      std::string const& library,
+      std::string const& entityName) :
       m_handleEvent(eventHandler),
-      m_subscriber(topic, subscriber, profile, library, this /*, DDS::DATA_AVAILABLE_STATUS*/),
+      m_subscriber(topic, subscriber, profile, library, this, DDS_STATUS_MASK_ALL, entityName),
       m_dataHandler(Callback(*eventHandler), ReaderHook(m_subscriber.dataReader()), -1)
   {}
 
@@ -110,4 +112,4 @@ namespace kn
   }
 } // namespace kn
 
-#endif // miro_DdsTypedConsumer_h
+#endif // knDds_DdsTypedConsumer_h

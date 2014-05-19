@@ -69,6 +69,44 @@ namespace kn {
     return *this;
   }
 
+  void  
+  MemImageData::dump(const std::string &fn) const 
+  {
+  }
+  
+  unsigned char * 
+  MemImageData::data() const 
+  { 
+    return m_data.get(); 
+  }
+  uint32_t  
+  MemImageData::width()  const 
+  { 
+    return m_width;
+  }
+  uint32_t  
+  MemImageData::height() const 
+  { 
+    return m_height; 
+  }
+  uint32_t  
+  MemImageData::depth() const 
+  { 
+    return m_depth; 
+  }
+  
+  ACE_Time_Value  
+  MemImageData::timestamp() const 
+  { 
+    return m_timestamp; 
+    
+  }
+  bool  
+  MemImageData::valid() const 
+  { 
+    return m_data.get() != NULL; 
+  }
+
   void 
   MemImageData::writePgm(const std::string &fn) const
   {
@@ -94,7 +132,6 @@ namespace kn {
     }
 
     file << "\n";
-    file.write(reinterpret_cast<const char*>(data()),  m_width * m_height * ((m_depth + 7) / 8));
+    file.write(reinterpret_cast<const char*>(m_data.get()),  m_width * m_height * ((m_depth + 7) / 8));
   }
-
 }

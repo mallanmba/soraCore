@@ -16,8 +16,8 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef miro_DdsEntitiesFactorySvc_h
-#define miro_DdsEntitiesFactorySvc_h
+#ifndef knDds_DdsEntitiesFactorySvc_h
+#define knDds_DdsEntitiesFactorySvc_h
 
 #include "knDds_Export.h"
 
@@ -64,4 +64,4 @@ namespace kn
 // Declare both static and dynamic services.
 ACE_FACTORY_DECLARE(knDds, DdsEntitiesFactorySvc)
 
-#endif // miro_DdsEntitiesFactorySvc_h
+#endif // knDds_DdsEntitiesFactorySvc_h

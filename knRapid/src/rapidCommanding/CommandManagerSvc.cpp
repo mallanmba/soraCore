@@ -50,7 +50,7 @@ namespace rapid
     try {
       RapidSubsystemRepository * repo =  RapidSubsystemRepository::instance();
         
-      m_cmdMgr.reset(new CommandManager(m_params));
+      m_cmdMgr.reset(new CommandManager(m_params, "CommandManagerSvc"));
 
       RapidSubsystemRepository::InstanceMap instances = repo->exportMap();
 
