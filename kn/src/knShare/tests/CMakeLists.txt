@@ -28,8 +28,8 @@ if (${Boost_CHRONO_FOUND})
   )
 
   if (NOT WIN32)
-    add_executable( latencyTest latencyTest.cpp)
-    target_link_libraries( latencyTest
+    add_executable( knLatencyTest knLatencyTest.cpp)
+    target_link_libraries( knLatencyTest
       knShare
       ${Boost_THREAD_LIBRARY}
       ${ACE_LIBRARIES}
