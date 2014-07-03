@@ -13,7 +13,8 @@ endif (NOT catkin_FOUND)
 
 find_package( ACE REQUIRED )
 find_package( Eigen3 )
-find_package( Boost 1.50 COMPONENTS REQUIRED program_options signals thread system chrono )
+find_package( Boost COMPONENTS chrono )
+find_package( Boost 1.46 REQUIRED program_options signals thread system )
 
 find_package( GTest )
 find_package( Doxygen )
@@ -56,11 +57,6 @@ setup_ctest()
 # everything needs to include boost headers, so set it
 # up at the top level for convinience
 ##-----------------------------------------------
-message("\n boost root dir: " ${BOOST_ROOT})
-set(Boost_INCLUDE_DIR ${BOOST_ROOT}/include)
-set(Boost_LIBRARY_DIRS ${BOOST_ROOT}/lib)
-
-message("\n boost:" ${Boost_INCLUDE_DIR})
 include_directories(
   ${Boost_INCLUDE_DIR}
 )
