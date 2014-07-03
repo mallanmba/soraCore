@@ -7,18 +7,6 @@ if (${CATKIN_TOPLEVEL})
   )
 endif(${CATKIN_TOPLEVEL})
 
-if (NOT catkin_FOUND)
-  set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
-endif (NOT catkin_FOUND)
-
-find_package( ACE REQUIRED )
-find_package( Eigen3 )
-find_package( Boost COMPONENTS chrono )
-find_package( Boost 1.46 REQUIRED program_options signals thread system )
-
-find_package( GTest )
-find_package( Doxygen )
-
 if (catkin_FOUND)
 ###################################
 ## catkin specific configuration ##
@@ -28,6 +16,18 @@ catkin_package(
   LIBRARIES knShare knMath knGeometry knFrameStore knMotorShare knTiledMap
   )
 else (catkin_FOUND)
+  set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
+
+  include( SetArchitecture )
+  include( SetupCTest )
+  include( SetupBuildSwitch )
+  include( SetupConfigureFile )
+  include( SetupInstall )
+  include( SetupRPATH )
+  include( SetupUtilities )
+  include( UserOptions )
+  include( SetupWarnLevel )
+
   ## we have to play some tricks to get install
   ## path to "stick" in Windows
   ##------------------------------------------------
@@ -36,6 +36,13 @@ else (catkin_FOUND)
 endif (catkin_FOUND)
 
 # find dependencies
+find_package( ACE REQUIRED )
+find_package( Eigen3 )
+find_package( Boost COMPONENTS chrono )
+find_package( Boost 1.46 REQUIRED program_options signals thread system )
+
+find_package( GTest )
+find_package( Doxygen )
 
 ## We must add the in-source and out-of-source
 ## include paths 

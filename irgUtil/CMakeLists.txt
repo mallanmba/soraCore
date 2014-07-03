@@ -7,10 +7,6 @@ find_package(catkin  REQUIRED COMPONENTS
 )
 endif(${CATKIN_TOPLEVEL})
 
-if (NOT catkin_FOUND)
-  set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
-endif (NOT catkin_FOUND)
-
 if (catkin_FOUND)
   ###################################
   ## catkin specific configuration ##
@@ -20,6 +16,18 @@ if (catkin_FOUND)
     LIBRARIES irgSha1 irgUtmll
   )
 else (catkin_FOUND)
+  set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
+
+  include( SetArchitecture )
+  include( SetupBuildSwitch )
+  include( SetupCTest )
+  include( SetupConfigureFile )
+  include( SetupInstall )
+  include( SetupRPATH )
+  include( SetupUtilities )
+  include( UserOptions )
+  include( SetupWarnLevel )
+
   ## we have to play some tricks to get install
   ## path to "stick" in Windows
   ##------------------------------------------------
