@@ -13,7 +13,7 @@ if (catkin_FOUND)
 ###################################
 catkin_package(
   INCLUDE_DIRS src
-  LIBRARIES knShare knMath knGeometry knFrameStore knMotorShare knTiledMap
+  LIBRARIES knShare knMath knGeometry knFrameStore knMotorShare
   )
 else (catkin_FOUND)
   set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
