@@ -23,6 +23,8 @@
 #include "miro/Log.h"
 #include "miro/Configuration.h"
 
+#include "rapidIo/TextMessager.h"
+
 #include <ace/OS_NS_string.h>
 #include <ace/Dynamic_Service.h>
 #include <ace/Get_Opt.h>
@@ -38,18 +40,24 @@ namespace rapid
     MIRO_LOG_CTOR("CommandManagerSvc");
   }
 
+  /**
+   * init looks all subsystems registered in the RapidSubsystemRepository
+   * and adds them to the CommandManager. Any subsystems added after init
+   * will not be added to the CommandManager, so this service should be
+   * initialized last
+   */
   int
   CommandManagerSvc::init(int argc, ACE_TCHAR *argv[])
   {
     MIRO_LOG(LL_NOTICE, "rapid::CommandManagerSvc::init()");
 
-    // parasing the arguments
+    // parsing the arguments
     if (parseArgs(argc, argv) != 0)
       return -1;
 
     try {
       RapidSubsystemRepository * repo =  RapidSubsystemRepository::instance();
-        
+
       m_cmdMgr.reset(new CommandManager(m_params, "CommandManagerSvc"));
 
       RapidSubsystemRepository::InstanceMap instances = repo->exportMap();
@@ -64,6 +72,11 @@ namespace rapid
       MIRO_LOG_OSTR(LL_ERROR, "Creation of CommandManagerSvc failed:\n  " << ex);
       return -1;
     }
+
+#ifndef _WIN32 // FIXME - Singleton probs on win32
+    // don't lazily create TextMessager
+    rapid::TextMessager::instance();
+#endif
 
     return 0;
   }
@@ -90,10 +103,15 @@ namespace rapid
       m_cmdMgr->thr_mgr()->cancel_task(m_cmdMgr.get());
       m_cmdMgr->wait();
     }
-    
+
     m_cmdMgr.reset();
     m_params = NULL;
 
+#ifndef _WIN32 // FIXME - Singleton probs on win32
+    // actively clean up singleton
+    rapid::TextMessager::instance.close();
+#endif
+    
     MIRO_LOG(LL_NOTICE, "rapid::CommandManagerSvc::fini() done");
     return 0;
   }
@@ -119,41 +137,41 @@ namespace rapid
 
     // initialize parameters from command line
     ACE_Get_Opt get_opts(argc, argv, "CIm:MpQSs:v?");
-    
+
     while ((c = get_opts()) != -1) {
       switch (c) {
-      case 'C':
-        m_params->accessControl = false;
-        break;
-      case 's':
-        m_params->dataBus.topicSuffix = std::string("-") + get_opts.optarg;
-        break;
-      case 'Q':
-        m_params->queueImpl.queuing = false;
-        break;
-      case 'S':
-        m_params->queueImpl.startQueueSuspended = true;
-        break;
-      case 'I':
-        m_params->queueImpl.suspendQueueOnIdle = true;
-        break;
-      case 'm':
-        m_params->queueImpl.macroMgr.persistencyFile =  get_opts.optarg;
-        break;
-      case 'v':
-        ++m_verbose;
-        break;
-      case '?':
-      default:
-        cerr << "usage: " << argv[0] << "[-AQv?]" << endl
-             << "  -m macro persistency file" << endl
-             << "  -C disable access control" << endl
-             << "  -S start queue suspended" << endl
-             << "  -I suspend queue on idle" << endl
-             << "  -Q disable queuing" << endl
-             << "  -v verbose mode" << endl
-             << "  -? help: emit this text and stop" << endl;
-        rc = 1;
+        case 'C':
+          m_params->accessControl = false;
+          break;
+        case 's':
+          m_params->dataBus.topicSuffix = std::string("-") + get_opts.optarg;
+          break;
+        case 'Q':
+          m_params->queueImpl.queuing = false;
+          break;
+        case 'S':
+          m_params->queueImpl.startQueueSuspended = true;
+          break;
+        case 'I':
+          m_params->queueImpl.suspendQueueOnIdle = true;
+          break;
+        case 'm':
+          m_params->queueImpl.macroMgr.persistencyFile =  get_opts.optarg;
+          break;
+        case 'v':
+          ++m_verbose;
+          break;
+        case '?':
+        default:
+          cerr << "usage: " << argv[0] << "[-AQv?]" << endl
+               << "  -m macro persistency file" << endl
+               << "  -C disable access control" << endl
+               << "  -S start queue suspended" << endl
+               << "  -I suspend queue on idle" << endl
+               << "  -Q disable queuing" << endl
+               << "  -v verbose mode" << endl
+               << "  -? help: emit this text and stop" << endl;
+          rc = 1;
       }
     }
 
@@ -171,9 +189,9 @@ namespace rapid
 // process at run-time.
 ACE_FACTORY_NAMESPACE_DEFINE(rapidCommanding, rapid_CommandManagerSvc, rapid::CommandManagerSvc);
 ACE_STATIC_SVC_DEFINE (rapid_CommandManagerSvc,
-		       ACE_TEXT("CommandManagerSvc"),
-		       ACE_SVC_OBJ_T,
-		       &ACE_SVC_NAME(rapid_CommandManagerSvc),
-		       ACE_Service_Type::DELETE_THIS | ACE_Service_Type::DELETE_OBJ,
-		       0);
+                       ACE_TEXT("CommandManagerSvc"),
+                       ACE_SVC_OBJ_T,
+                       &ACE_SVC_NAME(rapid_CommandManagerSvc),
+                       ACE_Service_Type::DELETE_THIS | ACE_Service_Type::DELETE_OBJ,
+                       0);
 ACE_STATIC_SVC_REQUIRE(rapid_CommandManagerSvc);

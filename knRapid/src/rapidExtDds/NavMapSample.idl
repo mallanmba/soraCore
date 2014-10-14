@@ -37,8 +37,7 @@ module rapid {
 
             //@copy-declaration /**
             //@copy-declaration  * Sampling density. A full resolution layer has a density of 1, a half resolution layer has a
-            //@copy-declaration  * density of 2, etc.
-            //@copy-declaration  * HAS TO BE A POWER OF TWO!!!
+            //@copy-declaration  * density of 2, etc. <i>Sampling density must be a power of 2</i>
             //@copy-declaration  */
             short density;
 
@@ -65,8 +64,7 @@ module rapid {
 
             //@copy-declaration /**
             //@copy-declaration  * Sampling density. A full resolution layer has a density of 1, a half resolution (in both
-            //@copy-declaration  * dimensions) layer has a density of 2, etc.
-            //@copy-declaration  * HAS TO BE A POWER OF TWO!!!
+            //@copy-declaration  * dimensions) layer has a density of 2, etc. <i>Sampling density must be a power of 2</i>
             //@copy-declaration  */
             short density;
 

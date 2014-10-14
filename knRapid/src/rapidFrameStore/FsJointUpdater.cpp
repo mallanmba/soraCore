@@ -168,7 +168,7 @@ namespace rapid
                       "FsJointUpdater(topicSuffix=" << m_params.topicSuffix
                       << ") - adding position frame for " <<
                       config->hdr.srcName << ":" << endl <<
-                      m_frameStore.full_name(handle));
+                      m_frameStore.fullName(handle));
 
 
         Axis a = FsJointUpdater::X;
@@ -202,7 +202,7 @@ namespace rapid
     }
 
     ATrans3Vector transforms;
-    m_frameStore.get_frame_transforms(joints.uniqueHandles, transforms);
+    m_frameStore.getFrameTransforms(joints.uniqueHandles, transforms);
 
     ATrans3Vector::iterator atrans = transforms.begin();
     kn::Matrix3x3Vector updates;
@@ -243,6 +243,6 @@ namespace rapid
     updateRotation(*atrans, updates);
 
 
-    m_frameStore.set_frame_transforms(joints.uniqueHandles, transforms);
+    m_frameStore.setFrameTransforms(joints.uniqueHandles, transforms);
   }
 }

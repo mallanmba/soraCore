@@ -33,3 +33,5 @@ install_files  ( /etc/rtiRoutingService/         FILES ${RTIDDS_IDL_GENERATED_XM
 install_files  ( /etc/rtiRecordingService/types/ FILES ${RTIDDS_IDL_GENERATED_XMLS} )
 install_files  ( /etc/rtiRoutingServiceMcc/      FILES ${RTIDDS_IDL_GENERATED_XMLS} )
 install_files  ( /etc/rtiRoutingServiceGramps/   FILES ${RTIDDS_IDL_GENERATED_XMLS} )
+install_files  ( /etc/rtiRoutingServiceMvp/      FILES ${RTIDDS_IDL_GENERATED_XMLS} )
+install_files  ( /etc/rtiRoutingServiceSnrf/     FILES ${RTIDDS_IDL_GENERATED_XMLS} )

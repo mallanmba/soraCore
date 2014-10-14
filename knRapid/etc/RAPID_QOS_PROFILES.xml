@@ -27,6 +27,9 @@
           </rtps_well_known_ports>
           <rtps_reserved_port_mask>MASK_DEFAULT</rtps_reserved_port_mask>
         </wire_protocol>
+        <!-- transport_builtin>
+          <mask>UDPv4</mask>
+        </transport_builtin -->
         <discovery>
           <!-- if false, we do an explicit configuration through the discovery-peers files. -->
           <!-- This limits accidental traffic on the robot-networks. -->
@@ -78,7 +81,6 @@
               <value>5000000</value>
             </element>
 
-
             <!-- === Transport ============================================================================ -->
             <!-- maximum message size -->
             <element>
@@ -107,11 +109,11 @@
             <!-- we try to exclude all vmware virtual network interfaces -->
             <element>
               <name>dds.transport.UDPv4.builtin.parent.deny_interfaces</name>
-              <value>10.1.10.*,192.168.3.255,169.254.194.2,192.168.1.*,192.9.202.1</value>
+              <value>10.10.1.*,10.30.10.*,192.168.3.255,169.254.194.2,192.168.1.*,192.9.202.1,192.168.5.*,192.168.10.*,192.168.122.*</value>
             </element>
             <element>
               <name>dds.transport.UDPv4.builtin.parent.deny_multicast_interfaces</name>
-              <value>10.1.10.*,192.168.3.255,169.254.194.2,192.168.1.*</value>
+              <value>10.10.1.*,10.30.10.*,192.168.3.255,169.254.194.2,192.168.1.*,192.9.202.1,192.168.5.*,192.168.10.*,192.168.122.*</value>
             </element>
           </value>
         </property>
@@ -269,7 +271,7 @@
         </durability>
         <history>
           <kind>KEEP_LAST_HISTORY_QOS</kind>
-          <depth>2</depth>
+          <depth>6</depth>
         </history>
       </datareader_qos>
       <datawriter_qos>
@@ -278,7 +280,7 @@
         </durability>
         <history>
           <kind>KEEP_LAST_HISTORY_QOS</kind>
-          <depth>2</depth>
+          <depth>6</depth>
         </history>
       </datawriter_qos>
     </qos_profile>
@@ -314,8 +316,8 @@
         <liveliness>
           <kind>MANUAL_BY_TOPIC_LIVELINESS_QOS</kind>
           <lease_duration>
-              <sec>6</sec>
-              <nanosec>0</nanosec>
+            <sec>6</sec>
+            <nanosec>0</nanosec>
           </lease_duration>
         </liveliness>
       </datareader_qos>
@@ -323,8 +325,8 @@
         <liveliness>
           <kind>MANUAL_BY_TOPIC_LIVELINESS_QOS</kind>
           <lease_duration>
-              <sec>6</sec>
-              <nanosec>0</nanosec>
+            <sec>6</sec>
+            <nanosec>0</nanosec>
           </lease_duration>
         </liveliness>
       </datawriter_qos>
@@ -562,6 +564,10 @@
     <!-- ARC Extension: Gps ================================== -->
     <qos_profile name="RapidGpsConfigProfile" base_name="RapidConfigQos" />
     <qos_profile name="RapidGpsSampleProfile" base_name="RapidSampleQos" />
+
+    <!-- ARC Extension: Spectrum ================================== -->
+    <qos_profile name="RapidSpectrumConfigProfile" base_name="RapidConfigQos" />
+    <qos_profile name="RapidSpectrumSampleProfile" base_name="RapidSampleQos" />
 
     <!-- ARC Extension: StateMachine ========================= -->
     <qos_profile name="RapidStateMachineConfigProfile" base_name="RapidConfigQos" />

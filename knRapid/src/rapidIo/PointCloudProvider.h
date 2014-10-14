@@ -124,7 +124,7 @@ namespace rapid
     }
 
     void setDynamicScaling(bool flag) {
-      m_dynamicScaling = true;
+      m_dynamicScaling = flag;
     }
 
     void publish(kn::PointCloudPtr const& pc);
@@ -163,6 +163,8 @@ namespace rapid
 
   }; // class PointCloudProvider
 
+  typedef kn::shared_ptr<PointCloudProvider> PointCloudProviderPtr;
+  
 } // namespace rapid
 
 #endif // rapid_PointCloudProvider_h

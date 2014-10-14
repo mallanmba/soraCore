@@ -34,6 +34,10 @@ namespace rapid
   class CommandManagerSvcParameters;
   class CommandManager;
 
+  /**
+   * RAPID CommandManagerSvc should be one of the last services initialized 
+   * @see init()
+   */
   class rapidCommanding_Export CommandManagerSvc : public ACE_Service_Object
   {
   public:

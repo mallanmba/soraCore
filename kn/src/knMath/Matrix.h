@@ -19,19 +19,50 @@
 #ifndef knMatrix_h
 #define knMatrix_h
 
+// see http://eigen.tuxfamily.org/dox-devel/group__TopicStlContainers.html#vector
+// about std::vector and eigen aligned types
+#include <Eigen/StdVector>
 #include <Eigen/Geometry>
 
 #include <vector>
 namespace kn
 {
+  /** @ingroup knMath */
   typedef Eigen::Matrix3d Matrix3x3;
+  /** @ingroup knMath */
   typedef Eigen::Matrix2d Matrix2x2;
+  /** @ingroup knMath */
+  typedef Eigen::MatrixXd Matrix;
 
+  /** @ingroup knMath */
   typedef Eigen::MatrixXd MathMatrixDouble;      
 
+	typedef Eigen::Matrix2i Matrix2x2i;
+	typedef Eigen::Matrix3i Matrix3x3i;
+	typedef Eigen::MatrixXi Matrixi;
 
+  /** @ingroup knMath */
   typedef std::vector<Matrix2x2, Eigen::aligned_allocator<Matrix2x2> > Matrix2x2Vector;
+  /** @ingroup knMath */
   typedef std::vector<Matrix3x3, Eigen::aligned_allocator<Matrix3x3> > Matrix3x3Vector;
+
+  //Eigen 3.2+ defines .hasNaN() and .allFinite() (briefly called isFinite), but
+  //until we're using at least that version everywhere, we need our own
+  //To keep life simple, these are defined generically but will only compile
+  //of course on Eigen types
+  template<class MatType>
+    inline bool matrixHasNaN(const MatType &mat) 
+    {
+      //cute parallel trick copied from Eigen source: NaN doesn't equal anything
+      return !((mat.array()==mat.array()).all());
+    }
+
+  template<class MatType>
+    inline bool matrixIsFinite(const MatType &mat)
+    {
+      //cute parallel trick copied from Eigen source: inf-inf = nan, nan-nan=nan
+      return !(matrixHasNaN(mat-mat));
+    }
 }
 
 #endif // knMatrix_h

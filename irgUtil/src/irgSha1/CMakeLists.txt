@@ -16,13 +16,6 @@ set( SOURCES
 )
 
 add_definitions(-D${EXPORT_DEFINE})
-include_directories(
-  ${ACE_INCLUDE_DIR}
-)
-
-link_libraries (
-  ${ACE_LIBRARIES} 
-)
 
 add_library(${LIB_NAME} SHARED
   ${HEADERS}
@@ -34,12 +27,11 @@ set( TARGETS
   testSha1
 )
 
-link_libraries( ${LIB_NAME} )
-
 foreach( TARGET ${TARGETS} )
   add_executable( ${TARGET} 
     ${TARGET}.cpp 
   )
+  target_link_libraries(${TARGET} ${LIB_NAME} )
 endforeach( TARGET ${TARGETS} )
 
 ##----------------------------------------

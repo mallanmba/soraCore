@@ -40,6 +40,7 @@ namespace kn
     m_data.reset(new unsigned char[imageSize]),
 
     file.read(reinterpret_cast<char *>(m_data.get()), imageSize);
+    m_timestamp = time;
   }
   
   FileImageData::~FileImageData() throw()

@@ -28,7 +28,15 @@
 namespace kn
 {
 
-  /** Tiled map implementation.
+  /** 
+   * @ingroup knTiledMap
+   * @brief Base-type of the standard tiled map implementation.
+   * 
+   * This class introduces the concept of cell-size, providing a mapping from 
+   * a continous 2D space to discrete indexes of cells.
+   * Cell-boundaries are assumed to be aligned with the origin of the plane.
+   * Cells are inclusiding the lower boundary and excluding the upper boundary.
+   * So assuming a cell-size of 1., 0. and 0.999999 would matched to index 0 and 1.0 would match to index 1.
    *
    */
   template<class D, typename T> 
@@ -43,6 +51,7 @@ namespace kn
     //! Cell type.
     typedef typename T::Cell Cell;
 
+    //! Helper class to apply an operation to each tile.
     template<typename CellOperator>
     struct EachCellOperator
     {
@@ -62,7 +71,8 @@ namespace kn
       CellOperator& m_op;
     };
 
-    /** Base constructor.
+    /** 
+     * @brief Base constructor.
      *
      * @param cellLength - specifies the side length of a cell.
      * This provides that basic mapping between the map-coordinates and the cell indexes:
@@ -74,7 +84,8 @@ namespace kn
       m_indexScale(1./cellLength)
     {}
 
-    /** Random access operator to cells of the two-dimensional map.
+    /** 
+     * @brief Random access operator to cells of the two-dimensional map.
      *
      * This method will create the tile containing the cell if it does not exist, yet.
      * @param x and @param y are specifying the location in the map-coordinate space.
@@ -85,7 +96,8 @@ namespace kn
       return static_cast<Derived*>(this)->tile(iX, iY).cell(iX, iY);
     }
 
-    /** Random access operator to cells of the two-dimensional map.
+    /** 
+     * @brief Random access operator to cells of the two-dimensional map.
      *
      * This method will create the tile containing the cell if it does not exist, yet.
      * @param x and @param y are specifying the location in the map-coordinate space.
@@ -96,7 +108,8 @@ namespace kn
       return this->tile(iX, iY).cell(iX, iY);
     }
 
-    /** Random access operator to cells of the two-dimensional map.
+    /**
+     * @brief Random access operator to cells of the two-dimensional map.
      *
      * This method will create the tile containing the cell if it does not exist, yet.
      * @param a and @param b are specifying the location in cell-index space.
@@ -105,7 +118,8 @@ namespace kn
       return static_cast<Derived*>(this)->tile(a, b).cell(a, b);
     }
     
-    /** Random access operator to cells of the two-dimensional map.
+    /** 
+     * @brief Random access operator to cells of the two-dimensional map.
      *
      * This method will create the tile containing the cell if it does not exist, yet.
      * @param a and @param b are specifying the location in cell-index space.
@@ -114,10 +128,12 @@ namespace kn
       return static_cast<Derived const*>(this)->tile(a, b).cell(a, b);
     }
     
-    /** Random access operator to tiles of the two-dimensional map.
+    /**
+     * @brief Random access operator to tiles of the two-dimensional map.
      *
      * This method will create the tile if it does not exist, yet.
      * @param a and @param b are specifying the location in cell-index space.
+     * @param timestamp Access time to be stored in the tile.
      * @return The tile that contains the cell-index.
      */
     Tile& tile(int a, int b, ACE_Time_Value const& timestamp = ACE_OS::gettimeofday()) {
@@ -126,10 +142,12 @@ namespace kn
       return *t;
     }
 
-    /** Random access operator to tiles of the two-dimensional map.
+    /**
+     * @brief Random access operator to tiles of the two-dimensional map.
      *
      * This method will create the tile if it does not exist, yet.
-     * @param id is specifying the tile by its id.
+     * @param tileId is specifying the tile by its id.
+     * @param timestamp Access time to be stored in the tile.
      * @return The tile that contains the cell-index.
      */
     Tile& tile(int tileId, ACE_Time_Value const& timestamp = ACE_OS::gettimeofday()) {
@@ -138,42 +156,53 @@ namespace kn
       return *t;
     }
 
+    //! Apply operation to each tile.
     template<typename TileOperator>
     void forEachTile(TileOperator& op) {
       static_cast<Derived *>(this)->forEachTileImpl(op);
     }
 
+    //! Apply operation to each tile.
     template<typename TileOperator>
     void forEachTile(TileOperator& op) const {
       static_cast<Derived const*>(this)->forEachTileImpl(op);
     }
 
+    //! Apply operation to each cell.
     template<typename CellOperator>
     void forEachCell(CellOperator& op) {
       EachCellOperator<CellOperator> tileOp(op);
       static_cast<Derived *>(this)->forEachTileImpl(op);
     }
 
+    //! Apply operation to each cell.
     template<typename CellOperator>
     void forEachCell(CellOperator& op) const {
       EachCellOperator<CellOperator> const tileOp(op);
       static_cast<Derived const *>(this)->forEachTileImpl(op);
     }
 
-    /** Accessor for the cell-length. */
+    //! Accessor for the cell-length.
     double cellLength() const { return m_cellLength; }
-    /** Compute the origin of the cell that contains the coordinate.
+    /** 
+     * @brief Compute the origin of the cell that contains the coordinate.
      *
      * As this is uniform for both axis, we only offer a single method for both.
+     * @param coo Cell coordinate.
+     * @return double Cell origin.
      */
     double cellOrigin(double coo) const { return floor(coo * m_indexScale) * m_cellLength; }
-    /** Compute the center of the cell that countains the coordinate.
+    /** 
+     * @brief Compute the center of the cell that countains the coordinate.
      *
      * As this is uniform for both axis, we only offer a single method for both.
+     * @param coo Cell coordinate.
+     * @return double Cell center.
      */
-    double cellCenter(double coo) const { return cellOrigin() + m_cellLength_2; }
+    double cellCenter(double coo) const { return cellOrigin(coo) + m_cellLength_2; }
 
-    /** Compute the index from a coordinate.
+    /** 
+     * @brief Compute the index from a coordinate.
      *
      * As this is uniform for both axis, we only offer a single method for both.
      */
@@ -181,20 +210,36 @@ namespace kn
       return (int) std::floor(m_indexScale * coo);
     }
 
-    /** Compute the coordinate from an index.
+    /** 
+     * @brief Compute the coordinate from an index.
      *
      * As this is uniform for both axis, we only offer a single method for both.
+     * @param a Cell index.
+     * @return double Cell origin.
      */
     double toCoordinate(int a) const {
       return a * m_cellLength;
     }
 
-    /** Check for the existance of a tile at the specified index. */
+    /**
+     * @brief Check for the existance of a tile at the specified index.
+     * 
+     * @param a Index in X axis.
+     * @param b Index in Y axis.
+     */
     bool hasTile(int a, int b) const {
       return static_cast<Derived const*>(this)->hasTileImpl(a, b);
     }
 
-    /** Compute the bounding box of all tiles of the map. */
+    /**
+     * @brief Compute the bounding box of all tiles of the map.
+     * 
+     * Note that all parameters are return parameters.
+     * @param x Origin in X
+     * @param y Origin in Y
+     * @param dx Size in X
+     * @param dy Size in Y
+     */
     void boundingBox(int& x, int& y, int& dx, int& dy) const {
       static_cast<Derived const *>(this)->boundingBoxImpl(x, y, dx, dy);
     }

@@ -30,7 +30,8 @@
 namespace kn
 {
   /**
-   * Generic Tree container.
+   * @ingroup knFrameStore
+   * @brief Generic Tree container.
    *
    * The class defines a tree node, which aggregates a templetaized
    * data type as payload.  Each tree node holds a single-linked list
@@ -38,10 +39,10 @@ namespace kn
    * parent pointer is NULL.
    *
    * Note that this class is not thread-safe. As an example of how to
-   * use TreeNode<> in a multi-threaded setup, see the @FrameStore
+   * use TreeNode<> in a multi-threaded setup, see the @ref FrameStore
    * class.
    *
-   * TreeNodes can be heap, stack or statically allocated. In
+   * @note TreeNodes can be heap, stack or statically allocated. In
    * conequence, TreeNodes don't ownership of their
    * children. Destruction of a TreeNode is therefore not recursive by
    * default. For heap-allocated trees, an explicit recursive_delete
@@ -61,13 +62,14 @@ namespace kn
   protected:
     DATA m_data; /**< Payload from template */
     TreeNode * m_parent; /**< Pointer towards root of the tree. Root node m_parent holds NULL */
-    TreeNode * m_first_child; /**< Head of the sibling list. NULL for leave nodes. */
+    TreeNode * m_firstChild; /**< Head of the sibling list. NULL for leave nodes. */
     /**
      * @brief Single-linked list of siblings.
-     * The list is NULL terminated. List-head is @m_first_child of the
+     * 
+     * The list is NULL terminated. List-head is @ref m_firstChild of the
      * parent node.
      */
-    TreeNode * m_next_sibling;
+    TreeNode * m_nextSibling;
 
   private:
     /**
@@ -77,7 +79,7 @@ namespace kn
      * minimize memory allocations.  But makes the ancestry() method
      * not re-entrant.
      */
-    mutable NodeVector ancestry_;
+    mutable NodeVector m_ancestry;
 
   public:
     /**
@@ -85,9 +87,9 @@ namespace kn
      */
     TreeNode() :
       m_parent(NULL),
-      m_first_child(NULL),
-      m_next_sibling(NULL) {
-      ancestry_.reserve(16);
+      m_firstChild(NULL),
+      m_nextSibling(NULL) {
+      m_ancestry.reserve(16);
     }
     /**
      * Initializing constructor.
@@ -95,12 +97,12 @@ namespace kn
     TreeNode(TreeNode * parent, DATA const& data) :
       m_data(data),
       m_parent(parent),
-      m_first_child(NULL),
-      m_next_sibling(NULL) {
-      ancestry_.reserve(16);
+      m_firstChild(NULL),
+      m_nextSibling(NULL) {
+      m_ancestry.reserve(16);
 
       if (m_parent != NULL)
-        m_parent->register_child(this);
+        m_parent->registerChild(this);
     }
 
     /**
@@ -111,23 +113,23 @@ namespace kn
     TreeNode(TreeNode const& node) :
       m_data(node.m_data),
       m_parent(NULL),
-      m_first_child(NULL),
-      m_next_sibling(NULL) {
-      ancestry_.reserve(16);
+      m_firstChild(NULL),
+      m_nextSibling(NULL) {
+      m_ancestry.reserve(16);
     }
 
     /**
      * Destructor.
      * The destructor only deletes the node itself. All children are
      * marked as root nodes. For recursive deletion of the tree, see
-     * @recursive_delete().
+     * @ref recursive_delete().
      */
     ~TreeNode() throw() {
       if (m_parent != NULL) {
-        m_parent->deregister_child(this);
+        m_parent->deregisterChild(this);
       }
-      while (m_first_child != NULL) {
-        m_first_child->set_parent(NULL); // this alters m_first_child !
+      while (m_firstChild != NULL) {
+        m_firstChild->setParent(NULL); // this alters m_firstChild !
       }
     }
 
@@ -145,33 +147,33 @@ namespace kn
 
     /**
      * Recursive destructor of tree.
-     * @NOTE requires heap-allocated tree!
+     * \warning This method can only operate on a heap-allocated tree!
      */
-    void recursive_delete() throw() {
-      while (m_first_child) {
-        m_first_child->recursive_delete();
+    void recursiveDelete() throw() {
+      while (m_firstChild) {
+        m_firstChild->recursiveDelete();
       }
       delete this;
     }
 
     /**
      * @brief Clone node and its offsprings.
-     * The new node is becoming a child of @param parent.
+     * The new node is becoming a child of @param parent .
      * Default is NULL, which creates a new root node.
      */
     TreeNode * clone(TreeNode * parent = NULL) const {
       TreeNode * node = new TreeNode(parent, this->data());
-      TreeNode * child = this->m_first_child;
+      TreeNode * child = this->m_firstChild;
       while (child != NULL) {
         child->clone(node);
-        child = child->m_next_sibling;
+        child = child->m_nextSibling;
       }
       return node;
     }
 
     /**
      * @brief Clone node and its offsprings.
-     * The new node is becoming a child of @param parent.
+     * The new node is becoming a child of @param parent .
      * Default is NULL, which creates a new root node.
      * The front() element of the vector is the root node of the tree.
      *
@@ -181,12 +183,12 @@ namespace kn
      * appending to the vector is allowed, as long as the tree stays
      * in weak order.
      *
-     * @NOTE This only works, if:
+     * @warning This only works, if:
      * assert(nodes.capacity() - nodes.size() > num_offsprings())
      * also, you can not assign/copy-construct the returned vector
      * or increase it's size beyond it's capacity.
      */
-    void clone_vec(TreeNode * parent, TreeNodeVector& nodes) const {
+    void cloneVec(TreeNode * parent, TreeNodeVector& nodes) const {
 
       // protect against tree size overrun
       if (nodes.capacity() <= nodes.size()) {
@@ -198,13 +200,13 @@ namespace kn
 
       TreeNode * node = &nodes.back();
       if (parent) {
-        node->set_parent(parent);
+        node->setParent(parent);
       }
 
-      TreeNode * child = this->m_first_child;
+      TreeNode * child = this->m_firstChild;
       while (child != NULL) {
-        child->clone_vec(node, nodes);
-        child = child->m_next_sibling;
+        child->cloneVec(node, nodes);
+        child = child->m_nextSibling;
       }
     }
 
@@ -213,12 +215,12 @@ namespace kn
      * Tree size is not cached anywhere so this method has linear run-time
      * in the number of tree nodes.
      */
-    unsigned int num_offsprings() const throw() {
+    unsigned int numOffsprings() const throw() {
       unsigned int offsprings = 0;
-      TreeNode * child = this->m_first_child;
+      TreeNode * child = this->m_firstChild;
       while (child != NULL) {
-        offsprings += 1 + child->num_offsprings();
-        child = child->m_next_sibling;
+        offsprings += 1 + child->numOffsprings();
+        child = child->m_nextSibling;
       }
       return offsprings;
     }
@@ -243,12 +245,12 @@ namespace kn
      *
      * Setting the parent to NULL makes the node a root-node.
      */
-    void set_parent(TreeNode * parent) throw() {
+    void setParent(TreeNode * parent) throw() {
       if (m_parent != NULL)
-        m_parent->deregister_child(this);
+        m_parent->deregisterChild(this);
       m_parent = parent;
       if (m_parent != NULL)
-        m_parent->register_child(this);
+        m_parent->registerChild(this);
     }
 
     /**
@@ -262,15 +264,15 @@ namespace kn
     /**
      * Predicate: returns true if node is root-node
      */
-    bool is_root() const throw() {
+    bool isRoot() const throw() {
       return m_parent == NULL;
     };
 
     /**
      * Predicate: returns true if node is a leaf-node
      */
-    bool is_leaf() const throw() {
-      return m_first_child == NULL;
+    bool isLeaf() const throw() {
+      return m_firstChild == NULL;
     };
 
     /**
@@ -285,9 +287,9 @@ namespace kn
     }
 
     /**
-     * Predicate: returns true if this node is ancestor of the @param node.
+     * @brief Predicate: returns true if this node is ancestor of the @param node .
      */
-    bool is_ancestor_of(TreeNode * node) const throw() {
+    bool isAncestorOf(TreeNode * node) const throw() {
       while (node) {
         node = node->m_parent;
         if (node == this)
@@ -309,14 +311,14 @@ namespace kn
     NodeVector const& ancestry(bool dontUpdate = false) const {
       if (!dontUpdate) {
         TreeNode * iter = const_cast<TreeNode *>(this);
-        ancestry_.clear();
+        m_ancestry.clear();
         while (iter) {
-          ancestry_.push_back(iter);
+          m_ancestry.push_back(iter);
           iter = iter->m_parent;
         }
-        std::reverse(ancestry_.begin(), ancestry_.end());
+        std::reverse(m_ancestry.begin(), m_ancestry.end());
       }
-      return ancestry_;
+      return m_ancestry;
     }
 
     /**
@@ -327,7 +329,7 @@ namespace kn
      * The algorithm is of complexity O(n * log(n)) with respect to the
      * depth of the tree.
      */
-    int last_common_ancestor_index(TreeNode const * node) const {
+    int lastCommonAncestorIndex(TreeNode const * node) const {
       NodeVector const& a1 = node->ancestry(); // min length is 1
       NodeVector const& a2 = this->ancestry(); // min length is 1
 
@@ -369,10 +371,10 @@ namespace kn
      * The algorithm is of complexity O(n * log(n)) with respect to the
      * depth of the tree.
      */
-    TreeNode * last_common_ancestor(TreeNode const * node) const {
-      int index = last_common_ancestor_index(node);
+    TreeNode * lastCommonAncestor(TreeNode const * node) const {
+      int index = lastCommonAncestorIndex(node);
 
-      return (index >= 0)? ancestry_[index] : NULL;
+      return (index >= 0)? m_ancestry[index] : NULL;
     }
 
     /**
@@ -381,10 +383,10 @@ namespace kn
     NodeVector children() const {
       NodeVector c;
 
-      TreeNode * node = this->m_first_child;
+      TreeNode * node = this->m_firstChild;
       while (node) {
         c.push_back(node);
-        node = node->m_next_sibling;
+        node = node->m_nextSibling;
       }
 
       return c;
@@ -394,12 +396,12 @@ namespace kn
      * Return a vector of pointers to the direct childs of the node.
      */
     template<typename OutputIterator>
-    void copy_children(OutputIterator& target) const {
-      TreeNode * node = this->m_first_child;
+    void copyChildren(OutputIterator& target) const {
+      TreeNode * node = this->m_firstChild;
       while (node) {
         (*target) = node;
         ++target;
-        node = node->m_next_sibling;
+        node = node->m_nextSibling;
       }
     }
 
@@ -407,21 +409,21 @@ namespace kn
      * @brief Tree travesal template.
      * Visits all nodes in pre-order.
      * The method accepts 3 functors as arguments.
-     * For each node @func(node) is called.
-     * Before each descend @down(node) is called.
-     * After each ascend @up(node) is called.
+     * For each node @param func (node) is called.
+     * Before each descend @param down (node) is called.
+     * After each ascend @param up (node) is called.
      */
     template<typename F, typename D, typename U>
     void
-    pre_order_traverse(F& func, D& down, U& up) const {
+    preOrderTraverse(F& func, D& down, U& up) const {
       func(this);
-      if (m_first_child) {
+      if (m_firstChild) {
         down(this);
-        m_first_child->pre_order_traverse(func, down, up);
+        m_firstChild->preOrderTraverse(func, down, up);
         up(this);
       }
-      if (m_next_sibling) {
-        m_next_sibling->pre_order_traverse(func, down, up);
+      if (m_nextSibling) {
+        m_nextSibling->preOrderTraverse(func, down, up);
       }
     }
 
@@ -430,20 +432,20 @@ namespace kn
      * @brief Tree travresal template
      * Visits all nodes in post-order.
      * The method accepts 3 functors as arguments.
-     * Before each descend @down(node) is called.
-     * After each ascend @up(node) is called.
-     * For each node @func(node) is called.
+     * Before each descend @param down (node) is called.
+     * After each ascend @param up (node) is called.
+     * For each node @param func (node) is called.
      */
     template<typename F, typename D, typename U>
     void
-    post_order_traverse(F& func, D& down, U& up) const {
-      if (m_first_child) {
+    postOrderTraverse(F& func, D& down, U& up) const {
+      if (m_firstChild) {
         down(this);
-        m_first_child->post_order_traverse(func, down, up);
+        m_firstChild->postOrderTraverse(func, down, up);
         up(this);
       }
-      if (m_next_sibling) {
-        m_next_sibling->post_order_traverse(func, down, up);
+      if (m_nextSibling) {
+        m_nextSibling->postOrderTraverse(func, down, up);
       }
       func(this);
     }
@@ -453,39 +455,39 @@ namespace kn
      * Visits all nodes in breadth-first-order.
      * The method accepts 1 functors as arguments.
      * For each node of the sub-tree, including the called object,
-     * @func(node) is called.
+     * @param func (node) is called.
      */
     template<typename F>
     void
-    breadth_first_traverse(F& func) const {
+    breadthFirstTraverse(F& func) const {
       std::deque<TreeNode const *> nodes;
       nodes.push_back(this);
       while (!nodes.empty()) {
         func(nodes.front());
         std::back_insert_iterator<std::deque<TreeNode const *> > iter(nodes);
-        nodes.front()->copy_children(iter);
+        nodes.front()->copyChildren(iter);
         nodes.pop_front();
       }
     }
 
   protected:
     /** Internal helper method: registers child node at parent. */
-    void register_child(TreeNode * child) throw() {
-      child->m_next_sibling = this->m_first_child;
-      this->m_first_child = child;
+    void registerChild(TreeNode * child) throw() {
+      child->m_nextSibling = this->m_firstChild;
+      this->m_firstChild = child;
     }
     /** Internal helper method: deregisters child node at parent. */
-    void deregister_child(TreeNode * child) throw() {
-      TreeNode * node = this->m_first_child;
-      TreeNode ** prev = &this->m_first_child;
+    void deregisterChild(TreeNode * child) throw() {
+      TreeNode * node = this->m_firstChild;
+      TreeNode ** prev = &this->m_firstChild;
       while (node) {
         if (node == child) {
-          *prev = child->m_next_sibling;
-          child->m_next_sibling = NULL;
+          *prev = child->m_nextSibling;
+          child->m_nextSibling = NULL;
           break;
         }
-        prev = &node->m_next_sibling;
-        node = node->m_next_sibling;
+        prev = &node->m_nextSibling;
+        node = node->m_nextSibling;
       }
     }
   };

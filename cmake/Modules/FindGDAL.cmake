@@ -22,7 +22,7 @@ endif( MSVC90 )
 
 set( PACKAGE_NAME           "gdal" )
 set( PACKAGE_DIRS           "gdal" )
-set( PACKAGE_REQ_LIBRARY    "gdal;gdal_i-${VCN}" )
+set( PACKAGE_REQ_LIBRARY    "gdal;gdal_i-${VCN};gdal1.7.0" )
 set( PACKAGE_REQ_INCLUDE    "gdal.h" )
 set( PACKAGE_INCLUDE_SUFFIX "gdal" )
 
@@ -46,13 +46,24 @@ if( ${PACKAGE_FOUND} )
   )
   get_library_list(${PACKAGE_UPPER} ${${PACKAGE_LIBRARY_DIR}} "d" "${LIBRARY_NAMES}")
     
+  # AAArghhh! Ubuntu has libgdal.so as libgdal1.7.0.so. WTF?
+  # thankfully there's only one gdal library
+  if(NOT GDAL_gdal_LIBRARY)
+    find_library( GDAL_gdal_LIBRARY 
+                  NAMES ${PACKAGE_REQ_LIBRARY} 
+                  HINTS ${LIB_SEARCH_PATH})
+    if(GDAL_gdal_LIBRARY)
+      message(STATUS "  IGNORE the warning above. This platform renamed libgdal.so to ${GDAL_gdal_LIBRARY}")
+    endif(GDAL_gdal_LIBRARY)
+  endif(NOT GDAL_gdal_LIBRARY)
+
   if(WIN32) # win libs are inconveniently named
     find_library(GDAL_gdal_LIBRARY_DEBUG gdal_id-${VCN} ${GDAL_LIBRARY_DIR})
     set(GDAL_LIBRARIES optimized ${GDAL_gdal_LIBRARY} debug ${GDAL_gdal_LIBRARY_DEBUG})
   else(WIN32)
     set( GDAL_LIBRARIES ${GDAL_gdal_LIBRARY})
   endif(WIN32)
-
+  
    ## Check for TIFF in GDAL
   include( CheckLibraryExists )
   check_library_exists( ${GDAL_gdal_LIBRARY} TIFFScanlineSize   "" GDAL_HAS_TIFFScanlineSize )

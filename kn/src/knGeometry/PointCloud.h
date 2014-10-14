@@ -31,16 +31,24 @@
 #include <iosfwd>
 #include <stdint.h>
 
+/**
+ * @defgroup knGeometry Geometry
+ * @brief The Geometry module of kn provides a set data-types for dealing with geometry.
+ */
+
 namespace kn
 {
+  /** @ingroup knGeometry */
   union PointAttribute
   {
     int8_t  int8s[4];
     int16_t int16s[2];
     int32_t int32s;
   };
+  /** @ingroup knGeometry */
   enum PointAttributeFormats { PAF_NONE, PAF_INTENSITY8, PAF_INTENSITY16_DISTANCE16 };
   
+  /** @ingroup knGeometry */
   struct PointCloudPoint : Vector3
   {
     PointCloudPoint() {}
@@ -57,6 +65,7 @@ namespace kn
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW   
   };
   
+  /** @ingroup knGeometry */
   class knGeometry_Export PointCloud
   {
   public:
@@ -85,7 +94,16 @@ namespace kn
       transform = ATrans3::Identity();
     }
     
+    
     void clear();
+    
+    inline void setPointAttributeFormat(PointAttributeFormats format) {
+      attFormat = format;
+    }
+    
+    inline PointAttributeFormats pointAttributeFormat() {
+      return attFormat;
+    }
     
     /** add point to cloud 
      *  @returns reference to point 
@@ -145,8 +163,10 @@ namespace kn
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW   
   };
 
+  /** @ingroup knGeometry */
   knGeometry_Export std::ostream& operator<<(std::ostream& ostr, PointCloud const& pc);
   
+  /** @ingroup knGeometry */
   typedef shared_ptr<PointCloud> PointCloudPtr;
 } // namspace kn
 #endif // kn_PointCloud_h

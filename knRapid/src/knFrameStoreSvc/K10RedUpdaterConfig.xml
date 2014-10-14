@@ -36,11 +36,11 @@
           <parameter value="K10Red" name="ParentNode"/>
         </parameter>
         <parameter>
-          <parameter value="-ptu" name="TopicSuffix"/>
-          <parameter value="K10Red" name="ParentNode"/>
+          <parameter value="Team" name="ParentNode"/>
         </parameter>
         <parameter>
-          <parameter value="Team" name="ParentNode"/>
+          <parameter value="-ptu" name="TopicSuffix"/>
+          <parameter value="K10Red" name="ParentNode"/>
         </parameter>
       </parameter>
     </parameter>

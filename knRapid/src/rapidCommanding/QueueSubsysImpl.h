@@ -20,8 +20,8 @@
 #define rapid_QueueImpl_h
 
 #include "rapidCommanding_Export.h"
-#include "CommandImpl.h"
 #include "MacroManager.h"
+#include "RapidSubsystemRepository.h"
 
 #include "rapidDds/QueueState.h"
 #include "rapidDds/QueueStateSupport.h"
@@ -44,11 +44,11 @@ namespace rapid
   class CommandRecord;
   class Ack;
   class QueueImplParameters;
-  class AccessControlImpl;
-  
+  class AccessControlSubsysImpl;
+
   // when command is appended to queue, the queue sets the targetCmdId to the cmdId of the tail of the queue
 
-  class rapidCommanding_Export QueueImpl : public CommandImpl
+  class rapidCommanding_Export QueueSubsysImpl : public SubsysImpl
   {
   public:
     typedef kn::shared_ptr<rapid::Command> CommandPtr;
@@ -58,7 +58,7 @@ namespace rapid
       CommandPtr cmd;
       AckPtr ack;
 
-      CmdAckPair(); 
+      CmdAckPair();
       CmdAckPair(CmdAckPair const& ca);
       explicit CmdAckPair(CommandPtr const& c);
     };
@@ -66,14 +66,14 @@ namespace rapid
     typedef std::map<std::string, CmdAckPair> CommandMap; // commands currently known to queue
     typedef std::vector<CmdAckPair> CommandAckVector;
     typedef std::vector<AckPtr> AckVector;
-    typedef kn::shared_ptr<AccessControlImpl> AccessControlImplPtr;
+    typedef kn::shared_ptr<AccessControlSubsysImpl> AccessControlImplPtr;
     typedef std::map<std::string, RapidSubsystemPtr> SubsystemMap;
 
-    QueueImpl(QueueImplParameters const& params,
+    QueueSubsysImpl(QueueImplParameters const& params,
               std::string const& entityName,
               SubsystemMap const& subsystems,
               AccessControlImplPtr const& accessControl);
-    virtual ~QueueImpl() throw();
+    virtual ~QueueSubsysImpl() throw();
 
     virtual FuturePtr execute(rapid::Command const& cmd);
 
@@ -86,12 +86,12 @@ namespace rapid
     AckVector cancelCommands(bool directToo = false);
 
     CommandAckVector executableCommands();
-    AckVector purgeCommands(ACE_Time_Value const& deadline, bool allCompleted = false); 
+    AckVector purgeCommands(ACE_Time_Value const& deadline, bool allCompleted = false);
     bool evalQueueState(); // returns true on change
     void publishQueueState();
 
     bool hasCmdId(std::string const& cmdId) const { return m_commands.find(cmdId) != m_commands.end(); }
-   
+
     void connect(kn::DdsEventLoop& eventLoop);
 
     void suspendQueue() { m_status = QUEUE_SUSPENDED; }
@@ -101,7 +101,7 @@ namespace rapid
     void unregisterAcks(AckVector const& acks);
 
     CommandPtr command(std::string const& cmdId) const;
-    
+
   protected:
     typedef kn::DdsTypedSupplier<rapid::Ack> AckSupplier;
     typedef boost::scoped_ptr<AckSupplier> AckSupplierPtr;

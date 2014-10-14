@@ -10,6 +10,7 @@
 ## This is a hacky and horrible, I know. But we have to support
 ## ancient systems (RHEL6) and the IRG /usr/local/irg/packages convention. 
 ######################################################################
+include(SetIrgPaths)
 
 ## have a look in irg packages dir if BOOST_ROOT and BOOST_ROOT
 ## environment variable is not already set 

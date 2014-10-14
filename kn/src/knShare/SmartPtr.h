@@ -10,7 +10,15 @@
 #include <boost/enable_shared_from_this.hpp>
 #endif
 
-/** @file C++ 11 transition header.
+/** @defgroup cpp11 C++ 11
+ * 
+ * This module contains a set of header-files that are designed to ease the transtion 
+ * from boost libraries to their corresponding C++11 standard library counterparts.
+ */
+
+/** 
+ * @ingroup cpp11
+ * @file SmartPtr.h C++ 11 transition header.
  * 
  * Boost shared_ptr and scoped_ptr are good standins for the std shared_ptr and unique_ptr data-types
  * soon to be well supported as part of the C++11 standard. To minimize the 
@@ -37,11 +45,11 @@ namespace kn
   using std::make_shared;
   using std::allocate_shared;
   using std::enable_shared_from_this;
-  
   using std::static_pointer_cast;
   using std::dynamic_pointer_cast;
   using std::const_pointer_cast;
 #else
+  
   using boost::shared_ptr;  
   using boost::scoped_ptr;
   using boost::weak_ptr;

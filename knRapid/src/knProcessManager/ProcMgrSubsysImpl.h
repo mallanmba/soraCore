@@ -16,32 +16,30 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef rapid_MobilityImplBase_h
-#define rapid_MobilityImplBase_h
+#ifndef kn_ProcMgrImpl_h
+#define kn_ProcMgrImpl_h
 
-#include "rapidCommanding_Export.h"
-#include "CommandImpl.h"
+#include "knProcessManager_Export.h"
 
-#include <string>
+#include "rapidCommanding/SubsysImpl.h"
 
-namespace rapid
+namespace kn
 {
-  class rapidCommanding_Export MobilityImplBase : public CommandImpl
+  class ProcessManagerSvc;
+
+  class knProcessManager_Export ProcMgrSubsysImpl : public rapid::SubsysImpl
   {
   public:
-    MobilityImplBase();
-    virtual ~MobilityImplBase() throw();
+    ProcMgrSubsysImpl(ProcessManagerSvc * procMgrSvc);
+    virtual ~ProcMgrSubsysImpl() throw();
 
     virtual FuturePtr execute(rapid::Command const& cmd);
 
   protected:
-    virtual FuturePtr simpleMove(rapid::Command const& cmd);
-    virtual FuturePtr moveTo(rapid::Command const& cmd);
-    virtual FuturePtr simpleMove6Dof(rapid::Command const& cmd);
-    virtual FuturePtr moveTo6Dof(rapid::Command const& cmd);
-    virtual FuturePtr abort();
-
     static rapid::SubsystemType const * typeDescription();
+
+  private:
+    ProcessManagerSvc * m_procMgrSvc;
   };
 }
-#endif // rapid_MobilityImplBase_h
+#endif // kn_ProcMgrImpl_h

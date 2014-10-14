@@ -38,6 +38,41 @@ namespace rapid
         }
       }
     }
+    if (s_verbose >= 3 && event.values.length() > 0) {
+      for (int i = 0; i < event.values.length() && Super::m_config.valueKeys.length(); ++i) {
+        std::cout << Super::m_config.valueKeys[i].key << ": ";
+
+        switch (event.values[i]._d) {
+          case rapid::RAPID_BOOL:
+            std::cout << event.values[i]._u.b;
+            break;
+          case rapid::RAPID_DOUBLE:
+            std::cout << event.values[i]._u.d;
+            break;
+          case rapid::RAPID_FLOAT:
+            std::cout << event.values[i]._u.f;
+            break;
+          case rapid::RAPID_INT:
+            std::cout << event.values[i]._u.i;
+            break;
+          case rapid::RAPID_LONGLONG:
+            std::cout << event.values[i]._u.ll;
+            break;
+          case rapid::RAPID_STRING:
+            std::cout << event.values[i]._u.s;
+            break;
+          case rapid::RAPID_VEC3d:
+            std::cout << "printing vec3d not supported.";
+            break;
+          case rapid::RAPID_MAT33f:
+            std::cout << "printing mat33f not supported.";
+            break;
+          default:
+            break;
+        }
+        std::cout << std::endl;
+      }
+    }
   }
 }
 

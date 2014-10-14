@@ -30,6 +30,7 @@
 
 namespace kn 
 {
+  /** @ingroup knShare */
   class knShare_Export ImageData
   {
   public:
@@ -37,6 +38,7 @@ namespace kn
     
     virtual void dump(const std::string &fn) const = 0;
     virtual void writePgm(const std::string &fn) const = 0;
+    virtual void writeTiff(const std::string &fn) const = 0;
     virtual unsigned char *data() const = 0;
     virtual uint32_t width()  const = 0;
     virtual uint32_t height() const = 0;

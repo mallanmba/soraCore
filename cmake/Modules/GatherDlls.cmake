@@ -36,7 +36,7 @@ macro( gather_dlls )
     foreach( LIBARG ${ARGN} )
 
       if( LIBARG ) 
-
+	#message( STATUS ${LIBARG} )
         if( "${LIBARG}" MATCHES "RELEASE_ONLY" )
           set( GATHER_RELEASE_ONLY TRUE )
         endif( "${LIBARG}" MATCHES "RELEASE_ONLY" )

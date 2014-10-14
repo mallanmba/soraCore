@@ -26,6 +26,7 @@
 
 namespace kn 
 {
+  /** @ingroup knShare */
   class knShare_Export MemImageData : public ImageData
   {
   public:
@@ -45,6 +46,7 @@ namespace kn
 
     virtual void dump(const std::string &fn) const;
     virtual void writePgm(const std::string &fn) const;
+    virtual void writeTiff(const std::string &fn) const;
     virtual unsigned char *data() const;
     virtual uint32_t width()  const;
     virtual uint32_t height() const;

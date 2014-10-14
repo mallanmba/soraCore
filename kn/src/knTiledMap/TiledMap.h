@@ -29,9 +29,43 @@
 
 namespace kn
 {
+  /**
+   * @defgroup knTiledMap Tiled Maps
+   * @brief The TiledMaps module of kn provides a range of classes implementing different flavors of tiled 2D arrays.
+   * 
+   * The core idea behind tiled maps is to split up potentially large maps into smaller more manageable pieces.
+   * This can be advantegous for sharing maps via middleware, allows maps to be sparcly populated and
+   * surprisingly even allows for a more efficient implementation of the scrolling map concept.
+   */
+  
+  /**
+   * @ingroup knTiledMap
+   * @brief Basic tiled map type.
+   * 
+   * The tiled-map provides an efficient implementation of a sparce unbounded 2D arrary.
+   * Array cells are allocated in increments of tiles.
+   *  @param T The Tile type.
+   *           The cell type (the user-define payload) is a template parameter of the tile type.
+   * @param F The tile-factory type. This allows to implement different strategies for managing (and bounding)
+   * tile allocation.
+   * 
+   * The TiledMap uses three main concepts to provide an efficient implementation.
+   *  - Cells are allocated in tiles. The tile-size is a template parameter and can be chosen by
+   *    the user. This parameter allows to trade off the sparce-ness of the map against the number
+   *    of tiles that need to be managed.
+   *  - Tile-size is specified in power-of-two increments. This allows for a very efficient mapping
+   *    between global indices and tile-identfiers and in-tile-indices using bit-shifting and bit-masking
+   *    operations.
+   *  - Allocation of tiles is managed by a tile-factory provided as a template parameter.
+   *    This allows to trade memory requirements against memory-allocation latencies among other things.
+   *    The default tile-factory pre-allocates the maximum number of tiles. The scrolling-tiled-map
+   *    tile facotry instead can map it's map on a previously allocated memory area.
+   * 
+   */
   template<typename T, typename F = DefaultTileFactory<T> >
   class TiledMap : public TiledMapBase<TiledMap<T, F>, T>
   {
+    //! Self shorthand.
     typedef TiledMap<T, F> This;
     //! Super class shorthand.
     typedef TiledMapBase<This, T> Super;
@@ -49,7 +83,8 @@ namespace kn
     typedef std::map<TileId, Tile *> TileMap;
 
   public:
-    /* Map constructor.
+    /** 
+     * @brief Map constructor.
      *
      * @param factory - reference to the tile factory.
      * @param cellLength - length of the cell for cooridnate/index mapping.
@@ -66,6 +101,9 @@ namespace kn
 
 
     //! Clear a map tile
+    /**
+     * @param id The tile identifier. 
+     */
     void clear(TileId id) {
       typename TileMap::iterator iter =  m_tileMap.find(id);
       if (iter != m_tileMap.end()) {
@@ -84,6 +122,11 @@ namespace kn
     }
 
     //! Find tile that contains a given a/b-index if it the tile already exists.
+    /**
+     * @param a Row index.
+     * @param b Column index.
+     * @return Read-only pointer to tile.
+     */
     Tile const * findTile(int a, int b) const {
       return hasTileImpl(a, b);
     }
@@ -160,11 +203,20 @@ namespace kn
     };
 
   public:
+    //! Tile lookup by indices.
+    /**
+     * @param a Row index.
+     * @param b Column index.
+     */
     Tile * getTile(int a, int b) {
       TileId id = Tile::createId(a, b);
       return getTile(id);
     }
 
+    //! Tile lookup by tile identifier.
+    /**
+     * @param id The tile identifier. 
+     */
     Tile * getTile(int id) {
       Tile * t;
 
@@ -194,7 +246,7 @@ namespace kn
 
   private:
     TileFactory& m_tileFactory; // mutable keyword invalid on references
-    mutable TileMap m_tileMap;
+    mutable TileMap m_tileMap;  //! Tile storage
   };
 }
 #endif // kn_TiledMap_h

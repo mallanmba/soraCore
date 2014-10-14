@@ -27,29 +27,40 @@
 namespace kn
 {
   /**
-   * Class representing a named coordinate transform.
+   * @ingroup knFrameStore
+   * @brief Class representing a named coordinate transform.
    *
-   * This class is mostly used in combination with the TreeNode
+   * This class is mostly used in combination with the @ref TreeNode
    * class to create a frame tree.
    */
   class knFrameStore_Export Frame
   {
   public:
 
+    /**
+     * @ingroup knFrameStore
+     * @brief Base-class for appending custom information to a frame.
+     * 
+     * It implements a Java style top-level object with a virtual @ref clone(  method
+     * that is implemented by descedent classes for copying.
+     *
+     */
     class Extras
     {
     public:
-      virtual ~Extras() throw() {}
+      //! Virtual destructor as this class has virtual methods.
+      virtual ~Extras() {}
+      //! OO copy-constructor.
       virtual Extras * clone() = 0;
     };
 
     /**
-     * Default constructor.
+     * @brief Default constructor.
      */
     Frame() : m_extras(NULL) {}
 
     /**
-     * Initializing constructor.
+     * @brief Initializing constructor.
      */
     Frame(std::string const& name, ATrans3 const& trans) :
       m_trans(trans),
@@ -57,23 +68,44 @@ namespace kn
       m_extras(NULL)
     {}
 
+    /**
+     * @brief Initializing constructor.
+     * NOTE: MSVC2010 doesn't like Eigen types with default params, 
+     * so we overload the ctor
+     */
     Frame(std::string const& name) :
-      m_trans(ATrans3::Identity()),
       m_name(name),
       m_extras(NULL)
-    {}
+    {
+      m_trans.setIdentity();
+    }
 
+    /**
+     * @brief Copy constructor.
+     * 
+     * Required as we need to take care of that extras pointer.
+     */
     Frame(Frame const& rhs) :
       m_trans(rhs.m_trans),
       m_name(rhs.m_name),
       m_extras((rhs.m_extras == NULL)? NULL : rhs.m_extras->clone())
     {}
 
+    /**
+     * @brief Destructor
+     * 
+     * Releaseing any FrameExtras instance.
+     */
     ~Frame() throw()
     {
       delete m_extras;
     }
 
+    /**
+     * @brief Assignement operator.
+     * 
+     * Required as we need to take care of that extras pointer.
+     */
     Frame& operator = (Frame const& rhs) {
       if (&rhs != this) {
         m_name = rhs.m_name;
@@ -84,34 +116,36 @@ namespace kn
       return *this;
     }
 
-    /// @{ Accessor methods
+    //! @{ 
 
-    /** Access name field. */
+    /** @brief Access name. */
     std::string const& name() const throw() {
       return m_name;
     }
-    /** Set name field. */
+    /** @brief Set name. */
     void set_name(std::string const& name) {
       m_name = name;
     }
-    /** Access transform field. */
+    /** @brief Access transform. */
     ATrans3 const& transform() const throw() {
       return m_trans;
     }
-    /** Mutable access to transform field. */
+    /** @brief Mutable access to transform. */
     ATrans3& transform() throw() {
       return m_trans;
     }
-    /** Set transform field. */
-    void set_transform(ATrans3 const& trans) {
+    /** @brief Set transform. */
+    void setTransform(ATrans3 const& trans) {
       m_trans = trans;
     }
 
+    /** @brief Access extras. */
     Extras * extras() const throw() {
       return m_extras;
     }
 
-    void set_extras(Extras * extras) {
+    /** @brief Set extras. */
+    void setExtras(Extras * extras) {
       delete m_extras;
       m_extras = extras;
     }

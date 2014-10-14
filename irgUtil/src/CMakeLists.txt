@@ -1,2 +1,2 @@
-add_build_switch( irgUtmll ACE_FOUND )
-add_build_switch( irgSha1  ACE_FOUND )
+add_build_switch( irgUtmll BUILD_DEFAULT_TRUE )
+add_build_switch( irgSha1  BUILD_DEFAULT_TRUE )

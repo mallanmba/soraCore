@@ -46,6 +46,7 @@
 
 #include "GenericCommandWidget.h"
 #include "CommandConfigSubscriber.h"
+//#include "AccessControlStateSubscriber.h"
 #include "CommandGuiParameters.h"
 
 #include "knRapidConfig.h"
@@ -239,14 +240,15 @@ int main(int argc, char *argv[])
                                                                  "" // Default library
                                                                  );
       
+      string agentName = Miro::RobotParameters::instance()->name;
       CommandConfigSubscriber* ccReader = NULL;
       if (params->initByConfig) {
 
-        ccReader = new CommandConfigSubscriber(Miro::RobotParameters::instance()->name.c_str(),       
+        ccReader = new CommandConfigSubscriber(agentName.c_str(),       
                                                configTopic.c_str(),
                                                "RapidCommandConfigProfile",
                                                "" // Default library
-                                               );
+                                              );
       
         QObject::connect( ccReader, SIGNAL(commandConfigUpdated(const rapid::CommandConfig*)),
                           cmdWidget, SLOT(newCommandConfig(const rapid::CommandConfig*)) );
@@ -258,6 +260,16 @@ int main(int argc, char *argv[])
         cmdWidget->newCommandConfig(&config);
       }
 
+//      if(false) {
+//      AccessControlStateSubscriber* acss = new AccessControlStateSubscriber(agentName.c_str(),       
+//                                               configTopic.c_str(),
+//                                               "RapidStateQos",
+//                                               "" // Default library
+//                                               );
+//        QObject::connect(acss, SIGNAL(accessControlStateUpdated(AccessControlStatePtr)), 
+//                         cmdWidget, SLOT(newAccessControlState(AccessControlStatePtr)) );
+//      }
+      
       QMenu* fileMenu = mainWindow.menuBar()->addMenu("&File");
       fileMenu->addAction( "E&xit", qApp, SLOT(quit()) );
 

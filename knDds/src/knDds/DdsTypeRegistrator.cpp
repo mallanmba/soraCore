@@ -20,7 +20,7 @@
 
 namespace kn
 {
-  DdsTypeRegistratorBase::~DdsTypeRegistratorBase() throw() 
+  DdsTypeRegistratorBase::~DdsTypeRegistratorBase() throw()
   {}
 }
 

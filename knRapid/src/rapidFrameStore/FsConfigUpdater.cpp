@@ -65,7 +65,7 @@ namespace rapid
       }
       else if (frame.extras.length() != 0) {
         FrameExtras * fse = new FrameExtras();
-	fs.set_extras(h, fse);
+	fs.setExtras(h, fse);
         fse->extras() <<= frame.extras;
       }
     }
@@ -74,8 +74,8 @@ namespace rapid
     FrameStore::FrameHandleVector roots = fs.children();
     FrameStore::FrameHandleVector::const_iterator first, last = roots.end();
     for (first = roots.begin(); first != last; ++first) {
-      FrameTreeNode * tree = fs.clone_tree(*first);
-      m_frameStore.merge_tree(tree);
+      FrameTreeNode * tree = fs.cloneTree(*first);
+      m_frameStore.mergeTree(tree);
     }
   }
 }

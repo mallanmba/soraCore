@@ -10,7 +10,9 @@
 #include <boost/function.hpp>
 #endif
 
-/** @file C++ 11 transition header.
+/**
+ * @ingroup cpp11
+ * @file Functional.h C++ 11 transition header.
  * 
  * Boost bind is a good standin for the functional library extensions of the 
  * soon to be well supported C++11 standard. To minimize the 

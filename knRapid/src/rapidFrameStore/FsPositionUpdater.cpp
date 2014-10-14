@@ -139,7 +139,7 @@ namespace rapid
                     "FsPositionUpdater(topicSuffix=" << m_params.topicSuffix 
                     << ") - adding position frame for " <<
                     config->hdr.srcName << ":" << endl <<
-                    m_frameStore.full_name(handle));
+                    m_frameStore.fullName(handle));
 
       m_robotFrames[config->hdr.srcName] = handle;
     }
@@ -159,6 +159,6 @@ namespace rapid
       l = i;
     }
 
-    m_frameStore.set_transform(handle, FrameHandle::NULL_HANDLE, l);
+    m_frameStore.setTransform(handle, FrameHandle::NULL_HANDLE, l);
   }
 }

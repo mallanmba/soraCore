@@ -29,6 +29,7 @@ set( HEADERS
   PointCloudProvider.h
   PositionIo.h
   PositionProvider.h
+  TextMessager.h
 )
 
 set( SOURCES
@@ -49,6 +50,7 @@ set( SOURCES
   PointCloudProvider.cpp
   PositionIo.cpp
   PositionProvider.cpp
+  TextMessager.cpp
 )
 
 include_directories(
@@ -67,8 +69,8 @@ link_libraries(
   rapidDds
   rapidUtil
   ${KN_knMath_LIBRARY}
-  ${MIRO_miroXml_LIBRARY}  
-  ${KNDDS_knDds_LIBRARY} 
+  ${MIRO_miroXml_LIBRARY}
+  ${KNDDS_knDds_LIBRARY}
 )
 
 
@@ -104,15 +106,18 @@ set( TARGETS
  frameStoreConfigPrinter
  macroConfigPrinter
  macroStatePrinter
+ positionCovPrinter
  positionPrinter
  pointCloudPrinter
  queueStatePrinter
  jointPrinter
  imageSensorSamplePrinter
+ textMessageClient
+ textMessagePrinter
 )
 
-foreach( TARGET ${TARGETS} ) 
-  add_executable( ${TARGET} 
+foreach( TARGET ${TARGETS} )
+  add_executable( ${TARGET}
     ${TARGET}.cpp
   )
 endforeach( TARGET ${TARGETS} )

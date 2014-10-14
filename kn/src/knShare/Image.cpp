@@ -56,6 +56,11 @@ namespace kn {
     m_data->writePgm(fn);
   }
 
+  void Image::writeTiff(const std::string &fn) const
+  {
+    m_data->writeTiff(fn);
+  }
+
   Image::Image(ImageData * data) :
     m_data(data)
   {  

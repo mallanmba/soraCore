@@ -42,6 +42,8 @@ namespace
   ACE_TCHAR const shortDdsDomainIdOpt[] = "-MDI";
   ACE_TCHAR const ddsDiscoveryPeersOpt[] = "-MiroDiscoveryPeers";
   ACE_TCHAR const shortDdsDiscoveryPeersOpt[] = "-MDP";
+  ACE_TCHAR const ddsLoggerOpt[] = "-MiroDdsLogger";
+  ACE_TCHAR const shortDdsLoggerOpt[] = "-MDL";
   ACE_TCHAR const ddsMonitorOpt[] = "-MiroDdsMonitor";
   ACE_TCHAR const shortDdsMonitorOpt[] = "-MDM";
   ACE_TCHAR const ddsMonitorLibraryOpt[] = "-MiroDdsMonitorLibrary";
@@ -64,8 +66,9 @@ namespace
     "Miro DdsSupport parameters:\n"
     "  -MDC  (-MiroDdsConfig) <file> of RTI DDS Qos (default: RAPID_QOS_PROFILES.xml)\n"
     "  -MDI  (-MiroDdsDomainId) <int> DDS domain id (default: 0)\n"
+    "  -MDL  (-MiroDdsLogger) enable RTI DDS distributed logger\n"
     "  -MDM  (-MiroDdsMonitor) enable RTI DDS monitor\n"
-    "  -MDML (-MiroDdsMonitorLibrary) <library> for RTI Monitor\n" 
+    "  -MDML (-MiroDdsMonitorLibrary) <library> for RTI Monitor\n"
     "        (default: RtiMonitorQosLibrary)\n"
     "  -MDPN (-MiroDdsParticipantName) <name> of DDS participant (default: <application name>)\n"
     "  -MDDL (-MiroDdsDefaultLibrary) <name> of Qos library for RTI DDS\n"
@@ -89,8 +92,7 @@ namespace
   ACE_TCHAR const rc_noData[] = "DDS_RETCODE_NO_DATA";
   ACE_TCHAR const rc_illigalOp[] = "DDS_RETCODE_ILLEGAL_OPERATION";
 
-  struct StateNamePair
-  {
+  struct StateNamePair {
     unsigned int state;
     ACE_TCHAR const* name;
   };
@@ -114,10 +116,10 @@ namespace
   };
   unsigned int const numInstanceStates = sizeof(instanceStates) / sizeof(StateNamePair const);
 
-  string printBitMask(StateNamePair const * table, unsigned int max, unsigned int mask) 
+  string printBitMask(StateNamePair const * table, unsigned int max, unsigned int mask)
   {
     stringstream ostr;
-    ostr << "0x" << hex << mask 
+    ostr << "0x" << hex << mask
          << " { ";
     int matches = 0;
     unsigned int bit = 1;
@@ -251,7 +253,7 @@ std::ostream& operator << (std::ostream& ostr, DDS_RequestedDeadlineMissedStatus
 {
   ostr << "{ total_count=" << rhs.total_count
        << ", total_count_change=" << rhs.total_count_change
-    // << ", last_instance_handle" << rhs.last_instance_handle
+       // << ", last_instance_handle" << rhs.last_instance_handle
        << " }";
   return ostr;
 }
@@ -265,7 +267,7 @@ std::ostream& operator << (std::ostream& ostr, DDS_RequestedIncompatibleQosStatu
     ostr << policyIds[rhs.last_policy_id];
   else if (rhs.last_policy_id - 1000 < numExtPolicyIds)
     ostr << extPolicyIds[rhs.last_policy_id - 1000];
-  else 
+  else
     ostr << rhs.last_policy_id;
   ostr << " }";
   return ostr;
@@ -286,7 +288,7 @@ std::ostream& operator << (std::ostream& ostr, DDS_SampleRejectedStatus const& r
   ostr << "{ total_count=" << rhs.total_count
        << ", total_count_change=" << rhs.total_count_change
        << ", last_reason=" << rejectionReasons[last_reason]
-    // << ", last_instance_handle" << rhs.last_instance_handle
+       // << ", last_instance_handle" << rhs.last_instance_handle
        << " }";
   return ostr;
 }
@@ -297,7 +299,7 @@ std::ostream& operator << (std::ostream& ostr, DDS_LivelinessChangedStatus const
        << ", not_alive_count=" << rhs.not_alive_count
        << ", alive_count_change=" << rhs.alive_count_change
        << ", not_alive_count_change=" << rhs.not_alive_count_change
-    // << ", last_publication_handle" << rhs.last_publication_handle
+       // << ", last_publication_handle" << rhs.last_publication_handle
        << " }";
   return ostr;
 }
@@ -309,7 +311,7 @@ std::ostream& operator << (std::ostream& ostr, DDS_SubscriptionMatchedStatus con
        << ", current_count=" << rhs.current_count
        << ", current_count_peak=" << rhs.current_count_peak
        << ", current_count_change=" << rhs.current_count_change
-    // << ", last_publication_handle=" << rhs.last_publication_handle
+       // << ", last_publication_handle=" << rhs.last_publication_handle
        << " }";
 
   return ostr;
@@ -318,10 +320,10 @@ std::ostream& operator << (std::ostream& ostr, DDS_SubscriptionMatchedStatus con
 std::ostream& operator << (std::ostream& ostr, DDS_SampleInfo const& rhs)
 {
   ACE_Time_Value source_timestamp;
-  source_timestamp.set((double)rhs.source_timestamp.sec + 
+  source_timestamp.set((double)rhs.source_timestamp.sec +
                        (double)rhs.source_timestamp.nanosec / 1000000000.);
   ACE_Time_Value reception_timestamp;
-  reception_timestamp.set((double)rhs.reception_timestamp.sec + 
+  reception_timestamp.set((double)rhs.reception_timestamp.sec +
                           (double)rhs.reception_timestamp.nanosec / 1000000000.);
 
   ostr << "{  valid_data=" << ( rhs.valid_data != 0);
@@ -371,7 +373,7 @@ std::ostream& operator << (std::ostream& ostr, DDS_OfferedIncompatibleQosStatus 
     ostr << policyIds[rhs.last_policy_id];
   else if (rhs.last_policy_id - 1000 < numExtPolicyIds)
     ostr << extPolicyIds[rhs.last_policy_id - 1000];
-  else 
+  else
     ostr << rhs.last_policy_id;
   ostr << " }";
   return ostr;
@@ -384,7 +386,7 @@ std::ostream& operator << (std::ostream& ostr, DDS_PublicationMatchedStatus cons
        << ", current_count=" << rhs.current_count
        << ", current_count_peak=" << rhs.current_count_peak
        << ", current_count_change=" << rhs.current_count_change
-    // << ", last_publication_handle=" << rhs.last_publication_handle
+       // << ", last_publication_handle=" << rhs.last_publication_handle
        << " }";
   return ostr;
 }
@@ -484,9 +486,10 @@ namespace kn
     }
     return text;
   }
-  
-  const char* 
-  DdsSupport::initHelpString() {
+
+  const char*
+  DdsSupport::initHelpString()
+  {
     return ddsHelp;
   }
 
@@ -508,13 +511,13 @@ namespace kn
     config->getParameters("kn::DdsEntitiesFactorySvcParameters", *params);
 
     substituteROBOT_NAME(params);
-    
+
     // if participantName is empty, default to application name
     if (argc > 0) {
       for (size_t i = 0; i < params->participants.size(); ++i) {
-	if (params->participants[i].participantName.size() == 0) {
-	  params->participants[i].participantName = argv[0];
-	}
+        if (params->participants[i].participantName.size() == 0) {
+          params->participants[i].participantName = argv[0];
+        }
       }
     }
 
@@ -529,18 +532,18 @@ namespace kn
       if ((ACE_OS::strcasecmp(ddsConfigOpt, current_arg) == 0) ||
           (ACE_OS::strcasecmp(shortDdsConfigOpt, current_arg) == 0)) {
         arg_shifter.consume_arg();
-	if (!configOverwrite) {
-	  params->configFiles.clear();
-	  configOverwrite = true;
-	}
+        if (!configOverwrite) {
+          params->configFiles.clear();
+          configOverwrite = true;
+        }
         if (arg_shifter.is_parameter_next()) {
           params->configFiles.push_back(arg_shifter.get_current());
           arg_shifter.consume_arg();
         }
-	else {
-	  MIRO_LOG(LL_NOTICE, "DdsSupport - Dds config option given w/o parameter, clearing config file set.");
-	  params->configFiles.clear();
-	}
+        else {
+          MIRO_LOG(LL_NOTICE, "DdsSupport - Dds config option given w/o parameter, clearing config file set.");
+          params->configFiles.clear();
+        }
       }
       // DomainId
       else if ((ACE_OS::strcasecmp(ddsDomainIdOpt, current_arg) == 0) ||
@@ -561,28 +564,34 @@ namespace kn
       else  if ((ACE_OS::strcasecmp(ddsDiscoveryPeersOpt, current_arg) == 0) ||
                 (ACE_OS::strcasecmp(shortDdsDiscoveryPeersOpt, current_arg) == 0)) {
         arg_shifter.consume_arg();
-	if (!peersFileOverwrite) {
+        if (!peersFileOverwrite) {
           for (size_t i = 0; i < params->participants.size(); ++i) {
             params->participants[i].discoveryPeersFiles.clear();
           }
-	  peersFileOverwrite = true;
-	}
+          peersFileOverwrite = true;
+        }
         if (arg_shifter.is_parameter_next()) {
           for (size_t i = 0; i < params->participants.size(); ++i) {
             params->participants[i].discoveryPeersFiles.push_back(arg_shifter.get_current());
           }
           arg_shifter.consume_arg();
         }
-	else {
-	  MIRO_LOG(LL_NOTICE, "DdsSupport - Dds discovery peers file option given w/o parameter, clearing discovery peers files set.");
-         for (size_t i = 0; i < params->participants.size(); ++i) {
+        else {
+          MIRO_LOG(LL_NOTICE, "DdsSupport - Dds discovery peers file option given w/o parameter, clearing discovery peers files set.");
+          for (size_t i = 0; i < params->participants.size(); ++i) {
             params->participants[i].discoveryPeersFiles.clear();
-         }
-	}
+          }
+        }
+      }
+      // Logger
+      else if ((ACE_OS::strcasecmp(ddsLoggerOpt, current_arg) == 0) ||
+               (ACE_OS::strcasecmp(shortDdsLoggerOpt, current_arg) == 0)) {
+        arg_shifter.consume_arg();
+        params->enableDistLogger = true;
       }
       // Monitor
       else if ((ACE_OS::strcasecmp(ddsMonitorOpt, current_arg) == 0) ||
-                  (ACE_OS::strcasecmp(shortDdsMonitorOpt, current_arg) == 0)) {
+               (ACE_OS::strcasecmp(shortDdsMonitorOpt, current_arg) == 0)) {
         arg_shifter.consume_arg();
         if (params->participants.size() == 1) {
           params->participants[0].enableMonitor = true;
@@ -593,7 +602,7 @@ namespace kn
         }
       }
       else if ((ACE_OS::strcasecmp(ddsMonitorLibraryOpt, current_arg) == 0) ||
-                  (ACE_OS::strcasecmp(shortDdsMonitorLibraryOpt, current_arg) == 0)) {
+               (ACE_OS::strcasecmp(shortDdsMonitorLibraryOpt, current_arg) == 0)) {
         if (arg_shifter.is_parameter_next()) {
           arg_shifter.consume_arg();
           if (params->participants.size() == 1) {
@@ -609,7 +618,7 @@ namespace kn
       }
       // Participant name
       else if ((ACE_OS::strcasecmp(ddsParticipantNameOpt, current_arg) == 0) ||
-                  (ACE_OS::strcasecmp(shortDdsParticipantNameOpt, current_arg) == 0)) {
+               (ACE_OS::strcasecmp(shortDdsParticipantNameOpt, current_arg) == 0)) {
         arg_shifter.consume_arg();
         if (arg_shifter.is_parameter_next()) {
           if (params->participants.size() == 1) {
@@ -624,7 +633,7 @@ namespace kn
       }
       // Library & Profile
       else if ((ACE_OS::strcasecmp(ddsDefaultLibraryOpt, current_arg) == 0) ||
-                  (ACE_OS::strcasecmp(shortDdsDefaultLibraryOpt, current_arg) == 0)) {
+               (ACE_OS::strcasecmp(shortDdsDefaultLibraryOpt, current_arg) == 0)) {
         arg_shifter.consume_arg();
         if (params->participants.size() == 1) {
           params->defaultLibrary = arg_shifter.get_current();
@@ -636,7 +645,7 @@ namespace kn
         }
       }
       else if ((ACE_OS::strcasecmp(ddsDefaultProfileOpt, current_arg) == 0) ||
-                  (ACE_OS::strcasecmp(shortDdsDefaultProfileOpt, current_arg) == 0)) {
+               (ACE_OS::strcasecmp(shortDdsDefaultProfileOpt, current_arg) == 0)) {
         arg_shifter.consume_arg();
         if (params->participants.size() == 1) {
           params->defaultProfile = arg_shifter.get_current();
@@ -649,7 +658,7 @@ namespace kn
       }
       // Limited Bandwidth Plugins
       else if ((ACE_OS::strcasecmp(ddsEndpointDiscoveryOpt, current_arg) == 0) ||
-                  (ACE_OS::strcasecmp(shortDdsEndpointDiscoveryOpt, current_arg) == 0)) {
+               (ACE_OS::strcasecmp(shortDdsEndpointDiscoveryOpt, current_arg) == 0)) {
         arg_shifter.consume_arg();
         if (arg_shifter.is_parameter_next()) {
           if (params->participants.size() == 1) {
@@ -663,7 +672,7 @@ namespace kn
         }
       }
       else if ((ACE_OS::strcasecmp(ddsParticipantDiscoveryOpt, current_arg) == 0) ||
-                  (ACE_OS::strcasecmp(shortDdsParticipantDiscoveryOpt, current_arg) == 0)) {
+               (ACE_OS::strcasecmp(shortDdsParticipantDiscoveryOpt, current_arg) == 0)) {
         arg_shifter.consume_arg();
         if (arg_shifter.is_parameter_next()) {
           if (params->participants.size() == 1) {
@@ -680,21 +689,21 @@ namespace kn
                ACE_OS::strcasecmp(current_arg, shortHelpKey) == 0) {
         arg_shifter.ignore_arg();
 
-        printHelp = true;                 
+        printHelp = true;
       }
       else
         arg_shifter.ignore_arg();
     }
-   
-#ifdef ASDF 
-   /* Uncomment this to turn on additional logging */
+
+#ifdef ASDF
+    /* Uncomment this to turn on additional logging */
     NDDSConfigLogger::get_instance()->
-      set_verbosity_by_category(NDDS_CONFIG_LOG_CATEGORY_API,
-                                NDDS_CONFIG_LOG_VERBOSITY_STATUS_ALL);
+    set_verbosity_by_category(NDDS_CONFIG_LOG_CATEGORY_API,
+                              NDDS_CONFIG_LOG_VERBOSITY_STATUS_ALL);
 
     // Uncomment this to turn on additional logging
     NDDSConfigLogger::get_instance()->
-        set_verbosity(NDDS_CONFIG_LOG_VERBOSITY_WARNING);
+    set_verbosity(NDDS_CONFIG_LOG_VERBOSITY_WARNING);
 #endif
     if (printHelp) {
       cerr << ddsHelp << endl;;
@@ -703,7 +712,7 @@ namespace kn
 
   void
   DdsSupport::printReaderStatus(std::ostream& ostr,
-                                 DDS::DataReader & reader, int32_t mask)
+                                DDS::DataReader & reader, int32_t mask)
   {
     DDS::ReturnCode_t rc = DDS_RETCODE_OK;
 
@@ -770,13 +779,13 @@ namespace kn
     MIRO_LOG_OSTR(LL_WARNING, "DDS Writer " << writer->get_topic()->get_name() << " OfferedDeadlineMissed: " << status);
   };
 
-  void 
+  void
   DdsSupport::DataWriterListener::on_liveliness_lost(DDSDataWriter *writer, DDS_LivelinessLostStatus const&status)
   {
     MIRO_LOG_OSTR(LL_NOTICE, "DDS Writer " << writer->get_topic()->get_name() << " LivelinessLost: " << status);
   };
 
-  void 
+  void
   DdsSupport::DataWriterListener::on_offered_incompatible_qos (DDSDataWriter *writer, DDS_OfferedIncompatibleQosStatus const& status)
   {
     MIRO_LOG_OSTR(LL_WARNING, "DDS Writer " << writer->get_topic()->get_name() << " OfferedIncompatibleQos: " << status);
@@ -788,19 +797,19 @@ namespace kn
     MIRO_LOG_OSTR(LL_NOTICE, "DDS Writer " << writer->get_topic()->get_name() << " PublicationMatched: " << status);
   };
 
-  void 
+  void
   DdsSupport::DataWriterListener::on_reliable_writer_cache_changed (DDSDataWriter *writer, DDS_ReliableWriterCacheChangedStatus const& status)
   {
     MIRO_LOG_OSTR(LL_NOTICE, "DDS Writer " << writer->get_topic()->get_name() << " ReliableWriterCacheChanged: " << status);
   };
 
-  void 
+  void
   DdsSupport::DataWriterListener::on_reliable_reader_activity_changed (DDSDataWriter *writer, DDS_ReliableReaderActivityChangedStatus const& status)
   {
     MIRO_LOG_OSTR(LL_NOTICE, "DDS Writer " << writer->get_topic()->get_name() << " ReliableReaderActivityChanged: " << status);
   };
 
-  void 
+  void
   DdsSupport::DataWriterListener::on_instance_replaced (DDSDataWriter *writer, DDS_InstanceHandle_t const& handle)
   {
     DDSTopic * topic = writer->get_topic();
@@ -809,7 +818,7 @@ namespace kn
 
   ACE_Recursive_Thread_Mutex DdsSupport::m_topicMutex;
   Miro::Singleton<DdsSupport::TopicListener> DdsSupport::TopicListener::instance;
-  
+
   void
   DdsSupport::TopicListener::on_inconsistent_topic(DDSTopic *topic, DDS_InconsistentTopicStatus const& status)
   {

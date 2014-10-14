@@ -16,7 +16,7 @@
  * limitations under the License.
 
 ******************************************************************************/
-#include "ProcMgrImpl.h"
+#include "ProcMgrSubsysImpl.h"
 #include "ProcessManagerSvc.h"
 
 #include "rapidCommanding/CommandExceptions.h"
@@ -38,8 +38,8 @@ namespace kn
   /**
    * ctor
    */
-  ProcMgrImpl::ProcMgrImpl(ProcessManagerSvc * procMgrSvc) :
-    rapid::CommandImpl(rapid::ext::PROCMGR, typeDescription()),
+  ProcMgrSubsysImpl::ProcMgrSubsysImpl(ProcessManagerSvc * procMgrSvc) :
+    rapid::SubsysImpl(rapid::ext::PROCMGR, typeDescription()),
     m_procMgrSvc(procMgrSvc)
   {
   }
@@ -47,11 +47,11 @@ namespace kn
   /**
    * dtor
    */
-  ProcMgrImpl::~ProcMgrImpl() throw()
+  ProcMgrSubsysImpl::~ProcMgrSubsysImpl() throw()
   {
   }
 
-  namespace 
+  namespace
   {
     static rapid::KeyTypePair arguments[] = {
       { rapid::ext::PROCMGR_METHOD_PARAM_PROCESSID, rapid::ext::PROCMGR_METHOD_DTYPE_PROCESSID }
@@ -64,12 +64,12 @@ namespace kn
     };
     static int const NUM_SETCMDLINE_ARGUMENTS = sizeof(setCmdLineArguments) / sizeof(rapid::KeyTypePair);
 
-    struct Cmd 
+    struct Cmd
     {
       char const * name;
       int argumentNum;
       rapid::KeyTypePair * arguments;
-    };  
+    };
 
     static Cmd const commands[] = {
       { rapid::ext::PROCMGR_METHOD_KILL, NUM_ARGUMENTS, arguments },
@@ -80,8 +80,8 @@ namespace kn
     static int const PROCMGR_COMMANDS = sizeof(commands) / sizeof (Cmd);
   }
 
-  rapid::SubsystemType const * 
-  ProcMgrImpl::typeDescription()
+  rapid::SubsystemType const *
+  ProcMgrSubsysImpl::typeDescription()
   {
     rapid::SubsystemType * description = rapid::SubsystemTypeTypeSupport::create_data();
 
@@ -103,8 +103,8 @@ namespace kn
     return description;
   }
 
-  rapid::CommandImpl::FuturePtr
-  ProcMgrImpl::execute(rapid::Command const& cmd)
+  rapid::SubsysImpl::FuturePtr
+  ProcMgrSubsysImpl::execute(rapid::Command const& cmd)
   {
     int rc = 0;
     int cmdIdx = validateCommandSyntax(cmd.cmdName, cmd.arguments);
@@ -130,7 +130,7 @@ namespace kn
       rc = m_procMgrSvc->stopProcess(procId);
       break;
     default:
-      throw rapid::EBadSyntax(string("Unknown ProcMgrCommand cmdName:") + 
+      throw rapid::EBadSyntax(string("Unknown ProcMgrCommand cmdName:") +
 			      string(cmd.cmdName));
     }
 

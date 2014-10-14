@@ -16,12 +16,12 @@
 module rapid {
 
     module ext {
-        
+
         const long NAVMAP_NUM_SHORT_LAYERS = 1;
         const long NAVMAP_NUM_OCTET_LAYERS = 4;
         typedef sequence<String32,NAVMAP_NUM_SHORT_LAYERS> ShortMapLayerNameSequence;
         typedef sequence<String32,NAVMAP_NUM_OCTET_LAYERS> OctetMapLayerNameSequence;
-        
+
         //@copy-declaration /** Map layer of height fields (DEM). */
         const String32 NAVMAP_HEIGHT    = "height";
         //@copy-declaration /**
@@ -35,7 +35,7 @@ module rapid {
         const String32 NAVMAP_CERTAINTY = "certainty";
         //@copy-declaration /** Map layer with cell normal vectors. Two or three entries per pixel, packed layout. */
         const String32 NAVMAP_NORMALS   = "normals";
-        
+
         //@copy-c-declaration class NavMapConfigTypeSupport;
         //@copy-c-declaration class NavMapConfigDataWriter;
         //@copy-c-declaration class NavMapConfigDataReader;
@@ -43,7 +43,7 @@ module rapid {
 
         //@copy-declaration /** Telemetry data structure for transfering maps */
         valuetype NavMapConfig : Message {
-        
+
             //@copy-c-declaration typedef NavMapConfigTypeSupport TypeSupport;
             //@copy-c-declaration typedef NavMapConfigDataWriter DataWriter;
             //@copy-c-declaration typedef NavMapConfigDataReader DataReader;
@@ -64,7 +64,7 @@ module rapid {
 
             public ShortMapLayerNameSequence shortLayerNames;
             public OctetMapLayerNameSequence octetLayerNames;
-            
-        }; //@resolve-name true
+
+        };
     };
 };

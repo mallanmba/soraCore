@@ -24,12 +24,6 @@ module rapid
                 //@copy-c-declaration typedef HydraSample Type;
 
                 /**
-                 * State of health number
-                 * not used in NSS
-                 */
-                public unsigned short sohn;
-
-                /**
                  * State of health
                  */
                 public unsigned short soh;
@@ -50,12 +44,6 @@ module rapid
                 public unsigned short cmr;
 
                 /**
-                 * Command register data
-                 * not used in NSS
-                 */
-                public unsigned short cmddat;
-
-                /**
                  * Stainless Steel Channels
                  */
                 public sequence <unsigned short, 32> sn;
@@ -69,6 +57,11 @@ module rapid
                  * The reading from HYDRA/NSS
                  */
                 public sequence <unsigned short, 89> reading;
+
+                /**
+                 * Specifies any additional metaData
+                 */
+                public ValueSequence32 values;
             };
         };
     };

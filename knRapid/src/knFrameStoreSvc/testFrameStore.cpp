@@ -109,8 +109,8 @@ FrameStoreInterface::printMemory()
       cerr << "<empty>" << endl;
     }
     else {
-      cerr << m_frameStore->get_transform(FrameHandle::NULL_HANDLE, m_memory[i]) << " "
-	   << m_frameStore->full_name(m_memory[i]) << endl;
+      cerr << m_frameStore->getTransform(FrameHandle::NULL_HANDLE, m_memory[i]) << " "
+	   << m_frameStore->fullName(m_memory[i]) << endl;
     }
   }
   cerr << endl;
@@ -288,7 +288,7 @@ FrameStoreInterface::evalCommandIs(char c)
 void
 FrameStoreInterface::getAll()
 {
-  vector<string> flist = m_frameStore->frame_names();
+  vector<string> flist = m_frameStore->frameNames();
   vector<string>::const_iterator first, last = flist.end();
   for (first = flist.begin(); first != last; ++first) {
     cout << *first << endl;
@@ -319,7 +319,7 @@ FrameStoreInterface::getChildren()
     FrameStore::FrameHandleVector children = m_frameStore->children(m_memory[mem]);
     FrameStore::FrameHandleVector::const_iterator first, last = children.end();
     for (first = children.begin(); first != last; ++first) {
-      cout << m_frameStore->full_name(*first) << endl;
+      cout << m_frameStore->fullName(*first) << endl;
     }
   }
   else {
@@ -335,7 +335,7 @@ FrameStoreInterface::getTransform()
   cerr << "with respect to " << flush;
   int wrt = queryMemory();
   if (mem != -1 && wrt != -1) {
-    cout << m_frameStore->get_transform(m_memory[wrt], m_memory[mem]);
+    cout << m_frameStore->getTransform(m_memory[wrt], m_memory[mem]);
   }
   else {
     cerr << "aborted" << endl;
@@ -351,7 +351,7 @@ FrameStoreInterface::getTransformOf()
   int wrt = queryMemory();
   if (mem != -1 && wrt != -1) {
     ATrans3 transform = queryTransform();
-    cout << m_frameStore->get_transform_of(m_memory[wrt], m_memory[mem], transform);
+    cout << m_frameStore->getTransformOf(m_memory[wrt], m_memory[mem], transform);
   }
   else {
     cerr << "aborted" << endl;
@@ -365,7 +365,7 @@ FrameStoreInterface::isRoot()
   int mem = queryMemory();
   if (mem != -1) {
     cerr << "is base: " << flush;
-    cout << m_frameStore->is_root(m_memory[mem]) << endl;
+    cout << m_frameStore->isRoot(m_memory[mem]) << endl;
   }
   else {
     cerr << "aborted" << endl;
@@ -379,7 +379,7 @@ FrameStoreInterface::isLeaf()
   int mem = queryMemory();
   if (mem != -1) {
     cerr << "is base: " << flush;
-    cout << m_frameStore->is_leaf(m_memory[mem]) << endl;
+    cout << m_frameStore->isLeaf(m_memory[mem]) << endl;
   }
   else {
     cerr << "aborted" << endl;
@@ -396,7 +396,7 @@ FrameStoreInterface::isAncestorOf()
   int des = queryMemory();
   if (mem != -1 && des != -1) {
     cerr << "is base: " << flush;
-    cout << m_frameStore->is_ancestor_of(m_memory[mem], m_memory[des]) << endl;
+    cout << m_frameStore->isAncestorOf(m_memory[mem], m_memory[des]) << endl;
   }
   else {
     cerr << "aborted" << endl;
@@ -461,7 +461,7 @@ FrameStoreInterface::setTransform()
   int parent =  queryMemory();
   if (frame != -1 && parent != -1) {
     ATrans3 transform = queryTransform();
-    m_frameStore->set_transform(m_memory[frame], m_memory[parent], transform);
+    m_frameStore->setTransform(m_memory[frame], m_memory[parent], transform);
   }
   else {
     cerr << "aborted" << endl;
@@ -475,7 +475,7 @@ FrameStoreInterface::setTransformRel()
   int frame =  queryMemory();
   if (frame != -1) {
     ATrans3 transform = queryTransform();
-    m_frameStore->set_transform_rel(m_memory[frame], transform);
+    m_frameStore->setTransformRel(m_memory[frame], transform);
   }
   else {
     cerr << "aborted" << endl;

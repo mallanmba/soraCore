@@ -29,11 +29,15 @@
 
 namespace kn
 {
-  // forward declaration
-  class knFrameStore_Export FrameStore;
-
+  /** 
+   * @defgroup knFrameStore Frame Store
+   * @brief A collection of classes that implement the transform-tree (coordinate frames tree) concept.
+   */
+  
   /**
+   * @ingroup knFrameStore
    * @brief Thread-safe coordinate-frame tree class.
+   * 
    * The FrameStore class implements a thread-safe interface to a
    * multi-tree. (Tree with multiple root nodes). It pretty much
    * mirrors the FrameTreeNode interface. The FrameStore adds locking
@@ -59,28 +63,15 @@ namespace kn
   class knFrameStore_Export FrameStore
   {
   public:
-    //! @{ Public data types.
-
-    //! A vector of frame handles.
+    /** @brief A vector of frame handles. */
     typedef std::vector<FrameHandle> FrameHandleVector;
-    //! A vector of FrameTreeNode's.
     /**
+     * @brief A vector of FrameTreeNode's.
+     *
      * Those are actual nodes, that can be manipulated using the
      * TreeNode<Frame> interface.
      */
     typedef std::vector<FrameTreeNode, Eigen::aligned_allocator<FrameTreeNode> > FrameTree;
-
-    //! Handle to the frame to update.
-    //      FrameHandle handle;
-    //! Axis to update
-    //      ParameterType axis;
-    //! New axis value.
-    //      double value;
-    //    };
-    //! A vector of frame updates used in @update_frames().
-    //    typedef std::vector<FrameUpdate> UpdateVector;
-
-    //! @}
 
     //! Destructor
     /** Deletes all frames owned by this FrameStore instance.
@@ -98,76 +89,106 @@ namespace kn
      * Note that the FrameTreeNodes have a completely different
      * interface than the FrameStore. FrameTreeNodes don't have
      * locking, so this is a static snapshot of the tree.
+     * 
+     * @param tree The returned frame tree.
+     * @param rootFrame The root frame to start the recursive copy with. 
+     *                  If NULL-handle, copies the entire tree.
      */
-    void clone_tree(FrameTree & tree, FrameHandle rootFrame = NULL) const;
+    void cloneTree(FrameTree & tree, FrameHandle rootFrame = NULL) const;
 
-    //! Get a copy of the frame tree.
-    /**
+    /** 
+     * @brief Get a copy of the frame tree.
+     * @param rootFrame The root frame to start the recursive copy with.
+     * @throw std::logic_error If NULL-handle is passed as rootFrame.
+     * 
      * The rootFrame is required to be non-NULL, otherwise
-     * @vw::LogicErr is thrown.
+     * std::logic_error is thrown.
      *
-     * Note that the FrameTreeNodes have a completely different
+     * @note The FrameTreeNodes have a completely different
      * interface than the FrameStore. FrameTreeNodes don't have
      * locking, so this is a static snapshot of the tree.
      */
-    FrameTreeNode * clone_tree(FrameHandle rootFrame) const;
+    FrameTreeNode * cloneTree(FrameHandle rootFrame) const;
 
 
-    //! Get name of frame.
     /**
-     * @param frame
+     * @brief Get name of frame.
+     * @param frame Frame to lookup name of.
+     * @return Name of the frame.
+     * @throw std::logic_error If passed a NULL-handle.
+     * 
      * The frame argument is required to be non-NULL, otherwise
-     * @vw::LogicErr is thrown.
+     * std::logic_error is thrown.
      */
     std::string const& name(FrameHandle frame) const;
 
     //! Get fully qualified name of frame, including path of all parent frames.
     /**
-     * @param frame
+     * @param frame Frame to lookup name of.
+     * @return Name of the frame.
+     * @throw std::logic_error If passed a NULL-handle.
+
      * The frame argument is required to be non-NULL, otherwise
-     * @vw::LogicErr is thrown.
+     * std::logic_error is thrown.
      */
-    std::string full_name(FrameHandle frame) const;
+    std::string fullName(FrameHandle frame) const;
 
     /**
-     * Get cloned extras object from Frame.
+     * @brief Get cloned extras object from Frame.
+     * 
+     * @param frame Frame to return the extras for.
+     * @throw std::logic_error If passed a NULL-handle.
+     * 
      * The caller takes ownership of the returned object.
      * If no extras are associated with the Frame, a NULL-pointer
      * is returned.
      * The frame argument is required to be non-NULL, otherwise
-     * @vw::LogicErr is thrown.
+     * @throw std::logic_error is thrown.
+     * 
+     * FIXME Switch the interface to use const-shared pointers
      */
-    Frame::Extras * get_extras(FrameHandle frame) const;
+    Frame::Extras * getExtras(FrameHandle frame) const;
 
     /**
-     * Set  extras object for Frame.
+     * @brief Set  extras object for Frame.
+     * 
+     * @param frame Frame to return the extras for.
+     * @param extras The new extras.
+     * @throw std::logic_error If passed a NULL-handle as frame handle.
+     *
      * The frame argument is required to be non-NULL, otherwise
-     * @vw::LogicErr is thrown.
+     * @throw std::logic_error is thrown.
      * The FrameStore takes ownership of the passed Extras object,
      * a NULL-pointer will delete the stored extras object.
+     * 
+     * FIXME Switch the interface to use const-shared pointers
      */
-    void set_extras(FrameHandle frame, Frame::Extras * extras);
+    void setExtras(FrameHandle frame, Frame::Extras * extras);
 
     /**
-     * @return list of fully qualified names of all frames.
+     * @brief Accessor method for frame names.
+     * @return List of fully qualified names of all frames.
      */
-    std::vector<std::string> frame_names() const;
+    std::vector<std::string> frameNames() const;
 
-    //! Return the parent Frame
     /**
+     * @brief Return the parent Frame
+     *
      * Returns the NULL-handle if root frame.
      *
-     * @param frame
-     * The frame argument is required to be non-NULL, otherwise
-     * @vw::LogicErr is thrown.
+     * @param frame Valid frame handle.
+     * @throw std::logic_error If NULL-handle is passed as @a frame argument.
+     * @note The frame argument is required to be non-NULL.
      */
     FrameHandle parent(FrameHandle frame) const;
 
-    //! Get the list of direct children of a frame.
     /**
-     * @param frame
-     * The frame argument is required to be non-NULL, otherwise
-     * @vw::LogicErr is thrown.
+     * @brief Get the list of direct children of a frame.
+     *
+     * @param frame Valid frame handle.
+     * @throw std::logic_error If NULL-handle is passed as @a frame argument.
+     * @note The frame argument is required to be non-NULL.
+     *
      */
     FrameHandleVector children(FrameHandle frame = FrameHandle::NULL_HANDLE) const;
 
@@ -188,7 +209,7 @@ namespace kn
      * not guaranteed which node is returned if multiple nodes with
      * the same name are specified at the same depth level.
      *
-     * @param sope
+     * @param scope
      * If a non-NULL scope frame is passed as second parameter, the
      * search is restricted to the sub-tree spawned by this frame.
      */
@@ -196,46 +217,47 @@ namespace kn
 
     //! Adding a frame to the frame store.
     /**
-     * @param frame
-     * @param parent
-     * @param l
+     * @param name The name of the frame to add.
+     * @param parent The parent node under which to add the frame.
+     * @param p  Transform of the frame.
      */
     FrameHandle add(std::string const& name, FrameHandle parent, ATrans3 const& p);
 
     /**
-     * Adding a sub-tree to the frame store
+     * @brief Adding a sub-tree to the frame store
      * @param node
      * The FrameStore takes ownership of the passed sub-tree.
      * The tree must not be member of a FrameStore already. Otherwise,
-     * vw::LogicErr is thrown.
+     * std::logic_error is thrown.
      *
      * @param parent
+     * @throw std::logic_error
      */
     void add(FrameTreeNode * node, FrameHandle parent);
 
     /**
-     * Merging a tree with the the frame store
-     * @param node
-     * On successful merging the FrameStore takes ownership of the passed sub-tree.
-     * If vw::LogicErr is thrown, the passed tree is still owned by the caller, to
-     * allow forensics.
-     *  * The tree must not be member of a FrameStore already. Otherwise,
-     *  vw::LogicErr is thrown.
-     *  * If a NULL_HANDLE is passed as start_frame the tree is merged into the forrest.
-     *  * If start_frame is not the NULL_HANDLE, the names of the start_frame and the
-     *  name of the tree root_node have to match.
-     *
+     * @brief Merging a tree with the the frame store
+     * 
+     * @param tree The tree to merge.
      * @param start_frame
      * The start-node for the merge operation. The startFrame is required to have the same
      * name as the node. x
      * @return True, if the tree was merged,
      * false if the tree was added as a new tree to the forest.
+     * @throw std::logic_error This exception is thrown if tree is already a member of a FrameStore.
+     * 
+     *  - If a NULL_HANDLE is passed as @a start_frame the tree is merged into the forrest.
+     *  - If @a start_frame is not the NULL_HANDLE, the names of the start_frame and the
+     *    name of the @a tree root_node have to match.
+     *  - On successful merging the FrameStore takes ownership of the passed sub-tree.
+     *  - If std::logic_error is thrown, the passed tree is still owned by the caller, to
+     *    allow forensics.
      */
-    bool merge_tree(FrameTreeNode * tree, FrameHandle start_frame = FrameHandle::NULL_HANDLE);
+    bool mergeTree(FrameTreeNode * tree, FrameHandle start_frame = FrameHandle::NULL_HANDLE);
 
     /**
      * Delete frame from tree.
-     * @param tree
+     * @param frame The frame to delete.
      *
      * @param recursive If recursive is set to false, all children of
      * the frame will be added as root-frames to the FrameStore.
@@ -247,12 +269,12 @@ namespace kn
      * @param frame
      * @param parent
      */
-    void set_parent(FrameHandle frame, FrameHandle parent);
+    void setParent(FrameHandle frame, FrameHandle parent);
 
     //! Return root node of specified frame.
     /**
      * The frame-store can hold multiple-root nodes.
-     * @param frame
+     * @param frame The child frame to start from.
      */
     FrameHandle root(FrameHandle frame) const;
 
@@ -261,76 +283,96 @@ namespace kn
     //! Test if frame is a base frame.
     /**
      * That is, does not have a parent.
-     * @param frame
+     * @param frame The frame to check.
      */
-    bool is_root(FrameHandle frame) const;
+    bool isRoot(FrameHandle frame) const;
 
     /**
-     * Test if frame is a leaf frame.
+     * @brief Test if frame is a leaf frame.
+     * 
      * That is, does not have any children.
-     * @param frame
+     * @param frame The frame to check.
      */
-    bool is_leaf(FrameHandle frame) const;
+    bool isLeaf(FrameHandle frame) const;
 
-    //! Test if @frame is somewhere up in the chain of parents of @pop.
+    //! Test if @a frame is somewhere up in the chain of parents of @a pop .
     /**
-     * @param frame
-     * @param pop
+     * @param frame Potential ancestro frame.
+     * @param pop Child frame.
      */
-    bool is_ancestor_of(FrameHandle frame, FrameHandle pop) const;
+    bool isAncestorOf(FrameHandle frame, FrameHandle pop) const;
 
-    //! Test if the frame belongs to this FrameStore instance.
-    bool is_member(FrameHandle frame) const throw();
+    /**
+     * @brief Test if the frame belongs to this FrameStore instance.
+     * 
+     * @param frame The frame to check. 
+     */
+    bool isMember(FrameHandle frame) const throw();
 
     //! @}
 
     /**
-     * Return the transform of @source expressed relative to @frame.
-     * @param frame
-     * @param source
+     * @brief Return the transform of @p source expressed relative to @p frame.
+     * @param frame The frame to calculate the transform relative to.
+     * @param source The frame to calculate.
+     * @return The transform relative to @p frame.
      */
-    ATrans3 get_transform(FrameHandle frame, FrameHandle source);
+    ATrans3 getTransform(FrameHandle frame, FrameHandle source);
 
     /**
-     * Return the transform @loc, which is expressed relative to @source
-     * with respect to @frame.
-     * @param frame
-     * @param wrt_frame
-     * @param loc
+     * Return the transform @p loc, which is expressed relative to @p source
+     * with respect to @p frame.
+     * @param frame The frame to calculate the transform relative to.
+     * @param source The frame loc is expressed is.
+     * @param loc The location to calculate in new coordinate frame..
+     * @return The transform relative to @p frame.
      */
-    ATrans3 get_transform_of(FrameHandle frame, FrameHandle source, ATrans3 const& loc);
+    ATrans3 getTransformOf(FrameHandle frame, FrameHandle source, ATrans3 const& loc);
 
     /**
-     * Return the position @loc, which is expressed relative to @source
-     * with respect to @frame.
-     * @param frame
-     * @param wrt_frame
-     * @param loc
+     * Return the position @p loc, which is expressed relative to @p source
+     * with respect to @p frame.
+     * @param frame The frame to calculate the transform relative to.
+     * @param source The frame loc is expressed is.
+     * @param loc The location to calculate in new coordinate frame..
+     * @return The location relative to frame.
      */
-    Vector3 get_position_of(FrameHandle frame, FrameHandle source, Vector3 const& loc);
+    Vector3 getPositionOf(FrameHandle frame, FrameHandle source, Vector3 const& loc);
 
     /**
-     * Set the transform of @frame to @update, which is expressed relative to @wrt_frame.
-     * @param frame
-     * @param wrt_frame
-     * @param update
+     * Set the transform of @a frame to @a update, which is expressed relative to @a wrt_frame.
+     * @param frame The frame to assign the transform to.
+     * @param wrt_frame The frame @a update is expressed in.
+     * @param update The transform to update the @a frame to.
      */
-    void set_transform(FrameHandle frame, FrameHandle wrt_frame, ATrans3 const& update);
+    void setTransform(FrameHandle frame, FrameHandle wrt_frame, ATrans3 const& update);
 
     /**
-     * Update the transform of @frame to @loc, expressed relative to current transform.
-     * @param frame
-     * @param loc
+     * Update the transform of @a frame to @a loc, expressed relative to current transform.
+     * @param frame The frame to assign the transform to.
+     * @param loc The transform to update the @a frame to.
      */
-    void set_transform_rel(FrameHandle frame, ATrans3 const& loc);
+    void setTransformRel(FrameHandle frame, ATrans3 const& loc);
 
-    void get_frame_transforms(FrameHandleVector const& handles, ATrans3Vector& transforms) const;
-    void set_frame_transforms(FrameHandleVector const& handles, ATrans3Vector const& transforms);
+    /**
+     * @brief Query a set of frame transforms at onse
+     * 
+     * @param handles The frame to look up.
+     * @param[out] transforms The transforms to return.
+     */
+    void getFrameTransforms(FrameHandleVector const& handles, ATrans3Vector& transforms) const;
+    /**
+     * @brief Set multiple frame transforms at onse
+     * 
+     * @param handles The frame to set.
+     * @param transforms The transforms.
+     */
+    void setFrameTransforms(FrameHandleVector const& handles, ATrans3Vector const& transforms);
 
   protected:
-    void assert_unique(std::string const& name, FrameTreeNode * parent) const;
+    void assertUnique(std::string const& name, FrameTreeNode * parent) const;
     /** Test if the frame belongs to this FrameStore instance. */
-    bool is_member(FrameTreeNode * node) const throw();
+    bool isMember(FrameTreeNode * node) const throw();
 
     /** Vector of FrameTreeNode pointers. */
     typedef std::vector<FrameTreeNode *> FrameTreeNodeVector;
@@ -338,7 +380,7 @@ namespace kn
     /** Mutex to ensure exclusive access to framestore operations. */
     mutable mutex m_mutex;
     /** The vector of root nodes. */
-    FrameTreeNodeVector m_root_nodes;
+    FrameTreeNodeVector m_rootNodes;
   };
 }
 

@@ -30,42 +30,42 @@ namespace kn
 
   void
   DdsPushConsumer::on_requested_deadline_missed(DDS::DataReader* /*reader*/,
-                                                  DDS::RequestedDeadlineMissedStatus const& status)
+                                                DDS::RequestedDeadlineMissedStatus const& status)
   {
     MIRO_LOG_OSTR(LL_NOTICE, "DDS Reader on_requested_deadline_missed: " << status);
   }
 
   void
   DdsPushConsumer::on_requested_incompatible_qos(DDS::DataReader* /*reader*/,
-                                                   DDS::RequestedIncompatibleQosStatus const& status)
+                                                 DDS::RequestedIncompatibleQosStatus const& status)
   {
     MIRO_LOG_OSTR(LL_NOTICE, "DDS Reader on_requested_incompatible_qos: " << status);
   }
 
   void
   DdsPushConsumer::on_sample_rejected(DDS::DataReader* /*reader*/,
-                                        DDS::SampleRejectedStatus const& status)
+                                      DDS::SampleRejectedStatus const& status)
   {
     MIRO_LOG_OSTR(LL_NOTICE, "DDS Reader on_sample_rejected: " << status);
   }
 
   void
   DdsPushConsumer::on_liveliness_changed(DDS::DataReader* /*reader*/,
-                                           DDS::LivelinessChangedStatus const& status)
+                                         DDS::LivelinessChangedStatus const& status)
   {
     MIRO_LOG_OSTR(LL_NOTICE, "DDS Reader on_liveliness_changed: " << status);
   }
 
   void
   DdsPushConsumer::on_sample_lost(DDS::DataReader* /*reader*/,
-                                    DDS::SampleLostStatus const& status)
+                                  DDS::SampleLostStatus const& status)
   {
     MIRO_LOG_OSTR(LL_NOTICE, "DDS Reader on_sample_lost: " << status);
   }
 
   void
   DdsPushConsumer::on_subscription_matched(DDS::DataReader* /*reader*/,
-                                             DDS::SubscriptionMatchedStatus const& status)
+                                           DDS::SubscriptionMatchedStatus const& status)
   {
     MIRO_LOG_OSTR(LL_NOTICE, "DDS Reader on_subscription_matched: " << status);
   }

@@ -21,12 +21,20 @@
 
 #include "knShare_Export.h"
 
-#include "Thread.h"
 #include "SmartPtr.h"
 #include "Mutex.h"
 
+
+/** @defgroup knShare Shared
+ * 
+ * This module contains a number of common utility classes.
+ * Useful stuff that is not big enough to get its own module.
+ */
+
 namespace kn
 {
+  
+  /** @ingroup knShare */
   class knShare_Export SingletonBase
   {
   protected:
@@ -34,8 +42,10 @@ namespace kn
   };
 
 
-  //! Templated implementation of the singleton pattern.
   /**
+   * @ingroup knShare
+   * @brief Templated implementation of the singleton pattern.
+   *
    * This implements a heap allocated global variable
    * with a global helper method as a accessor method.
    *
@@ -99,6 +109,7 @@ namespace kn
 
   template <class TYPE>
   scoped_ptr<TYPE> Singleton<TYPE>::s_instance;
+
 }
 
 #endif // kn_Singleton_h

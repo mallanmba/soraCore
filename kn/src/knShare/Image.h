@@ -31,6 +31,7 @@
 
 namespace kn {
 
+  /** @ingroup knShare */
   class knShare_Export Image
   {
   public:
@@ -51,6 +52,8 @@ namespace kn {
     void dump(const std::string &fn) const;
     //! Save image as pgm
     void writePgm(const std::string &fn) const;
+    //! Save image as tiff
+    void writeTiff(const std::string &fn) const;
 
     //! Set image data
     void set(ImageData * data) {m_data.reset(data);}
@@ -64,6 +67,7 @@ namespace kn {
     shared_ptr<ImageData> m_data;
   };
 
+  /** @ingroup knShare */
   typedef std::vector<Image> ImageVector;
 } // namespace kn
 

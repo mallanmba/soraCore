@@ -39,7 +39,8 @@ namespace rapid
              << rhs.hdr << ", " 
              << rhs.sensorFrame << ", "
              << rhs.referenceFrame << ", "
-             << rhs.elipsoid
+             << rhs.datum << ", "
+             << rhs.undulationDatum
              << "}";
         return ostr;
       }
@@ -54,8 +55,11 @@ namespace rapid
         strncpy(config.referenceFrame, params.referenceFrame.c_str(), 31);
         config.referenceFrame[31] = 0;
 
-        strncpy(config.elipsoid, params.elipsoid.c_str(), 31);
-        config.elipsoid[31] = 0;
+        strncpy(config.datum, params.datum.c_str(), 15);
+        config.datum[15] = 0;
+
+        strncpy(config.undulationDatum, params.datum.c_str(), 15);
+        config.undulationDatum[15] = 0;
       }
     } // namespace arc
   } // namespace ext

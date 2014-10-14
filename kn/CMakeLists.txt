@@ -9,9 +9,9 @@ include( SetupConfigureFile )
 include( SetupInstall )
 include( SetupRPATH )
 include( SetupCTest )
-include( UserOptions )
 include( SetupWarnLevel )
 include( SetupUtilities )
+include( UserOptions )
 
 ## we have to play some tricks to get install
 ## path to "stick" in Windows

@@ -204,34 +204,34 @@ namespace kn
         if (first->enableMonitor) {
           int rc;
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-               "rti.monitor.library",
-               "rtimonintoring",
-               DDS_BOOLEAN_FALSE);
+                                                        "rti.monitor.library",
+                                                        "rtimonintoring",
+                                                        DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
           char valueBuffer[17];
           sprintf(valueBuffer, "%p", RTIDefaultMonitor_create);
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-               "rti.monitor.create_function_ptr",
-               valueBuffer,
-               DDS_BOOLEAN_FALSE);
+                                                        "rti.monitor.create_function_ptr",
+                                                        valueBuffer,
+                                                        DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
 
           int monitorId = (first->monitorDomainId >= 0) ? first->monitorDomainId : first->domainId + 1;
           sprintf(valueBuffer, "%i", monitorId);
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-               "rti.monitor.config.new_participant_domain_id",
-               valueBuffer,
-               DDS_BOOLEAN_FALSE);
+                                                        "rti.monitor.config.new_participant_domain_id",
+                                                        valueBuffer,
+                                                        DDS_BOOLEAN_FALSE);
           if (!first->monitorLibrary.empty()) {
             rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-                 "rti.monitor.config.qos_library",
-                 first->monitorLibrary.c_str(),
-                 DDS_BOOLEAN_FALSE);
+                                                          "rti.monitor.config.qos_library",
+                                                          first->monitorLibrary.c_str(),
+                                                          DDS_BOOLEAN_FALSE);
             assert (rc == DDS_RETCODE_OK);
             rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-                 "rti.monitor.config.qos_profile",
-                 first->monitorProfile.c_str(),
-                 DDS_BOOLEAN_FALSE);
+                                                          "rti.monitor.config.qos_profile",
+                                                          first->monitorProfile.c_str(),
+                                                          DDS_BOOLEAN_FALSE);
             assert (rc == DDS_RETCODE_OK);
           }
         }
@@ -309,34 +309,34 @@ namespace kn
           pPlugin->registerPlugin(participant);
 #  else
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-               "dds.discovery.participant.lbpdiscovery.library",
-               "rtilbpdisc",
-               DDS_BOOLEAN_FALSE);
+                                                        "dds.discovery.participant.lbpdiscovery.library",
+                                                        "rtilbpdisc",
+                                                        DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-               "dds.discovery.participant.lbpdiscovery.create_function",
-               "DDS_LBPDiscoveryPlugin_create",
-               DDS_BOOLEAN_FALSE);
-          assert (rc == DDS_RETCODE_OK);
-
-          rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-               "dds.discovery.participant.lbpdiscovery.config_file",
-               first->lbpdFile.c_str(),
-               DDS_BOOLEAN_FALSE);
+                                                        "dds.discovery.participant.lbpdiscovery.create_function",
+                                                        "DDS_LBPDiscoveryPlugin_create",
+                                                        DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
 
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-               "dds.discovery.participant.load_plugin",
-               "dds.discovery.endpoint.lbpdiscovery",
-               DDS_BOOLEAN_FALSE);
+                                                        "dds.discovery.participant.lbpdiscovery.config_file",
+                                                        first->lbpdFile.c_str(),
+                                                        DDS_BOOLEAN_FALSE);
+          assert (rc == DDS_RETCODE_OK);
+
+          rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
+                                                        "dds.discovery.participant.load_plugin",
+                                                        "dds.discovery.endpoint.lbpdiscovery",
+                                                        DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
 
           char valueBuffer[18];
           sprintf(valueBuffer, "%i", first->lbedLogVerbosity);
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-               "dds.discovery.participant.lbpdiscovery.verbosity",
-               valueBuffer,
-               DDS_BOOLEAN_FALSE);
+                                                        "dds.discovery.participant.lbpdiscovery.verbosity",
+                                                        valueBuffer,
+                                                        DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
 #  endif
         }
@@ -348,34 +348,34 @@ namespace kn
           ePlugin->registerPlugin(participant);
 #  else
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-               "dds.discovery.endpoint.lbediscovery.library",
-               "rtilbedisc",
-               DDS_BOOLEAN_FALSE);
+                                                        "dds.discovery.endpoint.lbediscovery.library",
+                                                        "rtilbedisc",
+                                                        DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-               "dds.discovery.endpoint.lbediscovery.create_function",
-               "DDS_LBEDiscoveryPlugin_create",
-               DDS_BOOLEAN_FALSE);
-          assert (rc == DDS_RETCODE_OK);
-
-          rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-               "dds.discovery.endpoint.lbediscovery.config_file",
-               first->lbedFile.c_str(),
-               DDS_BOOLEAN_FALSE);
+                                                        "dds.discovery.endpoint.lbediscovery.create_function",
+                                                        "DDS_LBEDiscoveryPlugin_create",
+                                                        DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
 
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-               "dds.discovery.endpoint.load_plugin",
-               "dds.discovery.endpoint.lbediscovery",
-               DDS_BOOLEAN_FALSE);
+                                                        "dds.discovery.endpoint.lbediscovery.config_file",
+                                                        first->lbedFile.c_str(),
+                                                        DDS_BOOLEAN_FALSE);
+          assert (rc == DDS_RETCODE_OK);
+
+          rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
+                                                        "dds.discovery.endpoint.load_plugin",
+                                                        "dds.discovery.endpoint.lbediscovery",
+                                                        DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
 
           char valueBuffer[18];
           sprintf(valueBuffer, "%i", first->lbedLogVerbosity);
           rc = DDS_PropertyQosPolicyHelper_add_property(&qos.property,
-               "dds.discovery.endpoint.lbediscovery.verbosity",
-               valueBuffer,
-               DDS_BOOLEAN_FALSE);
+                                                        "dds.discovery.endpoint.lbediscovery.verbosity",
+                                                        valueBuffer,
+                                                        DDS_BOOLEAN_FALSE);
           assert (rc == DDS_RETCODE_OK);
 #  endif
         }
@@ -440,9 +440,9 @@ namespace kn
           property.token_bucket.max_tokens = (f->tokenBucket.maxTokens < 0)?
                                              DDS_LENGTH_UNLIMITED : f->tokenBucket.maxTokens;
           property.token_bucket.tokens_added_per_period = (f->tokenBucket.tokensAddedPerPeriod < 0)?
-              DDS_LENGTH_UNLIMITED : f->tokenBucket.tokensAddedPerPeriod;
+                                                          DDS_LENGTH_UNLIMITED : f->tokenBucket.tokensAddedPerPeriod;
           property.token_bucket.tokens_leaked_per_period = (f->tokenBucket.tokensLeakedPerPeriod < 0)?
-              DDS_LENGTH_UNLIMITED : f->tokenBucket.tokensLeakedPerPeriod;
+                                                           DDS_LENGTH_UNLIMITED : f->tokenBucket.tokensLeakedPerPeriod;
           if (f->tokenBucket.period > ACE_Time_Value::zero) {
             property.token_bucket.period.sec = f->tokenBucket.period.sec();
             property.token_bucket.period.nanosec = f->tokenBucket.period.usec() * 1000;
@@ -656,11 +656,11 @@ namespace kn
           (profile  ||
            (!m_params.defaultLibrary.empty() && !m_params.defaultProfile.empty())) ?
           participant->create_topic_with_profile(first->name.c_str(),
-              first->typeName.c_str(),
-              library,
-              profile,
-              NULL /* listener */,
-              DDS::STATUS_MASK_NONE) :
+                                                 first->typeName.c_str(),
+                                                 library,
+                                                 profile,
+                                                 NULL /* listener */,
+                                                 DDS::STATUS_MASK_NONE) :
           participant->create_topic(first->name.c_str(),
                                     first->typeName.c_str(),
                                     DDS_TOPIC_QOS_DEFAULT,
@@ -712,10 +712,12 @@ namespace kn
     }
 
 #if defined(KNDDS_HAS_RTI_DistLogger)
-    MIRO_LOG(LL_NOTICE, "Stop RTI Distributed Logger...");
-    RTI_DLDistLogger* dl = RTI_DLDistLogger::getInstance();
-    if(dl) {
-      dl->finalizeInstance();
+    if(m_params.enableDistLogger) {
+      MIRO_LOG(LL_NOTICE, "Stop RTI Distributed Logger...");
+      RTI_DLDistLogger* dl = RTI_DLDistLogger::getInstance();
+      if(dl) {
+        dl->finalizeInstance();
+      }
     }
 #endif
 
@@ -726,7 +728,7 @@ namespace kn
     dpf->finalize_instance();
 
     delete m_data;
-}
+  }
 
   vector<string>
   DdsEntitiesFactory::parseDiscoveryPeersFile(string const& filename)

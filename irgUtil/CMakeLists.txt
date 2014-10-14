@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 2.6)
 
 set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
 
+include (TestBigEndian)
+
 include( SetArchitecture )
 include( SetupBuildSwitch )
 include( SetupConfigureFile )
@@ -21,7 +23,20 @@ find_package(GTest)
 find_package(Doxygen)
 
 ## find the packages we depend on 
-find_package(ACE)
+
+## add the in-source and out-of-source
+## include paths 
+##--------------------------------------------
+include_directories(
+  ${PROJECT_SOURCE_DIR}/src
+  ${PROJECT_BINARY_DIR}/src
+)
+
+## set variables for config file
+test_big_endian(IRGUTIL_IS_BIG_ENDIAN)
+if(NOT IRGUTIL_IS_BIG_ENDIAN)
+  set(IRGUTIL_IS_LITTLE_ENDIAN TRUE)
+endif(NOT IRGUTIL_IS_BIG_ENDIAN)
 
 ## Set up RPATH and *Config.h
 ## Call these after we've made all our 

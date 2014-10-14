@@ -257,7 +257,7 @@ void Utmll::toLatLon(const double utmEasting, const double utmNorthing, const in
 }
 
 /**
- * @Overload
+ * @overload
  */
 void Utmll::toLatLon(const double utmEasting, const double utmNorthing, const int zoneNumber, char zoneLetter,
              double& lat,  double& lon, const char* ref )

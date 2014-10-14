@@ -21,6 +21,11 @@ give up fprintf style formatting. These macros have a fixed format of
 
  */
 
+// FIXME: it would be nice if kn didn't depend on Miro or ACE, but
+// knShare is the most logical place for the logging macros and
+// compatibility with Miro logging is something we want to preserve.
+// TODO: Create another log implementation with a different back end
+// and choose which one to use at compile time.
 #include <miro/Log.h>
 
 #define KN_LOG_PREFIX  "%D "

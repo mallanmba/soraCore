@@ -22,6 +22,7 @@ set( HEADERS
   GeometryIo.h
   GpsIo.h
   GpsProvider.h
+  HydraIo.h
   HydraProvider.h
   SpectrumIo.h
   SpectrumProvider.h
@@ -40,6 +41,7 @@ set( SOURCES
   GeometryIo.cpp
   GpsIo.cpp
   GpsProvider.cpp
+  HydraIo.cpp
   HydraProvider.cpp
   SpectrumIo.cpp
   SpectrumProvider.cpp

@@ -10,6 +10,8 @@
 #
 ######################################################################
 message(STATUS "Looking for PCL...")
+include(SetIrgPaths)
+include(GetLibraryList)
 
 find_library(PCL_COMMON_LIB 
         NAMES

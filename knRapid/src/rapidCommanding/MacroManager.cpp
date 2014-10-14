@@ -18,28 +18,41 @@
 ******************************************************************************/
 #include "MacroManager.h"
 #include "CommandExceptions.h"
+#include "RapidSubsystemRepository.h"
 
 #include "rapidIo/RapidIoParameters.h"
+#include "rapidIo/TextMessager.h"
 #include "rapidDds/RapidConstants.h"
 
 #include "knDds/DdsEventLoop.h"
 #include "knShare/Functional.h"
+#include "knShare/Log.h"
+
 #include "miro/ConfigDocument.h"
 
 #include <QFile>
 #include <QTextStream>
 #include <QIODevice>
 
+static const char* className = "MacroManager";
 
 namespace rapid
 {
   using namespace std;
   using namespace Miro;
-
-  namespace {
+  
+#ifndef _WIN32 // FIXME - Singleton probs on win32
+#  define SEND_RAPID_TEXTMESSAGE(MSGLEVEL, MSGCONTENT) TextMessager::instance()->sendText(className, MSGLEVEL, MSGCONTENT);
+#else
+#  define SEND_RAPID_TEXTMESSAGE(MSGLEVEL, MSGCONTENT)
+#endif 
+  
+  namespace
+  {
     // wrap delete_data because after 5.1.0, the method
     // takes two arguments and can't be used as a deleter
-    DDS_ReturnCode_t delete_MacroConfig(rapid::MacroConfig* ptr) {
+    DDS_ReturnCode_t delete_MacroConfig(rapid::MacroConfig* ptr)
+    {
       return MacroConfigTypeSupport::delete_data(ptr);
     }
   }
@@ -49,14 +62,10 @@ namespace rapid
     m_params(params),
     m_provider(params.provider, entityName)
   {
-
-    // load macros from disk
-    // publish state
-
-    MacroPtr conf(rapid::MacroConfig::TypeSupport::create_data(),
-                  delete_MacroConfig);
-
     {
+      // load macros from disk
+      MacroPtr conf(rapid::MacroConfig::TypeSupport::create_data(), delete_MacroConfig);
+      KN_INFO("MacroManager loading persistency file: %s", persistencyFileName().c_str());
       ConfigDocument document;
       document.init(persistencyFileName());
       document.setSection("Rapid");
@@ -64,47 +73,67 @@ namespace rapid
       PersistentMacroManagerStateParameters state;
       document.getParameters("kn::PersistentMacroManagerStateParameters", state);
 
-      // publish them one by one
+      // add macros from persistency file
       vector<MacroConfigParameters>::const_iterator first, last = state.macros.end();
       for (first = state.macros.begin(); first != last; ++first) {
-        *conf <<= *first;
-        addMacro(*conf);
+        try {
+          *conf <<= *first;
+          addMacro(*conf);
+        }
+        catch (std::exception const& e) {
+          KN_ERROR_OSTR("Macro " << conf->name << " from persistency file rejected: " << e.what());
+        }
       }
     }
 
+    // publish state
     publishMacroState();
     saveMacros();
   }
 
+  /**
+   * receive uploaded plans
+   */
   void
   MacroManager::operator() (rapid::MacroConfig const * macro)
   {
-    try {
-      // add macro to list
+    try { // add macro to list
       addMacro(*macro);
 
       publishMacroState();
       saveMacros();
+      std::string msg("Macro successfully uploaded: "+std::string(macro->name));
+      SEND_RAPID_TEXTMESSAGE(rapid::MSG_INFO, msg.c_str());
+      KN_INFO_OSTR(msg);
     }
     catch (EDuplicate const& e) {
-      MIRO_LOG_OSTR(LL_ERROR, "Duplicate macro upload: " << e.what());
+      std::string msg("Duplicate macro upload: "+std::string(e.what()));
+      SEND_RAPID_TEXTMESSAGE(rapid::MSG_ERROR, msg.c_str());
+      MIRO_LOG(LL_ERROR, msg.c_str());
     }
     catch (std::exception const& e) {
-      MIRO_LOG_OSTR(LL_ERROR, "Macro upload not accepted: " << e.what());
+      std::string msg("Macro upload not accepted: "+std::string(e.what()));
+      SEND_RAPID_TEXTMESSAGE(rapid::MSG_ERROR, msg.c_str());
+      MIRO_LOG(LL_ERROR, msg.c_str());
     }
   }
 
+  /**
+   * connect to event loop
+   */
   void
   MacroManager::connect(kn::DdsEventLoop& eventLoop)
   {
-     eventLoop.connect<rapid::MacroConfig>(this,
-                                                rapid::MACRO_CONFIG_TOPIC +
-                                                m_params.configUpload.topicSuffix,
-                                                m_params.configUpload.parentNode,
-                                                m_params.configUpload.profile,
-                                                m_params.configUpload.library);
+    eventLoop.connect<rapid::MacroConfig>(this,
+                                          rapid::MACRO_CONFIG_TOPIC + m_params.configUpload.topicSuffix,
+                                          m_params.configUpload.parentNode,
+                                          m_params.configUpload.profile,
+                                          m_params.configUpload.library);
   }
 
+  /**
+   *
+   */
   void
   MacroManager::publishMacroState()
   {
@@ -119,26 +148,48 @@ namespace rapid
     m_provider.updateMacroState(macros);
   }
 
+  /**
+   * add macro to MacroManager. Does some checks for validity first.
+   */
   void
   MacroManager::addMacro(rapid::MacroConfig const& macro)
   {
+    const size_t MAX_cmdIdSuffix_LENGTH = 31;
+    stringstream msg;
+    RapidSubsystemRepository::InstanceMap subsystemRepo;
+    subsystemRepo = RapidSubsystemRepository::instance()->exportMap();
+
     vector<string> suffixes;
     suffixes.reserve(macro.commands.length());
     for (DDS::Long i = 0; i < macro.commands.length(); ++i) {
       suffixes.push_back(macro.commands[i].cmdIdSuffix);
+      // check if subsystem exists
+      string ssName(macro.commands[i].subsysName);
+      if(subsystemRepo.find(ssName) == subsystemRepo.end()) {
+        KN_DEBUG_OSTR("subsystemRepo has " << subsystemRepo.size() << " entries");
+        RapidSubsystemRepository::InstanceMap::iterator it;
+        KN_DEBUG("RapidSubsystemRepository contents:");
+        for(it = subsystemRepo.begin(); it != subsystemRepo.end(); ++it) {
+          KN_DEBUG_OSTR("    key=\"" << it->first << "\"");
+        }
+        msg << "Subsystem \"" << ssName << "\" does not exist (macro command " << i << ") ["<< macro.name << "]";
+
+        boost::throw_exception(ENotFound(msg.str()));
+      }
     }
+
     sort(suffixes.begin(), suffixes.end());
     vector<string>::iterator newLast = unique(suffixes.begin(), suffixes.end());
     if (newLast != suffixes.end()) {
-      MIRO_LOG_OSTR(LL_ERROR, "MacroManager::addMacro() - duplicate cmdIdSuffix(es) in plan [" << macro.name << "]: " << *newLast);
-      return;
+      msg << "MacroManager::addMacro() - duplicate cmdIdSuffix(es) in plan [" << macro.name << "]: " << *newLast;
+      boost::throw_exception(EBadMacro(msg.str()));
     }
 
     vector<string>::const_iterator first, last = suffixes.end();
     for (first = suffixes.begin(); first != last; ++first) {
-      if (first->length() > 31) {
-        MIRO_LOG_OSTR(LL_ERROR, "MacroManager::addMacro() - cmdIdSuffix in plan [" << macro.name << "] too long: (" << first->length() << ")" << *first);
-        return;
+      if (first->length() > MAX_cmdIdSuffix_LENGTH) {
+        msg << "MacroManager::addMacro() - cmdIdSuffix in plan [" << macro.name << "] too long: (" << first->length() << ")" << *first;
+        boost::throw_exception(EBadMacro(msg.str()));
       }
     }
 
@@ -149,8 +200,8 @@ namespace rapid
       }
     }
 
-    MacroPtr m(rapid::MacroConfig::TypeSupport::create_data(),
-               delete_MacroConfig);
+    // copy macro into m_macros map
+    MacroPtr m(rapid::MacroConfig::TypeSupport::create_data(), delete_MacroConfig);
     rapid::MacroConfig::TypeSupport::copy_data(m.get(), &macro);
     m_macros[macro.name] = m;
 
@@ -158,6 +209,9 @@ namespace rapid
     m_provider.configSupplier().sendEvent(*m);
   }
 
+  /**
+   *
+   */
   void
   MacroManager::delMacro(std::string const& name)
   {
@@ -176,7 +230,8 @@ namespace rapid
   }
 
   MacroManager::MacroPtr
-  MacroManager::retreiveMacro(std::string const& name, int serial){
+  MacroManager::retreiveMacro(std::string const& name, int serial)
+  {
     MacroMap::const_iterator iter = m_macros.find(name);
     if (iter == m_macros.end()) {
       boost::throw_exception(EExecFailed("Trying to load unknown macro name: " + name));

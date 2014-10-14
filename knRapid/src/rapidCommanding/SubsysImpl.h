@@ -21,8 +21,6 @@
 
 #include "rapidCommanding_Export.h"
 
-#include "knShare/Repository.h"
-
 #include "rapidDds/BaseTypes.h"
 #include "rapidDds/CommandConfig.h"
 #include "rapidDds/CommandConfigSupport.h"
@@ -41,20 +39,17 @@ namespace rapid
   class Subsystem;
   class SubsystemType;
 
-  class CommandImpl;
+  class SubsysImpl;
 
-  typedef kn::shared_ptr<CommandImpl> RapidSubsystemPtr;
-  typedef kn::Repository<RapidSubsystemPtr> RapidSubsystemRepository;
-
-  class rapidCommanding_Export CommandImpl
+  class rapidCommanding_Export SubsysImpl
   {
-  public:    
+  public:
     typedef boost::BOOST_THREAD_FUTURE<void> Future;
     typedef kn::shared_ptr<Future> FuturePtr;
 
-    CommandImpl(std::string const& name,
+    SubsysImpl(std::string const& name,
                 rapid::SubsystemType const * type);
-    virtual ~CommandImpl() throw();
+    virtual ~SubsysImpl() throw();
 
     char const * name() const throw() { return m_name.c_str(); }
     char const * type() const throw();
@@ -65,8 +60,8 @@ namespace rapid
     int validateCommandSyntax(char const * name, rapid::ParameterSequence16 const& arguments) const;
     bool isAbortable(char const * name) const;
 
-    /** 
-     * return value is null for synchronous operations (command has already 
+    /**
+     * return value is null for synchronous operations (command has already
      * completed by the time execute returns)
      * It is the responsibility of the execute method to publish Acks
      */
@@ -86,18 +81,16 @@ namespace rapid
 
   template<typename T>
   inline
-  CommandImpl::FuturePtr
-  CommandImpl::async(T const& t)
+  SubsysImpl::FuturePtr
+  SubsysImpl::async(T const& t)
   {
     boost::packaged_task<void> pt(t);
     FuturePtr f(new Future(pt.get_future()));
     boost::thread( boost::move(pt) ).detach();
-  
+
     return f;
   }
 
 }
-
-RAPIDCOMMANDING_SINGLETON_DECLARATION(kn::Repository<rapid::RapidSubsystemPtr>);
 
 #endif // rapid_CommandImpl_h

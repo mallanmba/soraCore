@@ -26,11 +26,11 @@ namespace kn
   {
     ostr << "{";
     ostr << static_cast<MotorGroupFuture const&>(rhs);
-    ostr << "," <<  rhs.curvature 
-         << ", " << rhs.curvatureRate 
+    ostr << "," <<  rhs.curvature
+         << ", " << rhs.curvatureRate
          << ", " << rhs.speed
          << "}";
-    
+
     return ostr;
   }
 }

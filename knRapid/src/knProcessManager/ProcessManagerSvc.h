@@ -55,7 +55,7 @@ namespace kn
   template<typename T>
   class DdsTypedSupplier;
   class ProcessManagerSvcParameters;
-  class ProcMgrImpl;
+  class ProcMgrSubsysImpl;
 
   class knProcessManager_Export ProcessManagerSvc : public Miro::ReactorTask
   {

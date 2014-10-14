@@ -94,7 +94,7 @@ namespace kn
         return -1;
       }
 
-      fs->set_parent(roverFrame, siteFrame);
+      fs->setParent(roverFrame, siteFrame);
     }
 
 #ifdef RTIDDS_FOUND

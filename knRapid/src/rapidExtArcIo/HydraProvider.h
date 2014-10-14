@@ -20,11 +20,11 @@
 #define rapidHydraProvider_h
 
 #include "rapidExtArcIo_Export.h"
-#include "GenericIo.h"
+#include "HydraIo.h"
 #include "rapidUtil/Provider_T.h"
 
-#include "rapidExtArcDds/GenericConfig.h"
-#include "rapidExtArcDds/GenericConfigSupport.h"
+#include "rapidExtArcDds/HydraConfig.h"
+#include "rapidExtArcDds/HydraConfigSupport.h"
 #include "rapidExtArcDds/HydraSample.h"
 #include "rapidExtArcDds/HydraSampleSupport.h"
 
@@ -36,7 +36,7 @@ namespace rapid
       {
          class HydraTopicPairParameters;
 
-         typedef Provider_T <GenericConfig, HydraSample, HydraTopicPairParameters> HydraProviderBase;
+         typedef Provider_T <HydraConfig, HydraSample, HydraTopicPairParameters> HydraProviderBase;
 
          class rapidExtArcIo_Export HydraProvider : public HydraProviderBase 
          {

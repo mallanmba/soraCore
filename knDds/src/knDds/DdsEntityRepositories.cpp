@@ -94,7 +94,7 @@ namespace kn
 
   Miro::Singleton<DdsDomainParticipantRepository, ACE_Recursive_Thread_Mutex, ACE_Unmanaged_Singleton >
   DdsDomainParticipantRepository::instance =
-              Miro::Singleton<DdsDomainParticipantRepository, ACE_Recursive_Thread_Mutex, ACE_Unmanaged_Singleton >();
+    Miro::Singleton<DdsDomainParticipantRepository, ACE_Recursive_Thread_Mutex, ACE_Unmanaged_Singleton >();
 
   DdsDomainParticipantRepository::DdsDomainParticipantRepository()
   {}
@@ -123,10 +123,11 @@ namespace kn
   }
 
   DDS::DomainParticipant *
-  DdsDomainParticipantRepository::get(std::string const& name) throw(ENotRegistered) {
+  DdsDomainParticipantRepository::get(std::string const& name) throw(ENotRegistered)
+  {
     return dynamic_cast<DDS::DomainParticipant *>(this->Super::get(name));
   }
-  
+
   void
   DdsDomainParticipantRepository::remove(std::string const& name)
   throw(ENotRegistered)
@@ -182,10 +183,11 @@ namespace kn
   }
 
   DDS::Publisher *
-  DdsPublisherRepository::get(std::string const& name) throw(ENotRegistered) {
+  DdsPublisherRepository::get(std::string const& name) throw(ENotRegistered)
+  {
     return dynamic_cast<DDS::Publisher *>(this->Super::get(name));
   }
-  
+
   void
   DdsPublisherRepository::remove(std::string const& name)
   throw(ENotRegistered)
@@ -215,7 +217,7 @@ namespace kn
 
   Miro::Singleton<DdsSubscriberRepository, ACE_Recursive_Thread_Mutex, ACE_Unmanaged_Singleton >
   DdsSubscriberRepository::instance =
-               Miro::Singleton<DdsSubscriberRepository, ACE_Recursive_Thread_Mutex, ACE_Unmanaged_Singleton >();
+    Miro::Singleton<DdsSubscriberRepository, ACE_Recursive_Thread_Mutex, ACE_Unmanaged_Singleton >();
 
 
   DdsSubscriberRepository::DdsSubscriberRepository()
@@ -239,10 +241,11 @@ namespace kn
   }
 
   DDS::Subscriber *
-  DdsSubscriberRepository::get(std::string const& name) throw(ENotRegistered) {
+  DdsSubscriberRepository::get(std::string const& name) throw(ENotRegistered)
+  {
     return dynamic_cast<DDS::Subscriber *>(this->Super::get(name));
   }
-  
+
   void
   DdsSubscriberRepository::remove(std::string const& name)
   throw(ENotRegistered)

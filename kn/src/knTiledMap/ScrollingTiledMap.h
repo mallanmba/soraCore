@@ -32,19 +32,44 @@
 namespace kn
 {
 
+  /**
+   * @ingroup knTiledMap
+   * @brief 2D scrolling map type, scrolling by tile-Map2Size.
+   *
+   * This map type combines the concept of a scrolling map with the tiled-map approach.
+   * Instead of providing an unbounded sparce 2D array it implements an 2D array which
+   * can be efficiently moved across the 2D plane keeping prior data (as long as it is
+   * continously covered by the map) without the need for copying.
+   *
+   * Due to the power-of-two semantics and the tile-size scrolling accessing and moving
+   * the map can be implements very efficiently.
+   *
+   */
   template<typename T>
   class ScrollingTiledMap : public TiledMapBase<ScrollingTiledMap<T>, T>
   {
+    //! Super class shorthand.
     typedef TiledMapBase<ScrollingTiledMap<T>, T> Super;
 
-   public:
+  public:
+    //! The type for representing a tile.
     typedef T Tile;
+    //! The type for type-id specifiers.
     typedef typename T::TileId TileId;
+    //! The type for representing a cell.
     typedef typename T::Cell Cell;
-
+    //! The type for storing the tile set.
     typedef std::vector<Tile> TileVector;
 
 
+    /**
+     * @brief Initializing constructor.
+     *
+     * @param numTilesLog2 The number of tiles per row and column specified in log2.
+     * @param indexScale The default tile size.
+     * @param buffer Tile buffer, if NULL a new buffer is allocated and the map takes ownership of the buffer.
+     *
+     */
     ScrollingTiledMap(unsigned int numTilesLog2, double indexScale = 10., Cell * buffer = NULL) :
       Super(indexScale),
       NumTilesLog2(numTilesLog2),
@@ -75,6 +100,12 @@ namespace kn
       }
     }
 
+    /**
+     * @brief Destructor
+     *
+     * Releasing map resources, if owned.
+     *
+     */
     ~ScrollingTiledMap()
     {
       if (m_owned) {
@@ -82,18 +113,44 @@ namespace kn
       }
     }
 
-    void setCenter(double x, double y) 
+    /**
+     * @brief Set center-tile of Map2Size to include the specified coordinates.
+     *
+     * @note As the scrolling tiled map scrolls by tile-size, set-center
+     * does only change the center if the specified map coordinates lie
+     * outside the current center tile.
+     *
+     * @param x X coordinate.
+     * @param y Y coordinate.
+     */
+    void setCenter(double x, double y)
     {
       setOrigin((int) this->toIndex(x) - MapSize / 2,
                 (int) this->toIndex(y) - MapSize / 2) ;
     }
 
+    /**
+     * @brief Get origin of tiled map.
+     *
+     * @param x On return holds the column index.
+     * @param y On return holds the row index.
+     */
     void origin(int& x, int& y) const {
       x = m_originX;
       y = m_originY;
     }
 
-    void setOrigin(int x, int y) 
+    /**
+     * @brief Set origin-tile of Map2Size to include the specified indices.
+     *
+     * @note As the scrolling tiled map scrolls by tile-size, set-center
+     * does only change the center if the specified map coordinates lie
+     * outside the current center tile.
+     *
+     * @param x Column index.
+     * @param y Row index.
+     */
+    void setOrigin(int x, int y)
     {
       // clear tiles
       int scrollX = (x  >> Tile::TileSizeLog2) - (m_originX >> Tile::TileSizeLog2);
@@ -146,21 +203,54 @@ namespace kn
       m_offsetY = (m_originY >> Tile::TileSizeLog2) & TilesIndexMask;
     }
 
+    /**
+     * @brief Check if specified indices lie within the map.
+     *
+     * @param x Column index.
+     * @param y Row index.
+     * @return Returns true if specified indices lie within map.
+     */
     bool isWithinBounds(int x, int y) const {
       int dX = x - m_originX;
       int dY = y - m_originY;
-  
+
       return ((unsigned int)(dX | dY) < MapSize);
     }
 
+    /**
+     * @brief Check if specified tile lies within the map.
+     *
+     * @param id Tile id as calaculated from row & column index.
+     * @return Returns true if specified tile lies within map.
+     */
     bool isWithinBounds(int id) const {
       return isWithinBounds(Tile::originX(id), Tile::originY(id));
     }
 
     friend class TiledMapBase<ScrollingTiledMap<T>, T>;
 
-
+    /**
+     * @brief Tile set accessor.
+     *
+     * @return Const reference to the tile set.
+     */
     TileVector const& tiles() const { return m_tiles; }
+
+    /**
+     * read only tile accessor
+     * @returns const reference to tile if it exists, otherwise NULL
+     */
+    const Tile* getTileIfExists(int x, int y) const {
+      int index =
+        ((x >> Tile::TileSizeLog2) & (NumTiles - 1)) |
+        (((y >> Tile::TileSizeLog2) & (NumTiles - 1)) << NumTilesLog2);
+      int id = Tile::createId(x, y);
+
+      if (m_tiles[index].id() == id) {
+        return &m_tiles[index];
+      }
+      return NULL;
+    }
 
   protected:
     bool hasTileImpl(int x, int y) const {
@@ -168,7 +258,7 @@ namespace kn
     }
 
     template<typename Operator>
-    void 
+    void
     forEachTileImpl(Operator& op) {
       typename TileVector::iterator first, last = m_tiles.end();
       for (first = m_tiles.begin(); first != last; ++first) {
@@ -177,7 +267,7 @@ namespace kn
     }
 
     template<typename Operator>
-    void 
+    void
     forEachTileImpl(Operator& op) const {
       typename TileVector::const_iterator first, last = m_tiles.end();
       for (first = m_tiles.begin(); first != last; ++first) {
@@ -211,7 +301,7 @@ namespace kn
     Tile * getTile(int id) {
       int idX = Tile::idX(id);
       int idY = Tile::idY(id);
-      int index = 
+      int index =
         (idX & (NumTiles - 1)) | ((idY & (NumTiles - 1)) << NumTilesLog2);
 
       if (m_tiles[index].id() == id) {
@@ -242,13 +332,13 @@ namespace kn
 
       m_tiles[index].setTile(id, m_buffer);
     }
-    
+
     void clearTileRow(unsigned int y) {
       for (unsigned int x = 0; x < NumTiles; ++x) {
         clearTile(x, y);
       }
     }
-    
+
     void clearTileColumn(unsigned int x, unsigned int colMin, unsigned int colMax) {
       for (unsigned int y = colMin; y < colMax; ++y) {
         clearTile(x, y);
@@ -277,7 +367,7 @@ namespace kn
 
     Cell * m_buffer;
     bool m_owned;
-    
+
     TileVector m_tiles;
   };
 }

@@ -16,29 +16,23 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef kn_RaftImpl_h
-#define kn_RaftImpl_h
+#ifndef rapid_AdminImpl_h
+#define rapid_AdminImpl_h
 
-#include "rapidCommanding/CommandImpl.h"
-#include "knRaft_Export.h"
+#include "SubsysImpl.h"
 
-namespace kn
+namespace rapid
 {
-  class FileQueue;
-
-  class knRaft_Export RaftImpl : public rapid::CommandImpl
+  class rapidCommanding_Export AdminSubsysImpl : public SubsysImpl
   {
   public:
-    RaftImpl(FileQueue * fileQueue);
-    virtual ~RaftImpl() throw();
+    AdminSubsysImpl();
+    virtual ~AdminSubsysImpl() throw();
 
     virtual FuturePtr execute(rapid::Command const& cmd);
 
   protected:
     static rapid::SubsystemType const * typeDescription();
-
-  private:
-    FileQueue * m_fileQueue;
   };
 }
-#endif // kn_RaftImpl_h
+#endif // rapid_AdminImpl_h

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 CONFIG_FILE=RTI_ROUTING_SERVICE.xml
 CONFIG_NAME=K10Routes

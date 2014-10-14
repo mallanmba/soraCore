@@ -24,6 +24,8 @@
 #include "ui_GenericCommandWidgetUi.h"
 
 #include "CommandPublisher.h"
+//#include "AccessControlStateSubscriber.h"
+
 /**
  *
  */
@@ -40,7 +42,8 @@ public:
 
 public slots:
   void newCommandConfig(const rapid::CommandConfig* commandConfig);
-
+  //void newAccessControlState(AccessControlStatePtr acs);
+  
 protected:
   void addSubsystem(const char* ssName, const rapid::SubsystemType& ssType);
 

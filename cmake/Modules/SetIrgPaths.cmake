@@ -1,4 +1,7 @@
-#
+if(NOT ARCHITECTURE)
+  include(SetArchitecture)
+endif(NOT ARCHITECTURE)
+
 # We need to find a good way to switch IRG_PREFIX from the top level
 # For now, you can call cmake using -DIRG_PREFIX=/irg for NFS build
 #-------------------------------------------------

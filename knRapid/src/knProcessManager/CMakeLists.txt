@@ -17,7 +17,7 @@ set( HEADERS
   ProcessData.h
   ProcessManagerHelper.h
   ProcessManagerSvc.h
-  ProcMgrImpl.h
+  ProcMgrSubsysImpl.h
 )
 
 set( SOURCES
@@ -26,7 +26,7 @@ set( SOURCES
   ProcessData.cpp
   ProcessManagerHelper.cpp
   ProcessManagerSvc.cpp
-  ProcMgrImpl.cpp
+  ProcMgrSubsysImpl.cpp
 )
 
 include_directories (
@@ -51,7 +51,7 @@ add_library(${LIB_NAME} SHARED
   ${SOURCES}
 )
 
-#XXX should NDDS_USER_DLL_EXPORT be here? This is only needed 
+#XXX should NDDS_USER_DLL_EXPORT be here? This is only needed
 #XXX when DDS IDL generated source code is compiled
 add_target_definitions( ${LIB_NAME} NDDS_USER_DLL_EXPORT )
 add_target_definitions( ${LIB_NAME} ${EXPORT_DEFINE} )
@@ -73,11 +73,11 @@ if (  KNRAPID_BUILD_knSystemInfoSvc )
   link_libraries( knSystemInfoSvc )
 endif (  KNRAPID_BUILD_knSystemInfoSvc )
 
-foreach( TARGET ${TARGETS} ) 
-  add_executable( ${TARGET} 
+foreach( TARGET ${TARGETS} )
+  add_executable( ${TARGET}
     ${TARGET}.cpp
   )
-endforeach( TARGET ${TARGETS} ) 
+endforeach( TARGET ${TARGETS} )
 
 
 install_library( ${LIB_NAME} )

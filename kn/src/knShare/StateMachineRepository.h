@@ -27,6 +27,7 @@ namespace kn
 {
   class StateMachine;
 
+  /** @ingroup knShare */
   typedef Repository<StateMachine *> StateMachineRepository;
 }
 

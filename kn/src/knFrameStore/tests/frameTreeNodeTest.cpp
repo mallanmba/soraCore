@@ -66,7 +66,7 @@ struct Locate
   void operator() (FrameTreeNode const * node)
   {
     cout << "get_location( wrt_node=" << node << ", source=" << m_wrt_frame << ")" << endl;
-    ATrans3 t = get_transform(node, m_wrt_frame);
+    ATrans3 t = getTransform(node, m_wrt_frame);
     cout << "xATrans(Vector3(";
     for (size_t i = 0; i < 3; ++i) {
       if (i > 0) {
@@ -100,7 +100,7 @@ struct BreadthFirst
   void operator() (FrameTreeNode const * node)
   {
     Locate l(node);
-    m_root->breadth_first_traverse(l);
+    m_root->breadthFirstTraverse(l);
   }
 
   FrameTreeNode const * const m_root;
@@ -220,12 +220,12 @@ int main (int, char**)
   P d("(");
   P u(")");
   cout << "pre-order traverse: " << flush;
-  root.pre_order_traverse(f, d, u);
+  root.preOrderTraverse(f, d, u);
   cout << endl;
 
   // get all nodes relative to each other
   BreadthFirst bf(&root);
-  root.breadth_first_traverse(bf);
+  root.breadthFirstTraverse(bf);
 
   cout << "lookup root: " << lookup(&root, "root  ") << endl;
   cout << "lookup /root: " << lookup(&root, "/root  ") << endl;

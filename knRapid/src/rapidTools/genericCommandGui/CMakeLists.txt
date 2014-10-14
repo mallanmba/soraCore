@@ -11,6 +11,7 @@ miro_makeparams(CommandGuiParameters.xml )
 
 set(SOURCES 
   ${MIRO_MAKEPARAMS_SOURCES}
+  #AccessControlStateSubscriber.cpp
   ArgBoolWidget.cpp
   ArgWidgetFactory.cpp
   CommandConfigSubscriber.cpp
@@ -29,6 +30,7 @@ set(HEADERS
 )
 
 set( MOC_HEADERS
+  #AccessControlStateSubscriber.h
   ArgBoolWidget.h
   CommandConfigSubscriber.h
   CommandEditWidget.h

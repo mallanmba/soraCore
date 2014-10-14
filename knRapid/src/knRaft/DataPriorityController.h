@@ -44,8 +44,7 @@ namespace kn
     void operator() (rapid::FileAnnounce const * announcement);
 
   private:
-    struct Rule
-    {
+    struct Rule {
       std::string m_extension;
       ACE_INT16 m_channel;
       float m_priority;

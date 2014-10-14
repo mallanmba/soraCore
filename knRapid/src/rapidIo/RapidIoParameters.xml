@@ -141,6 +141,21 @@
       <config_parameter name="config" type="PointCloudConfigParameters" />
     </config_item>
 
+    <config_item name="TextMessageTopic" parent="kn::DdsLeaf" final="false">
+      <config_parameter name="profile" inherited="true" type="string" default="RapidTextMessageProfile" />
+    </config_item>
+
+    <config_item name="TextMessageProvider" parent="TextMessageTopic" finale="false">
+    </config_item>
+
+    <config_item name="TextMessager" parent="Miro::Config" final="true" instance="false">
+      <config_parameter name="topic"       type="string" default="rapid_textmessage" />
+      <config_parameter name="publisher"   type="string" default="" />
+      <config_parameter name="profile"     type="string" default="RapidTextMessageProfile" />
+      <config_parameter name="library"     type="string" default="" />
+      <config_parameter name="entityName"  type="string" default="TextMessager" />
+    </config_item>
+
 
   </config_group>
 </config>

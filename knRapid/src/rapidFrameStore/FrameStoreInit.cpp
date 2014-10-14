@@ -86,7 +86,7 @@ namespace rapid
 
     if (!frame.extras.empty()) {
       FrameExtras * extras = new FrameExtras(frame.extras);
-      m_frameStore->set_extras(h, extras);
+      m_frameStore->setExtras(h, extras);
     }
   }
 
@@ -144,7 +144,7 @@ namespace rapid
 
 
     FrameStore::FrameTree tree;
-    m_frameStore->clone_tree(tree);
+    m_frameStore->cloneTree(tree);
 
     FrameStore::FrameTree::const_iterator first, last = tree.end();
     for (first = tree.begin(); first != last; ++first) {

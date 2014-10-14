@@ -35,8 +35,8 @@ int main(int, char**)
                           vector<double>(positions, positions + 4),
                           vector<double>(speeds, speeds + 4),
                           5., 6., 7., 8., 9., o);
-  
-  
+
+
   cout << "MotorGroup: " << static_cast<MotorGroupFuture const&>(future) << endl;
   cout << "WheelGroup: " << future << endl;
 

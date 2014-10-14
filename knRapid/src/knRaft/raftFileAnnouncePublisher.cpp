@@ -45,7 +45,8 @@
 #include <fstream>
 #include <string>
 
-std::string abspath(std::string const& path) {
+std::string abspath(std::string const& path)
+{
   char abspath[PATH_MAX];
   std::string path_copy(path);
 
@@ -67,7 +68,8 @@ std::string abspath(std::string const& path) {
 // exist in multiple places.
 // *NOTE* Because of this, the output for this will differ from that of
 // `sha1sum file`
-std::string hashFile(std::string const& path) {
+std::string hashFile(std::string const& path)
+{
   irg::SHA1Hash hash;
   unsigned char content[1024];
 
@@ -78,7 +80,8 @@ std::string hashFile(std::string const& path) {
   do {
     in.read((char *) content, 1024);
     hash.update(content, in.gcount());
-  } while(!in.eof());
+  }
+  while(!in.eof());
 
   return hash.hexString(hash.final());
 }
@@ -105,8 +108,8 @@ int main(int argc, char * argv[])
 
   {
     kn::DdsTypedSupplier<rapid::FileAnnounce> publisher(rapid::FILEANNOUNCE_TOPIC,
-                                                           "",
-                                                           "RapidFileAnnounceProfile");
+                                                        "",
+                                                        "RapidFileAnnounceProfile");
 
     rapid::FileAnnounce& announce = publisher.event();
     rapid::RapidHelper::initHeader(announce.hdr);
@@ -123,7 +126,8 @@ int main(int argc, char * argv[])
       // make sure we can read the file and that it exists
       if (ACE_OS::stat(path.c_str(), &stat) < 0) {
         std::cerr << "Error stat'ing " << path << std::endl;
-      } else {
+      }
+      else {
         rapid::RapidHelper::updateHeader(announce.hdr);
 
         announce.fileSize = stat.st_size;

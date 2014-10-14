@@ -16,10 +16,10 @@
  * limitations under the License.
 
 ******************************************************************************/
-#include "QueueImpl.h"
+#include "QueueSubsysImpl.h"
 #include "CommandingParameters.h"
 #include "CommandExceptions.h"
-#include "AccessControlImpl.h"
+#include "AccessControlSubsysImpl.h"
 
 #include "rapidDds/RapidConstants.h"
 #include "rapidDds/CommandConstants.h"
@@ -58,19 +58,19 @@ namespace rapid
     }
   }
 
-  QueueImpl::CmdAckPair::CmdAckPair() :
+  QueueSubsysImpl::CmdAckPair::CmdAckPair() :
     cmd(rapid::Command::TypeSupport::create_data(),
         delete_Command),
     ack(rapid::Ack::TypeSupport::create_data(),
         delete_Ack)
   {}
 
-  QueueImpl::CmdAckPair::CmdAckPair(CmdAckPair const& rhs) :
+  QueueSubsysImpl::CmdAckPair::CmdAckPair(CmdAckPair const& rhs) :
     cmd(rhs.cmd),
     ack(rhs.ack)
   {}
 
-  QueueImpl::CmdAckPair::CmdAckPair(CommandPtr const& c) :
+  QueueSubsysImpl::CmdAckPair::CmdAckPair(CommandPtr const& c) :
     cmd(c),
     ack(rapid::Ack::TypeSupport::create_data(),
         delete_Ack)
@@ -85,11 +85,11 @@ namespace rapid
   /**
    * ctor
    */
-  QueueImpl::QueueImpl(QueueImplParameters const& params,
+  QueueSubsysImpl::QueueSubsysImpl(QueueImplParameters const& params,
                        std::string const& entityName,
                        SubsystemMap const& subsystems,
                        AccessControlImplPtr const& accessControl) :
-    CommandImpl(QUEUE, typeDescription()),
+    SubsysImpl(QUEUE, typeDescription()),
     m_params(params),
     m_subsystems(subsystems),
     m_accessControl(accessControl),
@@ -126,20 +126,20 @@ namespace rapid
   /**
    * dtor
    */
-  QueueImpl::~QueueImpl() throw()
+  QueueSubsysImpl::~QueueSubsysImpl() throw()
   {
   }
 
   void
-  QueueImpl::connect(kn::DdsEventLoop& eventLoop)
+  QueueSubsysImpl::connect(kn::DdsEventLoop& eventLoop)
   {
     if (m_macroMgr) {
       m_macroMgr->connect(eventLoop);
     }
   }
 
-  QueueImpl::AckVector
-  QueueImpl::directCmd(CommandPtr const& cmd)
+  QueueSubsysImpl::AckVector
+  QueueSubsysImpl::directCmd(CommandPtr const& cmd)
   {
     string cmdId = cmd->cmdId;
     CmdAckPair ca(cmd);
@@ -164,8 +164,8 @@ namespace rapid
     return acks;
   }
 
-  QueueImpl::AckVector
-  QueueImpl::appendCmd(CommandPtr const& cmd)
+  QueueSubsysImpl::AckVector
+  QueueSubsysImpl::appendCmd(CommandPtr const& cmd)
   {
     AckVector acks;
 
@@ -198,8 +198,8 @@ namespace rapid
     return acks;
   }
 
-  QueueImpl::AckVector
-  QueueImpl::insertCmd(CommandPtr const& cmd)
+  QueueSubsysImpl::AckVector
+  QueueSubsysImpl::insertCmd(CommandPtr const& cmd)
   {
     string cmdId = cmd->cmdId;
     CmdAckPair ca(cmd);
@@ -247,8 +247,8 @@ namespace rapid
     return acks;
   }
 
-  QueueImpl::AckVector
-  QueueImpl::cancelCmd(std::string const& cmdId)
+  QueueSubsysImpl::AckVector
+  QueueSubsysImpl::cancelCmd(std::string const& cmdId)
   {
     AckVector acks;
     CommandMap::iterator iter = m_commands.find(cmdId);
@@ -328,8 +328,8 @@ namespace rapid
     return acks;
   }
 
-  QueueImpl::AckVector
-  QueueImpl::cancelCommands(bool directToo)
+  QueueSubsysImpl::AckVector
+  QueueSubsysImpl::cancelCommands(bool directToo)
   {
     AckVector acks;
     acks.reserve(m_commands.size());
@@ -360,8 +360,8 @@ namespace rapid
 
 
 
-  QueueImpl::AckVector
-  QueueImpl::replaceCmd(CommandPtr const& cmd)
+  QueueSubsysImpl::AckVector
+  QueueSubsysImpl::replaceCmd(CommandPtr const& cmd)
   {
     string cmdId = cmd->cmdId;
     CmdAckPair ca(cmd);
@@ -405,7 +405,7 @@ namespace rapid
   }
 
   bool
-  QueueImpl::checkAccessPriviledges(CmdAckPair& ca) const
+  QueueSubsysImpl::checkAccessPriviledges(CmdAckPair& ca) const
   {
     bool rc = true;
     // move to QueueImpl
@@ -434,7 +434,7 @@ namespace rapid
   }
 
   bool
-  QueueImpl::checkQueuing(CmdAckPair& ca) const
+  QueueSubsysImpl::checkQueuing(CmdAckPair& ca) const
   {
     bool rc = true;
     // check if we actually do queueing or only direct commands
@@ -458,8 +458,8 @@ namespace rapid
   }
 
 
-  QueueImpl::CommandAckVector
-  QueueImpl::executableCommands()
+  QueueSubsysImpl::CommandAckVector
+  QueueSubsysImpl::executableCommands()
   {
     CommandAckVector executableCmds;
     StringVector completedIds;
@@ -493,8 +493,8 @@ namespace rapid
     return executableCmds;
   }
 
-  QueueImpl::CommandMap::const_iterator
-  QueueImpl::lastNonCompletedCmd()
+  QueueSubsysImpl::CommandMap::const_iterator
+  QueueSubsysImpl::lastNonCompletedCmd()
   {
     string targetCmdId = m_headCmdId;
     CommandMap::const_iterator iter = m_commands.end();
@@ -531,8 +531,8 @@ namespace rapid
   }
 
 
-  QueueImpl::StringVector
-  QueueImpl::queuedCommands() const
+  QueueSubsysImpl::StringVector
+  QueueSubsysImpl::queuedCommands() const
   {
     StringVector cmds;
     cmds.reserve(m_commands.size());
@@ -552,8 +552,8 @@ namespace rapid
     return cmds;
   }
 
-  QueueImpl::StringVector
-  QueueImpl::commandSequence() const
+  QueueSubsysImpl::StringVector
+  QueueSubsysImpl::commandSequence() const
   {
     StringVector cmds;
     cmds.reserve(m_commands.size());
@@ -598,8 +598,8 @@ namespace rapid
     };
   }
 
-  QueueImpl::AckVector
-  QueueImpl::purgeCommands(ACE_Time_Value const& deadline, bool allCompleted)
+  QueueSubsysImpl::AckVector
+  QueueSubsysImpl::purgeCommands(ACE_Time_Value const& deadline, bool allCompleted)
   {
     StringVector completedIds;
     StringVector macroBaseCmdIds;
@@ -735,7 +735,7 @@ namespace rapid
   }
 
   SubsystemType const *
-  QueueImpl::typeDescription()
+  QueueSubsysImpl::typeDescription()
   {
 
     SubsystemType * description = SubsystemTypeTypeSupport::create_data();
@@ -758,8 +758,8 @@ namespace rapid
     return description;
   }
 
-  CommandImpl::FuturePtr
-  QueueImpl::execute(Command const& cmd)
+  SubsysImpl::FuturePtr
+  QueueSubsysImpl::execute(Command const& cmd)
   {
     FuturePtr result;
     int cmdIdx = validateCommandSyntax(cmd.cmdName, cmd.arguments);
@@ -855,7 +855,7 @@ namespace rapid
   }
 
   bool
-  QueueImpl::evalQueueState()
+  QueueSubsysImpl::evalQueueState()
   {
     bool changed = false;
 
@@ -888,8 +888,8 @@ namespace rapid
     return changed;
   }
 
-  QueueImpl::CommandAckVector
-  QueueImpl::executingCommands(bool directToo)
+  QueueSubsysImpl::CommandAckVector
+  QueueSubsysImpl::executingCommands(bool directToo)
   {
     CommandAckVector cmds;
     cmds.reserve(m_commands.size());
@@ -908,7 +908,7 @@ namespace rapid
 
 
   void
-  QueueImpl::tryCancelActiveCommands(bool requeue, bool directToo)
+  QueueSubsysImpl::tryCancelActiveCommands(bool requeue, bool directToo)
   {
 
     // get a copy of the CmdAckPair's so command-vector does not change
@@ -931,7 +931,7 @@ namespace rapid
   }
 
   void
-  QueueImpl::setQueueState(rapid::CommandRecord& cr, QueueImpl::CmdAckPair const& cmdAck)
+  QueueSubsysImpl::setQueueState(rapid::CommandRecord& cr, QueueSubsysImpl::CmdAckPair const& cmdAck)
   {
     // copy command
     rapid::Command::TypeSupport::copy_data(&(cr.cmd), cmdAck.cmd.get());
@@ -978,7 +978,7 @@ namespace rapid
   }
 
   void
-  QueueImpl::publishQueueState()
+  QueueSubsysImpl::publishQueueState()
   {
     if (m_statePublisher == NULL) {
       MIRO_LOG(LL_ERROR, "QueueState publication requested, but no queue-state publisher instance.");
@@ -1103,7 +1103,7 @@ namespace rapid
   }
 
   void
-  QueueImpl::loadMacro(rapid::Command const& cmd)
+  QueueSubsysImpl::loadMacro(rapid::Command const& cmd)
   {
     if (!m_macroMgr)
       return;
@@ -1153,38 +1153,38 @@ namespace rapid
   }
 
   void
-  QueueImpl::sendAcks(AckVector const& acks)
+  QueueSubsysImpl::sendAcks(AckVector const& acks)
   {
-    QueueImpl::AckVector::const_iterator first, last = acks.end();
+    QueueSubsysImpl::AckVector::const_iterator first, last = acks.end();
     for (first = acks.begin(); first != last; ++first) {
       sendAck(*first);
     }
   }
 
   void
-  QueueImpl::sendAck(AckPtr const& ack)
+  QueueSubsysImpl::sendAck(AckPtr const& ack)
   {
     RapidHelper::updateHeader(ack->hdr);
     m_ackSupplier->sendEvent(*ack);
   }
 
   void
-  QueueImpl::unregisterAcks(AckVector const& acks)
+  QueueSubsysImpl::unregisterAcks(AckVector const& acks)
   {
-    QueueImpl::AckVector::const_iterator first, last = acks.end();
+    QueueSubsysImpl::AckVector::const_iterator first, last = acks.end();
     for (first = acks.begin(); first != last; ++first) {
       unregisterAck(*first);
     }
   }
 
   void
-  QueueImpl::unregisterAck(AckPtr const& ack)
+  QueueSubsysImpl::unregisterAck(AckPtr const& ack)
   {
     m_ackSupplier->dataWriter().unregister_instance(*ack, DDS_HANDLE_NIL);
   }
 
-  QueueImpl::CommandPtr
-  QueueImpl::command(string const& cmdId) const
+  QueueSubsysImpl::CommandPtr
+  QueueSubsysImpl::command(string const& cmdId) const
   {
     CommandMap::const_iterator iter = m_commands.find(cmdId);
     if (iter == m_commands.end()) {
