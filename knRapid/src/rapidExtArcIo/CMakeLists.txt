@@ -28,6 +28,8 @@ set( HEADERS
   SpectrumProvider.h
   StateMachineIo.h
   StateMachineProvider.h
+  TrackedObjectIo.h
+  TrackedObjectProvider.h
 )
 
 set( SOURCES
@@ -47,6 +49,8 @@ set( SOURCES
   SpectrumProvider.cpp
   StateMachineIo.cpp
   StateMachineProvider.cpp
+  TrackedObjectIo.cpp
+  TrackedObjectProvider.cpp
 )
 
 include_directories(
@@ -102,6 +106,7 @@ set( TARGETS
  stateMachinePrinter
  systemInfoConfigPrinter
  systemInfoSamplePrinter
+ trackedObjectPrinter
  wheelGroupSamplePrinter
 )
 

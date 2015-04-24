@@ -44,10 +44,13 @@ endif()
 ## find script, Ubuntu 14.04 needs the current one. 
 if(CMAKE_VERSION VERSION_GREATER 2.8.8)
 
+  set(Boost_NO_BOOST_CMAKE TRUE)
+  message(STATUS "Find Boost-current")
   find_package( Boost-current ${BOOST_FIND_OPTIONS} )
   
 else(CMAKE_VERSION VERSION_GREATER 2.8.8)
-
+  
+  message(STATUS "Find Boost-legacy")
   find_package( Boost-legacy ${BOOST_FIND_OPTIONS} )
 
 endif(CMAKE_VERSION VERSION_GREATER 2.8.8)

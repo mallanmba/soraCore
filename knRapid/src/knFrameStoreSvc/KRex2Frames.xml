@@ -216,6 +216,16 @@
       <parameter value="0.0" name="Pitch" />
       <parameter value="0.0" name="Yaw" />
     </instance>
+    <!-- IMU -->
+    <instance type="rapid::FrameRpyParameters" name="Imu" >
+      <parameter value="LinkageFrame" name="Parent" />
+      <parameter value="0.0" name="X" />
+      <parameter value="0.0" name="Y" />
+      <parameter value="-0.253" name="Z" />
+      <parameter value="0.0" name="Roll" />
+      <parameter value="0.0" name="Pitch" />
+      <parameter value="0.0" name="Yaw" />
+    </instance>
     <!-- Dp PanTilt Unit mount location -->
     <instance type="rapid::FrameRpyParameters" name="PanTiltUnit" >
       <parameter value="$MRN" name="Parent" />

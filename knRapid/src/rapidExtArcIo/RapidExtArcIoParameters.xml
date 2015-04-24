@@ -135,5 +135,17 @@
       <config_parameter name="config" type="StateMachineConfigParameters" />
     </config_item>
 
+    <config_item name="TrackedObjectConfig" parent= "Message" final = "false">
+        <config_parameter name="poseEncoding"     type="int" default="1"/>
+        <config_parameter name="velocityEncoding" type="int" default="0" />
+        <config_parameter name="classifications"  type="vector&lt;std::string&gt;"/>
+        <config_parameter name="valueKeys"        type="vector&lt;KeyTypeValue&gt;"/>
+    </config_item>
+    <config_item name="TrackedObjectTopicPair" parent = "TopicPair" final = "false">
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidConfigQos" />
+      <config_parameter name="dataProfile"   inherited="true" type="string" default="RapidReliableDurableQos" />
+      <config_parameter name="config" type="TrackedObjectConfigParameters"/>
+    </config_item>
+    
   </config_group>
 </config>
