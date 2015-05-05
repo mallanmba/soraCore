@@ -22,6 +22,7 @@
 
 using namespace kn;
 using namespace std;
+using namespace Eigen;
 
 int main(int, char **)
 {
@@ -30,6 +31,23 @@ int main(int, char **)
 
   cout << ATrans2Out(a2) << endl;
   cout << ATrans3Out(a3) << endl;
-
+  
+  ATrans2 x(Translation2d(1, 2) * Rotation2Dd(45 * M_PI/180.));
+  ATrans2 y(Translation2d(1, 2) * Rotation2Dd(0 * M_PI/180.));
+  ATrans2 z(Translation2d(3, 4) * Rotation2Dd(30 * M_PI/180.));
+  
+  cout << ATrans2Out(x) << ", " << ATrans2Out(y) << ", " << ATrans2Out(z) << endl;
+  
+  ATrans2 offset = x.inverse() * z;
+  ATrans2 offset2 = y.inverse() * z;
+  
+  ATrans2 xz(x * z);
+  ATrans2 yz(y * z);
+  ATrans2 x2yz(offset * xz);
+  
+  cout << "o:  " << ATrans2Out(offset) << " " << offset.translation().norm() << endl;
+  cout << "o2: " << ATrans2Out(offset2) << " " << offset2.translation().norm() << endl;
+  cout << ATrans2Out(xz) << ", " << ATrans2Out(yz) << ", " << ATrans2Out(x2yz) << endl;
+  
   return 0;
 }
