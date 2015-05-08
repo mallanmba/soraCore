@@ -66,7 +66,7 @@ namespace rapid
     if (s_utm == FrameHandle::NULL_HANDLE) {
       FrameStore * fs = FrameStoreSingleton::instance();
       FrameHandle frame = siteFrame();
-      while ((frame != FrameHandle::NULL_HANDLE) && (!fs->is_root(frame))) {
+      while ((frame != FrameHandle::NULL_HANDLE) && (!fs->isRoot(frame))) {
         if (fs->name(frame).compare(0, sizeof("UtmGrid") - 1, "UtmGrid") == 0) {
           break;
         }

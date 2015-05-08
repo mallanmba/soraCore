@@ -10,17 +10,20 @@ set( EXPORT_FILE "${EXPORT_NAME}.h" )
 string( TOUPPER  "${EXPORT}_BUILD_DLL" EXPORT_DEFINE )
 
 set( SOURCES
-  ATrans.cpp  
+  ATrans.cpp
+  RotMat3d.cpp
 )
 
 set( HEADERS
   ${MIRO_MAKEPARAMS_HEADERS}
   ${EXPORT_FILE}
   ATrans.h
-  Vector.h
+  Distance.h
+  EulerAngles.h
   Matrix.h
   Quaternion.h
-  EulerAngles.h
+  RotMat3d.h
+  Vector.h
 )
 
 include_directories(

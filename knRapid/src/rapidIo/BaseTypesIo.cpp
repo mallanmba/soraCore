@@ -61,7 +61,7 @@ namespace rapid
 
     switch(rhs._d) {
     case rapid::RAPID_BOOL:
-      ostr << rhs._u.b;
+      ostr << (rhs._u.b ? "true" : "false");
       break;
     case rapid::RAPID_DOUBLE:
       ostr << rhs._u.d;
@@ -326,7 +326,7 @@ namespace rapid
       break;
     case RAPID_BOOL:
       dst.type = "BOOL";
-      value << src._u.b;
+      value << (src._u.b ? "true" : "false");
       break;
     case RAPID_VEC3d:
       dst.type = "VEC3d";

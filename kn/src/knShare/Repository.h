@@ -37,13 +37,18 @@ namespace kn
   template<class T>
   class Repository;
 
-  //! Ostream operator for debug purposes.
+  /**
+   * @ingroup knShare
+   * @brief Ostream operator for debug purposes.
+   */
   template<class T>
   std::ostream&
   operator << (std::ostream& ostr, Repository<T> const& repository);
 
-  //! Repository of available instances of a type.
   /**
+   * @ingroup knShare
+   * @brief Repository of available instances of a type.
+   *
    * @author Hans Utz
    */
   template<class T>

@@ -27,8 +27,11 @@ namespace kn
 {
   class WheelGroupFuture;
   knMotorShare_Export std::ostream& operator<< (std::ostream& ostr, WheelGroupFuture const& rhs);
-  
-  //! Sample of wheel group state as expected at a future time.
+
+  /**
+   * @ingroup knMotorShare
+   * @brief Sample of wheel group state as expected at a future time.
+   */
   class knMotorShare_Export WheelGroupFuture : public WheelGroupState
   {
   public:
@@ -40,17 +43,18 @@ namespace kn
     //! Default constructor.
     WheelGroupFuture() {}
     //! Initializing constructor.
-    WheelGroupFuture(ACE_Time_Value const& target,
-                     DoubleVector const& p,
-                     DoubleVector const& s,
-                     double c,
-                     double cR,
-                     double v,
-                     double cA,
-                     double cAr,
-                     ATrans2 const& o) :
-      WheelGroupState(target, p, s, c, cR, v, cA, cAr),
-      offset(o)
+    WheelGroupFuture(ACE_Time_Value const& targetTime,
+                     DoubleVector const& motorPositions,
+                     DoubleVector const& motorSpeeds,
+                     double curvature,
+                     double curvatureRate,
+                     double speed,
+                     double crabAngle,
+                     double crabRate,
+                     ATrans2 const& offset) :
+      WheelGroupState(targetTime, motorPositions, motorSpeeds,
+                      curvature, curvatureRate, speed, crabAngle, crabRate),
+      offset(offset)
     {}
   };
 }

@@ -29,8 +29,10 @@ namespace kn
 {
   using namespace std;
 
-  //! Base class for the @ref Array2DView template.
   /**
+   * @ingroup knShare
+   * @brief Base class for the @ref Array2DView template.
+   *
    * This base-class just provides a set of member functions
    * and data members,
    * which are independent of the template parameter.
@@ -79,8 +81,11 @@ namespace kn
     size_t m_numCells;
   };
 
-  //! Array 2D View with power of 2 allocated cols
-  /** This is a not very space efficient representation, as it 
+  /**
+   * @ingroup knShare
+   * @brief Array 2D View with power of 2 allocated cols.
+   * 
+   * This is a not very space efficient representation, as it 
    * allocates up to 2 times the required memory. 
    * So use it carefully.
    *

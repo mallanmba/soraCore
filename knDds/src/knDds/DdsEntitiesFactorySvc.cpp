@@ -55,7 +55,7 @@ namespace kn
   typedef vector<DdsTopicParameters> TopicVector;
   typedef vector<string> StringVector;
 
- 
+
   DdsEntitiesFactorySvc::DdsEntitiesFactorySvc() :
     m_factory(NULL)
   {
@@ -88,7 +88,7 @@ namespace kn
   DdsEntitiesFactorySvc::init(DdsEntitiesFactorySvcParameters const * params)
   {
     int rc = -1;
- 
+
     try {
       m_factory = new DdsEntitiesFactory(*params);
       rc = 0;
@@ -118,7 +118,7 @@ namespace kn
   {
     if (m_factory) {
       MIRO_LOG(LL_NOTICE, "kn::DdsEntitiesFactorySvc::fini()");
-      
+
       delete m_factory;
       m_factory = NULL;
       MIRO_LOG(LL_NOTICE, "kn::DdsEntitiesFactorySvc::fini() done");
@@ -137,29 +137,29 @@ namespace kn
     // initialize parameters from config file
     DdsEntitiesFactorySvcParameters * params =
       DdsEntitiesFactorySvcParameters::instance();
-    
+
     DdsSupport::init(argc, argv);
-    
+
     // initialize parameters from command line
     ACE_Get_Opt get_opts(argc, argv, "v?");
-    
+
     while ((c = get_opts()) != -1) {
       switch (c) {
-      case 'v':
-        verbose = true;
-        break;
-      case '?':
-      default:
-        rc = 1;
+        case 'v':
+          verbose = true;
+          break;
+        case '?':
+        default:
+          rc = 1;
       }
     }
-    
+
     if (rc) {
       cerr << "usage: " << argv[0] << "[v?]" << endl
            << "  -v verbose mode" << endl
            << "  -? help: emit this text and stop" << endl;
     }
-    
+
     if (verbose) {
       cerr << "DdsEntitiesFactorySvc parameters:" << endl
            << *params << endl;

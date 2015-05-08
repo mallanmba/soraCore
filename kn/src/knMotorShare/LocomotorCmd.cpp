@@ -52,40 +52,40 @@ namespace kn
   {
     ostr << rhs.locModeName() << ": [";
     switch (rhs.locMode) {
-      break;
-    case LOC_MODE_ROTATE:
-      ostr << (rhs.headingChange * 180./M_PI) << "deg";
-      break;
-    case LOC_MODE_TRANSLATE:
-      ostr << rhs.distance << "m";
-      break;
-    case LOC_MODE_CRAB:
-      ostr << rhs.distance << "m, "
-           << (rhs.direction * 180./M_PI) << "deg";
-      break;
-    case LOC_MODE_ARC:
-      ostr << rhs.distance << "m, "
-           << (rhs.headingChange * 180./M_PI) << "deg";
-      break;
-    case LOC_MODE_CRAB_ARC:
-      ostr << rhs.distance << "m, "
-           << (rhs.headingChange * 180./M_PI) << "deg, "
-           << (rhs.direction * 180./M_PI) << "deg";
-      break;
-    case LOC_MODE_DRIVE_TO:
-      break;
-    case LOC_MODE_CLOTHOID:
-      break;
-    case LOC_MODE_FAST_STEER:
-      ostr << rhs.targetSpeed << "m/s, "
-           << rhs.targetCurvature << "1/rad, "
-           << rhs.timeout << "s";
-      break;
-    case LOC_MODE_EMERGENCY_STOP:
-    case LOC_MODE_STOP:
-    case LOC_MODE_NOP:
-    default:
-      break;
+        break;
+      case LOC_MODE_ROTATE:
+        ostr << (rhs.headingChange * 180./M_PI) << "deg";
+        break;
+      case LOC_MODE_TRANSLATE:
+        ostr << rhs.distance << "m";
+        break;
+      case LOC_MODE_CRAB:
+        ostr << rhs.distance << "m, "
+             << (rhs.direction * 180./M_PI) << "deg";
+        break;
+      case LOC_MODE_ARC:
+        ostr << rhs.distance << "m, "
+             << (rhs.headingChange * 180./M_PI) << "deg";
+        break;
+      case LOC_MODE_CRAB_ARC:
+        ostr << rhs.distance << "m, "
+             << (rhs.headingChange * 180./M_PI) << "deg, "
+             << (rhs.direction * 180./M_PI) << "deg";
+        break;
+      case LOC_MODE_DRIVE_TO:
+        break;
+      case LOC_MODE_CLOTHOID:
+        break;
+      case LOC_MODE_FAST_STEER:
+        ostr << rhs.targetSpeed << "m/s, "
+             << rhs.targetCurvature << "1/rad, "
+             << rhs.timeout << "s";
+        break;
+      case LOC_MODE_EMERGENCY_STOP:
+      case LOC_MODE_STOP:
+      case LOC_MODE_NOP:
+      default:
+        break;
 
     }
 
@@ -94,14 +94,14 @@ namespace kn
     return ostr;
   }
 
-  char const * 
+  char const *
   LocomotorCmd::locModeName() const
   {
     return locModeName(locMode);
   }
 
   char const *
-  LocomotorCmd::locModeName(int mode) 
+  LocomotorCmd::locModeName(int mode)
   {
     ++mode; // modes start at -1
     if (mode < 0 || mode >= NUM_LOC_MODE_NAMES)

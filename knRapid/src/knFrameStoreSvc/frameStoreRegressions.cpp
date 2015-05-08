@@ -88,7 +88,7 @@ int main(int argc, char * argv[])
   FrameStore * fs = FrameStoreSingleton::instance();
 
   // get all
-  vector<string> flist = fs->frame_names();
+  vector<string> flist = fs->frameNames();
   FrameStore::FrameHandleVector handles;
   handles.reserve(flist.size());
 
@@ -97,7 +97,7 @@ int main(int argc, char * argv[])
     for (first = flist.begin(); first != last; ++first) {
       FrameHandle fh = fs->lookup(*first);
       handles.push_back(fh);
-      ATrans3 atrans = fs->get_transform(FrameHandle::NULL_HANDLE, fh);
+      ATrans3 atrans = fs->getTransform(FrameHandle::NULL_HANDLE, fh);
 
       cout << *first << " ";
       printATrans(atrans);
@@ -112,7 +112,7 @@ int main(int argc, char * argv[])
     results.clear();
     for (size_t j = 0; j < handles.size(); ++ j) {
       for (size_t i = 0; i < handles.size(); ++i) {
-        results.push_back(fs->get_transform(handles[i], handles[j]));
+        results.push_back(fs->getTransform(handles[i], handles[j]));
       }
     }
   }

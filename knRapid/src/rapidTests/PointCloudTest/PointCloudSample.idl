@@ -25,16 +25,16 @@ module rapid {
         //@copy-declaration  * Position relative to the cloud origin, in arbitrary point units. Reference PointSampleConfig
         //@copy-declaration  * to determine the meaning of the elements in this vector. These are signed short values so
         //@copy-declaration  * in order to exploit the full 16 bits of resolution, data should be scaled to
-        //@copy-declaration  * a range of -32768 to 32767. If 15 bits of resolution is adequate, data can be scaled to a 
-        //@copy-declaration  * range of 0 to 32767 for computational efficiency on the sending side. 
+        //@copy-declaration  * a range of -32768 to 32767. If 15 bits of resolution is adequate, data can be scaled to a
+        //@copy-declaration  * range of 0 to 32767 for computational efficiency on the sending side.
         //@copy-declaration  * @see PointSampleXyzMode
         //@copy-declaration  */
-        short xyz[3];       
+        short xyz[3];
 
         //@copy-declaration /**
         //@copy-declaration  * Particle attributes (e.g., intensity).
         //@copy-declaration  * @see PointSampleAttributeMode
-        //@copy-declaration  */                    
+        //@copy-declaration  */
         octet attributes[2];
     };
     typedef sequence<PointSample,16384> PointSampleSequence;
@@ -60,11 +60,11 @@ module rapid {
         //@copy-declaration  * Per-element scale factor to convert point units to a meaningful value. Following conversion,
         //@copy-declaration  * spatial coordinates should be in METERS and angular values should be in RADIANS.
         //@copy-declaration  */
-        public Vec3d xyzScale; 
-       
+        public Vec3d xyzScale;
+
         //@copy-declaration /** Sequence of points. */
         public PointSampleSequence points;
- 
+
         //@copy-declaration /**
         //@copy-declaration  * Descriptions of rows from the same scan-line. If all points belong to the same point cloud,
         //@copy-declaration  *
@@ -79,7 +79,7 @@ module rapid {
         //@copy-declaration  * </code>
         //@copy-declaration  */
         public ShortSequence128 rowLengths;
-       
-    }; //@resolve-name true
+
+    };
 
 };

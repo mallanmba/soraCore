@@ -62,6 +62,7 @@ module rapid {
     //@copy-declaration /**  Request to start a process. */
     const String32 LMCTRL_METHOD_SETACTIVE = "setActive"; 
     const String32 LMCTRL_METHOD_CLEARMAP = "clearMap"; 
+    const String32 LMCTRL_METHOD_CLEARCORRECTION = "clearCorrection"; 
     const String32 LMCTRL_METHOD_CLEARUNDERROVER = "clearUnderRover"; 
     const String32 LMCTRL_METHOD_SETREGION = "setRegion"; 
     //@copy-declaration /** Key for parameter used in LocalMapCtrl. */

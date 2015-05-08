@@ -16,30 +16,44 @@ if (catkin_FOUND)
     LIBRARIES irgSha1 irgUtmll
   )
 else (catkin_FOUND)
-  set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
+set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
 
-  include( SetArchitecture )
-  include( SetupBuildSwitch )
-  include( SetupCTest )
-  include( SetupConfigureFile )
-  include( SetupInstall )
-  include( SetupRPATH )
-  include( SetupUtilities )
-  include( UserOptions )
-  include( SetupWarnLevel )
+include (TestBigEndian)
 
-  ## we have to play some tricks to get install
-  ## path to "stick" in Windows
-  ##------------------------------------------------
-  set( IRGUTIL_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "irgUtil install path")
-  set( CMAKE_INSTALL_PREFIX ${IRGUTIL_INSTALL_PREFIX} CACHE INTERNAL "" )
+include( SetArchitecture )
+include( SetupBuildSwitch )
+include( SetupConfigureFile )
+include( SetupInstall )
+include( SetupRPATH )
+include( SetupWarnLevel )
+include( SetupUtilities )
+
+## we have to play some tricks to get install
+## path to "stick" in Windows
+##------------------------------------------------
+set( IRGUTIL_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "irgUtil install path")
+set( CMAKE_INSTALL_PREFIX ${IRGUTIL_INSTALL_PREFIX} CACHE INTERNAL "" )
 endif (catkin_FOUND)
+
+## find the packages we depend on 
 
 find_package(GTest)
 find_package(Doxygen)
 
-## find the packages we depend on 
-find_package(ACE)
+
+## add the in-source and out-of-source
+## include paths 
+##--------------------------------------------
+include_directories(
+  ${PROJECT_SOURCE_DIR}/src
+  ${PROJECT_BINARY_DIR}/src
+)
+
+## set variables for config file
+test_big_endian(IRGUTIL_IS_BIG_ENDIAN)
+if(NOT IRGUTIL_IS_BIG_ENDIAN)
+  set(IRGUTIL_IS_LITTLE_ENDIAN TRUE)
+endif(NOT IRGUTIL_IS_BIG_ENDIAN)
 
 ## Set up RPATH and *Config.h
 ## Call these after we've made all our 

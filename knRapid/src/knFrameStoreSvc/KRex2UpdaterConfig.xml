@@ -1,43 +1,41 @@
 <!DOCTYPE MiroConfigDocument>
 <config>
-  <section name="FrameStore" >
-    <parameter name="kn::FrameStoreUpdaterSvcParameters" >
+  <section name="FrameStore">
+    <parameter name="kn::FrameStoreUpdaterSvcParameters">
       <parameter name="FrameStoreConfig">
         <parameter value="true" name="Enabled"/>
       </parameter>
-
-      <parameter name="PositionUpdaters" >
+      <parameter name="PositionUpdaters">
         <parameter>
           <parameter value="-relative" name="TopicSuffix"/>
-          <parameter name="ConfigParameters" >
+          <parameter name="ConfigParameters">
             <parameter>
-              <parameter name="Hdr" >
-                <parameter value="KRex2" name="SrcName" />
-                <parameter value="KRex2" name="AssetName" />
+              <parameter name="Hdr">
+                <parameter value="KRex2" name="SrcName"/>
+                <parameter value="KRex2" name="AssetName"/>
               </parameter>
               <parameter value="$MRN/RelativeOrigin" name="ControlledFrame"/>
               <parameter value="KRex2" name="ReferenceFrame"/>
-              <parameter value="1" name="PoseEncoding" />
-              <parameter value="1" name="VelocityEncoding" />
+              <parameter value="1" name="PoseEncoding"/>
+              <parameter value="1" name="VelocityEncoding"/>
             </parameter>
           </parameter>
           <parameter value="true" name="Inverted"/>
-          <parameter value="KRex2" name="ParentNode" />
+          <parameter value="KRex2" name="ParentNode"/>
         </parameter>
         <parameter>
           <parameter value="KRex2" name="ParentNode"/>
         </parameter>
-	<parameter>
+        <parameter>
           <parameter value="Team" name="ParentNode"/>
         </parameter>
       </parameter>
-
-      <parameter name="JointUpdaters" >
+      <parameter name="JointUpdaters">
         <parameter>
-          <parameter value="KRex2" name="ParentNode" />
+          <parameter value="KRex2" name="ParentNode"/>
         </parameter>
         <parameter>
-          <parameter value="Team" name="ParentNode" />
+          <parameter value="Team" name="ParentNode"/>
         </parameter>
       </parameter>
     </parameter>

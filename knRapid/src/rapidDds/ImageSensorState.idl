@@ -27,5 +27,5 @@ module rapid {
 
         public ImageMetadata meta;
 
-    }; //@resolve-name true
+    };
 };

@@ -28,13 +28,25 @@
 namespace kn
 {
   template<typename C, unsigned int TSL2>
+  /**
+   * @ingroup knTiledMap
+   * @brief Default tile type template of scrolling tiled map types.
+   * 
+   * This class implements access to a map-tile which is located within a larger 2D array.
+   * @note This class does not assume ownership of the cell buffer it points into.
+   * 
+   */
   class ScrollingMapTile : public SizedTile<ScrollingMapTile<C, TSL2>, TSL2>
   {
+    //! Shorthand for this class.
     typedef ScrollingMapTile<C, TSL2> This;
+    //! Shorthand for the super class.
     typedef SizedTile<This, TSL2> Super;
     
   public:
+    //! The cell type of the tile.
     typedef C Cell;
+    //! The tile identifier type.
     typedef int TileId;
 
     using Super::TileSizeLog2;
@@ -51,6 +63,15 @@ namespace kn
       m_cells(NULL)
     {}
 
+    /**
+     * @brief Reinitializing the tile.
+     * 
+     * This method is used on tile-scrolling to re-associated a tile 
+     * with a new id/buffer pair. It clears the cells of the tile.
+     * 
+     * @param id New id of the tile.
+     * @param buffer New cell-buffer of tile.
+     */
     void setTile(TileId id, Cell * buffer)
     {
       this->setId(id);
@@ -65,20 +86,57 @@ namespace kn
       clear();
     }
 
+    /**
+     * @brief Row accessor.
+     * 
+     * @param y Row index.
+     * 
+     * @return Pointer to the 1D array representing the row.
+     */
     Cell * row(unsigned int y) {
       return &m_cells[((y & IndexMask) << BaseMapSizeLog2)];
     }
+    /**
+     * @brief Read-only row accessor.
+     * 
+     * @param y Row index.
+     * 
+     * @return Const pointer to the 1D array representing the row.
+     */
     Cell const * row(unsigned int y) const {
       return &m_cells[((y & IndexMask) << BaseMapSizeLog2)];
     }
-    Cell& cell(unsigned int x, unsigned int y) {
-      return m_cells[((y & IndexMask) << BaseMapSizeLog2) | (x & IndexMask)];
+    /**
+     * @brief Cell access by 2D index.
+     * 
+     * @param a Cell index in X axis.
+     * @param b Cell index in Y axis.
+     * 
+     * @return Reference to the cell.
+     */
+    Cell& cell(unsigned int a, unsigned int b) {
+      return m_cells[((b & IndexMask) << BaseMapSizeLog2) | (a & IndexMask)];
     }
-    Cell const& cell(unsigned int x, unsigned int y) const {
-      return m_cells[((y & IndexMask) << BaseMapSizeLog2) | (x & IndexMask)];
+    /**
+     * @brief Read-only cell access by 2D index.
+     * 
+     * @param a Cell index in X axis.
+     * @param b Cell index in Y axis.
+     * 
+     * @return Read-only reference to the cell.
+     */
+    Cell const& cell(unsigned int a, unsigned int b) const {
+      return m_cells[((b & IndexMask) << BaseMapSizeLog2) | (a & IndexMask)];
     }
-    void setCell(unsigned int x, unsigned int y, Cell const& cell ) {
-      m_cells[((y & IndexMask) << TileSizeLog2) | (x & IndexMask)] = cell;
+    /**
+     * @brief Cell setter.
+     * 
+     * @param a Cell index in X axis.
+     * @param b Cell index in Y axis.
+     * @param c New cell value.
+     */
+    void setCell(unsigned int a, unsigned int b, Cell const& c ) {
+      m_cells[((b & IndexMask) << TileSizeLog2) | (a & IndexMask)] = c;
     }
     template<typename CellIterator>
     void setCells(unsigned int x, unsigned int y, CellIterator first, CellIterator last) const {
@@ -88,9 +146,24 @@ namespace kn
       }
     }
 
+    /** @brief Accessor to cell array.
+     * 
+     * Cells are organized in row-order.
+     * @note Cells of a tile are not organized in a single continuous 1D array!
+     * 
+     * @return Pointer to the cell array.
+     */
     Cell * cells() { return m_cells; }
+    /** @brief Read-only accessor to cell array.
+     * 
+     * Cells are organized in row-order.
+     * @note Cells of a tile are not organized in a single continuous 1D array!
+     * 
+     * @return Const-pointer to the cell array.
+     */
     Cell const * cells() const { return m_cells; }
 
+    //! Reset all cells of a tile to default values.
     void clear() {
       Cell emptyCell;
       Cell * first;
@@ -100,7 +173,6 @@ namespace kn
       }
     }
    
-
   private:
     unsigned int const NumTilesLog2;
     unsigned int const NumTiles;

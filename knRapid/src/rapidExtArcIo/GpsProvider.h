@@ -55,7 +55,8 @@ namespace rapid
                      const long mode,
                      const int numSats,
                      const long long diffAge,
-                     const long long solAge);
+                     const long long solAge,
+                     const float undulation);
       };
     }
   }

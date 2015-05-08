@@ -7,7 +7,9 @@
 #include <boost/thread.hpp>
 #endif
 
-/** @file C++ 11 transition header.
+/** 
+ * @ingroup cpp11
+ * @file Mutex.h C++ 11 transition header.
  * 
  * Boost thread is a good standin for the mutex library of the 
  * soon to be well supported C++11 standard. To minimize the 

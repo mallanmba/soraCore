@@ -16,30 +16,38 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef kn_ProcMgrImpl_h
-#define kn_ProcMgrImpl_h
+#ifndef rapid_AccessControlImpl_h
+#define rapid_AccessControlImpl_h
 
-#include "knProcessManager_Export.h"
+#include "SubsysImpl.h"
 
-#include "rapidCommanding/CommandImpl.h"
+#include "rapidDds/AccessControlState.h"
+#include "rapidDds/AccessControlStateSupport.h"
+#include "rapidDds/Command.h"
 
-namespace kn
+#include "knDds/DdsTypedSupplier.h"
+
+namespace rapid
 {
-  class ProcessManagerSvc;
+  class AccessControlImplParameters;
 
-  class knProcessManager_Export ProcMgrImpl : public rapid::CommandImpl
+  class AccessControlSubsysImpl : public SubsysImpl
   {
   public:
-    ProcMgrImpl(ProcessManagerSvc * procMgrSvc);
-    virtual ~ProcMgrImpl() throw();
+    AccessControlSubsysImpl(AccessControlImplParameters const& params);
+    virtual ~AccessControlSubsysImpl() throw();
 
     virtual FuturePtr execute(rapid::Command const& cmd);
+
+    bool isController(char const * user) const throw();
+    char const * controller() const throw();
 
   protected:
     static rapid::SubsystemType const * typeDescription();
 
-  private:
-    ProcessManagerSvc * m_procMgrSvc;
+    int m_serialId;
+
+    kn::DdsTypedSupplier<rapid::AccessControlState> m_statePublisher;
   };
 }
-#endif // kn_ProcMgrImpl_h
+#endif // rapid_AccessControlImpl_h

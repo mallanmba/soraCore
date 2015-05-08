@@ -33,6 +33,7 @@
 namespace kn
 {
 
+  /** @ingroup knShare */
   class knShare_Export StateMachine
   {
   public:
@@ -47,10 +48,12 @@ namespace kn
 
     // state machine description
     // all stringified
+    /** @ingroup knShare */
     struct knShare_Export Description
     {
       // transition description
       // all stringified
+      /** @ingroup knShare */
       struct knShare_Export TransitionTriple
       {
         std::string sourceState;
@@ -119,7 +122,9 @@ namespace kn
     int m_status;
   };
 
+  /** @ingroup knShare */
   knShare_Export extern std::ostream& operator<< (std::ostream& ostr, StateMachine::Description::TransitionTriple const& rhs);
+  /** @ingroup knShare */
   knShare_Export extern std::ostream& operator<< (std::ostream& ostr, StateMachine::Description const& rhs);
 }
 #endif // kn_StateMachineConnector_h

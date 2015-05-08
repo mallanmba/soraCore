@@ -25,9 +25,9 @@
 
       <config_parameter name="bandwidth" type="int" default="1000000" unit="bytes" />
       <config_parameter name="delay" type="int" default="50000" unit="msec" />
-      <config_parameter name="channels" type="std::vector&lt;FileChannelParameters&gt;" default="1" />
+      <config_parameter name="channels" type="std::vector&lt;FileChannelParameters&gt;" default="3" />
       <config_parameter name="rules" type="std::vector&lt;DataPriorityRuleParameters&gt;" />
-      <config_parameter name="stateDirectory" type="string" default="/tmp" unit="path" />
+      <config_parameter name="stateDirectory" type="string" default="/tmp/RAFT/sent" unit="path" />
       <config_parameter name="fetchPool" type="FetchPoolParameters" />
       <constructor>
     FileChannelParameters c;
@@ -42,6 +42,20 @@
     c.numTokens = 1;
     channels.push_back(c);
       </constructor>
+    </config_item>
+
+    <config_item name="FileAnnouncer" parent="Miro::Config" final="true" instance="false">
+      <config_parameter name="topic"       type="string" default="rapid_fileannounce" />
+      <config_parameter name="publisher"   type="string" default="" />
+      <config_parameter name="profile"     type="string" default="RapidFileAnnounceProfile" />
+      <config_parameter name="library"     type="string" default="" />
+      <config_parameter name="entityName"  type="string" default="RaftFileAnnouncer" />
+      <config_parameter name="uuidType"    type="int"    default="0" unit="UuidGenerator" doc="0=Fast, 1=Thorough"/>
+    </config_item>
+
+    <config_item name="FileReceiver" parent="Miro::Config" final="true" instance="true">
+      <config_parameter name="dataDestinationDir" type="string" default="/usr/local/irg/data/downlink" unit="path" doc="Where data will eventually end up" />
+      <config_parameter name="dataStagingDir"     type="string" default="/usr/local/irg/data/staging"  unit="path" doc="Where data is stored while pieced together" />
     </config_item>
 
   </config_group>

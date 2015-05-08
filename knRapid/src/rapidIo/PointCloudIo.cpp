@@ -34,7 +34,7 @@ namespace
 
   XyzModePair const xyzModesMap[] = {
     { rapid::PS_XYZ, "PS_XYZ" },
-    { rapid::PS_XYZ, "PS_XYt" },
+    { rapid::PS_XYt, "PS_XYt" },
     { rapid::PS_Rae, "PS_Rae" }
   };
 
@@ -46,12 +46,12 @@ namespace
   };
 
   AttributeModePair const attributeModesMap[] = {
-    { rapid::PS_UNUSED, "PS_UNUSED" },
-    { rapid::PS_INTENSITY, "PS_INTENSITY" },
-    { rapid::PS_LAYER, "PS_LAYER" },
-    { rapid::PS_ECHO, "PS_ECHO" },
-    { rapid::PS_LAYER, "PS_LAYER4_ECHO4" },
-    { rapid::PS_PULSE, "PS_PULSE" }
+    { rapid::PS_UNUSED,       "PS_UNUSED"      },
+    { rapid::PS_INTENSITY,    "PS_INTENSITY"    },
+    { rapid::PS_LAYER,        "PS_LAYER"        },
+    { rapid::PS_ECHO,         "PS_ECHO"         },
+    { rapid::PS_LAYER4_ECHO4, "PS_LAYER4_ECHO4" },
+    { rapid::PS_PULSE,        "PS_PULSE"        }
   };
 
   unsigned int const NUM_ATTRIBUTE_MODES = sizeof(attributeModesMap) / sizeof(AttributeModePair);

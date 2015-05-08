@@ -38,7 +38,7 @@ module rapid {
 
         //@copy-declaration /** Native width (columns) of data sample. */
         long width;
-        
+
         //@copy-declaration /** Native height (rows) of data sample. */
         long height;
 
@@ -50,6 +50,6 @@ module rapid {
         //@copy-declaration /** Extra sequence for native or Agent-specific information. */
         KeyTypeValueSequence16 extras;
 
-    }; //@resolve-name true
+    };
 
 };

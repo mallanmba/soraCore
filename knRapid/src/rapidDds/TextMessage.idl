@@ -41,6 +41,14 @@ module rapid {
     //@copy-declaration  */
     valuetype TextMessage : Message {
 
+        //@copy-c-declaration #if RTI_DDS_VERSION_MAJOR < 4 || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR < 5) || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR  == 5 && RTI_DDS_VERSION_RELEASE != 'f' )
+        //@copy-c-declaration typedef TextMessageTypeSupport TypeSupport;
+        //@copy-c-declaration typedef TextMessageDataWriter DataWriter;
+        //@copy-c-declaration typedef TextMessageDataReader DataReader;
+        //@copy-c-declaration typedef TextMessageSeq Seq;
+        //@copy-c-declaration #endif
+        //@copy-c-declaration typedef TextMessage Type;
+
         //@copy-declaration /** Importance level of message. */
         public MessageLevel level;
 

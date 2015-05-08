@@ -134,4 +134,10 @@ namespace kn {
     file << "\n";
     file.write(reinterpret_cast<const char*>(m_data.get()),  m_width * m_height * ((m_depth + 7) / 8));
   }
+
+  void 
+  MemImageData::writeTiff(const std::string &fn) const
+  {
+    
+  }
 }

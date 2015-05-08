@@ -16,7 +16,7 @@
  * limitations under the License.
 
 ******************************************************************************/
-#include "RaftImpl.h"
+#include "RaftSubsysImpl.h"
 #include "FileQueue.h"
 #include "RaftParameters.h"
 
@@ -39,8 +39,8 @@ namespace kn
   /**
    * ctor
    */
-  RaftImpl::RaftImpl(FileQueue * fileQueue) :
-    rapid::CommandImpl(rapid::RAFT, typeDescription()),
+  RaftSubsysImpl::RaftSubsysImpl(FileQueue * fileQueue) :
+    rapid::SubsysImpl(rapid::RAFT, typeDescription()),
     m_fileQueue(fileQueue)
   {
   }
@@ -48,11 +48,11 @@ namespace kn
   /**
    * dtor
    */
-  RaftImpl::~RaftImpl() throw()
+  RaftSubsysImpl::~RaftSubsysImpl() throw()
   {
   }
 
-  namespace 
+  namespace
   {
     static rapid::KeyTypePair pauseArguments[] = {
       { rapid::RAFT_METHOD_PARAM_CHANNELID, rapid::RAFT_METHOD_DTYPE_CHANNELID }
@@ -90,12 +90,11 @@ namespace kn
     };
     static int const SETBANDWIDTH_ARGUMENTS = sizeof(setBandwidthArguments) / sizeof(rapid::KeyTypePair);
 
-    struct Cmd 
-    {
+    struct Cmd {
       char const * name;
       int argumentNum;
       rapid::KeyTypePair * arguments;
-    };  
+    };
 
     static Cmd const commands[] = {
       { rapid::RAFT_METHOD_PAUSE, PAUSE_ARGUMENTS, pauseArguments },
@@ -108,8 +107,8 @@ namespace kn
     static int const RAFT_COMMANDS = sizeof(commands) / sizeof (Cmd);
   }
 
-  rapid::SubsystemType const * 
-  RaftImpl::typeDescription()
+  rapid::SubsystemType const *
+  RaftSubsysImpl::typeDescription()
   {
     rapid::SubsystemType * description = rapid::SubsystemTypeTypeSupport::create_data();
 
@@ -131,44 +130,44 @@ namespace kn
     return description;
   }
 
-  rapid::CommandImpl::FuturePtr
-  RaftImpl::execute(rapid::Command const& cmd)
+  rapid::SubsysImpl::FuturePtr
+  RaftSubsysImpl::execute(rapid::Command const& cmd)
   {
     int rc = 0;
     int cmdIdx = validateCommandSyntax(cmd.cmdName, cmd.arguments);
     switch (cmdIdx) {
-    case 0: // PASUE
-      cout << "pause" << cmd.arguments[0]._u.i << endl;
-      rc = m_fileQueue->pause(cmd.arguments[0]._u.i);
-      break;
-    case 1: // PUTFILE
-      cout << "putFile" << cmd.arguments[0]._u.s << cmd.arguments[1]._u.i << cmd.arguments[2]._u.f << endl;
-      rc = m_fileQueue->putFile(cmd.arguments[0]._u.s, cmd.arguments[1]._u.i, cmd.arguments[2]._u.f);
-      break;
-    case 2: // PUTMATCHING
-      cout << "putMatching: " 
-           << cmd.arguments[0]._u.s << ", " 
-           << cmd.arguments[1]._u.s << ", " 
-           << cmd.arguments[2]._u.i << ", "
-           << cmd.arguments[3]._u.f << endl;
-      rc = m_fileQueue->putMatching(cmd.arguments[0]._u.s, cmd.arguments[1]._u.s, 
-                                    cmd.arguments[2]._u.i, cmd.arguments[3]._u.f);
-      break;
-    case 3: // REMOVEFILE
-      cout << "removeFile" << cmd.arguments[0]._u.s << endl;
-      rc = m_fileQueue->removeFile(cmd.arguments[0]._u.s);
-      break;
-    case 4: // RESUME
-      cout << "resume" << cmd.arguments[0]._u.i << endl;
-      rc = m_fileQueue->resume(cmd.arguments[0]._u.i);
-      break;
-    case 5: // SETBANDWIDTH
-      cout << "setBandwidth " << cmd.arguments[0]._u.i << ", " << cmd.arguments[1]._u.i << endl;
-      rc = m_fileQueue->setBandwidth(cmd.arguments[0]._u.i, cmd.arguments[1]._u.i);
-      break;
-    default:
-      throw rapid::EBadSyntax(string("Unknown RaftCommand cmdName:") + 
-			      string(cmd.cmdName));
+      case 0: // PASUE
+        cout << "pause" << cmd.arguments[0]._u.i << endl;
+        rc = m_fileQueue->pause(cmd.arguments[0]._u.i);
+        break;
+      case 1: // PUTFILE
+        cout << "putFile" << cmd.arguments[0]._u.s << cmd.arguments[1]._u.i << cmd.arguments[2]._u.f << endl;
+        rc = m_fileQueue->putFile(cmd.arguments[0]._u.s, cmd.arguments[1]._u.i, cmd.arguments[2]._u.f);
+        break;
+      case 2: // PUTMATCHING
+        cout << "putMatching: "
+             << cmd.arguments[0]._u.s << ", "
+             << cmd.arguments[1]._u.s << ", "
+             << cmd.arguments[2]._u.i << ", "
+             << cmd.arguments[3]._u.f << endl;
+        rc = m_fileQueue->putMatching(cmd.arguments[0]._u.s, cmd.arguments[1]._u.s,
+                                      cmd.arguments[2]._u.i, cmd.arguments[3]._u.f);
+        break;
+      case 3: // REMOVEFILE
+        cout << "removeFile" << cmd.arguments[0]._u.s << endl;
+        rc = m_fileQueue->removeFile(cmd.arguments[0]._u.s);
+        break;
+      case 4: // RESUME
+        cout << "resume" << cmd.arguments[0]._u.i << endl;
+        rc = m_fileQueue->resume(cmd.arguments[0]._u.i);
+        break;
+      case 5: // SETBANDWIDTH
+        cout << "setBandwidth " << cmd.arguments[0]._u.i << ", " << cmd.arguments[1]._u.i << endl;
+        rc = m_fileQueue->setBandwidth(cmd.arguments[0]._u.i, cmd.arguments[1]._u.i);
+        break;
+      default:
+        throw rapid::EBadSyntax(string("Unknown RaftCommand cmdName:") +
+                                string(cmd.cmdName));
     }
 
     if (rc != 0) {

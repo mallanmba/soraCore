@@ -13,28 +13,30 @@ miro_makeparams( CommandingParameters.xml )
 set( HEADERS
   ${MIRO_MAKEPARAMS_HEADERS}
   ${EXPORT_FILE}
-  AccessControlImpl.h
-  AdminImpl.h
+  AccessControlSubsysImpl.h
+  AdminSubsysImpl.h
   CommandExceptions.h
-  CommandImpl.h
   CommandManager.h
   CommandManagerSvc.h
   MacroManager.h
-  MobilityImplBase.h
-  QueueImpl.h
+  MobilitySubsysImplBase.h
+  QueueSubsysImpl.h
+  RapidSubsystemRepository.h
+  SubsysImpl.h
 )
 
 set( SOURCES
   ${MIRO_MAKEPARAMS_SOURCES}
-  AccessControlImpl.cpp
-  AdminImpl.cpp
+  AccessControlSubsysImpl.cpp
+  AdminSubsysImpl.cpp
   CommandExceptions.cpp
-  CommandImpl.cpp
   CommandManager.cpp
   CommandManagerSvc.cpp
   MacroManager.cpp
-  MobilityImplBase.cpp
-  QueueImpl.cpp
+  MobilitySubsysImplBase.cpp
+  QueueSubsysImpl.cpp
+  RapidSubsystemRepository.cpp
+  SubsysImpl.cpp
 )
 
 include_directories(
@@ -63,7 +65,7 @@ target_link_libraries( ${LIB_NAME}
   rapidIo
   rapidUtil
   ${KN_knShare_LIBRARY}
-  ${KNDDS_knDds_LIBRARY}  
+  ${KNDDS_knDds_LIBRARY}
   ${MIRO_miroXml_LIBRARY}
   ${RTIDDS_LIBRARIES}
 )
@@ -78,11 +80,11 @@ set( TARGETS
  rapidCmdClient
 )
 
-foreach( TARGET ${TARGETS} ) 
-  add_executable( ${TARGET} 
+foreach( TARGET ${TARGETS} )
+  add_executable( ${TARGET}
     ${TARGET}.cpp
       )
-endforeach( TARGET ${TARGETS} ) 
+endforeach( TARGET ${TARGETS} )
 target_link_libraries( commandManagerTest ${LIB_NAME} )
 target_link_libraries( rapidCmdClient
   rapidDds
@@ -91,7 +93,7 @@ target_link_libraries( rapidCmdClient
   ${KNRAPID_rapidDds_LIBRARY}
   ${KNRAPID_rapidIo_LIBRARY}
   ${KN_knShare_LIBRARY}
-  ${KNDDS_knDds_LIBRARY}  
+  ${KNDDS_knDds_LIBRARY}
   ${MIRO_miroXml_LIBRARY}
   ${RTIDDS_LIBRARIES}
 )

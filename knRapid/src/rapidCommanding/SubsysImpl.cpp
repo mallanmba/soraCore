@@ -16,11 +16,13 @@
  * limitations under the License.
 
 ******************************************************************************/
-#include "CommandImpl.h"
+#include "SubsysImpl.h"
 #include "CommandExceptions.h"
 
 #include "rapidDds/CommandConfig.h"
 #include "rapidDds/CommandConfigSupport.h"
+
+#include <knShare/Log.h>
 
 #include <cassert>
 
@@ -31,7 +33,7 @@ namespace rapid
   /**
    * ctor
    */
-  CommandImpl::CommandImpl(string const& name,
+  SubsysImpl::SubsysImpl(string const& name,
                            SubsystemType const * type) :
     m_name(name),
     m_type(type)
@@ -43,31 +45,34 @@ namespace rapid
   /**
    * dtor
    */
-  CommandImpl::~CommandImpl() throw()
+  SubsysImpl::~SubsysImpl() throw()
   {
   }
 
-  char const * 
-  CommandImpl::type() const throw() 
-  { 
-    return m_type->name; 
+  char const *
+  SubsysImpl::type() const throw()
+  {
+    return m_type->name;
   }
 
   void
-  CommandImpl::exportSubsystemDescription(Subsystem& description) const throw()
+  SubsysImpl::exportSubsystemDescription(Subsystem& description) const throw()
   {
     strcpy(description.name, m_name.c_str());
     strcpy(description.subsystemTypeName, m_type->name);
   }
 
   void
-  CommandImpl::exportSubsystemType(SubsystemType& type) const throw()
+  SubsysImpl::exportSubsystemType(SubsystemType& type) const throw()
   {
     SubsystemTypeTypeSupport::copy_data(&type, m_type);
   }
 
+  /**
+   * @returns index of command on success, or -1 on failure
+   */
   int
-  CommandImpl::validateCommandSyntax(char const * name, ParameterSequence16 const& arguments) const
+  SubsysImpl::validateCommandSyntax(char const * name, ParameterSequence16 const& arguments) const
   {
     for (int i = 0; i < m_type->commands.length(); ++i) {
 
@@ -93,13 +98,13 @@ namespace rapid
         return i;
       }
     }
-    
-    cerr << "unkown method" << endl;
+
+    KN_WARN("unkown method");
     return -1;
   }
 
   bool
-  CommandImpl::isAbortable(char const * name) const
+  SubsysImpl::isAbortable(char const * name) const
   {
     for (int i = 0; i < m_type->commands.length(); ++i) {
       // search for matching command name
@@ -111,32 +116,27 @@ namespace rapid
     return false;
   }
 
-  CommandImpl::FuturePtr
-  CommandImpl::abort() 
+  SubsysImpl::FuturePtr
+  SubsysImpl::abort()
   {
     boost::throw_exception(rapid::EOperationNotSupported(string("Abort is not supported for interface: ") + type()));
 
     return FuturePtr();
   }
 
-  CommandImpl::FuturePtr 
-  CommandImpl::suspend() 
+  SubsysImpl::FuturePtr
+  SubsysImpl::suspend()
   {
     boost::throw_exception(rapid::EOperationNotSupported(string("Suspend is not supported for interface: ") + type()));
 
     return FuturePtr();
   }
 
-  CommandImpl::FuturePtr
-  CommandImpl::resume() 
+  SubsysImpl::FuturePtr
+  SubsysImpl::resume()
   {
     boost::throw_exception(rapid::EOperationNotSupported(string("Resume is not supported for interface: ") + type()));
 
     return FuturePtr();
   }
 }
-
-// does this evaluate to true on any of our target platforms?
-#if defined (ACE_HAS_EXPLICIT_STATIC_TEMPLATE_MEMBER_INSTANTIATION)
-template kn::Singleton<kn::RapidSubsystemRepository> * kn::Singleton<kn::RapidSubsystemRepository>::s_instance;
-#endif /* ACE_HAS_EXPLICIT_STATIC_TEMPLATE_MEMBER_INSTANTIATION */

@@ -23,6 +23,7 @@ module rapid
        *
        * @author Hans Utz
        * @updated 21-May-2006 8:23:53 PM
+       * @updated 01-Aug-2014 added datum and undulationDatum fields.
        */
       valuetype GpsConfig : Message
       {
@@ -34,10 +35,14 @@ module rapid
         //@copy-c-declaration #endif
         //@copy-c-declaration typedef GpsConfig Type;
 
-        public string sensorFrame;
-        public string referenceFrame;
+        public String32 sensorFrame;
+        public String32 referenceFrame;
         
-        public string elipsoid;
+        //@copy-c-declaration /** datum used for coordinates, e.g. WGS-84. Name must match reference ellipsoids in irgUtmll for dimension lookup*/
+        public String16 datum;
+
+        //@copy-c-declaration /** datum used to calculate Mean Sea Level, e.g. EGM-96, NAVD-88 */
+        public String16 undulationDatum;
       };
     };
   };

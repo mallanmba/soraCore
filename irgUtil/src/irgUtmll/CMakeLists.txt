@@ -19,10 +19,6 @@ include_directories(
   ${ACE_INCLUDE_DIR}
 )
 
-link_libraries( 
-  ${ACE_LIBRARIES}
-)
-
 add_definitions(-D${EXPORT_DEFINE})
 
 add_library(${LIB_NAME} SHARED
@@ -35,14 +31,11 @@ set( TARGETS
   latLonToUtm 
 )
 
-link_libraries( 
-  ${LIB_NAME}
-)
-
 foreach( TEST_TARGET ${TARGETS} )
   add_executable( ${TEST_TARGET} 
     ${TEST_TARGET}.cpp 
     )
+  target_link_libraries(${TEST_TARGET} ${LIB_NAME})
 endforeach( TEST_TARGET ${TARGETS} )
 
 install_targets( /bin ${TARGETS})

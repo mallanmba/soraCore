@@ -22,6 +22,8 @@
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
+#include <QPixmap>
+#include <QIcon>
 
 #include <iostream>
 
@@ -43,12 +45,13 @@
 #include <functional>
 #include <iostream>
 
+#include "Opts.h"
+
 #include "knRapidConfig.h"
+#include "CameraIconGrey256.xpm"
 
 using namespace std;
 using namespace rapid;
-
-string topic = rapid::IMAGESENSOR_SAMPLE_TOPIC;
 
 /**
  *
@@ -67,33 +70,53 @@ int main(int argc, char *argv[])
       kn::DdsEntitiesFactorySvcParameters::instance();
     if (params->defaultLibrary.empty()) {
       params->defaultLibrary = "RapidQosLibrary";
-      //params->defaultLibrary = "RapidQosLibrary";
     }
 
     kn::DdsSupport::init(argc, argv);
 
+    Opts::parseArgs(argc, argv);
 
-    // Hardcode participant name and participant Qos Profile
+    if(Opts::verbosity > 0) { // turn up RTI DDS logging
+      NDDSConfigLogger* logger = NDDSConfigLogger::get_instance();
+      logger->set_verbosity(NDDS_CONFIG_LOG_VERBOSITY_WARNING);
+      if(Opts::verbosity == 2) {
+        logger->set_verbosity_by_category(NDDS_CONFIG_LOG_CATEGORY_API,
+                                          NDDS_CONFIG_LOG_VERBOSITY_STATUS_ALL);
+      }
+      else if(Opts::verbosity > 2) {
+        logger->set_verbosity(NDDS_CONFIG_LOG_VERBOSITY_STATUS_ALL);
+      }
+    }
+
+    // Hardcode participant name
     params->participants[0].participantName = "ImageReader";
-  
+
     kn::DdsEntitiesFactorySvc ddsEntities;
     ddsEntities.init(params);
     {
       QApplication app(argc, argv);
 
-      if (argc > 1) {
-        topic += string(argv[1]);
+      string topic = Opts::topicName;
+      if(Opts::topicSuffix.size() > 0) {
+        topic = topic + "-" + Opts::topicSuffix;
+      }
+      if(Opts::verbosity > 0) {
+        cout << "subscription topic is " << topic << endl;
       }
       QMainWindow mainWindow;
       RapidImageWidget* imageWidget = new RapidImageWidget(Miro::RobotParameters::instance()->name.c_str(),
                                                            topic.c_str(),
-                                                           "RapidImageSensorSampleProfile",
+                                                           Opts::qosProfile.c_str(),
                                                            "", // Default library
                                                            &mainWindow);
       mainWindow.setCentralWidget(imageWidget);
 
       QMenu* fileMenu = mainWindow.menuBar()->addMenu("&File");
       fileMenu->addAction( "E&xit", qApp, SLOT(quit()) );
+
+      QPixmap iconPix(CameraIconGrey256_xpm);
+      QIcon appIcon(iconPix);
+      mainWindow.setWindowIcon(appIcon);
 
       mainWindow.show();
       mainWindow.resize(440, 440);

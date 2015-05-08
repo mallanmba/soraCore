@@ -54,7 +54,7 @@ namespace kn
       retcode = m_waitSet.attach_condition(handler->condition());
       if (retcode != DDS_RETCODE_OK) {
         MIRO_LOG_OSTR(LL_CRITICAL, "attach_condition error: " << DdsSupport::getError(retcode));
-      }    
+      }
     }
     else {
       throw Miro::Exception();
@@ -72,13 +72,13 @@ namespace kn
     kn::nanoseconds nsec(kn::duration_cast<kn::nanoseconds>(maxSlice));
     timeout.sec = sec.count();
     timeout.nanosec = nsec.count() - (sec.count() * 1000000000);
-    DDS::ConditionSeq activeConditions; 
+    DDS::ConditionSeq activeConditions;
 
     retcode = m_waitSet.wait(activeConditions, timeout);
-          
+
     if (retcode == DDS_RETCODE_OK) {
       for (int i = 0; i < activeConditions.length(); ++i) { // conditions
-        
+
         EventHandlerMap::const_iterator handler = m_eventHandlers.find(activeConditions[i]);
 
         assert(handler != m_eventHandlers.end());

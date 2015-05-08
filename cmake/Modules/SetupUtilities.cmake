@@ -97,6 +97,25 @@ macro( add_srcdir_definitions )
   set_property( DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS ${ARGN} )
 endmacro( add_srcdir_definitions )
 
+##
+## set_unless_env
+##
+## macro to set a variable to a given value 
+## unless an environment variable has been 
+## set to override the default
+##
+#################################################
+macro( set_unless_env SET_VARIABLE ENV_VARIABLE DEFAULT_VALUE )
+  
+  if( DEFINED ENV{${ENV_VARIABLE}} )
+    set( ${SET_VARIABLE} $ENV{${ENV_VARIABLE}} )
+  else( DEFINED ENV{${ENV_VARIABLE}} )
+    set( ${SET_VARIABLE} ${DEFAULT_VALUE} )
+  endif( DEFINED ENV{${ENV_VARIABLE}} )
+  #message(STATUS "(dbg) set_unless_env ${SET_VARIABLE} set to ${${SET_VARIABLE}}")
+  
+endmacro( set_unless_env  )
+
 ## set the DOXYGEN_WORKING_DIR variable
 ## end create it
 #################################################

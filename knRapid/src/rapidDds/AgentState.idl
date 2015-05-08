@@ -43,7 +43,7 @@ module rapid {
         //@copy  */
         public ValueSequence64 values;
 
-    }; //@resolve-name true
+    };
 
 };
 

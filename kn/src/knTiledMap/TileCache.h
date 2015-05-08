@@ -25,6 +25,18 @@ namespace kn
 {
   class TileBase;
 
+  /**
+   * @ingroup knTiledMap
+   * @brief A 2D cache for efficiently accessing recently used tiles.
+   * 
+   * The biggest theoretical performance issue with tiled maps is that the tile lookup 
+   * requires a search which is usually of complexity O(log n).
+   * The tile-cache takes advantage of the fact that cells are usually updated within
+   * a geometrically bounded region and tile-id's can be easily hashed into locally unique keys.
+   * 
+   * Unfortunately, the tile-cache is yet to be transparently integrated with tiled maps.
+   * 
+   */
   template<unsigned int CSLL2 = 2 >
   class TileCacheBase
   {

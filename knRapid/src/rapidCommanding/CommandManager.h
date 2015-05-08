@@ -20,7 +20,8 @@
 #define rapid_CommandManager_h
 
 #include "rapidCommanding_Export.h"
-#include "CommandImpl.h"
+#include "SubsysImpl.h"
+#include "RapidSubsystemRepository.h"
 
 #include "ace/Task.h"
 
@@ -35,8 +36,8 @@ namespace rapid
   class Ack;
   class CommandConfig;
 
-  class AccessControlImpl;
-  class QueueImpl;
+  class AccessControlSubsysImpl;
+  class QueueSubsysImpl;
 
   class CommandManagerParameters;
 
@@ -61,25 +62,26 @@ namespace rapid
 
   protected:
     std::string m_entityName;
-    
+
     typedef boost::unique_future<void> Future;
     typedef kn::shared_ptr<Future> FuturePtr;
     typedef kn::shared_ptr<rapid::Ack> AckPtr;
     typedef kn::shared_ptr<rapid::Command> CommandPtr;
-    typedef kn::shared_ptr<AccessControlImpl> AccessControlImplPtr;
+    typedef kn::shared_ptr<AccessControlSubsysImpl> AccessControlImplPtr;
+    typedef kn::shared_ptr<QueueSubsysImpl>         QueueSubsysImplPtr;
 
     struct PendingCommand
     {
       FuturePtr result;
       AckPtr ack;
-      
+
       PendingCommand();
       PendingCommand(FuturePtr const& r, AckPtr const& a);
     };
 
     typedef std::map<std::string, RapidSubsystemPtr> SubsystemMap;
     typedef std::vector<PendingCommand> PendingCommandVector;
-    
+
     void sendAck(AckPtr const& ack);
 
     CommandManagerParameters const * m_params;
@@ -88,7 +90,7 @@ namespace rapid
     SubsystemMap m_subsystems;
 
     AccessControlImplPtr m_accessControl;
-    QueueImpl * m_queue;
+    QueueSubsysImplPtr   m_queue;
 
     PendingCommandVector m_commandVector;
   };

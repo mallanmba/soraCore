@@ -65,18 +65,18 @@ int main (int, char**)
   TreeNode otherRoot;
   otherRoot.data() = string("otherRoot");
 
-  cout << "is_root (" << root.data() << "): " << root.is_root() << endl;
-  cout << "is_root (" << node11.data() << "): " << node11.is_root() << endl;
+  cout << "isRoot (" << root.data() << "): " << root.isRoot() << endl;
+  cout << "isRoot (" << node11.data() << "): " << node11.isRoot() << endl;
   cout << endl;
   cout << "root of (" << node01.data() << "): " << node01.root()->data() << endl;
   cout << "set parent" << endl;
-  node0.set_parent(&root);
+  node0.setParent(&root);
   cout << "parent of (" << node01.data() << "): " << node01.parent()->data() << endl;
   cout << "root of (" << node01.data() << "): " << node01.root()->data() << endl;
   cout << endl;
-  cout << node0.data() << " is ancestor of (" << node01.data() << "): " << node0.is_ancestor_of(&node01) << endl;
-  cout << node01.data() << " is ancestor of (" << node01.data() << "): " << node01.is_ancestor_of(&node01) << endl;
-  cout << root.data() << " is ancestor of (" << node01.data() << "): " << node0.is_ancestor_of(&node01) << endl;
+  cout << node0.data() << " is ancestor of (" << node01.data() << "): " << node0.isAncestorOf(&node01) << endl;
+  cout << node01.data() << " is ancestor of (" << node01.data() << "): " << node01.isAncestorOf(&node01) << endl;
+  cout << root.data() << " is ancestor of (" << node01.data() << "): " << node0.isAncestorOf(&node01) << endl;
   cout << endl;
 
   cout << node11.data() << " ancetry:" << flush;
@@ -88,14 +88,14 @@ int main (int, char**)
     }
     cout << endl;
   }
-  cout << node01.data() << " last common ancestor with " << root.data() << ": " << node01.last_common_ancestor(&root)->data() << endl;
-  cout << node01.data() << " last common ancestor with " << node0.data() << ": " << node01.last_common_ancestor(&node0)->data() << endl;
-  cout << node01.data() << " last common ancestor with " << node1.data() << ": " << node01.last_common_ancestor(&node1)->data() << endl;
-  cout << node01.data() << " last common ancestor with " << node00.data() << ": " << node01.last_common_ancestor(&node00)->data() << endl;
-  cout << node01.data() << " last common ancestor with " << node01.data() << ": " << node01.last_common_ancestor(&node01)->data() << endl;
-  cout << node01.data() << " last common ancestor with " << node10.data() << ": " << node01.last_common_ancestor(&node10)->data() << endl;
-  cout << node01.data() << " last common ancestor with " << node11.data() << ": " << node01.last_common_ancestor(&node11)->data() << endl;
-  cout << node01.data() << " last common ancestor with " << otherRoot.data() << ": " << (void*)node01.last_common_ancestor(&otherRoot) << endl;
+  cout << node01.data() << " last common ancestor with " << root.data() << ": " << node01.lastCommonAncestor(&root)->data() << endl;
+  cout << node01.data() << " last common ancestor with " << node0.data() << ": " << node01.lastCommonAncestor(&node0)->data() << endl;
+  cout << node01.data() << " last common ancestor with " << node1.data() << ": " << node01.lastCommonAncestor(&node1)->data() << endl;
+  cout << node01.data() << " last common ancestor with " << node00.data() << ": " << node01.lastCommonAncestor(&node00)->data() << endl;
+  cout << node01.data() << " last common ancestor with " << node01.data() << ": " << node01.lastCommonAncestor(&node01)->data() << endl;
+  cout << node01.data() << " last common ancestor with " << node10.data() << ": " << node01.lastCommonAncestor(&node10)->data() << endl;
+  cout << node01.data() << " last common ancestor with " << node11.data() << ": " << node01.lastCommonAncestor(&node11)->data() << endl;
+  cout << node01.data() << " last common ancestor with " << otherRoot.data() << ": " << (void*)node01.lastCommonAncestor(&otherRoot) << endl;
 
   {
     cout << root.data() << " children:" << flush;
@@ -110,7 +110,7 @@ int main (int, char**)
   {
     cout << root.data() << " copy children: " << flush;
     ostream_iterator<TreeNode *> o(cout, " ");
-    root.copy_children<>(o);
+    root.copyChildren(o);
     cout << endl;
   }
   
@@ -118,35 +118,35 @@ int main (int, char**)
   P d("(");
   P u(")");
   cout << "pre-order traverse: " << flush;
-  root.pre_order_traverse(f, d, u);
+  root.preOrderTraverse(f, d, u);
   cout << endl;
   cout << "post-order traverse: " << flush;
-  root.post_order_traverse(f, d, u);
+  root.postOrderTraverse(f, d, u);
   cout << endl;
 
   cout << "breadth-first traverse: " << flush;
-  root.breadth_first_traverse(f);
+  root.breadthFirstTraverse(f);
   cout << endl << endl;
 
   TreeNode * newRoot = root.clone();
   cout << "cloned tree pre-order traverse: " << flush;
-  newRoot->pre_order_traverse(f, d, u);
-  cout << endl << "recursive_delete()" << flush;
-  newRoot->recursive_delete();
+  newRoot->preOrderTraverse(f, d, u);
+  cout << endl << "recursiveDelete()" << flush;
+  newRoot->recursiveDelete();
   cout << " - done" << endl << endl;
   
   cout << "pre-order traverse: " << flush;
-  root.pre_order_traverse(f, d, u);
+  root.preOrderTraverse(f, d, u);
   cout << endl;
 
   TreeNode::TreeNodeVector tree;
   tree.reserve(16);
-  root.clone_vec(NULL, tree);
+  root.cloneVec(NULL, tree);
   cout << "cloned tree vector output: " << flush;
   copy(tree.begin(), tree.end(), ostream_iterator<TreeNode>(cout, " "));
   cout << endl;
   
   cout << "cloned tree pre-order traverse: " << flush;
-  tree.front().pre_order_traverse(f, d, u);
+  tree.front().preOrderTraverse(f, d, u);
   cout << endl;
 }

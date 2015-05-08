@@ -23,17 +23,26 @@
 
 namespace kn
 {
+  /**
+   * @ingroup knTiledMap
+   * @brief Tile type template of a regular tiled map.
+   * 
+   * This class holds a 2D array of cells that make up a tile of the map.
+   * @param C Cell type.
+   * @param TSL2 The tile-size (numbers of rows and number of columns) specified as log2(tile-size).
+   */
   template<typename C, unsigned int TSL2>
   class Tile : public SizedTile<Tile<C, TSL2>, TSL2>
   {
+    //! Shorthand for this class.
     typedef Tile<C, TSL2> This;
     //! Shorthand for the super class.
     typedef SizedTile<This, TSL2> Super;
 
   public:
-    //! Type for representing a cell.
+    //! The cell type of the tile.
     typedef C Cell;
-    //! Type for representing a tile identifier.
+    //! The tile identifier type.
     typedef int TileId;
 
     using Super::TileSizeLog2;
@@ -41,19 +50,44 @@ namespace kn
     using Super::IndexMask;
     using Super::NumCells;
 
-    //! Tile constructor. - Passing in the tile identifier.
+    /**
+     * @brief Tile constructor. - Passing in the tile identifier.
+     * 
+     * @param id The identifier of the constructed tile.
+     * 
+     */
     explicit Tile(TileId id) : Super(id) {}
-    //! Cell access by a/b-index.
+    /**
+     * @brief Cell access by 2D index.
+     * 
+     * @param a Cell index in X axis.
+     * @param b Cell index in Y axis.
+     * 
+     * @return Reference to the cell.
+     */
     Cell& cell(int a, int b) {
       return m_cells[Super::index(a, b)];
     }
-    //! Cell access by a/b-index.
+    /**
+     * @brief Read-only cell access by 2D index.
+     * 
+     * @param a Cell index in X axis.
+     * @param b Cell index in Y axis.
+     * 
+     * @return Read-only reference to the cell.
+     */
     Cell const& cell(int a, int b) const {
       return m_cells[Super::index(a, b)];
     }
-    //! Set cell by a/b-index and value.
-    void setCell(int a, int b, Cell const& cell )  {
-      m_cells[Super::index(a, b)] = cell;
+    /**
+     * @brief Cell setter.
+     * 
+     * @param a Cell index in X axis.
+     * @param b Cell index in Y axis.
+     * @param c New cell value.
+     */
+    void setCell(int a, int b, Cell const& c)  {
+      m_cells[Super::index(a, b)] = c;
     }
     //! Set a range of consecutive cells.
     template<typename InputIterator>
@@ -63,12 +97,12 @@ namespace kn
         *dest = *first;
       }
     }
-    /** Accessor to cell array.
+    /** @brief Accessor to cell array.
      *
      * Cells are organized in row-order.
      */
     Cell * cells() { return m_cells; }
-    /** Read-only accessor to cell array.
+    /** @brief Read-only accessor to cell array.
      *
      * Cells are organized in row-order.
      */

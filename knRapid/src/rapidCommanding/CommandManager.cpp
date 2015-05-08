@@ -19,8 +19,9 @@
 #include "CommandManager.h"
 #include "CommandingParameters.h"
 #include "CommandExceptions.h"
-#include "AccessControlImpl.h"
-#include "QueueImpl.h"
+#include "AccessControlSubsysImpl.h"
+#include "QueueSubsysImpl.h"
+#include "RapidSubsystemRepository.h"
 
 #include "rapidDds/RapidConstants.h"
 #include "rapidDds/CommandConstants.h"
@@ -38,6 +39,8 @@
 #include "knDds/DdsSupport.h"
 #include "knDds/DdsEventLoop.h"
 
+#include "knShare/Log.h"
+
 #include <ace/Time_Value.h>
 
 #include <ndds/ndds_utility_cpp.h>
@@ -50,10 +53,12 @@ namespace rapid
   using namespace std;
   using namespace Miro;
 
-  namespace {
+  namespace
+  {
     // wrap delete_data because after 5.1.0, the method
     // takes two arguments and can't be used as a deleter
-    DDS_ReturnCode_t delete_Command(rapid::Command* ptr) {
+    DDS_ReturnCode_t delete_Command(rapid::Command* ptr)
+    {
       return CommandTypeSupport::delete_data(ptr);
     }
   }
@@ -63,9 +68,9 @@ namespace rapid
   {}
 
   CommandManager::PendingCommand::PendingCommand(FuturePtr const& r, AckPtr const& a) :
-      result(r),
-      ack(a)
-    {}
+    result(r),
+    ack(a)
+  {}
 
 
   /**
@@ -74,18 +79,20 @@ namespace rapid
   CommandManager::CommandManager(CommandManagerParameters const * params, const std::string& entityName) :
     m_entityName(entityName),
     m_params(params),
-    m_accessControl((params->accessControl)? new AccessControlImpl(params->accessControlImpl) : NULL),
-    m_queue(new QueueImpl(params->queueImpl, entityName, m_subsystems, m_accessControl))
+    m_accessControl((params->accessControl)? new AccessControlSubsysImpl(params->accessControlImpl) : NULL),
+    m_queue(new QueueSubsysImpl(params->queueImpl, entityName, m_subsystems, m_accessControl))
   {
     MIRO_LOG_CTOR("CommandManager");
 
     if (params->accessControl) {
       RapidSubsystemPtr accessCtrl(m_accessControl);
-      addSubsystem(accessCtrl);
+      // add to Repository, CommandManagerSvc will call addSubsystem
+      RapidSubsystemRepository::instance()->add(accessCtrl->name(), accessCtrl);
     }
     if (params->queueImpl.queuing) {
       RapidSubsystemPtr queue(m_queue);
-      addSubsystem(queue);
+      // add to Repository, CommandManagerSvc will call addSubsystem
+      RapidSubsystemRepository::instance()->add(queue->name(), queue);
     }
 
   }
@@ -97,12 +104,16 @@ namespace rapid
   {
     MIRO_LOG_DTOR("CommandManager");
 
-    if (!m_params->queueImpl.queuing) {
-      delete m_queue;
-    }
-
+    // remove our subsystems from the RapidSubsystemRepository
+    if(m_accessControl)
+      RapidSubsystemRepository::instance()->remove(m_accessControl->name());
+    if(m_queue)
+      RapidSubsystemRepository::instance()->remove(m_queue->name());
   }
 
+  /**
+   *
+   */
   void
   CommandManager::addSubsystem(RapidSubsystemPtr const& instance)
   {
@@ -140,6 +151,9 @@ namespace rapid
     }
   }
 
+  /**
+   *
+   */
   void
   CommandManager::operator() (rapid::Command const * cmd)
   {
@@ -167,39 +181,39 @@ namespace rapid
       CommandPtr command(rapid::Command::TypeSupport::create_data(),
                          delete_Command);
       rapid::Command::TypeSupport::copy_data(command.get(), cmd);
-      QueueImpl::AckVector acks;
+      QueueSubsysImpl::AckVector acks;
 
       // process command actions
       switch (command->cmdAction) {
-      case rapid::QUEUE_BYPASS:
-        MIRO_LOG(LL_NOTICE, "direct cmd");
+        case rapid::QUEUE_BYPASS:
+          MIRO_LOG(LL_NOTICE, "direct cmd");
 
-        acks = m_queue->directCmd(command);
-        break;
+          acks = m_queue->directCmd(command);
+          break;
 
-      case rapid::QUEUE_APPEND:
-        MIRO_LOG(LL_NOTICE, "append cmd");
+        case rapid::QUEUE_APPEND:
+          MIRO_LOG(LL_NOTICE, "append cmd");
 
-        acks = m_queue->appendCmd(command);
-        break;
+          acks = m_queue->appendCmd(command);
+          break;
 
-      case rapid::QUEUE_INSERT:
-        MIRO_LOG(LL_NOTICE, "insert cmd");
+        case rapid::QUEUE_INSERT:
+          MIRO_LOG(LL_NOTICE, "insert cmd");
 
-        acks = m_queue->insertCmd(command);
-        break;
+          acks = m_queue->insertCmd(command);
+          break;
 
-      case rapid::QUEUE_REPLACE:
-        MIRO_LOG(LL_NOTICE, "replace cmd");
+        case rapid::QUEUE_REPLACE:
+          MIRO_LOG(LL_NOTICE, "replace cmd");
 
-        acks = m_queue->replaceCmd(command);
-        break;
+          acks = m_queue->replaceCmd(command);
+          break;
 
-      case rapid::QUEUE_DELETE:
-        MIRO_LOG(LL_NOTICE, "delete cmd");
+        case rapid::QUEUE_DELETE:
+          MIRO_LOG(LL_NOTICE, "delete cmd");
 
-        acks = m_queue->cancelCmd(command->targetCmdId);
-        break;
+          acks = m_queue->cancelCmd(command->targetCmdId);
+          break;
       }
 
       // publish acks
@@ -219,6 +233,47 @@ namespace rapid
     MIRO_LOG(LL_NOTICE, "Rapid CmdMgr - command done");
   }
 
+  /**
+   * @returns true if command should be requeued on cancel
+   */
+  bool
+  isRequeueableCommand ( QueueSubsysImpl::CommandPtr cmd )
+  {
+    if ( cmd->cmdAction == QUEUE_BYPASS )
+      return false;
+
+    // Science commands are after reaching a waypoint - if navigation (mobility)
+    // command is cancelled/aborted, then we usually want to resume the navigation
+    // so the rover ends up at the station before activating instruments.
+    // EStopping the rover results a RAPID ECanceled exception, so
+    // m_params->requeueMobilityCommand must be true in order to push the
+    // interrupted mobility command back onto the queue
+    const char* mobilityReQ[] = {
+      rapid::MOBILITY_METHOD_MOVE,
+      rapid::MOBILITY_METHOD_MOVE6DOF,
+      rapid::MOBILITY_METHOD_SIMPLEMOVE,
+      rapid::MOBILITY_METHOD_SIMPLEMOVE6DOF,
+      ""
+    };
+
+    if( strcmp (cmd->subsysName, rapid::MOBILITY) == 0 ) {
+      bool doRequeue = false;
+      for(int i = 0; mobilityReQ[i][0] != '\0'; i++) {
+        if(strcmp(cmd->cmdName, mobilityReQ[i]) == 0) {
+          doRequeue = true;
+          break;
+        }
+      }
+      return doRequeue;
+    }
+
+    return false;
+  }
+
+
+  /**
+   *
+   */
   void
   CommandManager::processPendingCommands()
   {
@@ -247,33 +302,45 @@ namespace rapid
             first->ack->completedStatus = rapid::ACK_COMPLETED_OK;
           }
           catch (ECanceled const& e) {
-            // requeue navigation commands
-            // science commands are after reaching a waypoint - if navigation
-            // command is cancelled, then we need to resume the navigation
-            // so the rover ends up at the station before activating instruments
             if (m_params->requeueMobilityCommand) {
-              QueueImpl::CommandPtr cmd = m_queue->command(first->ack->cmdId);
-
-              if (cmd->cmdAction != QUEUE_BYPASS &&
-                   strcmp(cmd->subsysName, rapid::MOBILITY) == 0 &&
-                   ( strcmp(cmd->cmdName, rapid::MOBILITY_METHOD_MOVE) == 0 ||
-                     strcmp(cmd->cmdName, rapid::MOBILITY_METHOD_MOVE6DOF) == 0 ||
-                     strcmp(cmd->cmdName, rapid::MOBILITY_METHOD_SIMPLEMOVE) == 0 ||
-                     strcmp(cmd->cmdName, rapid::MOBILITY_METHOD_SIMPLEMOVE6DOF) == 0 ) ) {
+              QueueSubsysImpl::CommandPtr cmd = m_queue->command(first->ack->cmdId);
+              if (isRequeueableCommand(cmd)) {
                 first->ack->status = rapid::ACK_REQUEUED;
               }
             }
-
             first->ack->completedStatus = ACK_COMPLETED_CANCELED;
             ostr << e.what();
+            KN_WARN("CommandManager::processPendingCommands - ECanceled : %s", ostr.str().c_str());
+          }
+          catch (EExecFailed const& e) {
+            if (m_params->requeueMobilityCommand) {
+              QueueSubsysImpl::CommandPtr cmd = m_queue->command(first->ack->cmdId);
+              if (isRequeueableCommand(cmd)) {
+                first->ack->status = rapid::ACK_REQUEUED;
+              }
+            }
+            first->ack->completedStatus = ACK_COMPLETED_CANCELED;
+            ostr << e.what();
+            KN_WARN("CommandManager::processPendingCommands - EExecFailed : %s", ostr.str().c_str());
+          }
+          catch (EBadSyntax const& e) {
+            ostr << e.what();
+            KN_WARN("CommandManager::processPendingCommands - EBadSyntax : %s", ostr.str().c_str());
+          }
+          catch (Miro::Exception const& e) {
+            ostr << e.what();
+            KN_WARN("CommandManager::processPendingCommands - Miro::exception : %s", ostr.str().c_str());
           }
           catch (std::exception const& e) {
             ostr << e.what();
+            KN_WARN("CommandManager::processPendingCommands - std::exception : %s", ostr.str().c_str());
           }
           catch (...) {
             ostr << "Unknown exception from command completion.";
+            KN_WARN("CommandManager::processPendingCommands - ... : %s", ostr.str().c_str());
           }
 
+          // pause queue if command did not complete OK
           if (first->ack->completedStatus != rapid::ACK_COMPLETED_OK) {
             strncpy(first->ack->message, ostr.str().c_str(), 127);
             first->ack->message[127] = '\0';
@@ -300,12 +367,12 @@ namespace rapid
 
     // activate all new commands
     {
-      QueueImpl::CommandAckVector executableCmds = m_queue->executableCommands();
+      QueueSubsysImpl::CommandAckVector executableCmds = m_queue->executableCommands();
 
       if (!executableCmds.empty())
         queueStateUpdate = true;
 
-      QueueImpl::CommandAckVector::const_iterator first, last = executableCmds.end();
+      QueueSubsysImpl::CommandAckVector::const_iterator first, last = executableCmds.end();
       for (first = executableCmds.begin(); first != last; ++first) {
         FuturePtr result;
         AckPtr const& ack = first->ack;
@@ -346,6 +413,7 @@ namespace rapid
           ack->completedStatus = rapid::ACK_COMPLETED_BAD_SYNTAX;
           strncpy(ack->message, e.what(), 127);
           ack->message[127] = '\0';
+          KN_DEBUG("CommandManager::processPendingCommands - EBadSyntax : %s", ack->message);
         }
         catch (rapid::EExecFailed const& e) {
           m_queue->evalQueueState();
@@ -355,6 +423,7 @@ namespace rapid
           ack->completedStatus = rapid::ACK_COMPLETED_EXEC_FAILED;
           strncpy(ack->message, e.what(), 127);
           ack->message[127] = '\0';
+          KN_DEBUG("CommandManager::processPendingCommands - EExecFailed : %s", ack->message);
         }
         catch (rapid::EPermission const& e) {
           // @TODO: create an extra completion status for access permission failure
@@ -362,6 +431,7 @@ namespace rapid
           ack->completedStatus = rapid::ACK_COMPLETED_EXEC_FAILED;
           strncpy(ack->message, e.what(), 127);
           ack->message[127] = '\0';
+          KN_DEBUG("CommandManager::processPendingCommands - EPermission : %s", ack->message);
         }
 
         if (ack->status != rapid::ACK_EXECUTING) {
@@ -379,7 +449,7 @@ namespace rapid
 
     // delete all completed, unreferenced and old-enough commands
     if (m_params->autoPurgeQueue) {
-      QueueImpl::AckVector purged  = m_queue->purgeCommands(ACE_OS::gettimeofday() - m_params->queuePurgeCompletedTimeout);
+      QueueSubsysImpl::AckVector purged  = m_queue->purgeCommands(ACE_OS::gettimeofday() - m_params->queuePurgeCompletedTimeout);
       if (!purged.empty()) {
         queueStateUpdate = true;
 
@@ -394,16 +464,19 @@ namespace rapid
     }
   }
 
+  /**
+   *
+   */
   int
   CommandManager::svc()
   {
     kn::DdsTypedSupplier<rapid::CommandConfig>
-      commandConfig(rapid::COMMAND_CONFIG_TOPIC +
-                    m_params->dataBus.topicSuffix,
-                    m_params->dataBus.publisherName,
-                    m_params->dataBus.cmdConfigProfile,
-                    m_params->dataBus.library,
-                    m_entityName);
+    commandConfig(rapid::COMMAND_CONFIG_TOPIC +
+                  m_params->dataBus.topicSuffix,
+                  m_params->dataBus.publisherName,
+                  m_params->dataBus.cmdConfigProfile,
+                  m_params->dataBus.library,
+                  m_entityName);
 
     exportCommandConfig(commandConfig.event());
     commandConfig.sendEvent();
@@ -430,7 +503,7 @@ namespace rapid
       eventLoop.processEvents(kn::microseconds(100000));
     }
 
-    MIRO_LOG(LL_NOTICE, "Exiting (detached) rapid command manager loop.");
+    KN_INFO("Exiting (detached) rapid command manager loop.");
 
     return 0;
   }

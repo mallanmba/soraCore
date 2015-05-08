@@ -7,7 +7,9 @@
 #include <boost/chrono.hpp>
 #endif
 
-/** @file C++ 11 transition header.
+/** 
+ * @ingroup cpp11
+ * @file Chrono.h C++ 11 transition header.
  * 
  * Boost chrono is a good standin for the chrono library of the 
  * soon to be well supported C++11 standard. To minimize the 

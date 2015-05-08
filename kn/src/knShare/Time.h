@@ -27,13 +27,19 @@
 
 namespace kn
 {
+  /** @ingroup knShare */
   typedef system_clock Clock;
+  /** @ingroup knShare */
   typedef system_clock::duration Duration;
+  /** @ingroup knShare */
   typedef system_clock::time_point TimePoint;
+  /** @ingroup knShare */
   typedef duration_values<Duration> DurationValues;
 
+  /** @ingroup knShare */
   typedef duration<double> DurationD;
   
+  /** @ingroup knShare */
   inline
   Duration absDiff(const TimePoint & time1, const TimePoint & time2)
   {
@@ -44,8 +50,10 @@ namespace kn
   }
   
   class Time6;
+  /** @ingroup knShare */
   knShare_Export std::ostream& operator<<(std::ostream& ostr, Time6 const& timestamp);
   
+  /** @ingroup knShare */
   class knShare_Export Time6
   {
   public:

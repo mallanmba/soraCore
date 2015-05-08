@@ -30,8 +30,11 @@ namespace kn
 {
   class MotorGroupFuture;
   knMotorShare_Export std::ostream& operator<< (std::ostream& ostr, MotorGroupFuture const& rhs);
-  
-  //! Sample of motor group state as expected at a future time.
+
+  /**
+   * @ingroup knMotorShare
+   * @brief Sample of motor group state as expected at a future time.
+   */
   class knMotorShare_Export MotorGroupFuture
   {
   public:
@@ -45,12 +48,12 @@ namespace kn
     //! Default constructor.
     MotorGroupFuture() {}
     //! Initializing constructor.
-    MotorGroupFuture(ACE_Time_Value const& target,
-                     DoubleVector const& positions,
-		     DoubleVector const& speeds) :
-        targetTime(target),
-        motorPositions(positions),
-        motorSpeeds(speeds)
+    MotorGroupFuture(ACE_Time_Value const& targetTime,
+                     DoubleVector const& motorPositions,
+                     DoubleVector const& motorSpeeds) :
+      targetTime(targetTime),
+      motorPositions(motorPositions),
+      motorSpeeds(motorSpeeds)
     {}
   };
 }

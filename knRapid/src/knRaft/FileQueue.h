@@ -56,9 +56,10 @@ namespace kn
   class DataPriorityController;
   class FileEntryCallback;
 
-  //! Key value in the priority queue
-  struct knRaft_Export FilePriority
-  {
+  /**
+   * Key value in the priority queue
+   */
+  struct knRaft_Export FilePriority {
     float priority;
     ACE_Time_Value submissionTime;
 
@@ -72,6 +73,9 @@ namespace kn
   bool operator> (FilePriority const& lhs, FilePriority const& rhs) throw();
   bool operator== (FilePriority const& lhs, FilePriority const& rhs) throw();
 
+  /**
+   * FileQueue
+   */
   class knRaft_Export FileQueue : public ACE_Task_Base
   {
   public:
@@ -85,6 +89,7 @@ namespace kn
     typedef std::map<std::string, std::string> MetadataMap;
 
     // file queue interface
+
     int putFile(std::string const& fileUuid, ACE_INT16 channel, float priotiry);
     int putMatching(std::string const& key, std::string const& value, ACE_INT16 channel, float priority);
     int removeFile(std::string const& fileUuid);
@@ -96,7 +101,7 @@ namespace kn
     virtual int svc();
 
     // public for test-program
-    bool addFileRefEntry(std::string const& uuid, 
+    bool addFileRefEntry(std::string const& uuid,
                          std::string const& uri, ACE_INT64 length, MetadataMap const& map);
 
     // debug dump
@@ -104,9 +109,10 @@ namespace kn
 
   private:
 
-    //! The file announce messages we received
-    struct FileRef
-    {
+    /**
+     * The file announce messages we received
+     */
+    struct FileRef {
       std::string uri;
       ACE_INT64 length;
       MetadataMap metaData;
@@ -118,9 +124,11 @@ namespace kn
         metaData(m)
       {}
     };
-    //! Entry in the priority queue
-    struct FileEntry
-    {
+
+    /**
+     * Entry in the priority queue
+     */
+    struct FileEntry {
       std::string const& fileUuid() const throw() { return m_fileUuid; }
 
       ACE_INT16 channelId() const throw() { return m_channelId; }
@@ -131,7 +139,7 @@ namespace kn
       void setStatusChanged(bool changed) throw() { m_statusChanged = changed; }
       int chunksTransmitted() const throw() { return m_transferedChunks; }
       int totalChunks() const throw();
-      
+
       explicit FileEntry(ACE_INT16 channel, std::string const& uuid,
                          std::string const& uri, ACE_INT64 l, fetcher::CurlPool *fetchPool) :
         m_channelId(channel),
@@ -144,23 +152,23 @@ namespace kn
         m_content(0),
         m_status(rapid::RAPID_FILE_PENDING),
         m_statusChanged(false),
-        m_transferedChunks(0)
-      {
+        m_transferedChunks(0) {
         if (isFileUri(m_uri)) {
           m_localPath = uriPath(m_uri);
           m_prefetched = true;
-        } else {
+        }
+        else {
           m_status = rapid::RAPID_FILE_PREFETCH_PENDING;
         }
       }
       ~FileEntry() throw();
 
       // fill the data-structure with the next chunk to be sent
-      // return 0 for success. 
-      // return -1 for error. 
+      // return 0 for success.
+      // return -1 for error.
       // return 1 file last chunk sent
       int getNextPacket(rapid::FileQueueSample& sample);
-      
+
       // start/cancel pre-fetching of remote URLs
       // return true on success, false otherwise
       bool startPrefetching();
@@ -179,7 +187,7 @@ namespace kn
       // return true on success, false otherwise
       // always returns true for remote urls
       bool ensureExists();
-      
+
       // uri-related functions. this does not handle every uri pattern
       // known to man. except for isUriSupported and uriScheme, these are
       // specific to 'file' schemed uri's.
@@ -221,24 +229,23 @@ namespace kn
       FileEntry(FileEntry const& ce);
       FileEntry& operator= (FileEntry const& rhs);
     };
-  
+
     typedef std::map<std::string, FileRef> FileAnnounceMap;
     typedef std::map<FilePriority, FileEntry*> ChannelPQueue;
 
-    struct Channel
-    {
+    struct Channel {
       bool active;
       ChannelPQueue queue;
     };
     typedef std::vector<Channel> ChannelVector;
-    
+
     typedef kn::DdsTypedConsumer<rapid::FileAnnounce> FileAnnounceSubscriber;
     typedef kn::DdsTypedSupplier<rapid::FileAnnounce> FileAnnouncePublisher;
     typedef kn::DdsTypedSupplier<rapid::FileQueueConfig> FileQueueConfigPublisher;
     typedef kn::DdsTypedSupplier<rapid::FileQueueState> FileQueueStatePublisher;
     typedef kn::DdsTypedSupplier<rapid::FileQueueEntryState> FileQueueEntryStatePublisher;
     typedef kn::DdsTypedSupplier<rapid::FileQueueSample> FileQueueSamplePublisher;
-    
+
     void sendFileQueueState();
     void sendFileQueueEntryState(ChannelPQueue::const_iterator queueEntry);
 
@@ -278,7 +285,7 @@ namespace kn
   bool
   operator< (FilePriority const& lhs, FilePriority const& rhs) throw()
   {
-    return 
+    return
       (lhs.priority < rhs.priority) ||
       (lhs.priority == rhs.priority && lhs.submissionTime < rhs.submissionTime);
   }
@@ -286,7 +293,7 @@ namespace kn
   bool
   operator== (FilePriority const& lhs, FilePriority const& rhs) throw()
   {
-    return 
+    return
       (lhs.priority == rhs.priority && lhs.submissionTime == rhs.submissionTime);
   }
 }

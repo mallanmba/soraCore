@@ -19,7 +19,7 @@
 #include "ProcessManagerSvc.h"
 #include "ProcessManagerParameters.h"
 #include "ProcessManagerHelper.h"
-#include "ProcMgrImpl.h"
+#include "ProcMgrSubsysImpl.h"
 
 #include "rapidExtDds/ExtConstants.h"
 #include "rapidExtDds/ExtCommandConstants.h"
@@ -57,7 +57,7 @@ namespace kn
 {
   using namespace std;
   using namespace rapid;
-  
+
   static const char* svcName = "ProcessManagerSvc";
 
   ProcessManagerSvc::ProcessManagerSvc() :
@@ -76,7 +76,7 @@ namespace kn
     m_configConnector(NULL)
   {
   }
-  
+
   ProcessManagerSvc::~ProcessManagerSvc()
   {
   }
@@ -85,7 +85,7 @@ namespace kn
   ProcessManagerSvc::init(int argc, ACE_TCHAR * argv[])
   {
     MIRO_LOG(LL_NOTICE, "ProcessManagerSvc::init()");
-    
+
     // read .xml config and publish config
     if (parseArgs(argc, argv) != 0)
       return -1;
@@ -95,8 +95,8 @@ namespace kn
     m_processManager = new ACE_Process_Manager(10, reactor());
     m_timerId = reactor()->schedule_timer(this, NULL, m_params->aliveTimer, m_params->aliveTimer);
     m_processId = m_processManager->register_handler(this);
-    
-    m_configPublisher = new ConfigPublisher(rapid::ext::PROCESSMANAGER_CONFIG_TOPIC + 
+
+    m_configPublisher = new ConfigPublisher(rapid::ext::PROCESSMANAGER_CONFIG_TOPIC +
                                             m_params->managerConfigWriter.topicSuffix,
                                             m_params->managerConfigWriter.parentNode,
                                             m_params->managerConfigWriter.profile,
@@ -112,13 +112,13 @@ namespace kn
                                           m_params->managerStateWriter.library);
     m_state = &m_statePublisher->event();
     RapidHelper::initHeader(m_state->hdr);
-   
-    rapid::ext::ProcessManagerConfig * config = 
+
+    rapid::ext::ProcessManagerConfig * config =
       ProcessManagerHelper::createConfigFromParams(*m_configParams);
 
     if (m_listenToConfigMessages) {
-      m_configConnector = new ConfigConnector(this, 
-                                              rapid::ext::PROCESSMANAGER_CONFIG_TOPIC + 
+      m_configConnector = new ConfigConnector(this,
+                                              rapid::ext::PROCESSMANAGER_CONFIG_TOPIC +
                                               m_params->managerConfigWriter.topicSuffix,
                                               m_params->managerConfigWriter.parentNode,
                                               m_params->managerConfigWriter.profile,
@@ -126,13 +126,13 @@ namespace kn
     }
 
     config->hdr.serial = m_config->hdr.serial + 1;
-    
+
     //    ACE_Guard<ACE_Recursive_Thread_Mutex> guard(m_mutex);
     int rc = init(config);
     rapid::ext::ProcessManagerConfigTypeSupport::delete_data(config);
 
     rapid::RapidSubsystemRepository * repo =  rapid::RapidSubsystemRepository::instance();
-    RapidSubsystemPtr procMgrImpl(new  kn::ProcMgrImpl(this));
+    RapidSubsystemPtr procMgrImpl(new  kn::ProcMgrSubsysImpl(this));
     repo->add(rapid::ext::PROCMGR, procMgrImpl);
 
 
@@ -161,18 +161,18 @@ namespace kn
       string path = config->processes[i].workingDirectory;
       string file = config->processes[i].binaryName;
       int fd = ::open((path + "/" + file).c_str(), O_RDONLY);
-	
+
       if (fd != -1) {
         close(fd);
       } else {
-        MIRO_LOG_OSTR(LL_ERROR, 
-                      "ProcessManagerSvc::init() Unable to add process '" << 
-                      config->processes[i].name << 
+        MIRO_LOG_OSTR(LL_ERROR,
+                      "ProcessManagerSvc::init() Unable to add process '" <<
+                      config->processes[i].name <<
                       "': Unable to open file: " << file);
         return -1;
       }
     }
-    
+
     // init config
     rapid::ext::ProcessManagerConfigTypeSupport::copy_data(m_config, config);
     RapidHelper::updateHeader(m_config->hdr);
@@ -189,23 +189,23 @@ namespace kn
 
       (*first) = new ProcessData();
 
-      (*first)->stdOutPublisher = new IOPublisher(rapid::ext::PROCESSIO_SAMPLE_TOPIC + idxSuffix.str() + 
+      (*first)->stdOutPublisher = new IOPublisher(rapid::ext::PROCESSIO_SAMPLE_TOPIC + idxSuffix.str() +
                                                   m_params->ioSampleWriter.topicSuffix,
                                                   m_params->ioSampleWriter.parentNode,
                                                   m_params->ioSampleWriter.profile,
                                                   m_params->ioSampleWriter.library);
       RapidHelper::initHeader((*first)->stdOutPublisher->event().hdr, m_params->name);
-      (*first)->stdErrPublisher = new IOPublisher(rapid::ext::PROCESSIO_SAMPLE_TOPIC + idxSuffix.str() + 
+      (*first)->stdErrPublisher = new IOPublisher(rapid::ext::PROCESSIO_SAMPLE_TOPIC + idxSuffix.str() +
                                                   m_params->ioSampleWriter.topicSuffix,
                                                   m_params->ioSampleWriter.parentNode,
                                                   m_params->ioSampleWriter.profile,
                                                   m_params->ioSampleWriter.library);
       RapidHelper::initHeader((*first)->stdErrPublisher->event().hdr, m_params->name);
-      
+
       // init processId, stream, lineNumber
       (*first)->stdOutPublisher->event().processIdx = idx;
       (*first)->stdOutPublisher->event().stream = rapid::ext::PROCESS_STDOUT;
-      
+
       (*first)->stdErrPublisher->event().processIdx = idx;
       (*first)->stdErrPublisher->event().stream = rapid::ext::PROCESS_STDERR;
     }
@@ -231,7 +231,7 @@ namespace kn
           timeout += ACE_OS::gettimeofday();
           deadline = &timeout;
         }
-	    
+
         ACE_Thread_Manager * mgr = this->thr_mgr();
         while (m_state->processStatus[i] == rapid::ext::PROCESS_STATE_STARTING) {
           if (mgr != NULL && mgr->testcancel(mgr->thr_self())) {
@@ -245,8 +245,8 @@ namespace kn
         }
 
         if (m_state->processStatus[i] != rapid::ext::PROCESS_STATE_RUNNING) {
-          MIRO_LOG_OSTR(LL_CRITICAL, 
-                        "kn::ProcessManager failed to start process: " << 
+          MIRO_LOG_OSTR(LL_CRITICAL,
+                        "kn::ProcessManager failed to start process: " <<
                         m_config->processes[i].name);
           return -1;
         }
@@ -260,7 +260,7 @@ namespace kn
   {
     MIRO_LOG_DTOR("ProcessManagerSvc");
 
-    shutdown(); 
+    shutdown();
 
     reactor()->cancel_timer(m_timerId);
     //    m_processManager->remove_handler(m_processId);
@@ -284,10 +284,10 @@ namespace kn
     m_processManager = NULL;
     delete m_params;
     m_params = NULL;
-    
+
     return 0;
   }
-  
+
   void
   ProcessManagerSvc::shutdown()
   {
@@ -299,12 +299,12 @@ namespace kn
 
       if (status != rapid::ext::PROCESS_STATE_STOPPED) {
         ACE_Time_Value tvLocal(5, 0);
-	
+
         /* terminate process */
         MIRO_LOG_OSTR(LL_NOTICE, "Sending process " << (*first)->pid << " the TERM signal");
         m_processManager->terminate((*first)->pid, SIGTERM);
         pid_t rc = m_processManager->wait((*first)->pid, tvLocal);
-	
+
         /* kill pid, if it a timeout (wait) occured */
         if (rc == 0) {
           MIRO_LOG_OSTR(LL_NOTICE, "Killing process " << (*first)->pid);
@@ -312,16 +312,16 @@ namespace kn
         }
       }
     }
-    
+
     MIRO_LOG(LL_NOTICE, "Waiting for processes to exit (waiting 5 seconds).");
     m_processManager->wait(ACE_Time_Value(5));
-    
+
     while (m_processes.size() > 0) {
       delete m_processes.back();
       m_processes.pop_back();
     }
   }
-  
+
   void
   ProcessManagerSvc::operator()(rapid::ext::ProcessManagerConfig const * config)
   {
@@ -344,7 +344,7 @@ namespace kn
               break;
           }
         }
-        
+
         if (init(config) != 0)
           MIRO_LOG(LL_ERROR, "ProcessManager config update failed.");
       }
@@ -396,7 +396,7 @@ namespace kn
 
     // initialize parameters from command line
     ACE_Get_Opt get_opts(argc, argv, "civ?");
-  
+
     while ((c = get_opts()) != -1) {
       switch (c) {
       case 'i':
@@ -420,7 +420,7 @@ namespace kn
     }
 
     if (m_verbose) {
-      cerr << "Remote config enabled: " << m_listenToConfigMessages << endl 
+      cerr << "Remote config enabled: " << m_listenToConfigMessages << endl
            << "ProcessManagerSvc parameters:" << endl
            << *m_params << endl
            << "ProcessManagerConfig parameters:" << endl
@@ -431,8 +431,8 @@ namespace kn
   }
 
 
-  int 
-  ProcessManagerSvc::handle_timeout(const ACE_Time_Value &, const void *) 
+  int
+  ProcessManagerSvc::handle_timeout(const ACE_Time_Value &, const void *)
   {
     if (!m_mutex.tryacquire()) {
       ProcessVector::const_iterator first, last = m_processes.end();
@@ -442,15 +442,15 @@ namespace kn
         ProcessData *pi = *first;
         rapid::ext::ProcessConfig& conf = m_config->processes[i];
         rapid::ext::ProcessStatus& status = m_state->processStatus[i];
-        
+
         // evaluate process state
         if (strlen(conf.aliveInterface) != 0) { // get corba interface state
           if (( (status == rapid::ext::PROCESS_STATE_STARTING ||
-                 status == rapid::ext::PROCESS_STATE_RESTARTING) && 
+                 status == rapid::ext::PROCESS_STATE_RESTARTING) &&
                 strlen(conf.runningMatch) == 0) ||
               (status == rapid::ext::PROCESS_STATE_RUNNING) ||
               (status == rapid::ext::PROCESS_STATE_UNAVAIL)) {
-            
+
             // check interface state
             // alternative implementation could check for topic liveliness
 
@@ -459,35 +459,35 @@ namespace kn
 
           }
         }
-        
+
         // validate string match
         if (strlen(conf.runningMatch) > 0 &&
             (status == rapid::ext::PROCESS_STATE_STARTING ||
              status == rapid::ext::PROCESS_STATE_RESTARTING)) {
           if (pi->stdOutPipe->matched() ||
               pi->stdErrPipe->matched()) {
-            updateStatus(status, rapid::ext::PROCESS_STATE_RUNNING);	    
+            updateStatus(status, rapid::ext::PROCESS_STATE_RUNNING);
           }
         }
       }
       m_mutex.release();
-    } 
+    }
     else {
       MIRO_LOG(LL_WARNING, "Busy, skipped mutex for reading in ProcessManagerSvc::handle_timeout");
     }
-    
-    return 0;
-  } 
 
-  int 
-  ProcessManagerSvc::handle_exit(ACE_Process *proc) 
+    return 0;
+  }
+
+  int
+  ProcessManagerSvc::handle_exit(ACE_Process *proc)
   {
     if (!m_mutex.acquire_read())
-    { // search process 
+    { // search process
       int id = 0;
       ProcessVector::const_iterator first, last = m_processes.end();
       for (first = m_processes.begin(); first != last; ++first, ++id) {
-        if ((*first)->process == proc) 
+        if ((*first)->process == proc)
           break;
       }
 
@@ -509,9 +509,9 @@ namespace kn
                      rapid::ext::PROCESS_STATE_STOPPED_UNEXPECTEDLY);
       }
       data.options->set_handles(ACE_STDIN);
-      
+
       ACE_exitcode ec = proc->exit_code();
-      
+
       stringstream s;
       stringstream s2;
       if (ec != 0 && ec != 256) {
@@ -522,25 +522,25 @@ namespace kn
         s << "Return value: " << proc->return_value() << endl;
         s2 << "This looks like a clean exit. Congratulations!" << endl;
       }
-      
+
       data.stdOutPipe->addLine(s.str());
       data.stdOutPipe->addLine(s2.str());
-      
+
       data.stdErrPipe->addLine(s.str());
       data.stdErrPipe->addLine(s2.str());
-      
+
       close(data.stdOut);
       close(data.stdErr);
-      
+
       data.stdOut = -1;
       data.stdErr = -1;
-      
+
       delete data.stdOutPipe;
       data.stdOutPipe = 0;
-      
+
       delete data.stdErrPipe;
       data.stdErrPipe = 0;
-      
+
       if (strlen(config.name) == 0) {
         MIRO_LOG_OSTR(LL_NOTICE, "Unnamed process exited (PID=" << proc->getpid() << ")");
       }
@@ -549,7 +549,7 @@ namespace kn
         MIRO_LOG_OSTR(LL_NOTICE,
                       "Process '" << config.name << "' exited (PID=" << proc->getpid() << ", exitcode=" << proc->exit_code() << ")");
       }
-	
+
       /* restart process if no shutdown was requested and restartsOnFailure > 0 */
       if (!data.shutdownRequested &&
           config.restartsOnFailure > 0 &&
@@ -557,8 +557,8 @@ namespace kn
 
         ++data.autoRestartCount;
         /* leave restart count as it is */
-        MIRO_LOG_OSTR(LL_WARNING, 
-                      "Restarting '" << config.name << 
+        MIRO_LOG_OSTR(LL_WARNING,
+                      "Restarting '" << config.name <<
                       " due to abnormal exit', restartCount=" << data.autoRestartCount);
         startProcess(id, true);
       }
@@ -566,16 +566,16 @@ namespace kn
     }
     else
       MIRO_LOG(LL_WARNING, "Busy, skipped mutex for reading in ProcessManagerSvc::handle_exit.");
-  
+
     return 0;
   }
-  
+
   /* support for macros */
   void
-  ProcessManagerSvc::expand(std::string& str) 
+  ProcessManagerSvc::expand(std::string& str)
   {
     size_t pos;
-    
+
     /* $(NAME) is replaces by system name (hostname) */
     while ((pos = str.find("$(NAME)", 0)) != std::string::npos)
       str.replace(pos, 7, Miro::RobotParameters::instance()->name);
@@ -585,10 +585,10 @@ namespace kn
   ProcessManagerSvc::setCommandLine(int id, char const * cmdLine)
   {
     int rc = 0;
-    
+
     ACE_Guard<ACE_Recursive_Thread_Mutex> m_guard(m_mutex);
 
-    if (id < 0 || 
+    if (id < 0 ||
         (int)m_processes.size() <= id ||
         strlen(cmdLine) > 255)
       return -3;
@@ -611,14 +611,14 @@ namespace kn
 
     return rc;
   }
-  
+
   /* start process defined in pi */
   int
-  ProcessManagerSvc::startProcess(int id, bool leaveRestartCounter) 
+  ProcessManagerSvc::startProcess(int id, bool leaveRestartCounter)
   {
     ACE_Guard<ACE_Recursive_Thread_Mutex> m_guard(m_mutex);
 
-    if (id < 0 || 
+    if (id < 0 ||
         (int)m_processes.size() <= id)
       return -3;
 
@@ -631,15 +631,15 @@ namespace kn
         status != rapid::ext::PROCESS_STATE_STOPPED_UNEXPECTEDLY &&
         status != rapid::ext::PROCESS_STATE_KILLED)
       return -2;
-    
+
     string timeString = Miro::timeStringSec();
     string const& logPath = m_params->logPath;
     string logfile    = logPath + "/" + config.name + "-" + timeString + ".cout";
     string errlogfile = logPath + "/" + config.name + "-" + timeString + ".cerr";
-    
-    MIRO_LOG_OSTR(LL_NOTICE, "logfile: " << logfile);	
+
+    MIRO_LOG_OSTR(LL_NOTICE, "logfile: " << logfile);
     MIRO_LOG_OSTR(LL_NOTICE, "errlogfile: " << errlogfile);
-    
+
     // reset line-number count
     data.stdErrPublisher->event().lineNumber = 0;
     data.stdOutPublisher->event().lineNumber = 0;
@@ -666,33 +666,33 @@ namespace kn
     if (!leaveRestartCounter)
       data.autoRestartCount = 0;
     data.pid               = m_processManager->spawn(data.process, *data.options);
-    
+
     MIRO_LOG_OSTR(LL_NOTICE, "Starting '" << config.name << "'");
-    
+
     string loglink = logPath + "/" + config.name + ".log";
     string errloglink = logPath + "/" + config.name + ".err.log";
-    
+
     remove(loglink.c_str());
     remove(errloglink.c_str());
-    
+
     symlink(logfile.c_str(), loglink.c_str());
     symlink(errlogfile.c_str(), errloglink.c_str());
-  
-    updateStatus(status, 
+
+    updateStatus(status,
                  (leaveRestartCounter)?
-                 rapid::ext::PROCESS_STATE_RESTARTING : 
+                 rapid::ext::PROCESS_STATE_RESTARTING :
                  rapid::ext::PROCESS_STATE_STARTING);
     return 0;
   }
-  
-  
+
+
   /* stop process defined in pi, set restart bit to 'restart' */
   int
-  ProcessManagerSvc::stopProcess(int id) 
+  ProcessManagerSvc::stopProcess(int id)
   {
     ACE_Guard<ACE_Recursive_Thread_Mutex> guard(m_mutex);
 
-    if (id < 0 || 
+    if (id < 0 ||
         (int)m_processes.size() <= id)
       return -3;
 
@@ -708,25 +708,25 @@ namespace kn
       updateStatus(status, rapid::ext::PROCESS_STATE_STOPPING);
       data.shutdownRequested = true;
       data.autoRestartCount  = 0;
-      
+
       MIRO_LOG_OSTR(LL_NOTICE,
                     "Stopping '" << config.name << "'");
-      
+
       rc = m_processManager->terminate(data.process->getpid(), SIGTERM);
     }
     else {
       rc = -2;
     }
-    
+
     return rc;
   }
-  
+
   int
-  ProcessManagerSvc::killProcess(int id) 
+  ProcessManagerSvc::killProcess(int id)
   {
     ACE_Guard<ACE_Recursive_Thread_Mutex> guard(m_mutex);
 
-    if (id < 0 || 
+    if (id < 0 ||
         (int)m_processes.size() <= id)
       return -3;
 
@@ -742,14 +742,14 @@ namespace kn
       updateStatus(status, rapid::ext::PROCESS_STATE_KILLED);
       data.shutdownRequested = true;
       data.autoRestartCount  = 0;
-      
+
       rc = m_processManager->terminate(data.process->getpid());
-      
+
       MIRO_LOG_OSTR(LL_NOTICE, "Sent SIGKILL to '" << config.name << "'");
-      
+
       /* killall hack begin */
       //PRINT("Now really killing all instances of " << pi->name << " using killall");
-      
+
       //const ACE_TCHAR *killall[] = { "/usr/bin/killall", pi->name.c_str(), NULL };
       //retrun ACE_OS::fork_exec((ACE_TCHAR **)killall);
       /* killall hack end */

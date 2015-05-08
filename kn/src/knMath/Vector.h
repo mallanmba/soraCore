@@ -19,19 +19,58 @@
 #ifndef knVector_h
 #define knVector_h
 
+// see http://eigen.tuxfamily.org/dox-devel/group__TopicStlContainers.html#vector
+// about std::vector and eigen aligned types
+#include <Eigen/StdVector>
 #include <Eigen/Geometry>
 
 #include <vector>
 
 namespace kn
 {
+  /**
+   * @defgroup knMath Math
+   * @brief The Math module of kn provides a set of typedef's and some helper classes to the Eigen math library.
+   * 
+   * The core idea behind this module is to down-select the vast set of capabilities of Eigen data-types,
+   * to a number of "obviously preferred ones.
+   */
+  
+  /** @ingroup knMath */
   typedef Eigen::Vector3d Vector3;
+  /** @ingroup knMath */
   typedef Eigen::Vector2d Vector2;
+	typedef Eigen::VectorXd Vector;
 
+	typedef Eigen::Vector2i Vector2i;
+	typedef Eigen::Vector3i Vector3i;
+
+  /** @ingroup knMath */
   typedef Eigen::VectorXd MathVectorDouble;      
 
+  /** @ingroup knMath */
   typedef std::vector<Vector2, Eigen::aligned_allocator<Vector2> > Vector2Vector;
+  /** @ingroup knMath */
   typedef std::vector<Vector3, Eigen::aligned_allocator<Vector3> > Vector3Vector;
+
+  //Eigen 3.2+ defines .hasNaN() and .allFinite() (briefly called isFinite), but
+  //until we're using at least that version everywhere, we need our own
+  //To keep life simple, these are defined generically but will only compile
+  //of course on Eigen types
+  template<class VecType>
+    inline bool vectorHasNaN(const VecType &vec)
+    {
+      //cute parallel trick copied from Eigen source: NaN doesn't equal anything
+      return !((vec.array()==vec.array()).all());
+    }
+
+  template<class VecType>
+    inline bool vectorIsFinite(const VecType &vec)
+    {
+      //cute parallel trick copied from Eigen source: inf-inf = nan, nan-nan=nan
+      return !(vectorHasNaN(vec-vec));
+    }
+
 }
 
 #endif // knVector_h

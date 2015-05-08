@@ -10,9 +10,6 @@
 #include "rapidExtArcDds/SpectrumSample.h"
 #include "rapidExtArcDds/SpectrumSampleSupport.h"
 
-#include "rapidExtArcDds/GenericConfig.h"
-#include "rapidExtArcDds/GenericConfigSupport.h"
-
 namespace rapid
 {
   namespace ext
@@ -20,7 +17,6 @@ namespace rapid
     namespace arc
     {
       class SpectrumTopicPairParameters;
-      class HydraTopicPairParameters;
 
       typedef Provider_T<SpectrumConfig, SpectrumSample, SpectrumTopicPairParameters> SpectrumProviderBase;
 

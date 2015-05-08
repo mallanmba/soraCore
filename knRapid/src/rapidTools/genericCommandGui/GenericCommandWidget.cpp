@@ -78,6 +78,11 @@ void GenericCommandWidget::newCommandConfig(const CommandConfig* commandConfig)
   }
 }
 
+//void GenericCommandWidget::newAccessControlState(AccessControlStatePtr acs) 
+//{
+//  std::cerr << "newAccessControlState: " << acs.get() << std::endl;
+//}
+
 void GenericCommandWidget::addSubsystem(const char* ssName, const SubsystemType& ssType)
 {
   QScrollArea* scrollArea;

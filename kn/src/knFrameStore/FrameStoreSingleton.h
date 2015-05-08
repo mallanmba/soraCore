@@ -27,6 +27,12 @@
 
 namespace kn
 {
+  /**
+   * @ingroup knFrameStore
+   * @brief Global framestore instance
+   * 
+   * For historic reasons this is a separate class instead of a data-member of FrameStore.
+   */
   struct knFrameStore_Export FrameStoreSingleton
   {
     static Singleton<kn::FrameStore> instance;

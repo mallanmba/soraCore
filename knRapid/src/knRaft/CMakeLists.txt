@@ -13,20 +13,23 @@ miro_makeparams( RaftParameters.xml )
 set( HEADERS
   ${MIRO_MAKEPARAMS_HEADERS}
   ${EXPORT_FILE}
+  FileAnnouncer.h
   FileQueue.h
   DataPriorityController.h
-  RaftImpl.h
+  RaftSubsysImpl.h
 )
 
 set( SOURCES
   ${MIRO_MAKEPARAMS_SOURCES}
   DataPriorityController.cpp
+  FileAnnouncer.cpp
   FileQueue.cpp
-  RaftImpl.cpp
+  RaftSubsysImpl.cpp
 )
 
 include_directories(
   ${ACE_INCLUDE_DIR}
+  ${IRGUTIL_INCLUDE_DIR}
   ${MIRO_INCLUDE_DIR}
   ${KNDDS_INCLUDE_DIR}
   ${RTIDDS_INCLUDE_DIR}
@@ -42,6 +45,7 @@ link_libraries(
   rapidCommanding
   knFetchPool
   ${RTIDDS_LIBRARIES}
+  ${IRGUTIL_irgSha1_LIBRARY}
 )
 
 add_library(${LIB_NAME} SHARED
@@ -62,18 +66,20 @@ set (CONFIG_FILES
 )
 
 set( TARGETS
- raftFileAnnouncePublisher
  raftFileQueue
+ raftFileReceiver
+ raftFileAnnouncePublisher
 )
 
-foreach( TARGET ${TARGETS} ) 
-  add_executable( ${TARGET} 
+foreach( TARGET ${TARGETS} )
+  add_executable( ${TARGET}
     ${TARGET}.cpp
   )
-endforeach( TARGET ${TARGETS} ) 
+endforeach( TARGET ${TARGETS} )
 
 target_link_libraries( raftFileQueue ${LIB_NAME} )
-target_link_libraries( raftFileAnnouncePublisher ${LIB_NAME} ${IRGUTIL_irgSha1_LIBRARY} )
+target_link_libraries( raftFileReceiver ${LIB_NAME} ${Boost_FILESYSTEM_LIBRARY} )
+target_link_libraries( raftFileAnnouncePublisher ${LIB_NAME} )
 
 install_library( ${LIB_NAME} )
 install_files  ( /include/${DIR_NAME} FILES ${HEADERS} )

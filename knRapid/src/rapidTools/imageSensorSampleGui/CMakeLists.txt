@@ -6,6 +6,7 @@ qt4_wrap_ui( UIC_FILES ${UIC_SOURCES} )
 set(SOURCES 
   RapidImageWidget.cpp
   ImageSensorSampleSubscriber.cpp
+  Opts.cpp
   ${TARGET}.cpp
 )
 

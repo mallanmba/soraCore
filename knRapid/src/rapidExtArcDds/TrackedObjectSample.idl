@@ -1,0 +1,73 @@
+/*
+ * Copyright (c) 2015 United States Government as represented by the
+ * Administrator of the National Aeronautics and Space Administration.
+ * All Rights Reserved.
+ */
+
+#include "Message.idl"
+#include "PointCloudSample.idl"
+
+/**
+ * \file
+ *
+ * \brief TrackedObjectSample 
+ *
+ * \ingroup idlfiles
+ */
+module rapid {
+  module ext {
+    module arc {
+
+    //@copy-c-declaration class TrackedObjectSampleTypeSupport;
+    //@copy-c-declaration class TrackedObjectSampleDataWriter;
+    //@copy-c-declaration class TrackedObjectSampleDataReader;
+    //@copy-c-declaration struct TrackedObjectSampleSeq;
+
+    //@copy-declaration /**
+    //@copy-declaration  * TrackedObjectSample 
+    //@copy-declaration  */
+    valuetype TrackedObjectSample : Message {
+
+        //@copy-c-declaration #if RTI_DDS_VERSION_MAJOR < 4 || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR < 5) || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR  == 5 && RTI_DDS_VERSION_RELEASE != 'f' )
+        //@copy-c-declaration typedef TrackedObjectSampleTypeSupport TypeSupport;
+        //@copy-c-declaration typedef TrackedObjectSampleDataWriter DataWriter;
+        //@copy-c-declaration typedef TrackedObjectSampleDataReader DataReader;
+        //@copy-c-declaration typedef TrackedObjectSampleSeq Seq;
+        //@copy-c-declaration #endif
+        //@copy-c-declaration typedef TrackedObjectSample Type;
+
+        public long        objectId;      //@key
+        
+        //@copy /** reference frame - must be a valid FrameStore frame name*/
+        public String32    refFrame;
+        //@copy-declaration /** 3D pose of the recognized object. TrackedObjectConfig.poseEncoding specifies how to interpret the rotation. */
+        public Transform3D pose;
+        //@copy-declaration /** 3D velocity of the recognized object. TrackedObjectConfig.velocityEncoding specifies how to interpret the rotation. */
+        public Transform3D velocity;
+      
+        public long        boundShape;
+        //@copy-declaration /** Interpretation for params:
+        //@copy-declaration  * TRACKEDOBJECT_BOUND_BOX: extents [0]=X [1]=Y [2]=Z
+        //@copy-declaration  * TRACKEDOBJECT_BOUND_CYLINDER: [0]=Radius in xy [1]=height along z-axis
+        //@copy-declaration  * TRACKEDOBJECT_BOUND_SPHERE: [0]=Radius
+        //@copy-declaration  */
+        public Vec3d       boundParams;
+        
+        //@copy-declaration /** time tracking started */
+        public long long   trackingStart;
+        //@copy-declaration /** time object got current classification */
+        public long long   classificationStart;
+        public long        classification;
+        
+        //@copy-declaration /** 3d points from sensed object  */
+        public Vec3d               pointsScale;
+        public PointSampleSequence points;
+        
+        //@copy-declaration /** Any Agent-specific information needed. */
+        public ValueSequence64 values;
+
+        //TODO: predicted trajectory
+      };
+    };
+  };
+};

@@ -18,15 +18,15 @@ catkin_package(
 else (catkin_FOUND)
   set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
 
-  include( SetArchitecture )
-  include( SetupCTest )
-  include( SetupBuildSwitch )
-  include( SetupConfigureFile )
-  include( SetupInstall )
-  include( SetupRPATH )
-  include( SetupUtilities )
-  include( UserOptions )
-  include( SetupWarnLevel )
+include( SetArchitecture )
+include( SetupBuildSwitch )
+include( SetupConfigureFile )
+include( SetupInstall )
+include( SetupRPATH )
+include( SetupCTest )
+include( SetupWarnLevel )
+include( SetupUtilities )
+include( UserOptions )
 
   ## we have to play some tricks to get install
   ## path to "stick" in Windows

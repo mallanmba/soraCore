@@ -56,7 +56,7 @@
 
     <config_item name="CommandManager" parent="Miro::Config" final="false" instance="false">
       <config_parameter name="dataBus" type="CommandManagerTopicsParameters" />
-      <config_parameter name="requeueMobilityCommand" type="bool" default="false" />
+      <config_parameter name="requeueMobilityCommand" type="bool" default="true" />
       <config_parameter name="autoPurgeQueue" type="bool" default="true" />
       <config_parameter name="queuePurgeCompletedTimeout" type="ACE_Time_Value" default="20" />
       <config_parameter name="accessControl" type="bool" default="true" />

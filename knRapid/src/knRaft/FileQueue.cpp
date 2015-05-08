@@ -40,6 +40,7 @@
 #include "knDds/DdsTypedSupplier.h"
 #include "knDds/DdsTypedConsumer.h"
 
+#include "knShare/Log.h"
 #include "knShare/Thread.h"
 #include "knShare/Chrono.h"
 
@@ -54,6 +55,9 @@
 #include <ace/OS_NS_sys_stat.h>
 #include <ace/OS_NS_sys_mman.h>
 #include <ace/OS_NS_fcntl.h>
+
+#include <QDir>
+#include <QFileInfo>
 
 #include <utility>
 #include <algorithm>
@@ -79,6 +83,9 @@ namespace kn
 {
   using namespace std;
 
+  /**
+   * FileEntryCallback
+   */
   class FileEntryCallback
     : public fetcher::Callback
   {
@@ -166,7 +173,8 @@ namespace kn
   }
 
   bool
-  FileQueue::FileEntry::isFileUri(std::string const& uri) {
+  FileQueue::FileEntry::isFileUri(std::string const& uri)
+  {
     // pull out the scheme
     std::string scheme = uriScheme(uri);
 
@@ -177,7 +185,8 @@ namespace kn
   }
 
   bool
-  FileQueue::FileEntry::isUriSupported(std::string const& uri) {
+  FileQueue::FileEntry::isUriSupported(std::string const& uri)
+  {
     // pull out the scheme
     std::string scheme = uriScheme(uri);
 
@@ -189,7 +198,8 @@ namespace kn
   }
 
   std::string
-  FileQueue::FileEntry::uriScheme(std::string const& uri) {
+  FileQueue::FileEntry::uriScheme(std::string const& uri)
+  {
     // according to rfc3986, the scheme *must* be separated from the
     // rest of the URI by a colon.
     string::size_type pos = uri.find(':');
@@ -210,7 +220,8 @@ namespace kn
   }
 
   std::string
-  FileQueue::FileEntry::uriPath(std::string const& uri) {
+  FileQueue::FileEntry::uriPath(std::string const& uri)
+  {
     // at this point I'm assuming we are dealing with a file uri with an
     // absolute path. hence file://[path]
     string::size_type pos = uri.find("://");
@@ -225,7 +236,8 @@ namespace kn
   }
 
   bool
-  FileQueue::FileEntry::mapFile() {
+  FileQueue::FileEntry::mapFile()
+  {
     // don't map an already mapped file
     if(m_content > 0) return true;
 
@@ -266,7 +278,8 @@ namespace kn
   }
 
   bool
-  FileQueue::FileEntry::unmapFile() {
+  FileQueue::FileEntry::unmapFile()
+  {
     if (m_content <= 0) return true;
 
     int retval = 0;
@@ -279,7 +292,8 @@ namespace kn
   }
 
   bool
-  FileQueue::FileEntry::isLocal() {
+  FileQueue::FileEntry::isLocal()
+  {
     if (isFileUri(m_uri))
       return true;
 
@@ -297,7 +311,8 @@ namespace kn
       if (stat.st_size == m_length) {
         m_localPath = path;
         m_prefetched = true;
-      } else {
+      }
+      else {
         MIRO_LOG_OSTR(LL_ERROR, "FileQueue::FileEntry::islocal: file size " << m_length << " != " << stat.st_size);
       }
     }
@@ -306,7 +321,8 @@ namespace kn
   }
 
   bool
-  FileQueue::FileEntry::ensureExists() {
+  FileQueue::FileEntry::ensureExists()
+  {
     if (isLocal()) {
       ACE_stat stat;
       if (ACE_OS::stat(m_localPath.c_str(), &stat) < 0) {
@@ -320,7 +336,8 @@ namespace kn
   }
 
   bool
-  FileQueue::FileEntry::startPrefetching() {
+  FileQueue::FileEntry::startPrefetching()
+  {
     if (m_prefetched) {
       m_status = rapid::RAPID_FILE_PENDING;
       return true;
@@ -338,17 +355,23 @@ namespace kn
   }
 
   bool
-  FileQueue::FileEntry::cancelPrefetching() {
+  FileQueue::FileEntry::cancelPrefetching()
+  {
     return false;
   }
 
   void
-  FileQueue::FileEntry::prefetchingComplete() {
+  FileQueue::FileEntry::prefetchingComplete()
+  {
     m_status = rapid::RAPID_FILE_PENDING;
     m_statusChanged = true;
     m_prefetched = true;
   }
 
+  /**
+   * ctor
+   */
+  //=================================================================
   FileQueue::FileQueue(FileQueueParameters const * params) :
     m_params(params),
     m_fetchPool(new fetcher::CurlPool(params->fetchPool)), // setup prefetcher pool
@@ -362,8 +385,8 @@ namespace kn
                                                           "",
                                                           "RapidFileQueueStateProfile")),
     m_fileQueueSamplePublisher(new FileQueueSamplePublisher(rapid::FILEQUEUE_SAMPLE_TOPIC,
-                  "",
-                  "RapidFileQueueSampleProfile")),
+                                                            "",
+                                                            "RapidFileQueueSampleProfile")),
     m_fileQueueEntryStatePublisher(new FileQueueEntryStatePublisher(rapid::FILEQUEUEENTRY_STATE_TOPIC,
                                                                     "",
                                                                     "RapidFileQueueEntryStateProfile")),
@@ -434,8 +457,27 @@ namespace kn
     // initialize flow-controller
     m_bandwidth = params->bandwidth;
     setFlowControllerThroughput();
+
+    // make sure stateDirectory exists
+    {
+      QFileInfo info(m_params->stateDirectory.c_str());
+      if(!info.exists()) {
+        QDir dir;
+        if(!dir.mkpath(m_params->stateDirectory.c_str())) {
+          KN_ERROR("failed to create stateDirectory \"%s\"", m_params->stateDirectory.c_str());
+        }
+      }
+      else {
+        if(!info.isDir()) {
+          KN_ERROR("stateDirectory is \"%s\", but that is not a valid directory", m_params->stateDirectory.c_str());
+        }
+      }
+    }
   }
 
+  /**
+   * dtor
+   */
   FileQueue::~FileQueue() throw()
   {
     delete m_dataPriorityController;
@@ -462,6 +504,16 @@ namespace kn
 
   //-----------------------------------------------
   // file queue interface
+
+  /**
+   * put file into queue
+   * @returns 0 if OK
+   * @returns 1 if file was not put onto queue because it has already been sent
+   * @returns -1 if channel is invalid
+   * @returns -2 if fileUuid is invalid
+   * @returns -3 if URL scheme is unsupported (only "file" is supported)
+   * @returns -4 if file cannot be read
+   */
   int
   FileQueue::putFile(std::string const& fileUuid, ACE_INT16 channel, float priority)
   {
@@ -492,8 +544,7 @@ namespace kn
       // make sure this is a supported uri
       std::string scheme = FileEntry::uriScheme(i->second.uri);
 
-      if (scheme != "file" && !m_fetchPool->schemeSupported(scheme))
-      {
+      if (scheme != "file" && !m_fetchPool->schemeSupported(scheme)) {
         return -3;
       }
 
@@ -507,7 +558,8 @@ namespace kn
         }
 
         if (checkFileSent(fileUuid)) {
-          return 0;
+          delete entry;
+          return 1;
         }
       }
     }
@@ -523,6 +575,9 @@ namespace kn
     return 0;
   }
 
+  /**
+   * putMatching
+   */
   int
   FileQueue::putMatching(std::string const& key, std::string const& value, ACE_INT16 channel, float priority)
   {
@@ -545,6 +600,9 @@ namespace kn
     return 0;
   }
 
+  /**
+   * removeFile
+   */
   int
   FileQueue::removeFile(std::string const& fileUuid)
   {
@@ -575,6 +633,9 @@ namespace kn
     return rc;
   }
 
+  /**
+   * pause
+   */
   int
   FileQueue::pause(ACE_INT16 channel)
   {
@@ -603,6 +664,9 @@ namespace kn
     return 0;
   }
 
+  /**
+   * resume
+   */
   int
   FileQueue::resume(ACE_INT16 channel)
   {
@@ -633,6 +697,9 @@ namespace kn
     return 0;
   }
 
+  /**
+   * setBandwidth
+   */
   int
   FileQueue::setBandwidth(ACE_INT32 bandwidth, ACE_INT32 prefetchBandwidth)
   {
@@ -645,7 +712,9 @@ namespace kn
     return 0;
   }
 
-
+  /**
+   * setFlowControllerThroughput
+   */
   void
   FileQueue::setFlowControllerThroughput()
   {
@@ -715,7 +784,11 @@ namespace kn
     //     }
   }
 
-  void FileQueue::markFileSent(std::string uuid) {
+  /**
+   *
+   */
+  void FileQueue::markFileSent(std::string uuid)
+  {
     string state_path = m_params->stateDirectory + std::string("/") + uuid;
     ACE_HANDLE fd = ACE_OS::open(state_path.c_str(), O_WRONLY | O_CREAT);
     if (fd < 0) {
@@ -732,20 +805,26 @@ namespace kn
     return;
   }
 
-  bool FileQueue::checkFileSent(std::string uuid) {
+  /**
+   *
+   */
+  bool FileQueue::checkFileSent(std::string uuid)
+  {
     // see if we sent it before
     string state_path = m_params->stateDirectory + std::string("/") + uuid;
     ACE_stat stat;
     if (ACE_OS::stat(state_path.c_str(), &stat) >= 0) {
-      MIRO_LOG_OSTR(LL_DEBUG, "FileQueue::putFile: not queueing " << uuid << ": already sent");
+      MIRO_LOG_OSTR(LL_DEBUG, "FileQueue::putFile: not queueing " << uuid << ": already sent according to " << m_params->stateDirectory);
       return true;
     }
-
     return false;
   }
 
   //-----------------------------------------------
   // ace task base interface
+  /**
+   *
+   */
   int
   FileQueue::svc()
   {
@@ -776,32 +855,32 @@ namespace kn
         FileQueue::MetadataMap metaData;
         for (DDS_Long i = 0; i < announceSample.metaData.length(); ++i) {
           rapid::KeyTypeValueTriple & triplet = announceSample.metaData[i];
-          
+
           stringstream value;
           switch (triplet.value._d) {
-          case rapid::RAPID_STRING:
-            value << triplet.value._u.s;
-            break;
-          case rapid::RAPID_DOUBLE:
-            value << triplet.value._u.d;
-            break;
-          case rapid::RAPID_FLOAT:
-            value << triplet.value._u.f;
-            break;
-          case rapid::RAPID_INT:
-            value << triplet.value._u.i;
-            break;
-          case rapid::RAPID_BOOL:
-            value << triplet.value._u.b;
-            break;
-          case rapid::RAPID_VEC3d:
-          case rapid::RAPID_MAT33f:
-            value << "FileQueue: Unsupported meta-data type for field: " << triplet.key;
-            MIRO_LOG(LL_ERROR, value.str().c_str());
-            break;
-          case rapid::RAPID_LONGLONG:
-            value << triplet.value._u.ll;
-            break;
+            case rapid::RAPID_STRING:
+              value << triplet.value._u.s;
+              break;
+            case rapid::RAPID_DOUBLE:
+              value << triplet.value._u.d;
+              break;
+            case rapid::RAPID_FLOAT:
+              value << triplet.value._u.f;
+              break;
+            case rapid::RAPID_INT:
+              value << triplet.value._u.i;
+              break;
+            case rapid::RAPID_BOOL:
+              value << triplet.value._u.b;
+              break;
+            case rapid::RAPID_VEC3d:
+            case rapid::RAPID_MAT33f:
+              value << "FileQueue: Unsupported meta-data type for field: " << triplet.key;
+              MIRO_LOG(LL_ERROR, value.str().c_str());
+              break;
+            case rapid::RAPID_LONGLONG:
+              value << triplet.value._u.ll;
+              break;
           }
           metaData.insert(make_pair(string(triplet.key), value.str()));
         }
@@ -820,7 +899,8 @@ namespace kn
             // republish
             m_fileAnnouncePublisher->sendEvent(announceSample);
           }
-        } else {
+        }
+        else {
           MIRO_LOG_OSTR(LL_NOTICE, "duplicate file announce: " << sample.fileUuid);
         }
       }
@@ -932,8 +1012,7 @@ namespace kn
 
           // a file needs prefetching
           if (oldStatus == rapid::RAPID_FILE_PREFETCH_PENDING &&
-              m_fetchPool->fetcherFree())
-          {
+              m_fetchPool->fetcherFree()) {
             first->second->startPrefetching();
             if (oldStatus != first->second->status())
               sendFileQueueEntryState(first);
@@ -944,8 +1023,7 @@ namespace kn
           // if we are not prefetching a file...
           else if (oldStatus != rapid::RAPID_FILE_ERROR &&
                    oldStatus != rapid::RAPID_FILE_PREFETCHING &&
-                   oldStatus != rapid::RAPID_FILE_PREFETCH_PENDING)
-          {
+                   oldStatus != rapid::RAPID_FILE_PREFETCH_PENDING) {
             int retval = first->second->getNextPacket(sample);
 
             // Status has changed OR number of chunks is on an interval of 100
@@ -984,7 +1062,8 @@ namespace kn
               channel.queue.erase(i);
               i = tmp;
               changed = true;
-            } else {
+            }
+            else {
               ++i;
             }
           }
@@ -1007,16 +1086,18 @@ namespace kn
     return 0;
   }
 
-  // Go through the channels. If any of them are active, return true.
-  // Returning false means they are all inactive.
+  /**
+   * Go through the channels. If any of them are active, return true.
+   * Returning false means they are all inactive.
+   */
   bool
-  FileQueue::anyChannelActive() {
+  FileQueue::anyChannelActive()
+  {
     ACE_Guard<ACE_Recursive_Thread_Mutex> guard(m_mutex);
 
     for (ChannelVector::iterator i = m_channels.begin();
          i != m_channels.end();
-         ++i)
-    {
+         ++i) {
       if (i->active)
         return true;
     }
@@ -1024,16 +1105,18 @@ namespace kn
     return false;
   }
 
-  // Go through the channels. If any of the channels are not empty, return true.
-  // Returning false means all of the channels are empty.
+  /**
+   * Go through the channels. If any of the channels are not empty, return true.
+   * Returning false means all of the channels are empty.
+   */
   bool
-  FileQueue::anyChannelNotEmpty() {
+  FileQueue::anyChannelNotEmpty()
+  {
     ACE_Guard<ACE_Recursive_Thread_Mutex> guard(m_mutex);
 
     for (ChannelVector::iterator i = m_channels.begin();
          i != m_channels.end();
-         ++i)
-    {
+         ++i) {
       // channel has stuff in it
       if (!i->queue.empty())
         return true;
@@ -1042,6 +1125,9 @@ namespace kn
     return false;
   }
 
+  /**
+   *
+   */
   bool
   FileQueue::addFileRefEntry(std::string const& uuid,
                              std::string const& uri, ACE_INT64 length, MetadataMap const & map)
@@ -1054,7 +1140,9 @@ namespace kn
     return original;
   }
 
-
+  /**
+   *
+   */
   void
   FileQueue::sendFileQueueState()
   {
@@ -1081,6 +1169,9 @@ namespace kn
     m_fileQueueStatePublisher->sendEvent();
   }
 
+  /**
+   *
+   */
   void
   FileQueue::sendFileQueueEntryState(ChannelPQueue::const_iterator queueEntry)
   {
@@ -1101,6 +1192,9 @@ namespace kn
     m_fileQueueEntryStatePublisher->sendEvent();
   }
 
+  /**
+   *
+   */
   void
   FileQueue::dump(std::ostream& ostr)
   {

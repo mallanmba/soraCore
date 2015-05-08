@@ -29,43 +29,43 @@ namespace kn
   FrameStore::~FrameStore() throw()
   {
     // delete all frames
-    FrameTreeNodeVector::const_iterator first, last = m_root_nodes.end();
-    for (first = m_root_nodes.begin(); first != last; ++first) {
-      (*first)->recursive_delete();
+    FrameTreeNodeVector::const_iterator first, last = m_rootNodes.end();
+    for (first = m_rootNodes.begin(); first != last; ++first) {
+      (*first)->recursiveDelete();
     }
   }
 
   void
-  FrameStore::clone_tree(FrameTree & tree, FrameHandle rootFrame) const
+  FrameStore::cloneTree(FrameTree & tree, FrameHandle rootFrame) const
   {
     lock_guard<mutex> guard(m_mutex);
 
     tree.clear();
     if (rootFrame.node == NULL) {
       int num_nodes = 0;
-      FrameTreeNodeVector::const_iterator first, last = m_root_nodes.end();
-      for (first = m_root_nodes.begin(); first != last; ++first) {
-        num_nodes += (*first)->num_offsprings() + 1;
+      FrameTreeNodeVector::const_iterator first, last = m_rootNodes.end();
+      for (first = m_rootNodes.begin(); first != last; ++first) {
+        num_nodes += (*first)->numOffsprings() + 1;
       }
       tree.reserve(num_nodes);
     }
     else {
-      tree.reserve(rootFrame.node->num_offsprings() + 1);
+      tree.reserve(rootFrame.node->numOffsprings() + 1);
     }
 
     if (rootFrame.node == NULL) {
-      FrameTreeNodeVector::const_iterator first, last = m_root_nodes.end();
-      for (first = m_root_nodes.begin(); first != last; ++first) {
-        (*first)->clone_vec(NULL, tree);
+      FrameTreeNodeVector::const_iterator first, last = m_rootNodes.end();
+      for (first = m_rootNodes.begin(); first != last; ++first) {
+        (*first)->cloneVec(NULL, tree);
       }
     }
     else {
-      rootFrame.node->clone_vec(NULL, tree);
+      rootFrame.node->cloneVec(NULL, tree);
     }
   }
 
   FrameTreeNode *
-  FrameStore::clone_tree(FrameHandle rootFrame) const
+  FrameStore::cloneTree(FrameHandle rootFrame) const
   {
     lock_guard<mutex> guard(m_mutex);
 
@@ -87,7 +87,7 @@ namespace kn
   }
 
   std::string
-  FrameStore::full_name(FrameHandle frame) const
+  FrameStore::fullName(FrameHandle frame) const
   {
     lock_guard<mutex> guard(m_mutex);
 
@@ -105,7 +105,7 @@ namespace kn
   }
 
   Frame::Extras *
-  FrameStore::get_extras(FrameHandle frame) const
+  FrameStore::getExtras(FrameHandle frame) const
   {
     lock_guard<mutex> guard(m_mutex);
 
@@ -117,14 +117,14 @@ namespace kn
   }
 
   void
-  FrameStore::set_extras(FrameHandle frame, Frame::Extras * extras)
+  FrameStore::setExtras(FrameHandle frame, Frame::Extras * extras)
   {
     lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
 
-    frame.node->data().set_extras(extras);
+    frame.node->data().setExtras(extras);
   }
 
 
@@ -136,8 +136,8 @@ namespace kn
         !name.empty() && name[0] != '/') {
       // try to explicitly resolve the root frames
       string searchName = "/" + name;
-      FrameTreeNodeVector::const_iterator first, last = m_root_nodes.end();
-      for (first = m_root_nodes.begin(); first != last; ++first) {
+      FrameTreeNodeVector::const_iterator first, last = m_rootNodes.end();
+      for (first = m_rootNodes.begin(); first != last; ++first) {
         FrameTreeNode * node = kn::lookup(*first, searchName);
 
         if (node != NULL)
@@ -156,8 +156,8 @@ namespace kn
 
     if (scope == NULL ||
         (!searchName.empty() && searchName[0] == '/')) {
-      FrameTreeNodeVector::const_iterator first, last = m_root_nodes.end();
-      for (first = m_root_nodes.begin(); first != last; ++first) {
+      FrameTreeNodeVector::const_iterator first, last = m_rootNodes.end();
+      for (first = m_rootNodes.begin(); first != last; ++first) {
         FrameTreeNode * node = kn::lookup(*first, searchName);
 
         if (node != NULL)
@@ -197,7 +197,7 @@ namespace kn
   }
 
   std::vector<std::string>
-  FrameStore::frame_names() const
+  FrameStore::frameNames() const
   {
     lock_guard<mutex> guard(m_mutex);
 
@@ -205,9 +205,9 @@ namespace kn
 
     Nothing n;
     Append app(names);
-    FrameTreeNodeVector::const_iterator first, last = m_root_nodes.end();
-    for (first = m_root_nodes.begin(); first != last; ++first) {
-      (*first)->pre_order_traverse(app, n, n);
+    FrameTreeNodeVector::const_iterator first, last = m_rootNodes.end();
+    for (first = m_rootNodes.begin(); first != last; ++first) {
+      (*first)->preOrderTraverse(app, n, n);
     }
 
     return names;
@@ -236,17 +236,13 @@ namespace kn
     return frame.node->root();
   }
 
-  /**
-   * Get the list of direct children of a frame.
-   * @param frame
-   */
   FrameStore::FrameHandleVector
   FrameStore::children(FrameHandle frame) const
   {
     lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL) {
-      return FrameHandleVector(m_root_nodes.begin(), m_root_nodes.end());
+      return FrameHandleVector(m_rootNodes.begin(), m_rootNodes.end());
     }
 
     FrameTreeNodeVector c = frame.node->children();
@@ -273,23 +269,23 @@ namespace kn
 
     if (node == NULL)
       throw std::invalid_argument("NULL pointer not allowed as node parameter.");
-    if (is_member(node))
+    if (isMember(node))
       throw std::logic_error("Node already member of FrameStore instance.");
 
     auto_ptr<FrameTreeNode> n(node);
 
     if (node->data().name().empty())
       throw std::invalid_argument("None empty frame name required.");
-    if (!(parent.node == NULL || is_member(parent.node)))
+    if (!(parent.node == NULL || isMember(parent.node)))
       throw std::logic_error("None member node not allowed as parent.");
 
     // check frame name uniqueness
-    assert_unique(node->data().name(), parent.node);
+    assertUnique(node->data().name(), parent.node);
 
     if (parent.node == NULL)
-      m_root_nodes.push_back(node);
+      m_rootNodes.push_back(node);
 
-    node->set_parent(parent.node);
+    node->setParent(parent.node);
 
     n.release();
   }
@@ -304,21 +300,21 @@ namespace kn
 
     // erase the node from root node vector, if root node
     FrameTreeNodeVector::iterator elem =
-      std::find(m_root_nodes.begin(), m_root_nodes.end(), frame.node);
-    if (elem != m_root_nodes.end())
-      m_root_nodes.erase(elem);
+      std::find(m_rootNodes.begin(), m_rootNodes.end(), frame.node);
+    if (elem != m_rootNodes.end())
+      m_rootNodes.erase(elem);
 
     if (frame.node != NULL) {
       if (recursive) {
         // delete subtree
-        frame.node->recursive_delete();
+        frame.node->recursiveDelete();
         // decrease global node count
       }
       else {
         // safe children
         FrameTreeNodeVector children = frame.node->children();
         // insert child nodes into root-node vector
-        m_root_nodes.insert(m_root_nodes.end(), children.begin(), children.end());
+        m_rootNodes.insert(m_rootNodes.end(), children.begin(), children.end());
         // delete frame
         delete frame.node;
         // we deleted only one node
@@ -327,60 +323,60 @@ namespace kn
   }
 
   void
-  FrameStore::set_parent(FrameHandle frame, FrameHandle parent)
+  FrameStore::setParent(FrameHandle frame, FrameHandle parent)
   {
     lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
 
-    if (!(parent.node == NULL || is_member(parent.node)))
+    if (!(parent.node == NULL || isMember(parent.node)))
       throw std::logic_error("None member node not allowed as parent.");
 
     // don't do anything if old and new parent are the same
     if (frame.node->parent() == parent.node)
       return;
 
-    assert_unique(frame.node->data().name(), parent.node);
+    assertUnique(frame.node->data().name(), parent.node);
 
     // if root node, delete there
     FrameTreeNodeVector::iterator node =
-      find(m_root_nodes.begin(), m_root_nodes.end(), frame.node);
-    if (node != m_root_nodes.end()) {
-      m_root_nodes.erase(node);
+      find(m_rootNodes.begin(), m_rootNodes.end(), frame.node);
+    if (node != m_rootNodes.end()) {
+      m_rootNodes.erase(node);
     }
 
-    frame.node->set_parent(parent.node);
+    frame.node->setParent(parent.node);
 
     if (parent.node == 0) {
-      m_root_nodes.push_back(frame.node);
+      m_rootNodes.push_back(frame.node);
     }
   }
 
   bool
-  FrameStore::is_root(FrameHandle frame) const
+  FrameStore::isRoot(FrameHandle frame) const
   {
     lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
 
-    return frame.node->is_root();
+    return frame.node->isRoot();
   }
 
   bool
-  FrameStore::is_leaf(FrameHandle frame) const
+  FrameStore::isLeaf(FrameHandle frame) const
   {
     lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
 
-    return frame.node->is_leaf();
+    return frame.node->isLeaf();
   }
 
   bool
-  FrameStore::is_ancestor_of(FrameHandle frame, FrameHandle pop) const
+  FrameStore::isAncestorOf(FrameHandle frame, FrameHandle pop) const
   {
     lock_guard<mutex> guard(m_mutex);
 
@@ -388,11 +384,11 @@ namespace kn
       throw std::invalid_argument("NULL handle not allowed as parameter.");
 
 
-    return frame.node->is_ancestor_of(pop.node);
+    return frame.node->isAncestorOf(pop.node);
   }
 
   ATrans3
-  FrameStore::get_transform_of(FrameHandle frame, FrameHandle source, ATrans3 const& trans)
+  FrameStore::getTransformOf(FrameHandle frame, FrameHandle source, ATrans3 const& trans)
   {
     lock_guard<mutex> guard(m_mutex);
 
@@ -400,92 +396,92 @@ namespace kn
       throw std::invalid_argument("NULL handle not allowed as parameter.");
 
 
-    return kn::get_transform_of(frame.node, source.node, trans);
+    return kn::getTransformOf(frame.node, source.node, trans);
   }
 
   Vector3
-  FrameStore::get_position_of(FrameHandle frame, FrameHandle source, Vector3 const& trans)
+  FrameStore::getPositionOf(FrameHandle frame, FrameHandle source, Vector3 const& trans)
   {
     lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL || source.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
 
-    return kn::get_transform(frame.node, source.node) * trans;
+    return kn::getTransform(frame.node, source.node) * trans;
   }
 
   ATrans3
-  FrameStore::get_transform(FrameHandle frame, FrameHandle source)
+  FrameStore::getTransform(FrameHandle frame, FrameHandle source)
   {
     lock_guard<mutex> guard(m_mutex);
 
     if (source.node == NULL)
       std::logic_error("NULL handle not allowed as source parameter.");
 
-    return kn::get_transform(frame.node, source.node);
+    return kn::getTransform(frame.node, source.node);
   }
 
   void
-  FrameStore::set_transform(FrameHandle frame, FrameHandle wrt_frame, ATrans3 const& update)
+  FrameStore::setTransform(FrameHandle frame, FrameHandle wrt_frame, ATrans3 const& update)
   {
     lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
 
-    kn::set_transform(frame.node, wrt_frame.node, update);
+    kn::setTransform(frame.node, wrt_frame.node, update);
   }
 
   void
-  FrameStore::set_transform_rel(FrameHandle frame, ATrans3 const& update)
+  FrameStore::setTransformRel(FrameHandle frame, ATrans3 const& update)
   {
     lock_guard<mutex> guard(m_mutex);
 
     if (frame.node == NULL)
       throw std::invalid_argument("NULL handle not allowed as parameter.");
 
-    kn::set_transform(frame.node, NULL, update);
+    kn::setTransform(frame.node, NULL, update);
   }
 
   bool
-  FrameStore::is_member(FrameHandle frame) const throw()
+  FrameStore::isMember(FrameHandle frame) const throw()
   {
     lock_guard<mutex> guard(m_mutex);
-    return is_member(frame.node);
+    return isMember(frame.node);
   }
 
   bool
-  FrameStore::merge_tree(FrameTreeNode * tree, FrameHandle start_frame)
+  FrameStore::mergeTree(FrameTreeNode * tree, FrameHandle start_frame)
   {
-    if (is_member(tree))
+    if (isMember(tree))
       throw std::logic_error("Merged tree must not yet be member of the FrameStore.");
 
     // if a start node is given for mergin
     if (start_frame != NULL) {
       if (tree->data().name() != start_frame.node->data().name())
         throw std::logic_error("Tree root node does not match start node.");
-      kn::merge_frame_trees(tree, start_frame.node);
-      tree->recursive_delete();
+      kn::mergeFrameTrees(tree, start_frame.node);
+      tree->recursiveDelete();
       return true;
     }
 
     // try to match one of the root nodes and merge with it
-    FrameTreeNodeVector::const_iterator first, last = m_root_nodes.end();
-    for (first = m_root_nodes.begin(); first != last; ++first) {
+    FrameTreeNodeVector::const_iterator first, last = m_rootNodes.end();
+    for (first = m_rootNodes.begin(); first != last; ++first) {
       if ((*first)->data().name() == tree->data().name()) {
-        kn::merge_frame_trees(*first, tree);
-        tree->recursive_delete();
+        kn::mergeFrameTrees(*first, tree);
+        tree->recursiveDelete();
         return true;
       }
     }
 
     // just add the tree to the forest
-    m_root_nodes.push_back(tree);
+    m_rootNodes.push_back(tree);
     return false;
   }
 
   void
-  FrameStore::get_frame_transforms(FrameHandleVector const& frames, ATrans3Vector& transforms) const
+  FrameStore::getFrameTransforms(FrameHandleVector const& frames, ATrans3Vector& transforms) const
   {
     transforms.clear();
     transforms.reserve(frames.size());
@@ -498,7 +494,7 @@ namespace kn
   }
 
   void
-  FrameStore::set_frame_transforms(FrameHandleVector const& frames, ATrans3Vector const& transforms)
+  FrameStore::setFrameTransforms(FrameHandleVector const& frames, ATrans3Vector const& transforms)
   {
     if (frames.size() != transforms.size())
       std::invalid_argument("Parameter vectors not of same size.");
@@ -507,18 +503,18 @@ namespace kn
     FrameHandleVector::const_iterator first, last = frames.end();
     ATrans3Vector::const_iterator trans = transforms.begin();
     for (first = frames.begin(); first != last; ++first, ++trans) {
-      first->node->data().set_transform(*trans);
+      first->node->data().setTransform(*trans);
     }
   }
 
   bool
-  FrameStore::is_member(FrameTreeNode * node) const throw()
+  FrameStore::isMember(FrameTreeNode * node) const throw()
   {
     if (node != NULL) {
-      FrameTreeNodeVector::const_iterator first, last = m_root_nodes.end();
-      for (first = m_root_nodes.begin(); first != last; ++first) {
+      FrameTreeNodeVector::const_iterator first, last = m_rootNodes.end();
+      for (first = m_rootNodes.begin(); first != last; ++first) {
         if ((*first) == node ||
-            (*first)->is_ancestor_of(node))
+            (*first)->isAncestorOf(node))
           return true;
       }
     }
@@ -527,7 +523,7 @@ namespace kn
 
   // check name uniqueness
   void
-  FrameStore::assert_unique(std::string const& name, FrameTreeNode * parent) const
+  FrameStore::assertUnique(std::string const& name, FrameTreeNode * parent) const
   {
     char const * const childError = "Name not unique as child node.";
     char const * const rootError = "Name not unique as root node.";
@@ -537,8 +533,8 @@ namespace kn
     FrameTreeNodeVector::const_iterator first, last;
 
     if (parent == NULL) {
-      first = m_root_nodes.begin();
-      last = m_root_nodes.end();
+      first = m_rootNodes.begin();
+      last = m_rootNodes.end();
       err = rootError;
     }
     else {

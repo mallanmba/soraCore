@@ -48,12 +48,12 @@ namespace rapid
       if (s_verbose > 1) {
         cout << event->hdr << endl;
       }
-      cout << "image sensor: " << event->meta.sensorName << endl
-           << "time: " 
+      cout << "sensorName: " << event->meta.sensorName << endl
+           << "timeStamp: " 
            << rapid::RapidHelper::rapidTime2AceTimeValue(event->hdr.timeStamp)
            << endl
            << "now:  " << ACE_OS::gettimeofday() << endl
-           << "image type: " << event->mimeType << endl
+           << "mimeType: " << event->mimeType << endl
            << "image size: " << event->data.length() << endl;
 
       if (s_verbose > 2) {

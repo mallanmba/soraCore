@@ -60,7 +60,7 @@
       <config_parameter name="publishers" type="std::vector&lt;DdsNodeParameters&gt;" default="1" />
       <config_parameter name="subscribers" type="std::vector&lt;DdsNodeParameters&gt;" default="1" />
       <config_parameter name="topics" type="std::vector&lt;DdsTopicParameters&gt;" />
-      <config_parameter name="enableDistLogger" type="bool" default="true" doc="enable RTI Distributed Logger" />
+      <config_parameter name="enableDistLogger" type="bool" default="false" doc="enable RTI Distributed Logger" />
       <config_parameter name="distLoggerDomainId" type="int" default="-1" />
       <constructor>
         configFiles.push_back("RAPID_QOS_PROFILES.xml");

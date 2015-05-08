@@ -7,7 +7,9 @@
 #include <boost/thread.hpp>
 #endif
 
-/** @file C++ 11 transition header.
+/**
+ * @ingroup cpp11
+ * @file ConditionVariable.h C++ 11 transition header.
  * 
  * Boost thead is a good standin for the condition_variable header of the 
  * soon to be well supported C++11 standard. To minimize the 

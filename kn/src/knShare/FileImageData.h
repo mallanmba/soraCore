@@ -6,6 +6,7 @@
 
 namespace kn
 {
+  /** @ingroup knShare */
   class knShare_Export FileImageData : public MemImageData
   {
     // no locks here because frame won't change once it's captured, and we

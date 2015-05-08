@@ -26,7 +26,7 @@ namespace kn
   using namespace std;
 
   ATrans3
-  get_transform(FrameTreeNode const * target, FrameTreeNode const * source)
+  getTransform(FrameTreeNode const * target, FrameTreeNode const * source)
   {
     ATrans3 loc = ATrans3::Identity();
 
@@ -37,7 +37,7 @@ namespace kn
 
       if (target != source) {
 
-        FrameTreeNode const * ancestor = target->last_common_ancestor(source);
+        FrameTreeNode const * ancestor = target->lastCommonAncestor(source);
 
         if (ancestor != NULL) {
           // from the origin frame to the ancestor
@@ -86,15 +86,15 @@ namespace kn
   }
 
   void
-  merge_frame_trees(FrameTreeNode * target_tree, FrameTreeNode * source_tree)
+  mergeFrameTrees(FrameTreeNode * targetTree, FrameTreeNode * sourceTree)
   {
-    if (target_tree->data().name() != source_tree->data().name())
+    if (targetTree->data().name() != sourceTree->data().name())
       return;
 
-    FrameTreeNode::NodeVector src_children = source_tree->children();
+    FrameTreeNode::NodeVector src_children = sourceTree->children();
 
     if (src_children.size() > 0) {
-      FrameTreeNode::NodeVector tgt_children = target_tree->children();
+      FrameTreeNode::NodeVector tgt_children = targetTree->children();
 
       FtnLess less;
       sort(src_children.begin(), src_children.end(), less);
@@ -110,10 +110,10 @@ namespace kn
 
         if (tgt_iter == tgt_children.end() ||
             (*first)->data().name() < (*tgt_iter)->data().name()) {
-          (*first)->set_parent(target_tree);
+          (*first)->setParent(targetTree);
         }
         else if ((*first)->data().name() == (*tgt_iter)->data().name()) {
-          merge_frame_trees(*tgt_iter, *first);
+          mergeFrameTrees(*tgt_iter, *first);
         }
       }
 
@@ -181,7 +181,7 @@ namespace kn
             if (n != NULL)
               return n;
 
-            nodes.front()->copy_children(iter);
+            nodes.front()->copyChildren(iter);
             nodes.pop_front();
           }
 

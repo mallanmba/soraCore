@@ -83,7 +83,8 @@
     <config_item name="GpsConfig" parent="Message" final="false" >
       <config_parameter name="sensorFrame" type="string" default="GpsAntenna" />
       <config_parameter name="referenceFrame" type="string" default="" />
-      <config_parameter name="elipsoid" type="string" default="WGS-84" />
+      <config_parameter name="datum" type="string" default="WGS-84" />
+      <config_parameter name="undulationDatum" type="string" default="EGM-96" />
     </config_item>
     <config_item name="GpsTopicPair" parent="TopicPair" final="false" >
       <config_parameter name="configProfile" inherited="true" type="string" default="RapidGpsConfigProfile" />
@@ -91,13 +92,16 @@
       <config_parameter name="config" type="GpsConfigParameters" />
     </config_item>
 
+    <config_item name="HydraConfig" parent="Message" final="false">
+      <config_parameter name="name" type="string"/>
+      <config_parameter name="valueKeys" type="vector&lt;KeyTypeValue&gt;"/>
+    </config_item>
 
-     <config_item name="HydraTopicPair" parent="GenericTopicPair" final="false">
-      <constructor>
-          config.category = "ScienceInstrument";
-      </constructor>
-     </config_item>
-
+   <config_item name="HydraTopicPair" parent="TopicPair" final="false">
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidConfigQos" />
+      <config_parameter name="dataProfile" inherited="true" type="string" default="RapidSampleQos" />
+      <config_parameter name="config" type="HydraConfigParameters"/>
+    </config_item>
 
     <config_item name="MobilitySampleTopic" parent="kn::DdsLeaf" final="false" instance="false">
       <config_parameter name="profile" type="string" default="RapidSampleQos" inherited="true" />
@@ -131,5 +135,17 @@
       <config_parameter name="config" type="StateMachineConfigParameters" />
     </config_item>
 
+    <config_item name="TrackedObjectConfig" parent= "Message" final = "false">
+        <config_parameter name="poseEncoding"     type="int" default="1"/>
+        <config_parameter name="velocityEncoding" type="int" default="0" />
+        <config_parameter name="classifications"  type="vector&lt;std::string&gt;"/>
+        <config_parameter name="valueKeys"        type="vector&lt;KeyTypeValue&gt;"/>
+    </config_item>
+    <config_item name="TrackedObjectTopicPair" parent = "TopicPair" final = "false">
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidConfigQos" />
+      <config_parameter name="dataProfile"   inherited="true" type="string" default="RapidReliableDurableQos" />
+      <config_parameter name="config" type="TrackedObjectConfigParameters"/>
+    </config_item>
+    
   </config_group>
 </config>

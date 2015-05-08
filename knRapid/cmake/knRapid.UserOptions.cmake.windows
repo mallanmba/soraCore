@@ -6,15 +6,15 @@
 
 set( PACKAGES_DIR "C:/devel"   )
 
-set( MIRO_ROOT_DIR        ${PACKAGES_DIR}/Miro-3.1.2-${ARCH_COMPILER} )
-set( JSONCPP_ROOT_DIR     ${PACKAGES_DIR}/jsoncpp-${ARCH_COMPILER} )
-set( PTHREADS_ROOT_DIR    ${PACKAGES_DIR}/pthreads-2.8.0-${ARCH_COMPILER} )
-
-set( EIGEN3_ROOT_DIR      ${PACKAGES_DIR}/Eigen-3.2.0 )
+set_unless_env( PTHREADS_ROOT_DIR    PTHREADS_ROOT ${PACKAGES_DIR}/pthreads-2.8.0-${ARCH_COMPILER} )
+set_unless_env( MIRO_ROOT_DIR        MIRO_ROOT     ${PACKAGES_DIR}/Miro-3.2.0-${ARCH_COMPILER} )
+set_unless_env( JSONCPP_ROOT_DIR     JSONCPP_ROOT  ${PACKAGES_DIR}/jsoncpp-${ARCH_COMPILER} )
+set_unless_env( OPENCV_ROOT_DIR      OPENCV_ROOT   ${PACKAGES_DIR}/OpenCV-2.3.1-${ARCH_COMPILER} )
+set_unless_env( EIGEN3_ROOT_DIR      EIGEN3_ROOT   ${PACKAGES_DIR}/Eigen-3.2.0 )
 ## http://eigen.tuxfamily.org/bz/show_bug.cgi?id=83
 add_definitions(-DEIGEN_DONT_ALIGN_STATICALLY=1)
 
-set( BOOST_ROOT           ${PACKAGES_DIR}/boost_1_53 )
+set( BOOST_ROOT  ${PACKAGES_DIR}/boost_1_53 )
 
 # if BOOST_ROOT env var 
 # is set, use that value

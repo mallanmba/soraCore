@@ -67,7 +67,7 @@ module rapid {
         public String128 frameName;
 
         //@copy-declaration /** Interpretation of xyz array. */
-        public PointSampleXyzMode xyzMode; 
+        public PointSampleXyzMode xyzMode;
 
         //@copy-declaration /** Interpretation of each attribute. */
         public PointSampleAttributeMode attributesMode[2];
@@ -75,5 +75,5 @@ module rapid {
         //@copy-declaration /** Additional attributes. */
         public KeyTypeValueSequence16 attributes;
 
-    }; //@resolve-name true
+    };
 };

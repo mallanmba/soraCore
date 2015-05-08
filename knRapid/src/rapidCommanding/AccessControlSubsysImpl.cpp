@@ -16,7 +16,7 @@
  * limitations under the License.
 
 ******************************************************************************/
-#include "AccessControlImpl.h"
+#include "AccessControlSubsysImpl.h"
 #include "CommandingParameters.h"
 #include "CommandExceptions.h"
 
@@ -43,8 +43,8 @@ namespace rapid
   /**
    * ctor
    */
-  AccessControlImpl::AccessControlImpl(AccessControlImplParameters const& params) :
-    CommandImpl(ACCESSCONTROL, typeDescription()),
+  AccessControlSubsysImpl::AccessControlSubsysImpl(AccessControlImplParameters const& params) :
+    SubsysImpl(ACCESSCONTROL, typeDescription()),
     m_serialId(0),
     m_statePublisher(ACCESSCONTROL_STATE_TOPIC,
                      params.publisher,
@@ -61,18 +61,18 @@ namespace rapid
 
     RapidHelper::initHeader(state.hdr);
 
-    m_statePublisher.sendEvent();    
+    m_statePublisher.sendEvent();
   }
 
   /**
    * dtor
    */
-  AccessControlImpl::~AccessControlImpl() throw()
+  AccessControlSubsysImpl::~AccessControlSubsysImpl() throw()
   {
   }
 
-  SubsystemType const * 
-  AccessControlImpl::typeDescription()
+  SubsystemType const *
+  AccessControlSubsysImpl::typeDescription()
   {
     static char const * const commands[] = {
       ACCESSCONTROL_METHOD_GRABCONTROL,
@@ -100,8 +100,8 @@ namespace rapid
     return description;
   }
 
-  CommandImpl::FuturePtr
-  AccessControlImpl::execute(Command const& cmd)
+  SubsysImpl::FuturePtr
+  AccessControlSubsysImpl::execute(Command const& cmd)
   {
     FuturePtr result;
     AccessControlState& state = m_statePublisher.event();
@@ -112,10 +112,10 @@ namespace rapid
         strcpy(state.controller, cmd.cmdSrc);
       }
       // If this is first request, and it is same client as Controller, do nothing
-      else if(strcmp(state.controller, cmd.cmdSrc) == 0 && 
+      else if(strcmp(state.controller, cmd.cmdSrc) == 0 &&
               state.requestors.length() == 0) {
         // do nothing
-      }		
+      }
       // If this request is from the last member of the list, don't duplicate
       else if(state.requestors.length() > 0 &&
               strcmp(state.requestors[state.requestors.length() - 1], cmd.cmdSrc) == 0) {
@@ -136,11 +136,11 @@ namespace rapid
     else if (strcmp(ACCESSCONTROL_METHOD_GRABCONTROL, cmd.cmdName) == 0) {
       MIRO_LOG_OSTR(LL_WARNING, "AccessControl: Access is grabed by " << cmd.cmdSrc);
       strcpy(state.controller, cmd.cmdSrc);
-      
+
       // remove first controller entry from requestors queue
       unsigned int len = state.requestors.length();
       unsigned int i;
-      
+
       // search for controller in requestors list
       for (i = 0; i < len; ++i) {
         if (strcmp(state.requestors[i], state.controller) == 0) {
@@ -148,7 +148,7 @@ namespace rapid
           break;
         }
       }
-      
+
       // copy down by one
       for (; i < len; ++i) {
         strcpy(state.requestors[i], state.requestors[i + 1]);
@@ -179,21 +179,21 @@ namespace rapid
     else if (strcmp(ACCESSCONTROL_METHOD_TRANSFERCONTROL, cmd.cmdName) == 0) {
       if (strcmp(state.controller, cmd.cmdSrc) == 0) {
         // if there is somebody waiting in the queue, put that one in control
-        if (cmd.arguments.length() != 1) 
+        if (cmd.arguments.length() != 1)
           boost::throw_exception(EBadSyntax("AccessControl command transferControl request w/o argument."));
-        
+
 //         if (strcmp(ACCESSCONTROL_METHOD_TRANSFERCONTROL_PARAM_RECIPIENT, cmd.arguments[0].key) != 0)
 //           boost::throw_exception(EBadSyntax(string("AccessControl command transferControl wrong parameter key: ") + cmd.arguments[0].key));
-        
+
         if (cmd.arguments[0]._d != RAPID_STRING)
           boost::throw_exception(EBadSyntax("AccessControl command transferControl parameter not of type RAPID_STING: "));
-        
+
         strcpy(state.controller, cmd.arguments[0]._u.s);
-        
+
         // remove first controller entry from requestors queue
         unsigned int len = state.requestors.length();
         unsigned int i;
-        
+
         // search for controller in requestors list
         for (i = 0; i < len; ++i) {
           if (strcmp(state.requestors[i], state.controller) == 0) {
@@ -201,7 +201,7 @@ namespace rapid
             break;
           }
         }
-        
+
         // copy down by one
         for (; i < len; ++i) {
           strcpy(state.requestors[i], state.requestors[i + 1]);
@@ -217,13 +217,13 @@ namespace rapid
     }
 
     RapidHelper::updateHeader(state.hdr);
-    m_statePublisher.sendEvent();  
+    m_statePublisher.sendEvent();
 
     return result;
   }
 
   bool
-  AccessControlImpl::isController(char const * user) const throw()
+  AccessControlSubsysImpl::isController(char const * user) const throw()
   {
     AccessControlState const& state = m_statePublisher.event();
 
@@ -231,7 +231,7 @@ namespace rapid
   }
 
   char const *
-  AccessControlImpl::controller() const throw()
+  AccessControlSubsysImpl::controller() const throw()
   {
     AccessControlState const& state = m_statePublisher.event();
 

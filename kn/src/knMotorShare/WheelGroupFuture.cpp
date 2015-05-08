@@ -33,7 +33,7 @@ namespace kn
          << rhs.offset.translation().x() << ", " << rhs.offset.translation().y()
          << ", " << (theta.angle() * 180./M_PI)
          << " deg)}";
-    
+
     return ostr;
   }
 }

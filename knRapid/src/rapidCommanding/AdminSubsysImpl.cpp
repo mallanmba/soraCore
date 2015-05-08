@@ -16,7 +16,7 @@
  * limitations under the License.
 
 ******************************************************************************/
-#include "AdminImpl.h"
+#include "AdminSubsysImpl.h"
 #include "CommandingParameters.h"
 #include "CommandExceptions.h"
 
@@ -40,20 +40,20 @@ namespace rapid
   /**
    * ctor
    */
-  AdminImpl::AdminImpl() :
-    CommandImpl(rapid::ADMIN, typeDescription())
+  AdminSubsysImpl::AdminSubsysImpl() :
+      SubsysImpl(rapid::ADMIN, typeDescription())
   {
   }
 
   /**
    * dtor
    */
-  AdminImpl::~AdminImpl() throw()
+  AdminSubsysImpl::~AdminSubsysImpl() throw()
   {
   }
 
-  rapid::SubsystemType const * 
-  AdminImpl::typeDescription()
+  rapid::SubsystemType const *
+  AdminSubsysImpl::typeDescription()
   {
     static char const * const commands[] = {
       rapid::ADMIN_METHOD_ECHO,
@@ -80,8 +80,8 @@ namespace rapid
     return description;
   }
 
-  CommandImpl::FuturePtr
-  AdminImpl::execute(rapid::Command const& cmd)
+  SubsysImpl::FuturePtr
+  AdminSubsysImpl::execute(rapid::Command const& cmd)
   {
     FuturePtr result;
     int cmdIdx = validateCommandSyntax(cmd.cmdName, cmd.arguments);
@@ -92,7 +92,7 @@ namespace rapid
     case 1: // NOOP
       break;
     case 2: // EXIT
-      ACE_Thread_Manager::instance()->kill_all(SIGTERM); 
+      ACE_Thread_Manager::instance()->kill_all(SIGTERM);
       break;
     default:
       boost::throw_exception(rapid::EBadSyntax(string("Unknown RAPID Admin cmdName:") + string(cmd.cmdName)));

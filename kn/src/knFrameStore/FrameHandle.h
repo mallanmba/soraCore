@@ -30,28 +30,44 @@ namespace kn
   typedef TreeNode<Frame> FrameTreeNode;
   
   /**
-   * Handle to a frame tree node stored in a frame-store.
+   * @ingroup knFrameStore
+   * @brief Handle to a frame tree node stored in a frame-store.
+   * 
+   * This opaque handle internallly implements a pointer into the FrameTree managed by 
+   * the @ref FrameStore. A Frameandle stays valid unless the frame itself or the 
+   * managing @ref FrameStore is deleted.
    */
   class knFrameStore_Export FrameHandle
   {
     FrameTreeNode * node;
   public:
+    /**
+     * @brief  Default constructor.
+     * 
+     * Initializes itself to the NULL handle.
+     */
     FrameHandle() : node(0) {}
+    /**
+     * @brief Initializing constructor.
+     * 
+     */
     FrameHandle(FrameTreeNode * n) :
       node(n) {}
-    bool operator==(FrameHandle const& rhs) const throw() {
+      
+    bool operator==(FrameHandle const& rhs) const {
       return this->node == rhs.node;
     }
-    bool operator!=(FrameHandle const& rhs) const throw() {
+    bool operator!=(FrameHandle const& rhs) const {
       return this->node != rhs.node;
     }
     
     /**
-     * A static instance to a NULL handle, for reference.
+     * @brief A static instance to a NULL handle, for reference.
      */
     static FrameHandle const NULL_HANDLE;
     
     /**
+     * @brief Check if handle is initialized.
      * @return true if handle is not null
      */
     inline bool isValid() const {

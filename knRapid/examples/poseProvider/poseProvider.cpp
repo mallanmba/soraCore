@@ -112,7 +112,7 @@ int main ( int argc, char** argv )
     
     cout << "sent position: " << xfm << endl;
 
-    // sleep for 100 milliseconds
-    kn::this_thread::sleep_for(kn::microseconds(100000));
+    //kn::this_thread::sleep_for(kn::microseconds(100000));
+    kn::this_thread::sleep_for(kn::milliseconds(50));
   }
 }

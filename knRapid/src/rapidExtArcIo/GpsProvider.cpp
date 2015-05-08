@@ -47,7 +47,8 @@ namespace rapid
                            const long mode,
                            const int numSats,
                            const long long diffAge,
-                           const long long solAge)
+                           const long long solAge,
+                           const float undulation)
       {
         rapid::ext::arc::GpsSample& sample = m_dataSupplier.event();
         
@@ -68,6 +69,7 @@ namespace rapid
         sample.numSats = numSats;
         sample.diffAge = diffAge;
         sample.solAge = solAge;
+        sample.undulation = undulation;
         
         m_dataSupplier.sendEvent();
       }

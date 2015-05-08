@@ -22,11 +22,14 @@ set( HEADERS
   GeometryIo.h
   GpsIo.h
   GpsProvider.h
+  HydraIo.h
   HydraProvider.h
   SpectrumIo.h
   SpectrumProvider.h
   StateMachineIo.h
   StateMachineProvider.h
+  TrackedObjectIo.h
+  TrackedObjectProvider.h
 )
 
 set( SOURCES
@@ -40,11 +43,14 @@ set( SOURCES
   GeometryIo.cpp
   GpsIo.cpp
   GpsProvider.cpp
+  HydraIo.cpp
   HydraProvider.cpp
   SpectrumIo.cpp
   SpectrumProvider.cpp
   StateMachineIo.cpp
   StateMachineProvider.cpp
+  TrackedObjectIo.cpp
+  TrackedObjectProvider.cpp
 )
 
 include_directories(
@@ -100,6 +106,7 @@ set( TARGETS
  stateMachinePrinter
  systemInfoConfigPrinter
  systemInfoSamplePrinter
+ trackedObjectPrinter
  wheelGroupSamplePrinter
 )
 

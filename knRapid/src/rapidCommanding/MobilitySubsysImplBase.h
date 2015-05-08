@@ -16,38 +16,32 @@
  * limitations under the License.
 
 ******************************************************************************/
-#ifndef rapid_AccessControlImpl_h
-#define rapid_AccessControlImpl_h
+#ifndef rapid_MobilityImplBase_h
+#define rapid_MobilityImplBase_h
 
-#include "CommandImpl.h"
+#include "rapidCommanding_Export.h"
+#include "SubsysImpl.h"
 
-#include "rapidDds/AccessControlState.h"
-#include "rapidDds/AccessControlStateSupport.h"
-#include "rapidDds/Command.h"
-
-#include "knDds/DdsTypedSupplier.h"
+#include <string>
 
 namespace rapid
 {
-  class AccessControlImplParameters;
-
-  class AccessControlImpl : public CommandImpl
+  class rapidCommanding_Export MobilitySubsysImplBase : public SubsysImpl
   {
   public:
-    AccessControlImpl(AccessControlImplParameters const& params);
-    virtual ~AccessControlImpl() throw();
+    MobilitySubsysImplBase();
+    virtual ~MobilitySubsysImplBase() throw();
 
     virtual FuturePtr execute(rapid::Command const& cmd);
 
-    bool isController(char const * user) const throw();
-    char const * controller() const throw();
-
   protected:
+    virtual FuturePtr simpleMove(rapid::Command const& cmd);
+    virtual FuturePtr moveTo(rapid::Command const& cmd);
+    virtual FuturePtr simpleMove6Dof(rapid::Command const& cmd);
+    virtual FuturePtr moveTo6Dof(rapid::Command const& cmd);
+    virtual FuturePtr abort();
+
     static rapid::SubsystemType const * typeDescription();
-
-    int m_serialId;
-
-    kn::DdsTypedSupplier<rapid::AccessControlState> m_statePublisher;
   };
 }
-#endif // rapid_AccessControlImpl_h
+#endif // rapid_MobilityImplBase_h

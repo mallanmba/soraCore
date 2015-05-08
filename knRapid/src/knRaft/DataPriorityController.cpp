@@ -36,7 +36,7 @@ namespace kn
       m_defaultRule(DataPriorityController::Rule("*", 0, 0, false)),
       m_queue(queue),
       m_queueParams(params)
-  { 
+  {
 
     for (unsigned int i = 0; i < m_queueParams->rules.size(); ++i) {
       // look for a channel with a matching name
@@ -49,17 +49,19 @@ namespace kn
       }
 
       if (channelIdx == -1) {
-        MIRO_LOG_OSTR(LL_ERROR, "DPC: channel name: " 
+        MIRO_LOG_OSTR(LL_ERROR, "DPC: channel name: "
                       << m_queueParams->rules[i].channelName
                       << " does not exist. skipping rule.");
-      } else {
+      }
+      else {
         Rule newRule(m_queueParams->rules[i].extension,
                      channelIdx,
                      m_queueParams->rules[i].priority,
                      m_queueParams->rules[i].autoAdd);
         if (m_queueParams->rules[i].extension == "*") {
           m_defaultRule = newRule;
-        } else {
+        }
+        else {
           m_rules.push_back(newRule);
         }
       }
@@ -87,12 +89,13 @@ namespace kn
       MIRO_LOG_OSTR(LL_ERROR, "DPC: Error putting file in queue: " << retval);
     }
   }
-  
+
   // find the corresponding rule for the given filename/uri
   // @TODO: This will not work for remote urls that end in .php or some other
   // cgi-based thing.
   DataPriorityController::Rule const&
-  DataPriorityController::findRule(std::string const& fileName) {
+  DataPriorityController::findRule(std::string const& fileName)
+  {
     std::string extension(fileName);
 
     // pull off extension (everything after a .)
@@ -107,14 +110,13 @@ namespace kn
     // find extension in rules
     for(RuleVector::iterator i = m_rules.begin();
         i != m_rules.end();
-        ++i)
-    {
+        ++i) {
       if (i->m_extension == extension)
         return (*i);
     }
 
     // not found. return the defaultRule
     return m_defaultRule;
-    
+
   }
 }

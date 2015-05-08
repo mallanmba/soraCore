@@ -1,0 +1,16 @@
+<!DOCTYPE MiroConfigDocument>
+<config>
+  <section name="Rapid" >
+    <parameter name="kn::FileQueueParameters" >
+      <parameter value="false" name="FileAnnounceRepeater" />
+      <parameter name="Rules" >
+        <parameter>
+          <parameter value="*" name="Extension" />
+          <parameter value="Science" name="ChannelName" />
+          <parameter value="25" name="Priority" />
+          <parameter value="true" name="AutoAdd" />
+        </parameter>
+      </parameter>
+    </parameter>
+  </section>
+</config>

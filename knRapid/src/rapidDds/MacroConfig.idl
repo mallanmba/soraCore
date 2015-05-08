@@ -21,10 +21,15 @@ module rapid {
         //@copy-declaration /** Name of command being sent. Should get this from list of possible commands in CommandConfig. */
         String64 cmdName;
 
-        //@copy-declaration /** Unique ID for command, = username+timestamp. */
+        //@copy-declaration /** Suffix to be appended to the cmdId of the loadMacro Command. 
+        //@copy-declaration  *  Each cmdIdSuffix within a macro MUST be unique. When the macro is loaded 
+        //@copy-declaration  *  into the Queue, the cmdId of each command in the Macro will be 
+        //@copy-declaration  *  <cmdId>-<cmdIdSuffix> where cmdId is the command id of the loadMacro command
+        //@copy-declaration  *  that loaded the Macro.
+        //@copy-declaration  */
         String64 cmdIdSuffix;
 
-        //@copy-declaration /** Subsystem name if command is being sent to subsystem of an Agent. */
+        //@copy-declaration /** Name of subsystem to which cmdName belongs. */
         String32 subsysName;
 
         //@copy-declaration /** Data type and value of the arguments for this particular command. */
@@ -52,7 +57,7 @@ module rapid {
         //@copy-declaration /** Name of this macro. */
         public String64 name; //@key
 
-        //@copy-declaration /** The commands that are executed when this macro is loaded. */
+        //@copy-declaration /** The commands that are put onto the Queue when this macro is loaded. */
         public MacroCommandSequence128 commands;
 
         //@copy-declaration /** Metadata for the entire plan */

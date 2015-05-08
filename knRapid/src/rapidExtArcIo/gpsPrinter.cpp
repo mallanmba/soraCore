@@ -79,7 +79,11 @@ namespace rapid
       cout << rapid::RapidHelper::rapidTime2AceTimeValue(event.hdr.timeStamp) << ", "
            << setprecision (12) << event.xyz[0] << ", "
            << setprecision (12) << event.xyz[1] << ", "
-           << setprecision (12) << event.xyz[2]
+           << setprecision (12) << event.xyz[2] << ", "
+           << setprecision (12) << event.sigmaXyz[0] << ", "
+           << setprecision (12) << event.sigmaXyz[1] << ", "
+           << setprecision (12) << event.sigmaXyz[2] << ", "
+           << setprecision (12) << event.undulation 
            << endl;
       return;
     }
@@ -114,6 +118,7 @@ namespace rapid
         mode = event.mode;
       }
       
+      cout << "undulation: " << event.undulation << endl;
       cout << "utmZone: " << (int)event.utmZone << endl;
       cout << "utmDesig: " << event.utmDesig << endl;
       cout << "mode: " << mode << endl;
@@ -134,7 +139,10 @@ int main(int argc, char * argv[])
   ext::arc::GpsTopicPairParameters params;
   TopicPairApp app(argc, argv, params);
 
-  app.run(ext::arc::GPS_CONFIG_TOPIC, ext::arc::GPS_SAMPLE_TOPIC);
+  if (app.s_csv > 0) {
+    cout << "#time, x, y , z, sigmaX, sigmaY, sigmaZ, undulation" << endl;
+  }
+  app.run(ext::arc::GPS_CONFIG_TOPIC, ext::arc::GPS_SAMPLE_TOPIC); 
 
   return 0;
 }

@@ -26,7 +26,9 @@
 namespace kn
 {
   /**
+   * @ingroup knFrameStore
    * @brief A tree node with a Frame as payload.
+   * 
    * A frame-tree is expected to adhere to the following requirements:
    *  * Frame names of children of a node are unique.
    *  * Frame names do not contain the character '/'.
@@ -40,28 +42,45 @@ namespace kn
    */
   typedef TreeNode<Frame> FrameTreeNode;
 
-  /**
-   * @brief Get transform of the source frame relative to the traget frane.
+  /** 
+   * @ingroup knFrameStore
+   * @brief Get transform of the source frame relative to the traget frame.
+   * 
    * @param target The coordinate frame to convert to. If NULL is passed as source frame, source->parent() is assumed
    * and source->data().transform() is returned.
    * @param source The source coordinate frame. If NULL, the identity-matrix is returned.
+   * @return The transform from the target to the source frame.
    */
-  knFrameStore_Export ATrans3 get_transform(FrameTreeNode const * target, FrameTreeNode const * source);
+  knFrameStore_Export ATrans3 getTransform(FrameTreeNode const * target, FrameTreeNode const * source);
   /**
-   * Get transform of transform, expressed relative to the source frame, relative to the target frame.
+   * @ingroup knFrameStore
+   * @brief Get transform of transform, expressed relative to the source frame, relative to the target frame.
+   * @param target The coordinate frame to convert to. If NULL is passed as source frame, source->parent() is assumed
+   * and source->data().transform() is returned.
+   * @param source The source coordinate frame. If NULL, the identity-matrix is used.
+   * @param transform The transform relative to the source frame.
+   * @return The transform relative to the target frame.
    */
-  knFrameStore_Export ATrans3 get_transform_of(FrameTreeNode const * target, FrameTreeNode const * source,
+  knFrameStore_Export ATrans3 getTransformOf(FrameTreeNode const * target, FrameTreeNode const * source,
                                                         ATrans3 const& transform);
   /**
-   * Set transform of the frame to the transform specified realtive to the source frame.
+   * @ingroup knFrameStore
+   * @brief Set transform of the frame to the transform specified realtive to the source frame.
+   * @param frame The coordinate frame to convert to. If NULL is passed as source frame, source->parent() is assumed
+   * and source->data().transform() is returned.
+   * @param source The source coordinate frame. If NULL, the identity-matrix is used.
+   * @param transform The transform relative to the source frame.
    */
-  knFrameStore_Export void set_transform(FrameTreeNode * frame, FrameTreeNode const * source,
+   
+  knFrameStore_Export void setTransform(FrameTreeNode * frame, FrameTreeNode const * source,
                                          ATrans3 const& transform);
 
   /**
+   * @ingroup knFrameStore
    * @brief Lookup frame by name
+   * 
    * See the FrameTreeNode typedef for the requirements on Frame naming.
-   * @paraam start_frame The node relative to which the search starts.
+   * @param start_frame The node relative to which the search starts.
    * @param path An expression describing the path to the searched frame.
    *  * '/' is the frame-name delimiter. '.' is used for directory wildcards.
    *  Frame names can not contain these characters.
@@ -75,37 +94,42 @@ namespace kn
 
   inline
   ATrans3
-  get_transform_of(FrameTreeNode const * target, FrameTreeNode const * source,
-                   ATrans3 const& trans)
+  getTransformOf(FrameTreeNode const * target, FrameTreeNode const * source,
+                   ATrans3 const& transform)
   {
-    return get_transform(target, source) * trans;
+    return getTransform(target, source) * transform;
   }
 
   inline
   void
-  set_transform(FrameTreeNode * frame, FrameTreeNode const * source,
-                ATrans3 const& trans)
+  setTransform(FrameTreeNode * frame, FrameTreeNode const * source,
+                ATrans3 const& transform)
   {
     if (frame != NULL) {
       if (source == NULL) {
-        frame->data().set_transform(trans);
+        frame->data().setTransform(transform);
       }
       else {
-        frame->data().set_transform(get_transform_of(frame->parent(), source, trans));
+        frame->data().setTransform(getTransformOf(frame->parent(), source, transform));
       }
     }
   }
 
   /**
+   * @ingroup knFrameStore
    * @brief Merging source_tree into target tree.
+   * 
+   * @param targetTree The target tree.
+   * @param sourceTree The source tree.
+   * 
    * Source and target tree need to start with the same root node.
    * Frame tree nodes with the same name are considered a match.
    * The transformation matrix for a matched node stays in the target tree stays untouched.
    * New branches are swallowed by the target tree.
    *
-   * @WARNING: Don't merge trees of nodes from different allocation categories (heap vs stack).
+   * @warning Don't merge trees of nodes from different allocation categories (heap vs stack).
    */
-  knFrameStore_Export void merge_frame_trees(FrameTreeNode * target_tree, FrameTreeNode * source_tree);
+  knFrameStore_Export void mergeFrameTrees(kn::FrameTreeNode* targetTree, kn::FrameTreeNode* sourceTree);
 }
 
 #endif // kn_FrameTreeNode_h

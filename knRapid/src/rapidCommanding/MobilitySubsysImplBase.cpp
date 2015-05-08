@@ -16,7 +16,7 @@
  * limitations under the License.
 
 ******************************************************************************/
-#include "MobilityImplBase.h"
+#include "MobilitySubsysImplBase.h"
 #include "CommandingParameters.h"
 #include "CommandExceptions.h"
 
@@ -38,22 +38,22 @@ namespace rapid
   /**
    * ctor
    */
-  MobilityImplBase::MobilityImplBase() :
-    CommandImpl(MOBILITY, typeDescription())
+  MobilitySubsysImplBase::MobilitySubsysImplBase() :
+    SubsysImpl(MOBILITY, typeDescription())
   {
   }
-  
-  MobilityImplBase::~MobilityImplBase() throw()
+
+  MobilitySubsysImplBase::~MobilitySubsysImplBase() throw()
   {}
 
-  CommandImpl::FuturePtr
-  MobilityImplBase::execute(Command const& cmd)
+  SubsysImpl::FuturePtr
+  MobilitySubsysImplBase::execute(Command const& cmd)
   {
     FuturePtr amiRef;
 
     int rc = 0;
     int cmdIdx = validateCommandSyntax(cmd.cmdName, cmd.arguments);
-    
+
     switch (cmdIdx) {
     case 0: // MOVE - navigtor move
       amiRef = this->moveTo(cmd);
@@ -83,7 +83,7 @@ namespace rapid
     return amiRef;
   }
 
-  namespace 
+  namespace
   {
     KeyTypePair moveArguments[] = {
       { MOBILITY_METHOD_MOVE_PARAM_FRAME_NAME,             MOBILITY_METHOD_MOVE_DTYPE_FRAME_NAME },
@@ -121,13 +121,13 @@ namespace rapid
 
     int const NULL_ARGUMENTS = 0;
 
-    struct Cmd 
+    struct Cmd
     {
       char const * name;
       int argumentNum;
       KeyTypePair * arguments;
       bool abortable;
-    };  
+    };
 
     static Cmd const commands[] = {
       { MOBILITY_METHOD_MOVE, NUM_MOVE_ARGUMENTS, moveArguments, true },
@@ -139,8 +139,8 @@ namespace rapid
     static int const MOBILITY_COMMANDS = sizeof(commands) / sizeof (Cmd);
   }
 
-  SubsystemType const * 
-  MobilityImplBase::typeDescription()
+  SubsystemType const *
+  MobilitySubsysImplBase::typeDescription()
   {
     SubsystemType * description = SubsystemTypeTypeSupport::create_data();
 
@@ -162,32 +162,32 @@ namespace rapid
     return description;
   }
 
-  MobilityImplBase::FuturePtr
-  MobilityImplBase::simpleMove(Command const& cmd)
+  MobilitySubsysImplBase::FuturePtr
+  MobilitySubsysImplBase::simpleMove(Command const& cmd)
   {
     boost::throw_exception(EExecFailed(string("Mobility command command not supported: ") + cmd.cmdName));
   }
 
-  MobilityImplBase::FuturePtr
-  MobilityImplBase::moveTo(Command const& cmd)
+  MobilitySubsysImplBase::FuturePtr
+  MobilitySubsysImplBase::moveTo(Command const& cmd)
   {
     boost::throw_exception(EExecFailed(string("Mobility command command not supported: ") + cmd.cmdName));
   }
 
-  MobilityImplBase::FuturePtr
-  MobilityImplBase::simpleMove6Dof(Command const& cmd)
+  MobilitySubsysImplBase::FuturePtr
+  MobilitySubsysImplBase::simpleMove6Dof(Command const& cmd)
   {
     boost::throw_exception(EExecFailed(string("Mobility command command not supported: ") + cmd.cmdName));
   }
 
-  MobilityImplBase::FuturePtr
-  MobilityImplBase::moveTo6Dof(Command const& cmd)
+  MobilitySubsysImplBase::FuturePtr
+  MobilitySubsysImplBase::moveTo6Dof(Command const& cmd)
   {
     boost::throw_exception(EExecFailed(string("Mobility command command not supported: ") + cmd.cmdName));
   }
 
-  MobilityImplBase::FuturePtr
-  MobilityImplBase::abort()
+  MobilitySubsysImplBase::FuturePtr
+  MobilitySubsysImplBase::abort()
   {
     boost::throw_exception(EExecFailed(string("Mobility command command not supported: abort")));
   }

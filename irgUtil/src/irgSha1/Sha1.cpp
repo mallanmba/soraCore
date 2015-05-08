@@ -19,21 +19,21 @@ A million repetitions of "a"
 
 #include "Sha1.h"
 
-// for endianess macro
-#include <ace/Basic_Types.h>
-
 // STL includes
 #include <iomanip>
 #include <sstream>
 
 #include <cstring> // memcpy
 
-#if defined (ACE_LITTLE_ENDIAN)
+#include "irgUtilConfig.h"
+#if defined (IRGUTIL_IS_LITTLE_ENDIAN)
 #  ifndef LITTLE_ENDIAN
 #    define LITTLE_ENDIAN
 #  endif
 #else
-#  undefine LITTLE_ENDIAN
+#  ifdef LITTLE_ENDIAN
+#    undef LITTLE_ENDIAN
+#  endif
 #endif
 
 #define SHA1HANDSOFFACE_LITTLE_ENDIAN

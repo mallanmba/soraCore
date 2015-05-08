@@ -25,6 +25,17 @@
 
 namespace kn
 {
+  /**
+   * @defgroup knMotorShare Motor
+   * @brief The Motor module of kn provides a range of classes and interfaces for implementing locomotion capabilities.
+   *
+   * The core idea behind this locomotion interface design is the notion that a locomotor commands a group of wheels,
+   * which in turn are a set of drive and steer motors that are operated in a synchronized fashion.
+   *
+   * This module is somewhat underspecified as the majority of types and interfaces is actually
+   * defined in the HwShare module.
+   */
+
   class LocomotorCmd;
   knMotorShare_Export std::ostream& operator << (std::ostream& ostr, LocomotorCmd const& rhs);
 
@@ -37,18 +48,27 @@ namespace kn
   static int const LOC_MODE_ARC = 5; //!< headingChange, distance
   static int const LOC_MODE_CRAB_ARC = 6; //!< headingChange, direction, distance
   static int const LOC_MODE_DRIVE_TO = 7; //!< distance, direction
-  static int const LOC_MODE_CLOTHOID = 8; 
+  static int const LOC_MODE_CLOTHOID = 8;
   static int const LOC_MODE_FAST_STEER = 9; //!< targetSpeed, targetCurvature
 
-  class LocomotorCmd
+  /**
+   * @ingroup knMotorShare
+   * @brief Class representing a locomotor command.
+   *
+   * This class hold an identifer, for the locomotion mode commanded
+   * and a superset of the parameters for all locomotion modes.
+   * Only the ones relevant hold defined values.
+   *
+   */
+  class knMotorShare_Export LocomotorCmd
   {
   public:
     //! Locomotion mode.
     /** Use the defined constants */
-     int locMode;
+    int locMode;
     //! Requested change of robot heading in rad.
     double headingChange;
-    //! Linear distance 
+    //! Linear distance
     double distance;
     //! Crabbing angle in rad.
     double direction;
@@ -78,11 +98,11 @@ namespace kn
     char const* locModeName() const;
     static char const* locModeName(int mode);
   };
-  
+
   inline
   LocomotorCmd::LocomotorCmd() throw() :
     locMode(LOC_MODE_NOP)
-  {} 
+  {}
 
   inline
   LocomotorCmd::LocomotorCmd(unsigned int m,
@@ -102,21 +122,21 @@ namespace kn
   {}
 
   inline
-  void 
+  void
   LocomotorCmd::setModeEmergencyStop() throw()
   {
     locMode = LOC_MODE_EMERGENCY_STOP;
   }
 
   inline
-  void 
+  void
   LocomotorCmd::setModeStop() throw()
   {
     locMode = LOC_MODE_STOP;
   }
 
   inline
-  void 
+  void
   LocomotorCmd::setModeTranslate(double dist) throw()
   {
     locMode = LOC_MODE_TRANSLATE;
@@ -124,7 +144,7 @@ namespace kn
   }
 
   inline
-  void 
+  void
   LocomotorCmd::setModeRotate(double delta) throw()
   {
     locMode = LOC_MODE_ROTATE;
@@ -132,25 +152,25 @@ namespace kn
   }
 
   inline
-  void 
+  void
   LocomotorCmd::setModeCrab(double dist, double phi) throw()
   {
     locMode = LOC_MODE_CRAB;
     distance = dist;
     direction = phi;
   }
-  
+
   inline
-  void 
+  void
   LocomotorCmd::setModeArc(double dist, double delta) throw()
   {
     locMode = LOC_MODE_ARC;
     distance = dist;
     headingChange = delta;
   }
-  
+
   inline
-  void 
+  void
   LocomotorCmd::setModeCrabArc(double dist, double delta, double phi) throw()
   {
     locMode = LOC_MODE_CRAB_ARC;
@@ -158,9 +178,9 @@ namespace kn
     headingChange = delta;
     direction = phi;
   }
-  
+
   inline
-  void 
+  void
   LocomotorCmd::setModeDriveTo(double dist, double phi, double delta) throw()
   {
     locMode = LOC_MODE_DRIVE_TO;
@@ -170,7 +190,7 @@ namespace kn
   }
 
   inline
-  void 
+  void
   LocomotorCmd::setModeFsd(double speed, double curvature, double time) throw()
   {
     locMode = LOC_MODE_FAST_STEER;
