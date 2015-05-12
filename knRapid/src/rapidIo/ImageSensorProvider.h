@@ -38,6 +38,9 @@ namespace rapid
 
   class rapidIo_Export ImageSensorProvider
   {
+  protected:
+    typedef kn::DdsTypedSupplier<rapid::ImageSensorSample> ImageSampleSupplier;
+    
   public:
     ImageSensorProvider(ImageSensorProviderParameters const& params, 
                         const std::string& entityName, 
@@ -50,11 +53,12 @@ namespace rapid
     char const * mimeType() { return m_mimeType; }
     void setMimeType(char const * mT);
 
+    ImageSampleSupplier& dataSupplier() { return *m_sampleSupplier; }
+    
     void publishData(unsigned char const * buffer, int len,
                      ACE_Time_Value const& timestamp = ACE_Time_Value::zero);
 
   protected:
-    typedef kn::DdsTypedSupplier<rapid::ImageSensorSample> ImageSampleSupplier;
     // scoped-ptr would be good enough, but requires full type at declaration
     typedef kn::shared_ptr<ImageSampleSupplier> ImageSampleSupplierPtr;
 

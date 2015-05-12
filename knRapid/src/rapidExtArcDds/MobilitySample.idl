@@ -43,6 +43,8 @@ module rapid {
         public Vec3d xytTolerance;
         public float hintedSpeed;
         public String32 navAlgo;
+        //@copy-declaration /** extension values */
+        public KeyTypeValueSequence8 keyedValues;
      };
 
       // status definitions
