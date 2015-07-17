@@ -1,5 +1,25 @@
+cmake_minimum_required(VERSION 2.8.3)
 project(knRapid)
-cmake_minimum_required(VERSION 2.6)
+
+if (${CATKIN_TOPLEVEL})
+  find_package(catkin  REQUIRED COMPONENTS
+    irg_cmake
+    irgUtil
+    Miro
+    kn
+    knDds
+  )
+endif(${CATKIN_TOPLEVEL})
+
+if (catkin_FOUND)
+###################################
+## catkin specific configuration ##
+###################################
+catkin_package(
+  INCLUDE_DIRS src
+  LIBRARIES rapidDds rapidIo
+  )
+else (catkin_FOUND)
 
 set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
 
@@ -32,11 +52,16 @@ include( UserOptions )
 set( RAPID_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "RAPID install path")
 set( CMAKE_INSTALL_PREFIX ${RAPID_INSTALL_PREFIX} CACHE INTERNAL "" )
 
+find_package( IrgUtil )
+find_package( Miro )
+find_package( kn )
+find_package( knDds )
+endif (catkin_FOUND)
 
 #---------------------------------------------
 # make RTI DDS optional
 add_build_var( WITH_DDS NOT APPLE )
-find_package_if( RtiDds KNRAPID_BUILD_WITH_DDS  )
+find_package( RtiDds )
 
 find_package( ACE )
 find_package( Qt4 )
@@ -46,15 +71,21 @@ find_package( CURL )
 find_package( Boost 1.50.0 COMPONENTS program_options filesystem system thread bind function)
 find_package( Eigen3 )
 find_package( Threads )
-
-find_package( IrgUtil )
-find_package( Miro )
-find_package( kn )
-find_package( knDds )
-
 find_package( Doxygen )
 
-build_with_var( WITH_DDS  RTIDDS_FOUND )
+build_with_var( WITH_DDS RTIDDS_FOUND )
+
+## this macro is normally pulled in through the
+## FindMiro script
+##-----------------------------------------------
+include( GenerateMiroMakeParams )
+# we need to tell the macro where to find the executable
+# because it isn't "installed" yet...
+if (${CATKIN_TOPLEVEL})
+  set( MIRO_MAKEPARAMS_EXECUTABLE ${CATKIN_DEVEL_PREFIX}/lib/Miro/MakeParams )
+else (${CATKIN_TOPLEVEL})
+  set( MIRO_MAKEPARAMS_EXECUTABLE ${PROJECT_BINARY_DIR}/src/makeParams/${CMAKE_CFG_INTDIR}/MakeParams )
+endif (${CATKIN_TOPLEVEL})
 
 ## We must add the in-source and out-of-source
 ## include paths 
@@ -64,6 +95,7 @@ include_directories(
   ${PROJECT_SOURCE_DIR}/src
   ${PROJECT_BINARY_DIR}/src
   ${Boost_INCLUDE_DIR}
+  ${catkin_INCLUDE_DIRS}
 )
 
 ## Set up RPATH and *Config.h
@@ -75,7 +107,10 @@ setup_configure_file()
 
 # Defaults
 #-----------------------------------
-link_libraries( ${CMAKE_THREAD_LIBS_INIT} )
+link_libraries(
+  ${CMAKE_THREAD_LIBS_INIT}
+  ${catkin_LIBRARIES}
+)
 
 if( WIN32 )
   link_directories( ${Boost_LIBRARY_DIRS} )
@@ -94,7 +129,7 @@ install_export()
 
 # package script
 #------------------------------------
-include( CMakePack.txt )
+#include( CMakePack.txt )
 
 #------------------------------------
 print_build_switches()

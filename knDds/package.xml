@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package>
+  <name>knDds</name>
+  <version>1.0.0</version>
+  <description>DDS helpers of soraCore</description>
+  <maintainer email="hans.utz@nasa.gov">Hans Utz</maintainer>
+
+  <license>Apache2</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>irg_cmake</build_depend>
+  <build_depend>kn</build_depend>
+  <build_depend>Miro</build_depend>
+</package>

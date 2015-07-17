@@ -1,15 +1,25 @@
+cmake_minimum_required(VERSION 2.8.3)
 project(knDds)
-cmake_minimum_required(VERSION 2.6)
+
+if (${CATKIN_TOPLEVEL})
+  find_package(catkin  REQUIRED COMPONENTS
+    irg_cmake
+    kn
+    Miro
+  )
+endif(${CATKIN_TOPLEVEL})
+
+if (catkin_FOUND)
+###################################
+## catkin specific configuration ##
+###################################
+catkin_package(
+  INCLUDE_DIRS src
+  LIBRARIES knDds knDdsUtil
+  )
+else (catkin_FOUND)
 
 set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
-
-if( CMAKE_COMPILER_IS_GNUCXX )
-  message( STATUS "****************************************************")
-  message( STATUS "** Manually setting compiler flags to prevent")
-  message( STATUS "** strict-aliasing warnings in DDS generated files")
-  message( STATUS "****************************************************")
-  set( WARN_FLAGS "-fno-strict-aliasing -Wall -Woverloaded-virtual -Wno-write-strings" )
-endif( CMAKE_COMPILER_IS_GNUCXX )
 
 include( SetArchitecture )
 include( SetupBuildSwitch )
@@ -26,20 +36,29 @@ include( UserOptions )
 set( KNDDS_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "KNDDS install path")
 set( CMAKE_INSTALL_PREFIX ${KNDDS_INSTALL_PREFIX} CACHE INTERNAL "" )
 
+find_package( Miro )
+find_package( kn )
+endif (catkin_FOUND)
+
+
+if( CMAKE_COMPILER_IS_GNUCXX )
+  message( STATUS "****************************************************")
+  message( STATUS "** Manually setting compiler flags to prevent")
+  message( STATUS "** strict-aliasing warnings in DDS generated files")
+  message( STATUS "****************************************************")
+  set( WARN_FLAGS "-fno-strict-aliasing -Wall -Woverloaded-virtual -Wno-write-strings" )
+endif( CMAKE_COMPILER_IS_GNUCXX )
 
 #---------------------------------------------
 # make RTI DDS optional
 add_build_var( WITH_DDS NOT APPLE )
-find_package_if( RtiDds KNDDS_BUILD_WITH_DDS  )
+find_package( RtiDds )
 
 find_package( ACE )
 find_package( Qt4 )
 find_package( PThreads-win32 )
 
 find_package( Boost 1.50.0 COMPONENTS program_options filesystem system chrono)
-
-find_package( Miro )
-find_package( kn )
 
 find_package( Doxygen )
 
@@ -53,6 +72,20 @@ build_with_var( WITH_DDS_LBPlugin RTIDDS_LB_FOUND )
 build_with_var( WITH_DDS_Monitor  RTIDDS_MON_FOUND )
 build_with_var( WITH_RTI_DistLogger RTIDDS_DLOGGER_FOUND )
 
+## this macro is normally pulled in through the
+## FindMiro script
+##-----------------------------------------------
+include( GenerateMiroMakeParams )
+# we need to tell the macro where to find the executable
+# because it isn't "installed" yet...
+if (${CATKIN_TOPLEVEL})
+  set( MIRO_MAKEPARAMS_EXECUTABLE ${CATKIN_DEVEL_PREFIX}/lib/Miro/MakeParams )
+else (${CATKIN_TOPLEVEL})
+  set( MIRO_MAKEPARAMS_EXECUTABLE ${PROJECT_BINARY_DIR}/src/makeParams/${CMAKE_CFG_INTDIR}/MakeParams )
+endif (${CATKIN_TOPLEVEL})
+
+
+
 ## We must add the in-source and out-of-source
 ## include paths
 ##--------------------------------------------
@@ -64,6 +97,7 @@ include_directories(
 include_directories(
   ${KN_INCLUDE_DIR}
   ${Boost_INCLUDE_DIR}
+  ${catkin_INCLUDE_DIRS}
 )
 
 if( WIN32 )
@@ -87,7 +121,7 @@ install_export()
 
 # package script
 #------------------------------------
-include( CMakePack.txt )
+#include( CMakePack.txt )
 
 #------------------------------------
 print_build_switches()

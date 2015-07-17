@@ -38,7 +38,7 @@ include_directories (
   ${QT_INCLUDE_DIR}
   ${QT_QTXML_INCLUDE_DIR}
   ${QT_QTCORE_INCLUDE_DIR}
-  ${CMAKE_BINARY_DIR}/src/rapidDds
+  ${CMAKE_CURRENT_BINARY_DIR}/../rapidDds
 )
 
 link_libraries (

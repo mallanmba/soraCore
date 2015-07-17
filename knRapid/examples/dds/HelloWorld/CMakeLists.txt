@@ -8,7 +8,7 @@ rtidds_wrap_idl( ${ALL_IDL_FILENAMES} )
 include_directories( ${RTIDDS_INCLUDE_DIR} )
 link_libraries( ${RTIDDS_LIBRARIES} )
 
-add_library( ${LIB_NAME} STATIC
+add_library( ${LIB_NAME} 
   ${RTIDDS_IDL_GENERATED}
 )
 
