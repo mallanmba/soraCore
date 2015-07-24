@@ -23,6 +23,8 @@
 
 #include <ace/Time_Value.h>
 
+#include "rapidDds/ImageSensorSample.h" 
+
 #include "knShare/SmartPtr.h"
 
 namespace kn
@@ -32,12 +34,17 @@ namespace kn
 }
 namespace rapid
 {
-  class ImageSensorSample;
+  //class ImageSensorSample;
   class ImageMetadata;
   class ImageSensorProviderParameters;
 
   class rapidIo_Export ImageSensorProvider
   {
+  protected:
+    typedef kn::DdsTypedSupplier<rapid::ImageSensorSample> ImageSampleSupplier;
+    // scoped-ptr would be good enough, but requires full type at declaration
+    typedef kn::shared_ptr<ImageSampleSupplier> ImageSampleSupplierPtr;
+    
   public:
     ImageSensorProvider(ImageSensorProviderParameters const& params, 
                         const std::string& entityName, 
@@ -50,14 +57,17 @@ namespace rapid
     char const * mimeType() { return m_mimeType; }
     void setMimeType(char const * mT);
 
+    /** FIXME: this should be dataSupplier() that returns a ImageSampleSupplier&
+     * but that is generating a cryptic error. Look into the error and make
+     * this method consistent with the analogous Provider_T method
+     */
+    ImageSampleSupplierPtr dataSupplierPtr() { return m_sampleSupplier; }
+    //ImageSampleSupplier& dataSupplier() { return *m_sampleSupplier; }
+    
     void publishData(unsigned char const * buffer, int len,
                      ACE_Time_Value const& timestamp = ACE_Time_Value::zero);
 
   protected:
-    typedef kn::DdsTypedSupplier<rapid::ImageSensorSample> ImageSampleSupplier;
-    // scoped-ptr would be good enough, but requires full type at declaration
-    typedef kn::shared_ptr<ImageSampleSupplier> ImageSampleSupplierPtr;
-
     ImageSampleSupplierPtr m_sampleSupplier;
     rapid::ImageMetadata& m_metadata;
     char * m_mimeType;
