@@ -165,27 +165,6 @@ macro( rtidds_wrap_idl )
       ${RTIDDS_IDL_GENERATED_XMLS}
     )
     
-    ## copy header to devel/include if we are using catkin
-    ## and header is under ${PROJECT}/src/...
-    ##---------------------------------------------------
-    string( REGEX MATCH "${CMAKE_SOURCE_DIR}/.*/src/.*" IS_SRC_MODULE ${CMAKE_CURRENT_SOURCE_DIR} )
-    if( catkin_FOUND AND IS_SRC_MODULE )
-      # extract "module" path. Requires that directories are named ${PROJECT}/src/${MODULE}
-      string( REGEX REPLACE "${CMAKE_SOURCE_DIR}/.*/src/" "" MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" )
-
-      set( RTIDDSIDL_OUTPUT_TARGET RtiDdsIdl_${IDL_BASE} )
-      add_custom_target( ${RTIDDSIDL_OUTPUT_TARGET} ALL DEPENDS ${IDL_OUTPUT_FILES} )
-
-      set( RTIDDSIDL_DEVEL_DEST ${CATKIN_DEVEL_PREFIX}/${CATKIN_GLOBAL_INCLUDE_DESTINATION}/${MODULE_PATH}/ )
-      foreach( IDL_GENERATED_HEADER ${RTIDDS_IDL_GENERATED_HEADERS} )
-        get_filename_component( IDL_HEADER_FILENAME ${IDL_GENERATED_HEADER} NAME )
-        add_custom_command(
-          TARGET ${RTIDDSIDL_OUTPUT_TARGET}
-          POST_BUILD
-          COMMAND ${CMAKE_COMMAND} -E copy_if_different ${IDL_GENERATED_HEADER} ${RTIDDSIDL_DEVEL_DEST}/${IDL_HEADER_FILENAME}
-        )
-      endforeach()
-    endif( catkin_FOUND AND IS_SRC_MODULE )
   endforeach( IDL_FILENAME )
 
 endmacro( rtidds_wrap_idl )
