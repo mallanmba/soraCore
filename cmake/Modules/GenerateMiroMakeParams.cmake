@@ -98,7 +98,30 @@ macro( miro_makeparams )
         GENERATED True
       )
 
-      # install source xml config
+      ## copy header to devel/include if we are using catkin
+      ##---------------------------------------------------
+      if( catkin_FOUND )
+        set( PARAMS_OUTPUT_TARGET MiroParams_${PARAMS_BASE} )
+        add_custom_target( ${PARAMS_OUTPUT_TARGET} ALL DEPENDS ${PARAMS_OUTPUT} )
+        
+        # extract "module" path. Assumes directories are named as ${PROJECT}/src/${MODULE}
+        string( REGEX REPLACE "${CMAKE_SOURCE_DIR}/[^/]*/src/" "" MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" )
+        set( PARAMS_DEVEL_DEST ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_INCLUDE_DESTINATION}/${MODULE_PATH}/${PARAMS_PATH}/ )
+        add_custom_command(
+          TARGET ${PARAMS_OUTPUT_TARGET}
+          POST_BUILD
+          COMMAND ${CMAKE_COMMAND} -E copy_if_different ${PARAMS_BASE_FULL_PATH}.h ${PARAMS_DEVEL_DEST}/${PARAMS_BASE}.h
+        )
+        message(STATUS "****" )
+        message(STATUS "****   CATKIN_PACKAGE_INCLUDE_DESTINATION=${CATKIN_PACKAGE_INCLUDE_DESTINATION}" )
+        message(STATUS "****             CMAKE_CURRENT_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}" )
+        message(STATUS "****                     CMAKE_SOURCE_DIR=${CMAKE_SOURCE_DIR}" )
+        message(STATUS "****                  CATKIN_DEVEL_PREFIX=${CATKIN_DEVEL_PREFIX}" )
+        message(STATUS "****                          MODULE_PATH=${MODULE_PATH}" )
+      endif( catkin_FOUND )
+
+      ## install source xml config
+      ##---------------------------------------------------
       if( MIRO_MAKEPARAMS_CONFIG_INSTALL_DIR )
         install_files( ${MIRO_MAKEPARAMS_CONFIG_INSTALL_DIR} FILES ${PARAMS_FILENAME} )
       endif( MIRO_MAKEPARAMS_CONFIG_INSTALL_DIR )
