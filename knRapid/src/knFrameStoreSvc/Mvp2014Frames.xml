@@ -1,0 +1,42 @@
+<!DOCTYPE MiroConfigDocument>
+<config>
+  <section name="Frames" >
+    <instance type="rapid::FrameRpyParameters" name="UtmGrid10S" >
+      <parameter value="/Earth" name="Parent" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Mvp2014SiteFrame" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="573456.0" name="X" />
+      <parameter value="3893044.0" name="Y" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Mvp2014SiteFrameZDown" >
+      <parameter value="Mvp2014SiteFrame" name="Parent" />
+      <parameter value="180" name="Roll" />
+      <parameter value="90" name="Yaw" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="R0" >
+      <parameter value="UtmGrid10S" name="Parent" />
+      <parameter value="4141795.14" name="Y" />
+      <parameter value="582723.1" name="X" />
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Ramp" >
+      <parameter value="Mvp2014SiteFrameZDown" name="Parent" />
+      <parameter value="170" name="Yaw" />
+      <parameter value="29" name="Y" />
+      <parameter value="-25" name="X" />
+    </instance>
+    <!-- roverscape webcam pose is a best guess approximation -->
+    <!-- webcam frame is X right, Y down, Z out -->
+    <instance type="rapid::FrameRpyParameters" name="Mvp2014Cam1Mount" >
+      <parameter value="Mvp2014SiteFrame" name="Parent" />
+      <parameter value="24.7"  name="X" />
+      <parameter value="-26.4" name="Y" />
+      <parameter value="6"     name="Z" />
+      <parameter value="-90"   name="Roll"/>
+    </instance>
+    <instance type="rapid::FrameRpyParameters" name="Mvp2014Cam1" >
+      <parameter value="Mvp2014Cam1Mount" name="Parent" />
+      <parameter value="65"    name="Pitch" />
+    </instance>
+  </section>
+</config>
