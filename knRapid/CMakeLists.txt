@@ -16,8 +16,8 @@ if (catkin_FOUND)
 ## catkin specific configuration ##
 ###################################
 catkin_package(
-  INCLUDE_DIRS src
-  LIBRARIES rapidDds rapidIo
+  INCLUDE_DIRS src ../../../devel/include/rapidDds/ ../../../devel/include/rapidExtDds/  ../../../devel/include/rapidExtArcDds/
+  LIBRARIES rapidDds rapidIo rapidExtDds rapidExtIo rapidExtArcDds rapidExtArcIo rapidCommanding
   )
 else (catkin_FOUND)
 
