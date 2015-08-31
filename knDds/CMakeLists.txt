@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(knDds)
 
+###################################
+## catkin                        ##
+###################################
 if (${CATKIN_TOPLEVEL})
   find_package(catkin  REQUIRED COMPONENTS
     irg_cmake
@@ -10,34 +13,38 @@ if (${CATKIN_TOPLEVEL})
 endif(${CATKIN_TOPLEVEL})
 
 if (catkin_FOUND)
-###################################
-## catkin specific configuration ##
-###################################
-catkin_package(
-  INCLUDE_DIRS src
-  LIBRARIES knDds knDdsUtil
+  ###################################
+  ## catkin specific configuration ##
+  ###################################
+  catkin_package(
+    INCLUDE_DIRS src
+    LIBRARIES knDds knDdsUtil
+    CFG_EXTRAS knDds-extras.cmake
   )
+  ## set variable with full path of extras file so we can append library info
+  set_cfg_extras_file()
 else (catkin_FOUND)
 
-set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
+  set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
 
-include( SetArchitecture )
-include( SetupBuildSwitch )
-include( SetupConfigureFile )
-include( SetupInstall )
-include( SetupRPATH )
-include( SetupUtilities )
-include( SetupWarnLevel )
-include( UserOptions )
+  include( SetArchitecture )
+  include( SetupBuildSwitch )
+  include( SetupConfigureFile )
+  include( SetupInstall )
+  include( SetupRPATH )
+  include( SetupUtilities )
+  include( SetupWarnLevel )
+  include( UserOptions )
 
-## we have to play some tricks to get install
-## path to "stick" in Windows
-##------------------------------------------------
-set( KNDDS_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "KNDDS install path")
-set( CMAKE_INSTALL_PREFIX ${KNDDS_INSTALL_PREFIX} CACHE INTERNAL "" )
+  ## we have to play some tricks to get install
+  ## path to "stick" in Windows
+  ##------------------------------------------------
+  set( KNDDS_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "knDds install path")
+  set( CMAKE_INSTALL_PREFIX ${KNDDS_INSTALL_PREFIX} CACHE INTERNAL "" )
 
-find_package( Miro )
-find_package( kn )
+  find_package( Miro )
+  find_package( kn )
+  
 endif (catkin_FOUND)
 
 
@@ -71,20 +78,6 @@ build_with_var( WITH_DDS          RTIDDS_FOUND )
 build_with_var( WITH_DDS_LBPlugin RTIDDS_LB_FOUND )
 build_with_var( WITH_DDS_Monitor  RTIDDS_MON_FOUND )
 build_with_var( WITH_RTI_DistLogger RTIDDS_DLOGGER_FOUND )
-
-## this macro is normally pulled in through the
-## FindMiro script
-##-----------------------------------------------
-include( GenerateMiroMakeParams )
-# we need to tell the macro where to find the executable
-# because it isn't "installed" yet...
-if (${CATKIN_TOPLEVEL})
-  set( MIRO_MAKEPARAMS_EXECUTABLE ${CATKIN_DEVEL_PREFIX}/lib/Miro/MakeParams )
-else (${CATKIN_TOPLEVEL})
-  set( MIRO_MAKEPARAMS_EXECUTABLE ${PROJECT_BINARY_DIR}/src/makeParams/${CMAKE_CFG_INTDIR}/MakeParams )
-endif (${CATKIN_TOPLEVEL})
-
-
 
 ## We must add the in-source and out-of-source
 ## include paths
@@ -125,3 +118,11 @@ install_export()
 
 #------------------------------------
 print_build_switches()
+
+###################################
+## catkin extras                 ##
+###################################
+if( knDds_CFG_EXTRAS_FILE )
+  cfg_extras_append_libraries()
+endif( knDds_CFG_EXTRAS_FILE )
+

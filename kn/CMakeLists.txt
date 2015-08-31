@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(kn)
 
+###################################
+## catkin                        ##
+###################################
 if (${CATKIN_TOPLEVEL})
   find_package(catkin  REQUIRED COMPONENTS
     irg_cmake
@@ -8,25 +11,29 @@ if (${CATKIN_TOPLEVEL})
 endif(${CATKIN_TOPLEVEL})
 
 if (catkin_FOUND)
-###################################
-## catkin specific configuration ##
-###################################
-catkin_package(
-  INCLUDE_DIRS src
-  LIBRARIES knShare knMath knGeometry knFrameStore knMotorShare
+  ###################################
+  ## catkin specific configuration ##
+  ###################################
+  catkin_package(
+    INCLUDE_DIRS src
+    LIBRARIES knShare knMath knGeometry knFrameStore knMotorShare
+    CFG_EXTRAS kn-extras.cmake
   )
+  ## set variable with full path of extras file so we can append library info
+  set_cfg_extras_file()
+
 else (catkin_FOUND)
   set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
 
-include( SetArchitecture )
-include( SetupBuildSwitch )
-include( SetupConfigureFile )
-include( SetupInstall )
-include( SetupRPATH )
-include( SetupCTest )
-include( SetupWarnLevel )
-include( SetupUtilities )
-include( UserOptions )
+  include( SetArchitecture )
+  include( SetupBuildSwitch )
+  include( SetupConfigureFile )
+  include( SetupInstall )
+  include( SetupRPATH )
+  include( SetupCTest )
+  include( SetupWarnLevel )
+  include( SetupUtilities )
+  include( UserOptions )
 
   ## we have to play some tricks to get install
   ## path to "stick" in Windows
@@ -93,3 +100,11 @@ install_export()
 
 #------------------------------------
 print_build_switches()
+
+###################################
+## catkin extras                 ##
+###################################
+if( kn_CFG_EXTRAS_FILE )
+  cfg_extras_append_libraries()
+endif( kn_CFG_EXTRAS_FILE )
+

@@ -1,0 +1,11 @@
+# source: knRapid-extras.cmake.develspace.in
+
+## Create INCLUDE_DIR variable for downstream packages that
+## include knRapid rtiddsgen generated headers
+set(KNRAPID_INCLUDE_DIR @CATKIN_DEVEL_PREFIX@/include
+                        @CATKIN_DEVEL_PREFIX@/include/rapidDds
+                        @CATKIN_DEVEL_PREFIX@/include/rapidExtDds
+                        @CATKIN_DEVEL_PREFIX@/include/rapidExtArcDds )
+                        
+## add include dirs to catkin_INCLUDE_DIRS 
+set( catkin_INCLUDE_DIRS  ${catkin_INCLUDE_DIRS} ${KNRAPID_INCLUDE_DIR} )

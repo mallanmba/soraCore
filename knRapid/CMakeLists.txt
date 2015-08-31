@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(knRapid)
 
+###################################
+## catkin                        ##
+###################################
 if (${CATKIN_TOPLEVEL})
   find_package(catkin  REQUIRED COMPONENTS
     irg_cmake
@@ -12,50 +15,54 @@ if (${CATKIN_TOPLEVEL})
 endif(${CATKIN_TOPLEVEL})
 
 if (catkin_FOUND)
-###################################
-## catkin specific configuration ##
-###################################
-catkin_package(
-  INCLUDE_DIRS src ../../../devel/include/rapidDds/ ../../../devel/include/rapidExtDds/  ../../../devel/include/rapidExtArcDds/
-  LIBRARIES rapidDds rapidIo rapidExtDds rapidExtIo rapidExtArcDds rapidExtArcIo rapidCommanding
+  ###################################
+  ## catkin specific configuration ##
+  ###################################
+  catkin_package(
+    INCLUDE_DIRS src # NOTE: see knRapid-extras.cmake for additional include dirs
+    LIBRARIES rapidDds rapidIo rapidExtDds rapidExtIo rapidExtArcDds rapidExtArcIo rapidCommanding
+    CFG_EXTRAS knRapid-extras.cmake
   )
+  ## set variable with full path of extras file so we can append library info
+  set_cfg_extras_file()
+  
 else (catkin_FOUND)
 
-set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
+  set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
 
-if( CMAKE_COMPILER_IS_GNUCXX )
-  message( STATUS "****************************************************")
-  message( STATUS "** Manually setting compiler flags to prevent")
-  message( STATUS "** strict-aliasing warnings in DDS generated files")
-  message( STATUS "****************************************************")
-  set( WARN_FLAGS "-fno-strict-aliasing -Wall -Woverloaded-virtual -Wno-write-strings" )
- 
-  if( NOT SETUP_WARN_LEVEL_HAS_RUN )
-    message( STATUS "** disable --as-needed because k10controller *wants* 'unecessary' shared libs to be linked **")
-    set( CMAKE_EXE_LINKER_FLAGS    "-Wl,--no-as-needed" CACHE STRING "" FORCE )
-  endif( NOT SETUP_WARN_LEVEL_HAS_RUN )
+  if( CMAKE_COMPILER_IS_GNUCXX )
+    message( STATUS "****************************************************")
+    message( STATUS "** Manually setting compiler flags to prevent")
+    message( STATUS "** strict-aliasing warnings in DDS generated files")
+    message( STATUS "****************************************************")
+    set( WARN_FLAGS "-fno-strict-aliasing -Wall -Woverloaded-virtual -Wno-write-strings" )
   
-endif( CMAKE_COMPILER_IS_GNUCXX )
+    if( NOT SETUP_WARN_LEVEL_HAS_RUN )
+      message( STATUS "** disable --as-needed because k10controller *wants* 'unecessary' shared libs to be linked **")
+      set( CMAKE_EXE_LINKER_FLAGS    "-Wl,--no-as-needed" CACHE STRING "" FORCE )
+    endif( NOT SETUP_WARN_LEVEL_HAS_RUN )
+    
+  endif( CMAKE_COMPILER_IS_GNUCXX )
 
-include( SetArchitecture )
-include( SetupBuildSwitch )
-include( SetupConfigureFile )
-include( SetupInstall )
-include( SetupRPATH )
-include( SetupUtilities )
-include( SetupWarnLevel )
-include( UserOptions )
+  include( SetArchitecture )
+  include( SetupBuildSwitch )
+  include( SetupConfigureFile )
+  include( SetupInstall )
+  include( SetupRPATH )
+  include( SetupUtilities )
+  include( SetupWarnLevel )
+  include( UserOptions )
 
-## we have to play some tricks to get install
-## path to "stick" in Windows
-##------------------------------------------------
-set( RAPID_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "RAPID install path")
-set( CMAKE_INSTALL_PREFIX ${RAPID_INSTALL_PREFIX} CACHE INTERNAL "" )
+  ## we have to play some tricks to get install
+  ## path to "stick" in Windows
+  ##------------------------------------------------
+  set( RAPID_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "RAPID install path")
+  set( CMAKE_INSTALL_PREFIX ${RAPID_INSTALL_PREFIX} CACHE INTERNAL "" )
 
-find_package( IrgUtil )
-find_package( Miro )
-find_package( kn )
-find_package( knDds )
+  find_package( IrgUtil )
+  find_package( Miro )
+  find_package( kn )
+  find_package( knDds )
 endif (catkin_FOUND)
 
 #---------------------------------------------
@@ -74,18 +81,6 @@ find_package( Threads )
 find_package( Doxygen )
 
 build_with_var( WITH_DDS RTIDDS_FOUND )
-
-## this macro is normally pulled in through the
-## FindMiro script
-##-----------------------------------------------
-include( GenerateMiroMakeParams )
-# we need to tell the macro where to find the executable
-# because it isn't "installed" yet...
-if (${CATKIN_TOPLEVEL})
-  set( MIRO_MAKEPARAMS_EXECUTABLE ${CATKIN_DEVEL_PREFIX}/lib/Miro/MakeParams )
-else (${CATKIN_TOPLEVEL})
-  set( MIRO_MAKEPARAMS_EXECUTABLE ${PROJECT_BINARY_DIR}/src/makeParams/${CMAKE_CFG_INTDIR}/MakeParams )
-endif (${CATKIN_TOPLEVEL})
 
 ## We must add the in-source and out-of-source
 ## include paths 
@@ -133,3 +128,10 @@ install_export()
 
 #------------------------------------
 print_build_switches()
+
+###################################
+## catkin extras                 ##
+###################################
+if( knRapid_CFG_EXTRAS_FILE )
+  cfg_extras_append_libraries()
+endif( knRapid_CFG_EXTRAS_FILE )
