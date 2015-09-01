@@ -129,9 +129,3 @@ install_export()
 #------------------------------------
 print_build_switches()
 
-###################################
-## catkin extras                 ##
-###################################
-if( knRapid_CFG_EXTRAS_FILE )
-  cfg_extras_append_libraries()
-endif( knRapid_CFG_EXTRAS_FILE )

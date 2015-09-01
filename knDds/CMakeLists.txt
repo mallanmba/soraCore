@@ -19,7 +19,6 @@ if (catkin_FOUND)
   catkin_package(
     INCLUDE_DIRS src
     LIBRARIES knDds knDdsUtil
-    CFG_EXTRAS knDds-extras.cmake
   )
   ## set variable with full path of extras file so we can append library info
   set_cfg_extras_file()
@@ -118,11 +117,4 @@ install_export()
 
 #------------------------------------
 print_build_switches()
-
-###################################
-## catkin extras                 ##
-###################################
-if( knDds_CFG_EXTRAS_FILE )
-  cfg_extras_append_libraries()
-endif( knDds_CFG_EXTRAS_FILE )
 
