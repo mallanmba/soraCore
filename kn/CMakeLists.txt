@@ -4,24 +4,13 @@ project(kn)
 ###################################
 ## catkin                        ##
 ###################################
-if (${CATKIN_TOPLEVEL})
+if (CATKIN_DEVEL_PREFIX)
   find_package(catkin  REQUIRED COMPONENTS
     irg_cmake
   )
-endif(${CATKIN_TOPLEVEL})
+endif(CATKIN_DEVEL_PREFIX)
 
-if (catkin_FOUND)
-  ###################################
-  ## catkin specific configuration ##
-  ###################################
-  catkin_package(
-    INCLUDE_DIRS src
-    LIBRARIES knShare knMath knGeometry knFrameStore knMotorShare
-  )
-  ## set variable with full path of extras file so we can append library info
-  set_cfg_extras_file()
-
-else (catkin_FOUND)
+if (NOT catkin_FOUND)
   set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
 
   include( SetArchitecture )
@@ -39,16 +28,28 @@ else (catkin_FOUND)
   ##------------------------------------------------
   set( ${PROJECT_UPPER}_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "irg apps install path")
   set( CMAKE_INSTALL_PREFIX ${${PROJECT_UPPER}_INSTALL_PREFIX} CACHE INTERNAL "" )
-endif (catkin_FOUND)
+endif (NOT catkin_FOUND)
 
 # find dependencies
 find_package( ACE REQUIRED )
 find_package( Eigen3 )
-find_package( Boost COMPONENTS chrono )
-find_package( Boost 1.46 REQUIRED program_options signals thread system )
+find_package( Boost 1.46 REQUIRED program_options signals thread system chrono )
 
 find_package( GTest )
 find_package( Doxygen )
+
+if (catkin_FOUND)
+  ###################################
+  ## catkin specific configuration ##
+  ###################################
+  catkin_package(
+    INCLUDE_DIRS src
+    LIBRARIES knShare knMath knGeometry knFrameStore knMotorShare
+    DEPENDS ACE Boost EIGEN3
+  )
+  ## set variable with full path of extras file so we can append library info
+  set_cfg_extras_file()
+endif( catkin_FOUND )
 
 ## We must add the in-source and out-of-source
 ## include paths 

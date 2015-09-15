@@ -4,7 +4,7 @@ project(knRapid)
 ###################################
 ## catkin                        ##
 ###################################
-if (${CATKIN_TOPLEVEL})
+if (CATKIN_DEVEL_PREFIX)
   find_package(catkin  REQUIRED COMPONENTS
     irg_cmake
     irgUtil
@@ -12,22 +12,10 @@ if (${CATKIN_TOPLEVEL})
     kn
     knDds
   )
-endif(${CATKIN_TOPLEVEL})
+endif(CATKIN_DEVEL_PREFIX)
 
-if (catkin_FOUND)
-  ###################################
-  ## catkin specific configuration ##
-  ###################################
-  catkin_package(
-    INCLUDE_DIRS src # NOTE: see knRapid-extras.cmake for additional include dirs
-    LIBRARIES rapidDds rapidIo rapidExtDds rapidExtIo rapidExtArcDds rapidExtArcIo rapidCommanding
-    CFG_EXTRAS knRapid-extras.cmake
-  )
-  ## set variable with full path of extras file so we can append library info
-  set_cfg_extras_file()
-  
-else (catkin_FOUND)
-
+if (NOT catkin_FOUND)
+  ## standard CMake setup
   set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
 
   if( CMAKE_COMPILER_IS_GNUCXX )
@@ -63,7 +51,7 @@ else (catkin_FOUND)
   find_package( Miro )
   find_package( kn )
   find_package( knDds )
-endif (catkin_FOUND)
+endif (NOT catkin_FOUND)
 
 #---------------------------------------------
 # make RTI DDS optional
@@ -81,6 +69,22 @@ find_package( Threads )
 find_package( Doxygen )
 
 build_with_var( WITH_DDS RTIDDS_FOUND )
+
+if (catkin_FOUND)
+  ###################################
+  ## catkin specific configuration ##
+  ###################################
+
+  catkin_package(
+    INCLUDE_DIRS src # NOTE: see knRapid-extras.cmake for additional include dirs
+    LIBRARIES rapidDds rapidIo rapidExtDds rapidExtIo rapidExtArcDds rapidExtArcIo rapidCommanding
+    CFG_EXTRAS knRapid-extras.cmake
+    CATKIN_DEPENDS knDds
+  )
+  ## set variable with full path of extras file so we can append library info
+  set_cfg_extras_file()
+endif(catkin_FOUND)  
+
 
 ## We must add the in-source and out-of-source
 ## include paths 

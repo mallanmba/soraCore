@@ -4,25 +4,15 @@ project(knDds)
 ###################################
 ## catkin                        ##
 ###################################
-if (${CATKIN_TOPLEVEL})
+if (CATKIN_DEVEL_PREFIX)
   find_package(catkin  REQUIRED COMPONENTS
     irg_cmake
     kn
     Miro
   )
-endif(${CATKIN_TOPLEVEL})
+endif(CATKIN_DEVEL_PREFIX)
 
-if (catkin_FOUND)
-  ###################################
-  ## catkin specific configuration ##
-  ###################################
-  catkin_package(
-    INCLUDE_DIRS src
-    LIBRARIES knDds knDdsUtil
-  )
-  ## set variable with full path of extras file so we can append library info
-  set_cfg_extras_file()
-else (catkin_FOUND)
+if (NOT catkin_FOUND)
 
   set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
 
@@ -44,7 +34,7 @@ else (catkin_FOUND)
   find_package( Miro )
   find_package( kn )
   
-endif (catkin_FOUND)
+endif (NOT catkin_FOUND)
 
 
 if( CMAKE_COMPILER_IS_GNUCXX )
@@ -77,6 +67,20 @@ build_with_var( WITH_DDS          RTIDDS_FOUND )
 build_with_var( WITH_DDS_LBPlugin RTIDDS_LB_FOUND )
 build_with_var( WITH_DDS_Monitor  RTIDDS_MON_FOUND )
 build_with_var( WITH_RTI_DistLogger RTIDDS_DLOGGER_FOUND )
+
+if (catkin_FOUND)
+  ###################################
+  ## catkin specific configuration ##
+  ###################################
+  catkin_package(
+    INCLUDE_DIRS src
+    LIBRARIES knDds knDdsUtil
+    CATKIN_DEPENDS kn Miro
+    DEPENDS RTIDDS
+  )
+  ## set variable with full path of extras file so we can append library info
+  set_cfg_extras_file()
+endif(catkin_FOUND)
 
 ## We must add the in-source and out-of-source
 ## include paths

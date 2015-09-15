@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package>
+<package format="2">
   <name>knRapid</name>
   <version>1.0.0</version>
   <description>Rapid Implementation of soraCore</description>
@@ -9,8 +9,9 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>irg_cmake</build_depend>
-  <build_depend>irgUtil</build_depend>
-  <build_depend>kn</build_depend>
-  <build_depend>knDds</build_depend>
-  <build_depend>Miro</build_depend>
+  
+  <depend>irgUtil</depend>
+  <depend>kn</depend>
+  <depend>knDds</depend>
+  <depend>Miro</depend>
 </package>
