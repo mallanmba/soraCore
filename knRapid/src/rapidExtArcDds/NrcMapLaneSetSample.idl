@@ -30,42 +30,42 @@ module rapid {
         float curv_mid;
         float curv_end;
       };
-
+      
       typedef sequence<MapPoint,512> MapPointSequence512;
-      typedef sequence<Vec2d,128>    Vec2dSequence128;
-
+      typedef sequence<Vec2d,128>    Vec2dSequence64;
+      
       //@copy-declaration  /** Direct copy of NRC ROS type */
       struct MapLine {
         MapPointSequence512 map_points;
         String32           type;
         String32           road_mark_type;
       };
-
+      
       //@copy-declaration  /** Direct copy of NRC ROS type */
       struct MapLane {
         long            id;
         MapLine         lane_center;
         MapLine         left_boundary;
-        MapLine         right_boundrary;
+        MapLine         right_boundary;
         MapLine         left_outer_boundary;
         MapLine         right_outer_boundary;
-
+        
         long            left_sibling_id;
         long            right_sibling_id;
 
         // "s" : distance along path from 1st point.
-        DoubleSequence128 stop_line_positions;
+        DoubleSequence64 stop_line_positions;
 
         // "s", max speed [m/s]
-        Vec2dSequence128 speed_along_path;
+        Vec2dSequence64 speed_along_path;
 
         // "s" value to start transition to next lane
         // -1 means no transition
         double transit_s;
       };
-
-      typedef sequence<MapPoint,32> MapLaneSequence;
-
+      
+      typedef sequence<MapPoint,8> MapLaneSequence;
+      
       //@copy-c-declaration class NrcMapLaneSetSampleTypeSupport;
       //@copy-c-declaration class NrcMapLaneSetSampleDataWriter;
       //@copy-c-declaration class NrcMapLaneSetSampleDataReader;
@@ -77,7 +77,8 @@ module rapid {
       valuetype NrcMapLaneSetSample : Message {
         public MapLaneSequence map_lanes;
       };
-
+    
     };
   };
 };
+
