@@ -56,6 +56,13 @@ module rapid {
       //@copy-declaration  * NrcDriveGoalWithLanesSample 
       //@copy-declaration  */
       valuetype NrcDriveGoalWithLanesSample : Message {
+        //@copy-c-declaration #if RTI_DDS_VERSION_MAJOR < 4 || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR < 5) || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR  == 5 && RTI_DDS_VERSION_RELEASE != 'f' )
+        //@copy-c-declaration typedef NrcDriveGoalWithLanesSampleTypeSupport TypeSupport;
+        //@copy-c-declaration typedef NrcDriveGoalWithLanesSampleDataWriter DataWriter;
+        //@copy-c-declaration typedef NrcDriveGoalWithLanesSampleDataReader DataReader;
+        //@copy-c-declaration typedef NrcDriveGoalWithLanesSampleSeq Seq;
+        //@copy-c-declaration #endif
+        //@copy-c-declaration typedef NrcDriveGoalWithLanesSample Type;
         public DriveGoalSequence drive_goals;
         public MapLaneSequence   map_lanes;
       };

@@ -64,7 +64,7 @@ module rapid {
         double transit_s;
       };
       
-      typedef sequence<MapPoint,8> MapLaneSequence;
+      typedef sequence<MapLane,8> MapLaneSequence;
       
       //@copy-c-declaration class NrcMapLaneSetSampleTypeSupport;
       //@copy-c-declaration class NrcMapLaneSetSampleDataWriter;
@@ -75,6 +75,15 @@ module rapid {
       //@copy-declaration  * NrcMapLaneSetSample 
       //@copy-declaration  */
       valuetype NrcMapLaneSetSample : Message {
+      
+        //@copy-c-declaration #if RTI_DDS_VERSION_MAJOR < 4 || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR < 5) || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR  == 5 && RTI_DDS_VERSION_RELEASE != 'f' )
+        //@copy-c-declaration typedef NrcMapLaneSetSampleTypeSupport TypeSupport;
+        //@copy-c-declaration typedef NrcMapLaneSetSampleDataWriter DataWriter;
+        //@copy-c-declaration typedef NrcMapLaneSetSampleDataReader DataReader;
+        //@copy-c-declaration typedef NrcMapLaneSetSampleSeq Seq;
+        //@copy-c-declaration #endif
+        //@copy-c-declaration typedef NrcMapLaneSetSample Type;
+        
         public MapLaneSequence map_lanes;
       };
     
