@@ -44,6 +44,8 @@ module rapid {
       const String64 TRACKEDOBJECT_CONFIG_TOPIC = "rapid_trackedobject_config";
       const String64 TRACKEDOBJECT_SAMPLE_TOPIC = "rapid_trackedobject_sample";
       const String64 WHEELGROUP_SAMPLE_TOPIC    = "rapid_wheelgroup_sample";
+
+      const String64 NRCDRIVEGOALWITHLANES_SAMPLE_TOPIC = "rapid_drivegoalwithlanes_sample";
     };
   };
 };

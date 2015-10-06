@@ -73,6 +73,7 @@ add_target_definitions( ${LIB_NAME} ${EXPORT_DEFINE} )
 set (CONFIG_FILES
   MarscapeFrames.xml
   RoverscapeFrames.xml
+  Mvp2014Frames.xml
   FieldTestSiteFrames.xml
   K10RedFrames.xml
   K10RedUpdaterConfig.xml
