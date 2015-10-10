@@ -351,11 +351,11 @@ build_module "irgUtil" "${BUILD_TYPE} "
 build_module "kn"    "${BUILD_TYPE} \
                       ${acetao_flag}"
 
-build_module "knDds"  "${BUILD_TYPE} -DMIRO_ROOT_DIR:PATH=${install_path}\
+build_module "knDds"  "${BUILD_TYPE} ${miro_flag} \
 			          ${acetao_flag}"
 
 build_module "knRapid" "${BUILD_TYPE} \
-                      -DMIRO_ROOT_DIR:PATH=${install_path}\
+                      ${miro_flag} \
                       ${acetao_flag}"
 
 echo
