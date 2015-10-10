@@ -92,7 +92,7 @@ target="install"
 
 usage_string="$0 [-h] [-p install_path] [-b buildname] [-a acetao_path] [-m miro_path][-c <clean cache>] [-t make_target]"
 
-optstring="hp:b:a:t:cC"
+optstring="hp:b:a:m:t:cC"
 
 # Print the help message (list all the options)
 print_help()
@@ -302,6 +302,14 @@ if [ -z ${acetao_dir} ] ; then
 else
     acetao_canonical=`canonicalize ${acetao_dir}`
     acetao_flag="-DACE_ROOT_DIR:PATH=${acetao_canonical} -DTAO_ROOT_DIR:PATH=${acetao_canonical}/TAO"
+fi
+
+
+if [ -z ${miro_dir} ] ; then
+    miro_flag=""
+else
+    miro_canonical=`canonicalize ${miro_dir}`
+    miro_flag="-DMIRO_ROOT_DIR:PATH=${miro_canonical}"
 fi
 
 
