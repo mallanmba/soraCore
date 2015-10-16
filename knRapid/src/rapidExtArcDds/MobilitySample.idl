@@ -1,3 +1,6 @@
+#ifndef rapid_ext_arc_MobilitySample_idl
+#define rapid_ext_arc_MobilitySample_idl
+
 /*
  * Copyright (c) 2009 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
@@ -43,7 +46,7 @@ module rapid {
         public Vec3d xytTolerance;
         public float hintedSpeed;
         public String32 navAlgo;
-        //@copy-declaration /** extension values */
+		//@copy-declaration /** extension values */
         public KeyTypeValueSequence8 keyedValues;
      };
 
@@ -60,3 +63,5 @@ module rapid {
     };
   };
 };
+
+#endif // rapid_ext_arc_MobilitySample_idl

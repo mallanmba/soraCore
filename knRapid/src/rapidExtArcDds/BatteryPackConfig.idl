@@ -31,4 +31,5 @@ module rapid
     };
   };
 };
-#endif
+
+#endif // rapid_ext_arc_BatteryPackConfig_idl

@@ -1,3 +1,6 @@
+#ifndef rapid_ext_TrajectoryConfig_idl
+#define rapid_ext_TrajectoryConfig_idl
+
 /*
  * Copyright (c) 2012 United States Government as represented by the 
  * Administrator of the National Aeronautics and Space Administration.
@@ -40,3 +43,5 @@ module rapid{
     };
   };
 }; 
+
+#endif // rapid_ext_TrajectoryConfig_idl

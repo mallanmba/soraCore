@@ -86,22 +86,27 @@ if( NOT BIGENDIAN )
   set( RTIDDS_DEFINES      ${RTIDDS_DEFINES} RTI_ENDIAN_LITTLE )
 endif( NOT BIGENDIAN )
 
-# set the scripts search path 
+# set the scripts/bin search path 
 #--------------------------------------------------
 set( SCRIPTS_SEARCH_PATH "" )
 if( RTIDDS_ROOT_DIR ) 
 
-  set( SCRIPTS_SEARCH_PATH  ${RTIDDS_ROOT_DIR}/scripts )
+  set( SCRIPTS_SEARCH_PATH ${RTIDDS_ROOT_DIR}/bin 
+                           ${RTIDDS_ROOT_DIR}/scripts 
+  )
   
 else( RTIDDS_ROOT_DIR ) 
 
   set( PKG_DIR_NAME ndds )
   # default search path
   set( SCRIPTS_SEARCH_PATH ${SCRIPTS_SEARCH_PATH}
+    ${IRG_PACKAGES_DIR}/${PKG_DIR_NAME}/bin
     ${IRG_PACKAGES_DIR}/${PKG_DIR_NAME}/scripts
+    /usr/local/${PKG_DIR_NAME}/bin
     /usr/local/${PKG_DIR_NAME}/scripts
     /usr/local/bin
     /usr/bin
+    c:/devel/${PKG_DIR_NAME}/bin
     c:/devel/${PKG_DIR_NAME}/scripts
   )
   
@@ -112,7 +117,9 @@ else( RTIDDS_ROOT_DIR )
     set( ENV_VAR_VALUE $ENV{${ENV_VAR_NAME}} )
     if( ENV_VAR_VALUE )
         message( STATUS "  ${ENV_VAR_NAME} environment variable is set to ${ENV_VAR_VALUE}" )
-        set( SCRIPTS_SEARCH_PATH ${ENV_VAR_VALUE}/scripts )
+        set( SCRIPTS_SEARCH_PATH ${ENV_VAR_VALUE}/bin  
+                                 ${ENV_VAR_VALUE}/scripts 
+        )
     endif( ENV_VAR_VALUE )
   endforeach( ENV_VAR_NAME ${ENV_VAR_NAMES} )
   
@@ -136,14 +143,15 @@ if( RTIDDS_IDL_COMMAND )
   get_filename_component(RTIDDS_ROOT_DIR ${_RTIDDS_ROOT_DIR} REALPATH)
   set( NDDSHOME ${RTIDDS_ROOT_DIR} )
   
+  set( ENV_NDDSARCH $ENV{NDDSARCH} )
   # guess the rti architecture string
   # this is absolutely horrible... even in their own 
   # scripts they have a fragile way to guess their
   # architecture string. So, we do our best...
   #--------------------------------------------------
-  if( $ENV{NDDSARCH} ) 
-    message( STATUS "  NDDSARCH environment variable is set to $ENV{NDDSARCH}" )
-    set(RTIDDS_ARCHITECTURE $ENV{NDDSARCH})
+  if( ENV_NDDSARCH ) 
+    message( STATUS "  NDDSARCH environment variable is set to \"${ENV_NDDSARCH}\"" )
+    set(RTIDDS_ARCHITECTURE ${ENV_NDDSARCH})
   else( $ENV{NDDSARCH} )
     message( STATUS "  NDDSARCH environment variable is NOT set. Will try to guess architecture string..." )
     set(RTIDDS_ARCHITECTURE "INVALID" ) # default value
@@ -193,7 +201,7 @@ if( RTIDDS_IDL_COMMAND )
       message(STATUS "")
     endif( NOT RTILIB_SUBDIR )
     string(REGEX MATCH "[^/]*$" RTIDDS_ARCHITECTURE ${RTILIB_SUBDIR})    
-  endif( $ENV{NDDSARCH} )
+  endif( ENV_NDDSARCH )
 
   message( STATUS "  Using \"${RTIDDS_ARCHITECTURE}\" for RTI architecture string" )
   

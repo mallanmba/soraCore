@@ -1,3 +1,6 @@
+#ifndef rapid_ext_arc_TrackedObjectConfig_idl
+#define rapid_ext_arc_TrackedObjectConfig_idl
+
 /*
  * Copyright (c) 2015 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
@@ -54,3 +57,5 @@ module rapid {
     };
   };
 };
+
+#endif // rapid_ext_arc_TrackedObjectConfig_idl

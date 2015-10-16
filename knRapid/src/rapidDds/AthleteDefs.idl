@@ -1,3 +1,6 @@
+#ifndef rapid_AthleteDefs_idl
+#define rapid_AthleteDefs_idl
+
 /*
  * Copyright (c) 2009 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
@@ -88,3 +91,5 @@ module rapid {
     const String16 INT_TYPE_KEY = "__INT__";
 
 };
+
+#endif // rapid_AthleteDefs_idl

@@ -1,3 +1,6 @@
+#ifndef rapid_JointConfig_idl
+#define rapid_JointConfig_idl
+
 /*
  * Copyright (c) 2009 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
@@ -65,3 +68,5 @@ module rapid {
     };
 
 };
+
+#endif // rapid_JointConfig_idl

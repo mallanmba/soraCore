@@ -130,4 +130,4 @@ module rapid
   };
 };
 
-#endif // rapid_SSystemInfo_idl
+#endif // rapid_ext_SystemInfoSample_idl

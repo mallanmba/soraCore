@@ -56,4 +56,5 @@ module rapid
     };
   };
 };
+
 #endif // rapid_ext_ProcessManagerConfig_idl

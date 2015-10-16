@@ -1,3 +1,6 @@
+#ifndef rapid_ext_arc_EphemerisSample_idl
+#define rapid_ext_arc_EphemerisSample_idl
+
 // -*- idl -*-
 /*
  * Copyright (c) 2009 United States Government as represented by the
@@ -40,3 +43,5 @@ module rapid
     };
   };
 };
+
+#endif // rapid_ext_arc_EphemerisSample_idl

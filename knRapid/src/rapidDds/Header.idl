@@ -1,3 +1,6 @@
+#ifndef rapid_Header_idl
+#define rapid_Header_idl
+
 /*
  * Copyright (c) 2009 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
@@ -46,3 +49,5 @@ module rapid {
         long serial;
     };
 };
+
+#endif // rapid_Header_idl
