@@ -1,0 +1,59 @@
+#ifndef rapid_ext_arc_NrcIntersectionSample_idl
+#define rapid_ext_arc_NrcIntersectionSample_idl
+
+/*
+ * Copyright (c) 2015 United States Government as represented by the
+ * Administrator of the National Aeronautics and Space Administration.
+ * All Rights Reserved.
+ */
+
+#include "Message.idl"
+
+module rapid {
+  module ext {
+    module arc {
+      
+      const octet INTERSECTION_TYPE_UNKNOWN       =   0;
+      const octet INTERSECTION_TYPE_INTERSECTION  = 117;
+      
+      const octet INTERSECTION_PHASE_UNDEFINED    =   0;
+      const octet INTERSECTION_PHASE_GREEN_LIGHT  =  93;
+      const octet INTERSECTION_PHASE_YELLOW_LIGHT =  94;
+      const octet INTERSECTION_PHASE_RED_LIGHT    =  97;
+      
+      //@copy-c-declaration class NrcIntersectionSampleTypeSupport;
+      //@copy-c-declaration class NrcIntersectionSampleDataWriter;
+      //@copy-c-declaration class NrcIntersectionSampleDataReader;
+      //@copy-c-declaration struct NrcIntersectionSampleSeq;
+
+      //@copy-declaration /**
+      //@copy-declaration  * NrcIntersectionSample 
+      //@copy-declaration  */
+      valuetype NrcIntersectionSample : Message {
+      
+        //@copy-c-declaration #if RTI_DDS_VERSION_MAJOR < 4 || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR < 5) || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR  == 5 && RTI_DDS_VERSION_RELEASE != 'f' )
+        //@copy-c-declaration typedef NrcIntersectionSampleTypeSupport TypeSupport;
+        //@copy-c-declaration typedef NrcIntersectionSampleDataWriter DataWriter;
+        //@copy-c-declaration typedef NrcIntersectionSampleDataReader DataReader;
+        //@copy-c-declaration typedef NrcIntersectionSampleSeq Seq;
+        //@copy-c-declaration #endif
+        //@copy-c-declaration typedef NrcIntersectionSample Type;
+        
+        //@copy-c-declaration /** distance to the center of the next intersection in meters */
+        public float distance; 
+        
+        //@copy-c-declaration /** type is unknown when the car is inside an intersection
+        //@copy-c-declaration   * more types may be added later
+        //@copy-c-declaration   */
+        public octet type;
+        
+        //@copy-c-declaration /** phase of light is undefined when type is unknown.
+        //@copy-c-declaration   * always green for stop signs, stop lines, and yield signs.
+        //@copy-c-declaration   */
+        public octet phase;
+      };
+    };
+  };
+};
+
+#endif // rapid_ext_arc_NrcIntersectionSample_idl
