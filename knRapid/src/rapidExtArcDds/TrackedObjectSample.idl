@@ -1,3 +1,6 @@
+#ifndef rapid_ext_arc_TrackedObjectSample_idl
+#define rapid_ext_arc_TrackedObjectSample_idl
+
 /*
  * Copyright (c) 2015 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
@@ -6,6 +9,7 @@
 
 #include "Message.idl"
 #include "PointCloudSample.idl"
+#include "Trajectory3D.idl"
 
 /**
  * \file
@@ -17,6 +21,8 @@
 module rapid {
   module ext {
     module arc {
+    
+    typedef sequence<Trajectory3D, 16> Trajectory3DSequence16;
 
     //@copy-c-declaration class TrackedObjectSampleTypeSupport;
     //@copy-c-declaration class TrackedObjectSampleDataWriter;
@@ -61,13 +67,17 @@ module rapid {
         
         //@copy-declaration /** 3d points from sensed object  */
         public Vec3d               pointsScale;
-        public PointSampleSequence points;
-        
+        public PointSampleSequence points;    
+
+        //@copy-declaration /** predicted trajectories */
+        public Trajectory3DSequence16 predictedTrajectories;
+
         //@copy-declaration /** Any Agent-specific information needed. */
         public ValueSequence64 values;
 
-        //TODO: predicted trajectory
       };
     };
   };
 };
+
+#endif // rapid_ext_arc_TrackedObjectSample_idl

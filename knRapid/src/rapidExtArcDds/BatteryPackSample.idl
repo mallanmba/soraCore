@@ -1,5 +1,5 @@
-#ifndef rapid_BatteryPackSample_idl
-#define rapid_BatteryPackSample_idl
+#ifndef rapid_ext_arc_BatteryPackSample_idl
+#define rapid_ext_arc_BatteryPackSample_idl
 
 #include "BaseTypes.idl"
 #include "Message.idl"
@@ -124,4 +124,5 @@ module rapid
     };
   };
 };
-#endif
+
+#endif // rapid_ext_arc_BatteryPackSample_idl

@@ -1,3 +1,6 @@
+#ifndef rapid_CommandConstants_idl
+#define rapid_CommandConstants_idl
+
 /*
  * Copyright (c) 2009 United States Government as represented by the 
  * Administrator of the National Aeronautics and Space Administration.
@@ -379,3 +382,5 @@ module rapid {
     const String32 RAFT_METHOD_SETBANDWIDTH = "setBandwidth";
 
 };
+
+#endif // rapid_CommandConstants_idl

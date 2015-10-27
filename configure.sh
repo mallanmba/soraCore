@@ -92,7 +92,7 @@ target="install"
 
 usage_string="$0 [-h] [-p install_path] [-b buildname] [-a acetao_path] [-m miro_path][-c <clean cache>] [-t make_target]"
 
-optstring="hp:b:a:t:cC"
+optstring="hp:b:a:m:t:cC"
 
 # Print the help message (list all the options)
 print_help()
@@ -305,6 +305,14 @@ else
 fi
 
 
+if [ -z ${miro_dir} ] ; then
+    miro_flag=""
+else
+    miro_canonical=`canonicalize ${miro_dir}`
+    miro_flag="-DMIRO_ROOT_DIR:PATH=${miro_canonical}"
+fi
+
+
 echo "=== ${0} flags:"
 echo "      prefix:  $install_path"
 echo "      build:   $build_path"
@@ -343,11 +351,11 @@ build_module "irgUtil" "${BUILD_TYPE} "
 build_module "kn"    "${BUILD_TYPE} \
                       ${acetao_flag}"
 
-build_module "knDds"  "${BUILD_TYPE} -DMIRO_ROOT_DIR:PATH=${install_path}\
+build_module "knDds"  "${BUILD_TYPE} ${miro_flag} \
 			          ${acetao_flag}"
 
 build_module "knRapid" "${BUILD_TYPE} \
-                      -DMIRO_ROOT_DIR:PATH=${install_path}\
+                      ${miro_flag} \
                       ${acetao_flag}"
 
 echo

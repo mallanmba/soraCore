@@ -1,3 +1,6 @@
+#ifndef rapid_K10Defs_idl
+#define rapid_K10Defs_idl
+
 /*
  * Copyright (c) 2009 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
@@ -39,3 +42,5 @@ module rapid {
         };
     };
 };
+
+#endif // rapid_K10Defs_idl

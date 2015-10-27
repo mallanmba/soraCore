@@ -1,3 +1,6 @@
+#ifndef rapid_ext_arc_GenericConfig_idl
+#define rapid_ext_arc_GenericConfig_idl
+
 //idl
 
 #include "Message.idl"
@@ -30,3 +33,5 @@ module rapid
         };
     };
 };
+
+#endif // rapid_ext_arc_GenericConfig_idl

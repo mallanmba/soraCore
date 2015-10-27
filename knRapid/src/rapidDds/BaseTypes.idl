@@ -1,3 +1,6 @@
+#ifndef rapid_BaseTypes_idl
+#define rapid_BaseTypes_idl
+
 /*
  * Copyright (c) 2009 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
@@ -156,9 +159,9 @@ module rapid {
         case RAPID_STRING:
             String128 s;
         case RAPID_VEC3d:
-            Vec3d vec3d; //@copy /**< vector */
+            Vec3d vec3d;
         case RAPID_MAT33f:
-            Mat33f mat33f; //@copy /**< rotation matrix */
+            Mat33f mat33f;
     };
     typedef sequence<ParameterUnion,16> ParameterSequence16;
     typedef sequence<ParameterUnion,64> ParameterSequence64;
@@ -250,3 +253,5 @@ module rapid {
     typedef sequence<NamedOptionSetValue,16> NamedOptionSetValueSequence16;
     typedef sequence<NamedOptionSetValue,32> NamedOptionSetValueSequence32;
 };
+
+#endif // rapid_BaseTypes_idl
