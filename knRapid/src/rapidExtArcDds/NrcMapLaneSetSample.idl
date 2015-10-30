@@ -1,6 +1,3 @@
-#ifndef rapid_ext_arc_NrcMapLaneSetSample_idl
-#define rapid_ext_arc_NrcMapLaneSetSample_idl
-
 /*
  * Copyright (c) 2015 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
@@ -35,7 +32,7 @@ module rapid {
       };
       
       typedef sequence<MapPoint,512> MapPointSequence512;
-      typedef sequence<Vec2d,128>    Vec2dSequence64;
+      typedef sequence<Vec2d,64>     Vec2dSequence64;
       
       //@copy-declaration  /** Direct copy of NRC ROS type */
       struct MapLine {
@@ -67,7 +64,7 @@ module rapid {
         double transit_s;
       };
       
-      typedef sequence<MapLane,8> MapLaneSequence;
+      typedef sequence<MapLane,8> MapLaneSequence8;
       
       //@copy-c-declaration class NrcMapLaneSetSampleTypeSupport;
       //@copy-c-declaration class NrcMapLaneSetSampleDataWriter;
@@ -87,12 +84,10 @@ module rapid {
         //@copy-c-declaration #endif
         //@copy-c-declaration typedef NrcMapLaneSetSample Type;
         
-        public MapLaneSequence map_lanes;
+        public MapLaneSequence8 map_lanes;
       };
     
     };
   };
 };
 
-
-#endif // rapid_ext_arc_NrcMapLaneSetSample_idl
