@@ -11,32 +11,32 @@ module rapid {
   module ext {
     module arc {
 
-      //@copy-declaration  /** Direct copy of NRC ROS type */
+      //@copy-declaration  /** Direct copy of NRC ROS type NOTE: some members have been omitted because they are not used in practice */
       struct MapPoint {
         float x;
         float y;
-        float z;
+        //float z;
         float theta;
 
         // height at the end of vector
-        float z_end;
+        //float z_end;
         float length;
 
         // position at MapLine. Start is 0
         float s;
 
         // curvatures. If it's line, all curv_* is 0
-        float curv_start;
-        float curv_mid;
-        float curv_end;
+        //float curv_start;
+        //float curv_mid;
+        //float curv_end;
       };
       
-      typedef sequence<MapPoint,512> MapPointSequence512;
-      typedef sequence<Vec2d,64>     Vec2dSequence64;
+      typedef sequence<MapPoint,1024> MapPointSequence1K;
+      typedef sequence<Vec2f,64>     Vec2fSequence64;
       
       //@copy-declaration  /** Direct copy of NRC ROS type */
       struct MapLine {
-        MapPointSequence512 map_points;
+        MapPointSequence1K map_points;
         String32           type;
         String32           road_mark_type;
       };
@@ -54,17 +54,18 @@ module rapid {
         long            right_sibling_id;
 
         // "s" : distance along path from 1st point.
-        DoubleSequence64 stop_line_positions;
+        FloatSequence64 stop_line_positions;
 
         // "s", max speed [m/s]
-        Vec2dSequence64 speed_along_path;
+        Vec2fSequence64 speed_along_path;
 
         // "s" value to start transition to next lane
         // -1 means no transition
-        double transit_s;
+        float transit_s;
       };
       
-      typedef sequence<MapLane,8> MapLaneSequence8;
+      typedef sequence<MapLane,64> MapLaneSequence8;
+      typedef sequence<MapLane,64> MapLaneSequence64;
       
       //@copy-c-declaration class NrcMapLaneSetSampleTypeSupport;
       //@copy-c-declaration class NrcMapLaneSetSampleDataWriter;
@@ -84,7 +85,7 @@ module rapid {
         //@copy-c-declaration #endif
         //@copy-c-declaration typedef NrcMapLaneSetSample Type;
         
-        public MapLaneSequence8 map_lanes;
+        public MapLaneSequence64 map_lanes;
       };
     
     };
