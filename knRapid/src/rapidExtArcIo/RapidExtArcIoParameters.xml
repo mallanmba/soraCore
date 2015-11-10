@@ -142,8 +142,8 @@
         <config_parameter name="valueKeys"        type="vector&lt;KeyTypeValue&gt;"/>
     </config_item>
     <config_item name="TrackedObjectTopicPair" parent = "TopicPair" final = "false">
-      <config_parameter name="configProfile" inherited="true" type="string" default="RapidConfigQos" />
-      <config_parameter name="dataProfile"   inherited="true" type="string" default="RapidReliableDurableQos" />
+      <config_parameter name="configProfile" inherited="true" type="string" default="RapidTrackedObjectConfigProfile" />
+      <config_parameter name="dataProfile"   inherited="true" type="string" default="RapidTrackedObjectSampleProfile" />
       <config_parameter name="config" type="TrackedObjectConfigParameters"/>
     </config_item>
     

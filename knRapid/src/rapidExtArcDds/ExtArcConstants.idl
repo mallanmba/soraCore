@@ -48,8 +48,12 @@ module rapid {
       const String64 TRACKEDOBJECT_SAMPLE_TOPIC = "rapid_trackedobject_sample";
       const String64 WHEELGROUP_SAMPLE_TOPIC    = "rapid_wheelgroup_sample";
 
-      const String64 NRCDRIVEGOALWITHLANES_SAMPLE_TOPIC = "rapid_drivegoalwithlanes_sample";
-      const String64 NRCDRIVEGOALWITHLANES_SAMPLE_TOPIC = "rapid_nrcmaplaneset_sample";
+      const String64 NRCDRIVEGOAL_SAMPLE_TOPIC          = "rapid_nrcdrivegoal_sample";
+      const String64 NRCDRIVEGOALWITHLANES_SAMPLE_TOPIC = "rapid_nrcdrivegoalwithlanes_sample";
+      const String64 NRCINTERSECTION_SAMPLE_TOPIC       = "rapid_nrcintersection_sample";
+      const String64 NRCMAPLANESET_SAMPLE_TOPIC         = "rapid_nrcmaplaneset_sample";
+      
+      const String64 ROSMARKERARRAY_SAMPLE_TOPIC        = "rapid_rosmarkerarray_sample";
     };
   };
 };

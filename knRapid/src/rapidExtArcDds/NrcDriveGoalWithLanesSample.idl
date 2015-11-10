@@ -1,6 +1,3 @@
-#ifndef rapid_ext_arc_NrcDriveGoalWithLanesSample_idl
-#define rapid_ext_arc_NrcDriveGoalWithLanesSample_idl
-
 /*
  * Copyright (c) 2015 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
@@ -9,46 +6,12 @@
 
 #include "Message.idl"
 #include "BaseTypes.idl"
+#include "NrcDriveGoalSample.idl"
 #include "NrcMapLaneSetSample.idl"
 
 module rapid {
   module ext {
     module arc {
-
-      const octet NRC_STOP    = 0;
-      const octet NRC_NO_STOP = 1;
-
-      const octet NRC_ON_THIS_ROAD         = 0; // Remain on this road but drive in any lane.
-      const octet NRC_STRICT_IN_THIS_LANE  = 1; // Remain in the specified line and allow only small deviation into other lanes. For example, to pass a parked car
-      const octet NRC_RELAXED_IN_THIS_LANE = 2; // May move into other lanes briefly but return to this lane as soon a practical
-      const octet NRC_COME_TO_THIS_POINT   = 3; 
-
-      //@copy-declaration  /** 
-      //@copy-declaration   * Direct copy of NRC ROS type.
-      //@copy-declaration   * Provides the next position in-lane position that the vehicle will drive to. 
-      //@copy-declaration   */
-      struct DriveGoal {
-        long lane_id;
-
-        //@copy /** Note: known as variable s with the mission planner. */
-        float longitudinal_position;
-
-        Transform3D pose;
-
-        //@copy /** The desired speed of the vehicle in the segment between the end of the prevoius drive goal and arriving at this goal */
-        float approach_speed;
-
-        //@copy /** Speed limit on road */
-        float speed_limit;
-
-        //@copy /** Departure Constraints */
-        octet departure_constraints;
-
-        //@copy /** Controls the freedom of the behavior recipient to change lanes etc. */
-        octet drive_mode;
-      };
-
-      typedef sequence<DriveGoal,32> DriveGoalSequence;
 
       //@copy-c-declaration class  NrcDriveGoalWithLanesSampleTypeSupport;
       //@copy-c-declaration class  NrcDriveGoalWithLanesSampleDataWriter;
@@ -66,11 +29,11 @@ module rapid {
         //@copy-c-declaration typedef NrcDriveGoalWithLanesSampleSeq Seq;
         //@copy-c-declaration #endif
         //@copy-c-declaration typedef NrcDriveGoalWithLanesSample Type;
-        public DriveGoalSequence drive_goals;
-        public MapLaneSequence   map_lanes;
+        
+        public DriveGoalSequence64 drive_goals;
+        public MapLaneSequence8    map_lanes;
       };
 
     };
   };
 };
-#endif // rapid_ext_arc_NrcDriveGoalWithLanesSample_idl

@@ -577,6 +577,10 @@
     <qos_profile name="RapidEphemerisConfigProfile" base_name="RapidConfigQos"/>
     <qos_profile name="RapidEphemerisSampleProfile" base_name="RapidSampleQos" />
 
+    <!-- === ARC Extension: Tracked Object =================== -->
+    <qos_profile name="RapidTrackedObjectConfigProfile" base_name="RapidConfigQos" />
+    <qos_profile name="RapidTrackedObjectSampleProfile" base_name="RapidSampleQos" />
+
     <!-- ================================================================================== -->
     <!-- Traclabs Extensions ============================================================== -->
     <!-- ================================================================================== -->
