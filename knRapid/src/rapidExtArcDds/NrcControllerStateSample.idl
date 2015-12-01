@@ -1,0 +1,104 @@
+#ifndef rapid_ext_arc_NrcControllerStateSample_idl
+#define rapid_ext_arc_NrcControllerStateSample_idl
+
+/*
+ * Copyright (c) 2015 United States Government as represented by the
+ * Administrator of the National Aeronautics and Space Administration.
+ * All Rights Reserved.
+ */
+
+#include "Message.idl"
+
+module rapid {
+  module ext {
+    module arc {
+      
+      /** index for wheel_speeds and wheel_ticks */
+      const octet NRC_WHEEL_FRONT_LEFT  = 0;
+      const octet NRC_WHEEL_FRONT_RIGHT = 1;
+      const octet NRC_WHEEL_REAR_LEFT   = 2;
+      const octet NRC_WHEEL_REAR_RIGHT  = 3;
+
+      /** status values */
+      const octet NRC_ENABLED_LONGITUDINAL_CONTROL = 0x01;
+      const octet NRC_ENABLED_LATERAL_CONTROL      = 0x02;
+      const octet NRC_ENABLED_AUTONOMY             = 0x03;
+      const octet NRC_ENABLED_BREAK_OVERRIDE       = 0x04;
+      const octet NRC_ENABLED_ACC_OVERRIDE         = 0x08;
+      const octet NRC_ENABLED_STEER_OVERRIDE       = 0x10;
+
+      /** lane_planner_state values from LanePlannerState.msg */
+      const octet NRC_PLANNER_IDLE            = 0;
+      const octet NRC_PLANNER_ACTIVE          = 1;
+      const octet NRC_PLANNER_SUBSTITUE_ROUTE = 2;
+      const octet NRC_PLANNER_LOST            = 4;
+      const octet NRC_PLANNER_BLOCKED         = 8;
+      const octet NRC_PLANNER_PREEMPTED       = 16;
+      const octet NRC_PLANNER_NO_CONTROL      = 32;
+
+      typedef sequence<double, 4> DoubleSequence4;
+
+      //@copy-c-declaration class NrcControllerStateSampleTypeSupport;
+      //@copy-c-declaration class NrcControllerStateSampleDataWriter;
+      //@copy-c-declaration class NrcControllerStateSampleDataReader;
+      //@copy-c-declaration struct NrcControllerStateSampleSeq;
+
+      //@copy-declaration /**
+      //@copy-declaration  * NrcControllerStateSample 
+      //@copy-declaration  */
+      valuetype NrcControllerStateSample : Message {
+      
+        //@copy-c-declaration #if RTI_DDS_VERSION_MAJOR < 4 || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR < 5) || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR  == 5 && RTI_DDS_VERSION_RELEASE != 'f' )
+        //@copy-c-declaration typedef NrcControllerStateSampleTypeSupport TypeSupport;
+        //@copy-c-declaration typedef NrcControllerStateSampleDataWriter DataWriter;
+        //@copy-c-declaration typedef NrcControllerStateSampleDataReader DataReader;
+        //@copy-c-declaration typedef NrcControllerStateSampleSeq Seq;
+        //@copy-c-declaration #endif
+        //@copy-c-declaration typedef NrcControllerStateSample Type;
+        
+        //@copy-c-declaration /** distance to the center of the next intersection in meters */
+        public float distance; 
+        
+        //@copy-c-declaration /** type is unknown when the car is inside an intersection
+        //@copy-c-declaration   * more types may be added later
+        //@copy-c-declaration   */
+        public octet type;
+        
+        //@copy-c-declaration /** phase of light is undefined when type is unknown.
+        //@copy-c-declaration   * always green for stop signs, stop lines, and yield signs.
+        //@copy-c-declaration   */
+        public octet phase;
+
+        //@copy-c-declaration /** bitfield indicating status
+        //@copy-c-declaration   * negative values (most significant bit set) indicate an error condition
+        //@copy-c-declaration   * positive values are for other status information
+        //@copy-c-declaration   * please document bit-field values
+        //@copy-c-declaration   * 0x00000001 enabled longitudinal ctrl
+        //@copy-c-declaration   * 0x00000002 enabled lateral ctrl
+        //@copy-c-declaration   * 0x00000003 enabled autonomy
+        //@copy-c-declaration   * 0x00000004 break override
+        //@copy-c-declaration   * 0x00000008 acc override
+        //@copy-c-declaration   * 0x00000010 steer override
+        //@copy-c-declaration   */
+        public octet status;
+
+        //@copy /** error information, leave blank if everything is shiny */
+        public String32 status_message;
+
+        //@copy /** velocity in m/s */
+        public double velocity;
+
+        //@copy /** steering angle in radians */
+        public double steering_angle;
+
+        //@copy //** e.g., wheel_speeds[NRC_WHEEL_FRONT_LEFT] */
+        public DoubleSequence4 wheel_speeds;
+        public DoubleSequence4 wheel_ticks;
+
+        public octet lane_planner_state;
+      };
+    };
+  };
+};
+
+#endif // rapid_ext_arc_NrcControllerStateSample_idl

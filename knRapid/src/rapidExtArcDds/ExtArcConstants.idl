@@ -52,7 +52,9 @@ module rapid {
       const String64 NRCDRIVEGOALWITHLANES_SAMPLE_TOPIC = "rapid_nrcdrivegoalwithlanes_sample";
       const String64 NRCINTERSECTION_SAMPLE_TOPIC       = "rapid_nrcintersection_sample";
       const String64 NRCMAPLANESET_SAMPLE_TOPIC         = "rapid_nrcmaplaneset_sample";
-      
+      const String64 NRCCONTROLLERSTATE_SAMPLE_TOPIC    = "rapid_nrccontrollerstate_sample";
+      const String64 NRCCLEARANCE_SAMPLE_TOPIC          = "rapid_nrcclearance_sample";
+
       const String64 ROSMARKERARRAY_SAMPLE_TOPIC        = "rapid_rosmarkerarray_sample";
     };
   };
