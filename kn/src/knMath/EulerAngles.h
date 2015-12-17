@@ -68,6 +68,27 @@ namespace kn
     return atan2(rotationMatrix(1,0), rotationMatrix(0,0));
   }
 
+  inline
+  double
+  rotationMatrixToYaw(Matrix2x2 const& rotationMatrix)
+  {
+    return atan2(rotationMatrix.coeff(1,0), rotationMatrix.coeff(0,0));
+
+  }
+
+  inline
+  double
+  angleOfVector2d(Eigen::Vector2d const& v) {
+    return atan2(v.y(), v.x());
+  }
+
+  inline
+  Eigen::Matrix2d rotationFromUnitVector(Eigen::Vector2d const& v) {
+    Eigen::Matrix2d r;
+    r << v.x(), -v.y(), v.y(), v.x();
+    return r;
+  }
+
   /** @ingroup knMath
    * 
    * @brief Convert rotation matrix to euler angles.
