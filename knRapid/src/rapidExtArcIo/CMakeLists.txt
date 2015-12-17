@@ -102,6 +102,7 @@ set( TARGETS
  gpsPrinter
  hydraPrinter
  mobilitySamplePrinter
+ nrcMapLaneSetPrinter
  spectrumPrinter
  stateMachinePrinter
  systemInfoConfigPrinter

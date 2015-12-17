@@ -27,15 +27,6 @@ module rapid {
       const octet NRC_ENABLED_ACC_OVERRIDE         = 0x08;
       const octet NRC_ENABLED_STEER_OVERRIDE       = 0x10;
 
-      /** lane_planner_state values from LanePlannerState.msg */
-      const octet NRC_PLANNER_IDLE            = 0;
-      const octet NRC_PLANNER_ACTIVE          = 1;
-      const octet NRC_PLANNER_SUBSTITUE_ROUTE = 2;
-      const octet NRC_PLANNER_LOST            = 4;
-      const octet NRC_PLANNER_BLOCKED         = 8;
-      const octet NRC_PLANNER_PREEMPTED       = 16;
-      const octet NRC_PLANNER_NO_CONTROL      = 32;
-
       typedef sequence<double, 4> DoubleSequence4;
 
       //@copy-c-declaration class NrcControllerStateSampleTypeSupport;
@@ -94,8 +85,6 @@ module rapid {
         //@copy //** e.g., wheel_speeds[NRC_WHEEL_FRONT_LEFT] */
         public DoubleSequence4 wheel_speeds;
         public DoubleSequence4 wheel_ticks;
-
-        public octet lane_planner_state;
       };
     };
   };
