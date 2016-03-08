@@ -11,7 +11,7 @@
       <config_parameter name="configProfile" type="string" default="RapidConfigQos" />
       <config_parameter name="dataProfile" type="string"  />
       <config_parameter name="library" type="string" />
-      <config_parameter name="useConfigTopic" type="bool" default="true" />
+      <config_parameter name="useConfigTopic" type="bool" default="true" doc="for Providers, if true the config will be automatically published" />
     </config_item>
 
   </config_group>

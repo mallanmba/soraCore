@@ -55,6 +55,7 @@ module rapid {
       const String64 NRCCONTROLLERSTATE_SAMPLE_TOPIC    = "rapid_nrccontrollerstate_sample";
       const String64 NRCLANEPLANNERSTATE_SAMPLE_TOPIC   = "rapid_nrclaneplannerstate_sample";
       const String64 NRCCLEARANCE_SAMPLE_TOPIC          = "rapid_nrcclearance_sample";
+      const String64 NRCINTERVENTIONREQUEST_TOPIC       = "rapid_interventionrequest";
 
       const String64 ROSMARKERARRAY_SAMPLE_TOPIC        = "rapid_rosmarkerarray_sample";
     };

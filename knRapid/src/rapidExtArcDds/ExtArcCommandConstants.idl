@@ -111,6 +111,36 @@ module rapid {
       const String32 IMGSTREAM_METHOD_setResolution_PARAM_divisor = "divisor"; // 1 == full res, 2 = half res, etc.
       const DataType IMGSTREAM_METHOD_setResolution_DTYPE_divisor = RAPID_INT;
 
+      const String32 IMGSTREAM_METHOD_setResizeWidth = "setResizeWidth";
+      const String32 IMGSTREAM_METHOD_setResizeWidth_PARAM_width = "width";
+      const DataType IMGSTREAM_METHOD_setResizeWidth_DTYPE_width = RAPID_INT;
+
+      const String32 IMGSTREAM_METHOD_setResizeHeight = "setResizeHeight";
+      const String32 IMGSTREAM_METHOD_setResizeHeight_PARAM_height = "height";
+      const DataType IMGSTREAM_METHOD_setResizeHeight_DTYPE_height = RAPID_INT;
+
+      const String32 IMGSTREAM_METHOD_setResize = "setResize";
+      const String32 IMGSTREAM_METHOD_setResize_PARAM_width  = "width"; 
+      const DataType IMGSTREAM_METHOD_setResize_DTYPE_width  = RAPID_INT;
+      const String32 IMGSTREAM_METHOD_setResize_PARAM_height = "height";
+      const DataType IMGSTREAM_METHOD_setResize_DTYPE_height = RAPID_INT;
+
+      // Compression quality
+      const String32 IMGSTREAM_METHOD_setResizeQuality = "setResizeQuality";
+      const String32 IMGSTREAM_METHOD_setResizeQuality_PARAM_quality = "quality"; // resize quality, 0~4 (0 always nearest neighbor)
+      const DataType IMGSTREAM_METHOD_setResizeQuality_DTYPE_quality = RAPID_INT;
+
+      const String32 IMGSTREAM_METHOD_setCrop = "setCrop";
+      const String32 IMGSTREAM_METHOD_setCrop_PARAM_cropX  = "cropX"; 
+      const DataType IMGSTREAM_METHOD_setCrop_DTYPE_cropX  = RAPID_INT;
+      const String32 IMGSTREAM_METHOD_setCrop_PARAM_cropY  = "cropY";
+      const DataType IMGSTREAM_METHOD_setCrop_DTYPE_cropY  = RAPID_INT;
+      const String32 IMGSTREAM_METHOD_setCrop_PARAM_width  = "width"; 
+      const DataType IMGSTREAM_METHOD_setCrop_DTYPE_width  = RAPID_INT;
+      const String32 IMGSTREAM_METHOD_setCrop_PARAM_height = "height";
+      const DataType IMGSTREAM_METHOD_setCrop_DTYPE_height = RAPID_INT;
+
+      // Compression quality
       const String32 IMGSTREAM_METHOD_setQuality = "setQuality";
       const String32 IMGSTREAM_METHOD_setQuality_PARAM_quality = "quality"; // jpeg quality, range 0-100
       const DataType IMGSTREAM_METHOD_setQuality_DTYPE_quality = RAPID_INT;
@@ -121,9 +151,16 @@ module rapid {
 
       const String32 IMGSTREAM_METHOD_reconnect = "reconnect";
 
+      
       const String32 ADVNAV = "AdvNav";
       const String32 ADVNAV_METHOD_startGlobalAlign = "startGlobalAlign";
 
+      
+      const String32 ROSBRIDGE = "RosBridge";
+      const String32 ROSBRIDGE_METHOD_setMinSeparation = "setMinSeparation";
+      const String32 ROSBRIDGE_METHOD_setMinSeparation_PARAM_msec = "msec"; // min separation between images in milliseconds
+      const DataType ROSBRIDGE_METHOD_setMinSeparation_DTYPE_msec = RAPID_INT;
+      
     };
   };
 };
