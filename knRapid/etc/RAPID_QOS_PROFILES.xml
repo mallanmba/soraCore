@@ -603,6 +603,22 @@
       </datawriter_qos>
     </qos_profile>
     
+    <!-- ================================================================================== -->
+    <!-- NRC Extensions =================================================================== -->
+    <!-- ================================================================================== -->
+    <qos_profile name="NrcClearanceSampleProfile"          base_name="RapidSampleQos" />
+    <qos_profile name="NrcControllerStateSampleProfile"    base_name="RapidSampleQos" />
+    <qos_profile name="NrcDriveGoalSampleProfile"          base_name="RapidSampleQos" />
+    <qos_profile name="NrcDriveGoalWithLanesSampleProfile" base_name="RapidReliableQos" />
+    <qos_profile name="NrcImageRegionsSampleProfile"       base_name="RapidSampleQos" />
+    <qos_profile name="NrcIntersectionSampleProfile"       base_name="RapidSampleQos" />
+    <qos_profile name="NrcInterventionRequestProfile"      base_name="RapidReliableDurableQos" />
+    <qos_profile name="NrcInterventionResponseProfile"     base_name="RapidReliableQos" />
+    <qos_profile name="NrcLanePlannerStateSampleProfile"   base_name="RapidSampleQos" />
+    <qos_profile name="NrcMapLaneSetSampleProfile"         base_name="RapidReliableDurableQos" />
+    
+    <qos_profile name="RosMarkerArraySampleProfile"        base_name="RapidSampleQos" />
+
   </qos_library>
 
 

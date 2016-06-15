@@ -78,6 +78,11 @@ module rapid {
            * contain what sensor(s) failed
            */
           public String128 message; 
+          /**
+           * json encoded string with proposed solution (if any)
+           */
+          public String2K solution;
+          
         };
     };
   };
