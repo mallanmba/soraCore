@@ -1,0 +1,57 @@
+#ifndef rapid_ext_arc_NrcInterventionResponse_idl
+#define rapid_ext_arc_NrcInterventionResponse_idl
+
+/*
+ * Copyright (c) 2016 United States Government as represented by the
+ * Administrator of the National Aeronautics and Space Administration.
+ * All Rights Reserved.
+ */
+
+#include "Message.idl"
+
+module rapid {
+  module ext {
+    module arc {
+
+      enum ResponseType {
+        RESPONSE_TYPE_NOOP, 
+        RESPONSE_TYPE_ACCEPTED,  // teleoperator has accepted this request
+        RESPONSE_TYPE_REJECTED,  // teleoperator has rejected this request
+        RESPONSE_TYPE_COMPLETED, // teleoperator has finished working on this request
+        RESPONSE_TYPE_ATTENDING, // teleoperator is working on a solution
+        RESPONSE_TYPE_SOLUTION,  // teleoperator has sent an actionable solution 
+        RESPONSE_TYPE_STATEMENT, // communication intended for vehicle occupant
+        RESPONSE_TYPE_NOTE       // teleoperator note about this teleop zone and/or solution
+      };
+      
+      //@copy-c-declaration class NrcInterventionResponseTypeSupport;
+      //@copy-c-declaration class NrcInterventionResponseDataWriter;
+      //@copy-c-declaration class NrcInterventionResponseDataReader;
+      //@copy-c-declaration struct NrcInterventionResponseSeq;
+
+      //@copy-declaration /**
+      //@copy-declaration  * NrcInterventionResponse 
+      //@copy-declaration  */
+      valuetype NrcInterventionResponse : Message {
+
+        //@copy-c-declaration #if RTI_DDS_VERSION_MAJOR < 4 || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR < 5) || (RTI_DDS_VERSION_MAJOR == 4  && RTI_DDS_VERSION_MINOR  == 5 && RTI_DDS_VERSION_RELEASE != 'f' )
+        //@copy-c-declaration typedef NrcInterventionResponseTypeSupport TypeSupport;
+        //@copy-c-declaration typedef NrcInterventionResponseDataWriter DataWriter;
+        //@copy-c-declaration typedef NrcInterventionResponseDataReader DataReader;
+        //@copy-c-declaration typedef NrcInterventionResponseSeq Seq;
+        //@copy-c-declaration #endif
+        //@copy-c-declaration typedef NrcInterventionResponse Type;
+        
+          /** Unique id for situation originating from InterventionRequest */
+          public long long    requestId;
+          /** identifier of teleoperator console */
+          public String32     operatorId;
+          
+          public ResponseType responseType;
+          public String2K     responseData; 
+        };
+    };
+  };
+};
+
+#endif // rapid_ext_arc_NrcInterventionResponse_idl
