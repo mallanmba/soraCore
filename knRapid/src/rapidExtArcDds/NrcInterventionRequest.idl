@@ -53,7 +53,7 @@ module rapid {
           /** 
            * Unique id for situation. Updates to same situation will use same requestId 
            */
-          public long     requestId;  //@key
+          public long     requestId;  //@key  
           /** 
            * How urgently an intervention is required. Scale of 0-n (TBD) 
            */
@@ -82,6 +82,10 @@ module rapid {
            * json encoded string with proposed solution (if any)
            */
           public String2K solution;
+          /**
+           * Unique id for zone. 
+           */
+          public long     zoneId;  
           
         };
     };
