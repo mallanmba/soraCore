@@ -613,6 +613,7 @@
     <qos_profile name="NrcImageRegionsSampleProfile"       base_name="RapidSampleQos" />
     <qos_profile name="NrcIntersectionSampleProfile"       base_name="RapidSampleQos" />
     <qos_profile name="NrcInterventionRequestProfile"      base_name="RapidReliableDurableQos" />
+    <qos_profile name="NrcMapAnnotationsUpdateProfile"      base_name="RapidReliableDurableQos" />
     <qos_profile name="NrcInterventionResponseProfile"     base_name="RapidReliableQos" />
     <qos_profile name="NrcLanePlannerStateSampleProfile"   base_name="RapidSampleQos" />
     <qos_profile name="NrcMapLaneSetSampleProfile"         base_name="RapidReliableDurableQos" />

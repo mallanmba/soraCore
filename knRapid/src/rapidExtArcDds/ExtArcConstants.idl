@@ -58,6 +58,7 @@ module rapid {
       const String64 NRCINTERVENTIONRESPONSE_TOPIC      = "rapid_nrcinterventionresponse_sample";
       const String64 NRCLANEPLANNERSTATE_SAMPLE_TOPIC   = "rapid_nrclaneplannerstate_sample";
       const String64 NRCMAPLANESET_SAMPLE_TOPIC         = "rapid_nrcmaplaneset_sample";
+      const String64 NRCMAPANNOTATIONSUPDATE_TOPIC      = "rapid_nrcmapannotationsupdate_sample";
 
       const String64 ROSMARKERARRAY_SAMPLE_TOPIC        = "rapid_rosmarkerarray_sample";
     };
