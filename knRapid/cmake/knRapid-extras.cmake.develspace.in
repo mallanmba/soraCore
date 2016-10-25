@@ -7,6 +7,10 @@ set(KNRAPID_INCLUDE_DIR @CATKIN_DEVEL_PREFIX@/include
                         @CATKIN_DEVEL_PREFIX@/include/rapidExtDds
                         @CATKIN_DEVEL_PREFIX@/include/rapidExtArcDds )
                         
+set(KNRAPID_rapidDds_IDL_DIR       @PROJECT_SOURCE_DIR@/src/rapidDds )
+set(KNRAPID_rapidExtDds_IDL_DIR    @PROJECT_SOURCE_DIR@/src/rapidExtDds )
+set(KNRAPID_rapidExtArcDds_IDL_DIR @PROJECT_SOURCE_DIR@/src/rapidExtArcDds )
+                        
 ## add include dirs to catkin_INCLUDE_DIRS 
 set( catkin_INCLUDE_DIRS  ${catkin_INCLUDE_DIRS} ${KNRAPID_INCLUDE_DIR} )
 
