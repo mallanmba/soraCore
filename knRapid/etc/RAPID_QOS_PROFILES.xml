@@ -251,7 +251,7 @@
     <!-- ===================================================== -->
     <qos_profile name="RapidImageSensorSampleProfile" base_name="RapidSampleQos" />
     <!-- ===================================================== -->
-    <qos_profile name="RapidImageSensorScienceInstrumentProfile" base_name="RapidDefaultQos">
+    <qos_profile name="RapidImageSensorScienceInstrumentProfile" base_name="RapidBestEffortQos">
       <datareader_qos>
         <reliability>
           <kind>RELIABLE_RELIABILITY_QOS</kind>
