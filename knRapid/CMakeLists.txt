@@ -12,6 +12,7 @@ if (CATKIN_DEVEL_PREFIX)
     kn
     knDds
   )
+  include_directories( ${CATKIN_DEVEL_PREFIX}/include )
 endif(CATKIN_DEVEL_PREFIX)
 
 if (NOT catkin_FOUND)

@@ -10,6 +10,7 @@ if (CATKIN_DEVEL_PREFIX)
     kn
     Miro
   )
+  include_directories( ${CATKIN_DEVEL_PREFIX}/include )
 endif(CATKIN_DEVEL_PREFIX)
 
 if (NOT catkin_FOUND)

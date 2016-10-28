@@ -44,21 +44,7 @@ module rapid {
       const String64 SPECTRUM_SAMPLE_TOPIC      = "rapid_spectrum_sample";
       const String64 STATEMACHINE_CONFIG_TOPIC  = "rapid_statemachine_config";
       const String64 STATEMACHINE_STATE_TOPIC   = "rapid_statemachine_state";
-      const String64 TRACKEDOBJECT_CONFIG_TOPIC = "rapid_trackedobject_config";
-      const String64 TRACKEDOBJECT_SAMPLE_TOPIC = "rapid_trackedobject_sample";
       const String64 WHEELGROUP_SAMPLE_TOPIC    = "rapid_wheelgroup_sample";
-
-      const String64 NRCCLEARANCE_SAMPLE_TOPIC          = "rapid_nrcclearance_sample";
-      const String64 NRCCONTROLLERSTATE_SAMPLE_TOPIC    = "rapid_nrccontrollerstate_sample";
-      const String64 NRCDRIVEGOAL_SAMPLE_TOPIC          = "rapid_nrcdrivegoal_sample";
-      const String64 NRCDRIVEGOALWITHLANES_SAMPLE_TOPIC = "rapid_nrcdrivegoalwithlanes_sample";
-      const String64 NRCIMAGEREGIONS_SAMPLE_TOPIC       = "rapid_nrcimageregions_sample";
-      const String64 NRCINTERSECTION_SAMPLE_TOPIC       = "rapid_nrcintersection_sample";
-      const String64 NRCINTERVENTIONREQUEST_TOPIC       = "rapid_nrcinterventionrequest_sample";
-      const String64 NRCINTERVENTIONRESPONSE_TOPIC      = "rapid_nrcinterventionresponse_sample";
-      const String64 NRCLANEPLANNERSTATE_SAMPLE_TOPIC   = "rapid_nrclaneplannerstate_sample";
-      const String64 NRCMAPLANESET_SAMPLE_TOPIC         = "rapid_nrcmaplaneset_sample";
-      const String64 NRCMAPANNOTATIONSUPDATE_TOPIC      = "rapid_nrcmapannotationsupdate_sample";
 
       const String64 ROSMARKERARRAY_SAMPLE_TOPIC        = "rapid_rosmarkerarray_sample";
     };

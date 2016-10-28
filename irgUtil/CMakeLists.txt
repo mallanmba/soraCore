@@ -2,9 +2,10 @@ cmake_minimum_required(VERSION 2.8.3)
 project(irgUtil)
 
 if (CATKIN_DEVEL_PREFIX)
-find_package(catkin  REQUIRED COMPONENTS
-  irg_cmake
-)
+  find_package(catkin  REQUIRED COMPONENTS
+    irg_cmake
+  )
+  include_directories( ${CATKIN_DEVEL_PREFIX}/include )
 endif(CATKIN_DEVEL_PREFIX)
 
 if (catkin_FOUND)
