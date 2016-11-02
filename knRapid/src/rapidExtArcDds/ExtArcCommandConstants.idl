@@ -161,6 +161,13 @@ module rapid {
       const String32 ROSBRIDGE_METHOD_setMinSeparation_PARAM_msec = "msec"; // min separation between images in milliseconds
       const DataType ROSBRIDGE_METHOD_setMinSeparation_DTYPE_msec = RAPID_INT;
       
+      const String32 GIMBAL = "Gimbal";
+      const String32 GIMBAL_METHOD_setPanTilt = "setPanTilt";
+      const String32 GIMBAL_METHOD_setPanTilt_PARAM_pan  = "pan";
+      const DataType GIMBAL_METHOD_setPanTilt_DTYPE_pan  = RAPID_FLOAT;
+      const String32 GIMBAL_METHOD_setPanTilt_PARAM_tilt = "tilt";
+      const DataType GIMBAL_METHOD_setPanTilt_DTYPE_tilt = RAPID_FLOAT;
+      
     };
   };
 };
