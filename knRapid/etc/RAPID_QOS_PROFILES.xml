@@ -115,6 +115,14 @@
               <name>dds.transport.UDPv4.builtin.parent.deny_multicast_interfaces</name>
               <value>10.10.1.*,10.30.10.*,192.168.3.255,169.254.194.2,192.168.1.*,192.9.202.1,192.168.5.*,192.168.10.*,192.168.122.*</value>
             </element>
+            <!-- DISABLED element>
+              <name>dds.transport.UDPv4.builtin.parent.allow_interfaces</name>
+              <value>FOOBAR,192.168.112.2</value>
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.parent.allow_multicast_interfaces</name>
+              <value>FOOBAR,192.168.112.2</value>
+            </element -->
           </value>
         </property>
       </participant_qos>
@@ -127,6 +135,14 @@
           <!-- disabling dynamically allocated fragments because it is causing 4.5e to crash on large fragmented messages (e.g. point clouds) -->
           <dynamically_allocate_fragmented_samples>0</dynamically_allocate_fragmented_samples>
         </reader_resource_limits>
+        <!-- if DestinationOrderQos is set to "source", clocks of publisher and subscriber should be relatively closely sync'ed -->
+        <!-- destination_order>
+          <kind>BY_SOURCE_TIMESTAMP_DESTINATIONORDER_QOS</kind>
+          <source_timestamp_tolerance>
+            <sec>30</sec>
+            <nanosec>0</nanosec>
+          </source_timestamp_tolerance>
+       </destination_order -->  
       </datareader_qos>
       <datawriter_qos>
         <writer_resource_limits>
@@ -136,6 +152,13 @@
         <publish_mode>
           <kind>ASYNCHRONOUS_PUBLISH_MODE_QOS</kind>
         </publish_mode>
+        <!-- destination_order>
+          <kind>BY_SOURCE_TIMESTAMP_DESTINATIONORDER_QOS</kind>
+          <source_timestamp_tolerance>
+            <sec>0</sec>
+            <nanosec>100000000</nanosec>
+          </source_timestamp_tolerance>
+        </destination_order -->
       </datawriter_qos>
     </qos_profile>
 
@@ -235,6 +258,9 @@
 
     <!-- ===================================================== -->
     <qos_profile name="RapidAckProfile" base_name="RapidReliableDurableQos" />
+    <!-- ===================================================== -->
+    <qos_profile name="RapidAgentConfigProfile" base_name="RapidConfigQos" />
+    <qos_profile name="RapidAgentStateProfile" base_name="RapidSampleQos" />
     <!-- ===================================================== -->
     <qos_profile name="RapidAssetConfigProfile" base_name="RapidConfigQos" />
     <!-- ===================================================== -->
@@ -577,9 +603,7 @@
     <qos_profile name="RapidEphemerisConfigProfile" base_name="RapidConfigQos"/>
     <qos_profile name="RapidEphemerisSampleProfile" base_name="RapidSampleQos" />
 
-    <!-- === ARC Extension: Tracked Object =================== -->
-    <qos_profile name="RapidTrackedObjectConfigProfile" base_name="RapidConfigQos" />
-    <qos_profile name="RapidTrackedObjectSampleProfile" base_name="RapidSampleQos" />
+    <qos_profile name="RosMarkerArraySampleProfile"        base_name="RapidSampleQos" />
 
     <!-- ================================================================================== -->
     <!-- Traclabs Extensions ============================================================== -->
@@ -603,22 +627,6 @@
       </datawriter_qos>
     </qos_profile>
     
-    <!-- ================================================================================== -->
-    <!-- NRC Extensions =================================================================== -->
-    <!-- ================================================================================== -->
-    <qos_profile name="NrcClearanceSampleProfile"          base_name="RapidSampleQos" />
-    <qos_profile name="NrcControllerStateSampleProfile"    base_name="RapidSampleQos" />
-    <qos_profile name="NrcDriveGoalSampleProfile"          base_name="RapidSampleQos" />
-    <qos_profile name="NrcDriveGoalWithLanesSampleProfile" base_name="RapidReliableQos" />
-    <qos_profile name="NrcImageRegionsSampleProfile"       base_name="RapidSampleQos" />
-    <qos_profile name="NrcIntersectionSampleProfile"       base_name="RapidSampleQos" />
-    <qos_profile name="NrcInterventionRequestProfile"      base_name="RapidReliableDurableQos" />
-    <qos_profile name="NrcInterventionResponseProfile"     base_name="RapidReliableQos" />
-    <qos_profile name="NrcLanePlannerStateSampleProfile"   base_name="RapidSampleQos" />
-    <qos_profile name="NrcMapLaneSetSampleProfile"         base_name="RapidReliableDurableQos" />
-    
-    <qos_profile name="RosMarkerArraySampleProfile"        base_name="RapidSampleQos" />
-
   </qos_library>
 
 

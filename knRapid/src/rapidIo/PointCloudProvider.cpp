@@ -156,6 +156,7 @@ namespace rapid
           
           //! @TODO check on the different attribute formats and do something more smart than this
           sample.points[sampleIdx].attributes[0] = m_pc->points[m_pcIdx].att.int16s[0];
+          sample.points[sampleIdx].attributes[1] = m_pc->points[m_pcIdx].att.int16s[1];
         }
       }
       // publish with row-length markers
@@ -191,6 +192,7 @@ namespace rapid
               
               //! @TODO check on the different attribute formats and do something more smart than this
               sample.points[sampleIdx].attributes[0] = m_pc->points[idx].att.int16s[0];
+              sample.points[sampleIdx].attributes[1] = m_pc->points[idx].att.int16s[1];
             }
             ++m_pcRowIndex;
           }
