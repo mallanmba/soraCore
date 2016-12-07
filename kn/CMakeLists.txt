@@ -46,6 +46,7 @@ if (catkin_FOUND)
   catkin_package(
     INCLUDE_DIRS src
     LIBRARIES knShare knMath knGeometry knFrameStore knMotorShare
+    CFG_EXTRAS kn-extras.cmake
     DEPENDS ACE Boost EIGEN3
   )
   ## set variable with full path of extras file so we can append library info
