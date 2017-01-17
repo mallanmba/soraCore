@@ -77,6 +77,7 @@ if (catkin_FOUND)
     INCLUDE_DIRS src
     LIBRARIES knDds knDdsUtil
     CATKIN_DEPENDS kn Miro
+    CFG_EXTRAS knDds-extras.cmake
     DEPENDS RTIDDS
   )
   ## set variable with full path of extras file so we can append library info
