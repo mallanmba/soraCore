@@ -13,11 +13,22 @@ include( SetupRPATH )
 include( SetupWarnLevel )
 include( SetupUtilities )
 
-## we have to play some tricks to get install
-## path to "stick" in Windows
-##------------------------------------------------
-set( IRGUTIL_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "irgUtil install path")
-set( CMAKE_INSTALL_PREFIX ${IRGUTIL_INSTALL_PREFIX} CACHE INTERNAL "" )
+execute_process( COMMAND "env"
+                 OUTPUT_VARIABLE FOO )
+message(STATUS "*****************************************" )
+message(STATUS ${FOO})
+message(STATUS "*****************************************" )
+
+
+## We typically want a local install and automatically override CMAKE_INSTALL_PREFIX
+## but we don't want to do that if we're building w/ catkin tools. We do an
+## imperfect check for this by seeing if ROS_ROOT is set. 
+if( NOT DEFINED ENV{ROS_ROOT} )
+  ## we have to play some tricks to get install path to "stick" in Windows
+  ##------------------------------------------------
+  set( IRGUTIL_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "irgUtil install path")
+  set( CMAKE_INSTALL_PREFIX ${IRGUTIL_INSTALL_PREFIX} CACHE INTERNAL "" )
+endif()
 
 find_package(GTest)
 find_package(Doxygen)

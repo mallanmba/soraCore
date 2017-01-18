@@ -13,13 +13,20 @@ include( SetupWarnLevel )
 include( SetupUtilities )
 include( UserOptions )
 
-## we have to play some tricks to get install
-## path to "stick" in Windows
-##------------------------------------------------
-set( ${PROJECT_UPPER}_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "irg apps install path")
-set( CMAKE_INSTALL_PREFIX ${${PROJECT_UPPER}_INSTALL_PREFIX} CACHE INTERNAL "" )
+## We typically want a local install and automatically override CMAKE_INSTALL_PREFIX
+## but we don't want to do that if we're building w/ catkin tools. We do an
+## imperfect check for this by seeing if ROS_ROOT is set. 
+if( NOT DEFINED ENV{ROS_ROOT} )
+  ## we have to play some tricks to get install path to "stick" in Windows
+  ##------------------------------------------------
+  set( ${PROJECT_UPPER}_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "irg apps install path")
+  set( CMAKE_INSTALL_PREFIX ${${PROJECT_UPPER}_INSTALL_PREFIX} CACHE INTERNAL "" )
+endif()
 
 # find dependencies
+
+message(STATUS "CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}")
+message(STATUS "CMAKE_INSTALL_PREFIX= ${CMAKE_INSTALL_PREFIX}")
 
 find_package( ACE )
 find_package( Eigen3 )

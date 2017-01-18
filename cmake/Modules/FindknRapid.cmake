@@ -6,11 +6,22 @@ include( SetArchitecture )
 # Set parent directory as a search location
 string(REGEX REPLACE "/[^/]*$" "" PROJ_SRC_PARENT ${PROJECT_SOURCE_DIR})
 
-if( NOT KNRAPID_ROOT_DIR )
-  set( KNRAPID_ROOT_DIR ${PROJ_SRC_PARENT}/${ARCHITECTURE} )
-endif( NOT KNRAPID_ROOT_DIR )
+if( KNRAPID_ROOT_DIR )
 
-message(STATUS "  knRapid root hardcoded without check to ${KNRAPID_ROOT_DIR}")
+  message(STATUS "  KNRAPID_ROOT_DIR set to ${KNRAPID_ROOT_DIR}")
+  
+else( KNRAPID_ROOT_DIR )
+
+  find_path( KNRAPID_ROOT_DIR include/irgUtilConfig.h
+            HINTS ${PROJ_SRC_PARENT}/${ARCHITECTURE} )
+  if( KNRAPID_ROOT_DIR )
+    message(STATUS "  knRapid root found at ${KNRAPID_ROOT_DIR}")
+  else( KNRAPID_ROOT_DIR )
+    set( KNRAPID_ROOT_DIR ${PROJ_SRC_PARENT}/${ARCHITECTURE} )
+    message(STATUS "  knRapid root hardcoded without check to ${KNRAPID_ROOT_DIR}")
+  endif( KNRAPID_ROOT_DIR )
+  
+endif( KNRAPID_ROOT_DIR )
 
 set( KNRAPID_INCLUDE_DIR ${KNRAPID_ROOT_DIR}/include 
                        ${KNRAPID_ROOT_DIR}/include/rapidDds 

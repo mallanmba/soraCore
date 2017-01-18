@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<!-- http://www.ros.org/reps/rep-0134.html -->
+
+<package format="2">
+  <name>kn</name>
+  <version>0.0.0</version>
+  <description>soraCore utilities</description>
+  <maintainer email="Mark.B.Allan@nasa.gov">Mark Allan</maintainer>
+
+  <license>NOSA</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <export>
+    <build_type>cmake</build_type>
+  </export>
+  
+  
+  <depend>irg_cmake</depend>
+
+  <depend>libeigen3-dev</depend>
+  
+  <depend>libace-dev</depend>
+
+  <depend>libboost-chrono-dev</depend>
+
+  <depend>libboost-program-options-dev</depend>
+
+  <depend>libboost-signals-dev</depend>
+
+  <depend>libboost-system-dev</depend>
+
+  <depend>libboost-thread-dev</depend>
+
+
+</package>

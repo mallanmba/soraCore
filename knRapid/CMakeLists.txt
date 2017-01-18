@@ -26,12 +26,15 @@ include( SetupUtilities )
 include( SetupWarnLevel )
 include( UserOptions )
 
-## we have to play some tricks to get install
-## path to "stick" in Windows
-##------------------------------------------------
-set( RAPID_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "RAPID install path")
-set( CMAKE_INSTALL_PREFIX ${RAPID_INSTALL_PREFIX} CACHE INTERNAL "" )
-
+## We typically want a local install and automatically override CMAKE_INSTALL_PREFIX
+## but we don't want to do that if we're building w/ catkin tools. We do an
+## imperfect check for this by seeing if ROS_ROOT is set. 
+if( NOT DEFINED ENV{ROS_ROOT} )
+  ## we have to play some tricks to get install path to "stick" in Windows
+  ##------------------------------------------------
+  set( RAPID_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "RAPID install path")
+  set( CMAKE_INSTALL_PREFIX ${RAPID_INSTALL_PREFIX} CACHE INTERNAL "" )
+endif()
 
 #---------------------------------------------
 # make RTI DDS optional

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<!-- http://www.ros.org/reps/rep-0134.html -->
+
+<package format="2">
+  <name>irgUtil</name>
+  <version>0.0.0</version>
+  <description>small, general purpose utility libraries. Dependencies for irgUtil should be kept to a bare minimum, and be cross platform if possible</description>
+  <maintainer email="Mark.B.Allan@nasa.gov">Mark Allan</maintainer>
+
+  <license>NOSA</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <export>
+    <build_type>cmake</build_type>
+  </export>
+  
+  
+  <build_depend>irg_cmake</build_depend>
+  
+</package>

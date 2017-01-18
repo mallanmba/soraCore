@@ -6,11 +6,22 @@ include( SetArchitecture )
 # Set parent directory as a search location
 string(REGEX REPLACE "/[^/]*$" "" PROJ_SRC_PARENT ${PROJECT_SOURCE_DIR})
 
-if( NOT KNDDS_ROOT_DIR )
-  set( KNDDS_ROOT_DIR ${PROJ_SRC_PARENT}/${ARCHITECTURE} )
-endif( NOT KNDDS_ROOT_DIR )
+if( KNDDS_ROOT_DIR )
 
-message(STATUS "  KNDDS root hardcoded without check to ${KNDDS_ROOT_DIR}")
+  message(STATUS "  KNDDS_ROOT_DIR set to ${KNDDS_ROOT_DIR}")
+  
+else( KNDDS_ROOT_DIR )
+
+  find_path( KNDDS_ROOT_DIR include/irgUtilConfig.h
+            HINTS ${PROJ_SRC_PARENT}/${ARCHITECTURE} )
+  if( KNDDS_ROOT_DIR )
+    message(STATUS "  knDds root found at ${KNDDS_ROOT_DIR}")
+  else( KNDDS_ROOT_DIR )
+    set( KNDDS_ROOT_DIR ${PROJ_SRC_PARENT}/${ARCHITECTURE} )
+    message(STATUS "  knDds root hardcoded without check to ${KNDDS_ROOT_DIR}")
+  endif( KNDDS_ROOT_DIR )
+  
+endif( KNDDS_ROOT_DIR )
 
 set( KNDDS_INCLUDE_DIR ${KNDDS_ROOT_DIR}/include 
                        ${KNDDS_ROOT_DIR}/include/rapidDds 
