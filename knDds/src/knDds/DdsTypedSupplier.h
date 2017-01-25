@@ -117,6 +117,7 @@ namespace kn
     virtual DataWriter& dataWriter() throw() {
       return dynamic_cast<DataWriter&>(*m_writer);
     }
+    bool hasSubscribers();
   
   protected:
     /** hook to modify qos immediately before creation of DataWriter. Default implementation does nothing. */
@@ -140,6 +141,8 @@ namespace kn
 
     DDS::Topic * m_topic;
     Type *       m_instance;
+    
+    DDS::InstanceHandleSeq m_subCheck;
   };
 
   /**
@@ -266,7 +269,9 @@ namespace kn
     if (m_instance == NULL) {
       throw("TypeSupport::create_data error");
     }
-
+    
+    // 0 max size InstanceHandleSeq used to check if we have subscribers
+    m_subCheck.loan_contiguous((DDS::InstanceHandle_t*)NULL, 0, 0);
   }
 
   /**
@@ -316,6 +321,18 @@ namespace kn
   DdsTypedSupplier<T>::event() const throw()
   {
     return *m_instance;
+  }
+  
+  /**
+   * fast check to see if there are any subscribers for this supplier's data
+   */
+  template<class T>
+  bool
+  DdsTypedSupplier<T>::hasSubscribers()
+  {
+    if(dataWriter().get_matched_subscriptions(m_subCheck) == DDS_RETCODE_OUT_OF_RESOURCES)
+      return true;
+    return false;
   }
   
   /**
