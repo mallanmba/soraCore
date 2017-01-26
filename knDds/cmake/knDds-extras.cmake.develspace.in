@@ -1,0 +1,8 @@
+# source: knDds-extras.cmake.develspace.in
+
+## Create INCLUDE_DIR variable for downstream packages
+set(KNDDS_INCLUDE_DIR @CATKIN_DEVEL_PREFIX@/include)
+
+## add include dirs to catkin_INCLUDE_DIRS 
+set( catkin_INCLUDE_DIRS  ${catkin_INCLUDE_DIRS} ${KNDDS_INCLUDE_DIR} )
+
