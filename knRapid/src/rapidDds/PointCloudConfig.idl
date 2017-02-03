@@ -44,7 +44,7 @@ module rapid {
     //@copy-declaration  *   <li>PS_RGB332: RGB packed into single byte 
     //@copy-declaration  *   <li>PS_RGB565: Assumes both attribute bytes are used for 16 bit color. 
     //@copy-declaration  *                  1st byte: upper 3 bits are first 3 bits of green, lower 5 bits are red
-    //@copy-declaration  *                  2nd byte: upper 3 bits are second 3 bits of green,h lower 5 bits are blue
+    //@copy-declaration  *                  2nd byte: upper 3 bits are second 3 bits of green, lower 5 bits are blue
     //@copy-declaration  * </ul>
     //@copy-declaration  */
     enum PointSampleAttributeMode {
