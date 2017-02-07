@@ -97,6 +97,10 @@ namespace kn
     
     void clear();
     
+    inline void setTimestamp(const ACE_Time_Value& t) {
+      timestamp = t;
+    }
+    
     inline void setPointAttributeFormat(PointAttributeFormats format) {
       attFormat = format;
     }

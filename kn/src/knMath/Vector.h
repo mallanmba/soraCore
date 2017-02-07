@@ -31,45 +31,49 @@ namespace kn
   /**
    * @defgroup knMath Math
    * @brief The Math module of kn provides a set of typedef's and some helper classes to the Eigen math library.
-   * 
+   *
    * The core idea behind this module is to down-select the vast set of capabilities of Eigen data-types,
    * to a number of "obviously preferred ones.
    */
-  
+
   /** @ingroup knMath */
   typedef Eigen::Vector3d Vector3;
   /** @ingroup knMath */
+  typedef Eigen::Vector3f Vector3f;
+  /** @ingroup knMath */
   typedef Eigen::Vector2d Vector2;
-	typedef Eigen::VectorXd Vector;
+  typedef Eigen::VectorXd Vector;
 
-	typedef Eigen::Vector2i Vector2i;
-	typedef Eigen::Vector3i Vector3i;
+  typedef Eigen::Vector2i Vector2i;
+  typedef Eigen::Vector3i Vector3i;
 
   /** @ingroup knMath */
-  typedef Eigen::VectorXd MathVectorDouble;      
+  typedef Eigen::VectorXd MathVectorDouble;
 
   /** @ingroup knMath */
   typedef std::vector<Vector2, Eigen::aligned_allocator<Vector2> > Vector2Vector;
   /** @ingroup knMath */
   typedef std::vector<Vector3, Eigen::aligned_allocator<Vector3> > Vector3Vector;
+  /** @ingroup knMath */
+  typedef std::vector<Vector3f, Eigen::aligned_allocator<Vector3f> > Vector3fVector;
 
   //Eigen 3.2+ defines .hasNaN() and .allFinite() (briefly called isFinite), but
   //until we're using at least that version everywhere, we need our own
   //To keep life simple, these are defined generically but will only compile
   //of course on Eigen types
   template<class VecType>
-    inline bool vectorHasNaN(const VecType &vec)
-    {
-      //cute parallel trick copied from Eigen source: NaN doesn't equal anything
-      return !((vec.array()==vec.array()).all());
-    }
+  inline bool vectorHasNaN(const VecType &vec)
+  {
+    //cute parallel trick copied from Eigen source: NaN doesn't equal anything
+    return !((vec.array()==vec.array()).all());
+  }
 
   template<class VecType>
-    inline bool vectorIsFinite(const VecType &vec)
-    {
-      //cute parallel trick copied from Eigen source: inf-inf = nan, nan-nan=nan
-      return !(vectorHasNaN(vec-vec));
-    }
+  inline bool vectorIsFinite(const VecType &vec)
+  {
+    //cute parallel trick copied from Eigen source: inf-inf = nan, nan-nan=nan
+    return !(vectorHasNaN(vec-vec));
+  }
 
 }
 

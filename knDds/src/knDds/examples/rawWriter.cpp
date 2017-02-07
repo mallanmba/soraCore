@@ -15,7 +15,7 @@ using namespace std;
 // 0020  00 01 e7 c2 1c f2 00 18  fe 2b 52 54 50 53 02 01   ........ .+RTPS..
 // 0030  01 01 4e 44 44 53 50 49  4e 47                     ..NDDSPI NG      
 
-char pingBuffer[] = {
+unsigned char pingBuffer[] = {
   0x52, 0x54, 0x50, 0x53, 0x02, 0x01, 0x01, 0x01, // RTPS 2.1 RTI
   0x4e, 0x44, 0x44, 0x53, 0x50, 0x49, 0x4e, 0x47  // NDDSPING
 };
@@ -43,7 +43,7 @@ int const pingSize = sizeof(pingBuffer); // total packet size
 
 // [ENTITY]
 // RawWriter
-char participantBuffer[] = {
+unsigned char participantBuffer[] = {
   0x52, 0x54, 0x50, 0x53, 0x02, 0x01, 0x01, 0x01, // RTPS 2.1 RTI
   0xc1, 0x10, 0xb0, 0x9f, 0x00, 0x00, 0x3a, 0x02, 0x00, 0x00, 0x00, 0x01, // hostId(8) - IP, appId(12), counter(16)
   // info TS
@@ -115,7 +115,7 @@ int const guidAppIdI = 68;
 // 00a0  00 00 00 00 00 00                                  ......           
 
 
-char buffer[] = {
+unsigned char buffer[] = {
   0x52, 0x54, 0x50, 0x53, 0x02, 0x01, 0x01, 0x01, // RTPS 2.1 RTI
   0xc1, 0x10, 0xb0, 0x9f, 0x00, 0x00, 0x3a, 0x02, 0x00, 0x00, 0x00, 0x01, // hostId(8) - IP, appId(12), counter(16)
   // info TS
