@@ -82,6 +82,9 @@ if (catkin_FOUND)
   )
   ## set variable with full path of extras file so we can append library info
   set_cfg_extras_file()
+
+  # add devel/include - this should add to persistent catkin metadata
+  list(APPEND ${PROJECT_NAME}_INCLUDE_DIRS ${CATKIN_DEVEL_PREFIX}/include)
 endif(catkin_FOUND)
 
 ## We must add the in-source and out-of-source
