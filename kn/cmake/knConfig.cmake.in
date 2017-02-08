@@ -1,0 +1,7 @@
+@PACKAGE_INIT@ 
+
+#set_and_check ( @PROJECT_UPPER@_INCLUDE_DIRS "@PACKAGE_IRGUTIL_INCLUDE_DIRS@")
+set_and_check ( @PROJECT_UPPER@_INCLUDE_DIRS "${PACKAGE_PREFIX_DIR}/include")
+
+include ( "${PACKAGE_PREFIX_DIR}/lib/cmake/@PROJECT_NAME@.cmake" )
+

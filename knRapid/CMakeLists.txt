@@ -17,6 +17,8 @@ if( CMAKE_COMPILER_IS_GNUCXX )
   
 endif( CMAKE_COMPILER_IS_GNUCXX )
 
+include( CMakePackageConfigHelpers )
+
 include( SetArchitecture )
 include( SetupBuildSwitch )
 include( SetupConfigureFile )
@@ -101,3 +103,19 @@ include( CMakePack.txt )
 
 #------------------------------------
 print_build_switches()
+
+## create a cmake config file that
+## is compatible with catkin_tools
+##------------------------------------
+set ( ${PROJECT_UPPER}_INCLUDE_DIRS "include" )
+set ( CMAKE_CONFIG_DEST "share/${PROJECT_NAME}/cmake" )
+configure_package_config_file (                         
+        "cmake/${PROJECT_NAME}Config.cmake.in"
+        "${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake"  
+        INSTALL_DESTINATION "${CMAKE_CONFIG_DEST}"
+        PATH_VARS ${PROJECT_UPPER}_INCLUDE_DIRS
+)
+export ( PACKAGE ${PROJECT_NAME} ) 
+install( FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake 
+         DESTINATION ${CMAKE_CONFIG_DEST} )
+
