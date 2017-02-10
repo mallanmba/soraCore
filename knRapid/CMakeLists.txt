@@ -75,7 +75,6 @@ if (catkin_FOUND)
   ###################################
   ## catkin specific configuration ##
   ###################################
-
   catkin_package(
     INCLUDE_DIRS src # NOTE: see knRapid-extras.cmake for additional include dirs
     LIBRARIES rapidDds rapidIo rapidExtDds rapidExtIo rapidExtArcDds rapidExtArcIo rapidCommanding
@@ -84,6 +83,9 @@ if (catkin_FOUND)
   )
   ## set variable with full path of extras file so we can append library info
   set_cfg_extras_file()
+  
+  # add devel/include - this should add to persistent catkin metadata
+  list(APPEND ${PROJECT_NAME}_INCLUDE_DIRS ${CATKIN_DEVEL_PREFIX}/include)
 endif(catkin_FOUND)  
 
 
