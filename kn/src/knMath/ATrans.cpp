@@ -27,7 +27,7 @@ namespace kn
 
   std::ostream& operator<< (std::ostream& ostr, ATrans2Out const& rhs)
   {
-    Eigen::Rotation2Dd theta;
+    Eigen::Rotation2Dd theta(0.);
     theta.fromRotationMatrix(rhs.transform().rotation());
     ostr << "("
          << rhs.transform().translation().x() << ", " << rhs.transform().translation().y()

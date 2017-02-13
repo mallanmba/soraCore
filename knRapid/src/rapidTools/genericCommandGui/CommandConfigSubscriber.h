@@ -21,7 +21,9 @@
 
 #include <QObject>
 
+#ifndef Q_MOC_RUN
 #include "knDds/DdsTypedConnector.h"
+#endif
 
 #include "rapidDds/CommandConfig.h"
 #include "rapidDds/CommandConfigSupport.h"

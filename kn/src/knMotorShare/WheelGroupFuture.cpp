@@ -25,7 +25,7 @@ namespace kn
 {
   std::ostream& operator<< (std::ostream& ostr, WheelGroupFuture const& rhs)
   {
-    Eigen::Rotation2Dd theta;
+    Eigen::Rotation2Dd theta(0.);
     theta.fromRotationMatrix(rhs.offset.rotation());
     ostr << "{";
     ostr << static_cast<WheelGroupState const&>(rhs);
