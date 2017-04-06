@@ -122,7 +122,7 @@ namespace kn
   ATrans2
   step(ATrans2 const& pose, double curvature, double crab, double crabRate, double speed, double interval)
   {
-    if (isnan(curvature)) {
+    if (std::isnan(curvature)) {
       // Wheels are aligning, cannot calculate new pose
       return pose;
     }
