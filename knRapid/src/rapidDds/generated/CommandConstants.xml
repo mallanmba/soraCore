@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * The commands in the Admin Command Group provide high-level test functions and control parameters.</directive>
+<directive kind="copyDeclaration"> *</directive>
+<directive kind="copyDeclaration"> * The Admin Command Group contains the following commands:</directive>
+<directive kind="copyDeclaration"> * &lt;ul&gt;</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;echo: Echo the parameter text.</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;shutdown: Terminate the bridge.</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;noOp: No operation command.</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;setPositionSamplePublishRate: Publish Agent pose at given rate.</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;positionSamplePublishRate: Get Agent pose publication rate.</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;setJointSamplePublishRate: Publish Agent articulation at given rate.</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;jointSampleRate: Get Agent articulation publication rate.</directive>
+<directive kind="copyDeclaration"> * &lt;/ul&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<const name="ADMIN" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;Admin&quot;"/>
+<directive kind="copyDeclaration">/**  Echos the parameter text. */</directive>
+<const name="ADMIN_METHOD_ECHO" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;echo&quot;"/>
+<directive kind="copyDeclaration">/** Key for parameter used in reply by bridge. */</directive>
+<const name="ADMIN_METHOD_ECHO_PARAM_ECHOTEXT" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;echoText&quot;"/>
+<const name="ADMIN_METHOD_ECHO_DTYPE_ECHOTEXT" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<directive kind="copyDeclaration">/** Terminate the bridge. */</directive>
+<const name="ADMIN_METHOD_SHUTDOWN" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;shutdown&quot;"/>
+<directive kind="copyDeclaration">/** No operation command. */</directive>
+<const name="ADMIN_METHOD_NOOP" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;noOp&quot;"/>
+<directive kind="copyDeclaration">/** Publish Agent pose at given rate. */</directive>
+<const name="ADMIN_METHOD_SETPOSITIONSAMPLEPUBLISHRATE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setPositionSamplePublishRate&quot;"/>
+<directive kind="copyDeclaration">/** In Hz. */</directive>
+<const name="ADMIN_METHOD_SETPOSITIONSAMPLEPUBLISHRATE_PARAM_POSERATE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;positionSamplePublishRate&quot;"/>
+<directive kind="copyDeclaration">/** Publish Agent articulation at given rate. */</directive>
+<const name="ADMIN_METHOD_SETPOSITIONSAMPLEPUBLISHRATE_DTYPE_POSERATE" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+<directive kind="copyDeclaration">/** Publish Agent articulation at given rate. */</directive>
+<const name="ADMIN_METHOD_SETJOINTSAMPLEPUBLISHRATE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setJointSamplePublishRate&quot;"/>
+<directive kind="copyDeclaration">/** Publish Agent articulation at given rate. */</directive>
+<const name="ADMIN_METHOD_SETJOINTSAMPLEPUBLISHRATE_PARAM_JOINTSAMPLERATE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;jointSampleRate&quot;"/>
+<directive kind="copyDeclaration">/** Publish Agent articulation at given rate. */</directive>
+<const name="ADMIN_METHOD_SETJOINTSAMPLEPUBLISHRATE_DTYPE_JOINTSAMPLERATE" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * The commands in the ImageSensor Command Group are used to capture images from Agent-mounted cameras.</directive>
+<directive kind="copyDeclaration"> *</directive>
+<directive kind="copyDeclaration"> * The ImageSensor Command Group contains the following commands:</directive>
+<directive kind="copyDeclaration"> * &lt;ul&gt;</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;reqSensorState:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;imageAcquire:</directive>
+<directive kind="copyDeclaration"> * &lt;/ul&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<const name="IMAGESENSOR" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;ImageSensor&quot;"/>
+<directive kind="copyDeclaration">/** ImageSensorState message. */</directive>
+<const name="IMAGESENSOR_METHOD_REQSENSORSTATE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;reqSensorState&quot;"/>
+<directive kind="copyDeclaration">/** Message. */</directive>
+<const name="IMAGESENSOR_METHOD_REQSENSORSTATE_PARAM_SENSORNAME" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;sensorName&quot;"/>
+<directive kind="copyDeclaration">/** Message. */</directive>
+<const name="IMAGESENSOR_METHOD_REQSENSORSTATE_DTYPE_SENSORNAME" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<directive kind="copyDeclaration">/** Send image acquire command with this command, the ImageCommand attribute will be populated. */</directive>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;imageAcquire&quot;"/>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_PARAM_CAMERA_NAME" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;cameraName&quot;"/>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_DTYPE_CAMERA_NAME" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<directive kind="copyDeclaration">/** IMAGESENSOR_CAMERA_TYPE_xxx. */</directive>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_PARAM_CAMERA_TYPE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;cameraType&quot;"/>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_DTYPE_CAMERA_TYPE" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<directive kind="copyDeclaration">/** MIMETypeConstants. */</directive>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_PARAM_CAMERA_MIME_TYPE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;mimeType&quot;"/>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_DTYPE_CAMERA_MIME_TYPE" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_PARAM_PAN" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;pan&quot;"/>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_DTYPE_PAN" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_PARAM_TILT" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;tilt&quot;"/>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_DTYPE_TILT" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_PARAM_ZOOM" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;zoom&quot;"/>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_DTYPE_ZOOM" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_PARAM_HFOV" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;hFOV&quot;"/>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_DTYPE_HFOV" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_PARAM_VFOV" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;vFOV&quot;"/>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_DTYPE_VFOV" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+<directive kind="copyDeclaration">/** IMAGESENSOR_COLOR_TYPE_XXX */</directive>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_PARAM_COLORTYPE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;colorType&quot;"/>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_DTYPE_COLORTYPE" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<directive kind="copyDeclaration">/** IMAGESENSOR_CAPTURE_XXX */</directive>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_PARAM_CAPTURE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;captureType&quot;"/>
+<const name="IMAGESENSOR_METHOD_IMAGEACQUIRE_DTYPE_CAPTURE" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<const name="IMAGESENSOR_COLOR_TYPE_COLOR" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;color&quot;"/>
+<const name="IMAGESENSOR_COLOR_TYPE_GRAYSCALE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;grayscale&quot;"/>
+<const name="IMAGESENSOR_CAPTURE_STREAMING" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;streaming&quot;"/>
+<const name="IMAGESENSOR_CAPTURE_SINGLE_SHOT" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;singleImage&quot;"/>
+<const name="IMAGESENSOR_CAPTURE_MULTI_SHOT" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;multiImage&quot;"/>
+<const name="IMAGESENSOR_CAMERA_TYPE_WEBCAM" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;webcam&quot;"/>
+<const name="IMAGESENSOR_CAMERA_TYPE_DSLR" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;dslr&quot;"/>
+<const name="IMAGESENSOR_CAMERA_TYPE_GIGAPAN" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;gigapan&quot;"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * The commands in the Mobility Command Group controls the motion of navigable rovers over a surface.</directive>
+<directive kind="copyDeclaration"> *</directive>
+<directive kind="copyDeclaration"> * The Mobility Command Group contains the following commands:</directive>
+<directive kind="copyDeclaration"> * &lt;ul&gt;</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;simpleMove:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;simpleMove6DOF:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;move:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;move6DOF</directive>
+<directive kind="copyDeclaration"> * &lt;/ul&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<const name="MOBILITY" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;Mobility&quot;"/>
+<directive kind="copyDeclaration">/** Stops all motion of the Agent, joints, wheels, etc. */</directive>
+<const name="MOBILITY_METHOD_STOPALLMOTION" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;stopAllMotion&quot;"/>
+<const name="MOBILITY_METHOD_SIMPLEMOVE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;simpleMove&quot;"/>
+<const name="MOBILITY_METHOD_SIMPLEMOVE_PARAM_FRAME_NAME" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;referenceFrame&quot;"/>
+<const name="MOBILITY_METHOD_SIMPLEMOVE_DTYPE_FRAME_NAME" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<const name="MOBILITY_METHOD_SIMPLEMOVE_PARAM_END_LOCATION" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;xyt&quot;"/>
+<const name="MOBILITY_METHOD_SIMPLEMOVE_DTYPE_END_LOCATION" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_VEC3d"/>
+<const name="MOBILITY_METHOD_SIMPLEMOVE_PARAM_END_LOCATION_TOLERANCE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;xytTolerance&quot;"/>
+<const name="MOBILITY_METHOD_SIMPLEMOVE_DTYPE_END_LOCATION_TOLERANCE" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_VEC3d"/>
+<const name="MOBILITY_METHOD_SIMPLEMOVE6DOF" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;simpleMove6DOF&quot;"/>
+<const name="MOBILITY_METHOD_SIMPLEMOVE6DOF_PARAM_FRAME_NAME" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;referenceFrame&quot;"/>
+<const name="MOBILITY_METHOD_SIMPLEMOVE6DOF_DTYPE_FRAME_NAME" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<const name="MOBILITY_METHOD_SIMPLEMOVE6DOF_PARAM_END_LOCATION" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;xyz&quot;"/>
+<const name="MOBILITY_METHOD_SIMPLEMOVE6DOF_DTYPE_END_LOCATION" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_VEC3d"/>
+<const name="MOBILITY_METHOD_SIMPLEMOVE6DOF_PARAM_END_LOCATION_TOLERANCE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;xyzTolerance&quot;"/>
+<const name="MOBILITY_METHOD_SIMPLEMOVE6DOF_DTYPE_END_LOCATION_TOLERANCE" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_VEC3d"/>
+<const name="MOBILITY_METHOD_SIMPLEMOVE6DOF_PARAM_ROT" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;rot&quot;"/>
+<const name="MOBILITY_METHOD_SIMPLEMOVE6DOF_DTYPE_ROT" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_MAT33f"/>
+<const name="MOBILITY_METHOD_MOVE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;move&quot;"/>
+<const name="MOBILITY_METHOD_MOVE_PARAM_FRAME_NAME" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;referenceFrame&quot;"/>
+<const name="MOBILITY_METHOD_MOVE_DTYPE_FRAME_NAME" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<directive kind="copyDeclaration">/**  Can be defined as a rotation about an axis. */</directive>
+<const name="MOBILITY_METHOD_MOVE_PARAM_END_LOCATION" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;xyt&quot;"/>
+<const name="MOBILITY_METHOD_MOVE_DTYPE_END_LOCATION" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_VEC3d"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * The x,y,theta tolerance for waypoint. Theta is specified in radians. For a non-directional waypoint, use</directive>
+<directive kind="copyDeclaration"> * negative or &gt; PI value.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<const name="MOBILITY_METHOD_MOVE_PARAM_END_LOCATION_TOLERANCE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;xytTolerance&quot;"/>
+<const name="MOBILITY_METHOD_MOVE_DTYPE_END_LOCATION_TOLERANCE" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_VEC3d"/>
+<directive kind="copyDeclaration">/** In meters/sec. */</directive>
+<const name="MOBILITY_METHOD_MOVE_PARAM_HINTED_SPEED" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;hintedSpeed&quot;"/>
+<const name="MOBILITY_METHOD_MOVE_DTYPE_HINTED_SPEED" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+<const name="MOBILITY_METHOD_MOVE_PARAM_NAV_ALGO" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;navAlgo&quot;"/>
+<const name="MOBILITY_METHOD_MOVE_DTYPE_NAV_ALGO" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<const name="MOBILITY_METHOD_MOVE6DOF" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;move6DOF&quot;"/>
+<const name="MOBILITY_METHOD_MOVE6DOF_PARAM_FRAME_NAME" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;referenceFrame&quot;"/>
+<const name="MOBILITY_METHOD_MOVE6DOF_DTYPE_FRAME_NAME" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<const name="MOBILITY_METHOD_MOVE6DOF_PARAM_END_LOCATION" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;xyz&quot;"/>
+<const name="MOBILITY_METHOD_MOVE6DOF_DTYPE_END_LOCATION" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_VEC3d"/>
+<const name="MOBILITY_METHOD_MOVE6DOF_PARAM_END_LOCATION_TOLERANCE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;xyzTolerance&quot;"/>
+<const name="MOBILITY_METHOD_MOVE6DOF_DTYPE_END_LOCATION_TOLERANCE" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_VEC3d"/>
+<const name="MOBILITY_METHOD_MOVE6DOF_PARAM_ROT" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;rot&quot;"/>
+<const name="MOBILITY_METHOD_MOVE6DOF_DTYPE_ROT" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_MAT33f"/>
+<directive kind="copyDeclaration">/**  In meters/sec. */</directive>
+<const name="MOBILITY_METHOD_MOVE6DOF_PARAM_HINTED_SPEED" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;hintedSpeed&quot;"/>
+<const name="MOBILITY_METHOD_MOVE6DOF_DTYPE_HINTED_SPEED" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+<const name="MOBILITY_METHOD_MOVE6DOF_PARAM_NAV_ALGO" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;navAlgo&quot;"/>
+<const name="MOBILITY_METHOD_MOVE6DOF_DTYPE_NAV_ALGO" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<directive kind="copyDeclaration">/** Navigation Algorithm for MobilityCommand. */</directive>
+<const name="NAV_ALGO_SAFE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;RAPID_NAV_SAFE&quot;"/>
+<const name="NAV_ALGO_BLIND" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;RAPID_NAV_BLIND&quot;"/>
+<directive kind="copyDeclaration">/** Frame information for MobilityCommand and CameraCommand. */</directive>
+<const name="FRAME_NAME_UTM" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;RAPID_UTM_FRAME&quot;"/>
+<const name="FRAME_NAME_SITE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;RAPID_SITE_FRAME&quot;"/>
+<const name="FRAME_NAME_ROVER" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;RAPID_ROVER_FRAME&quot;"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * The commands in the Queue command group control task execution within the Sequencer.</directive>
+<directive kind="copyDeclaration"> *</directive>
+<directive kind="copyDeclaration"> * The Queue Command Group contains the following commands:</directive>
+<directive kind="copyDeclaration"> * &lt;ul&gt;</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;cancelCurrentTask:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;cancelAll:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;deleteAll:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;suspendOnCompletion:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;suspend:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;resume:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;loadMacro:</directive>
+<directive kind="copyDeclaration"> * &lt;/ul&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<const name="QUEUE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;Queue&quot;"/>
+<directive kind="copyDeclaration">/** Abort all active commands (as possible). */</directive>
+<const name="QUEUE_METHOD_CANCELCURRENTTASK" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;cancelCurrentTask&quot;"/>
+<directive kind="copyDeclaration">/** Mark all commands as canceled. */</directive>
+<const name="QUEUE_METHOD_CANCELALL" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;cancelAll&quot;"/>
+<directive kind="copyDeclaration">/** Clear all commands. */</directive>
+<const name="QUEUE_METHOD_DELETEALL" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;deleteAll&quot;"/>
+<directive kind="copyDeclaration">/** Complete currently executed command and suspend queue execution. */</directive>
+<const name="QUEUE_METHOD_SUSPENDONCOMPLETE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;suspendOnCompletion&quot;"/>
+<directive kind="copyDeclaration">/** Abort currently executed command (if possible) and suspend queue execution. */</directive>
+<const name="QUEUE_METHOD_SUSPEND" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;suspend&quot;"/>
+<directive kind="copyDeclaration">/** Resume queue execution. */</directive>
+<const name="QUEUE_METHOD_RESUME" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;resume&quot;"/>
+<directive kind="copyDeclaration">/** Load the macro with the specified name and version number. */</directive>
+<const name="QUEUE_METHOD_LOADMACRO" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;loadMacro&quot;"/>
+<directive kind="copyDeclaration">/** Queue paramter: macroName key field name */</directive>
+<const name="QUEUE_METHOD_LOADMACRO_PARAM_NAME" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;name&quot;"/>
+<const name="QUEUE_METHOD_LOADMACRO_DTYPE_NAME" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<const name="QUEUE_METHOD_LOADMACRO_PARAM_VERSION" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;serial&quot;"/>
+<const name="QUEUE_METHOD_LOADMACRO_DTYPE_VERSION" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_INT"/>
+<directive kind="copyDeclaration">/** Delete the macro with the specified name from the Macro library (not the Queue). */</directive>
+<const name="QUEUE_METHOD_DELETEMACRO" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;deleteMacro&quot;"/>
+<const name="QUEUE_METHOD_DELETEMACRO_PARAM_NAME" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;name&quot;"/>
+<const name="QUEUE_METHOD_DELETEMACRO_DTYPE_NAME" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<directive kind="copyDeclaration">/** Mark a command as canceled (moving it to the completed queue). */</directive>
+<const name="QUEUE_METHOD_DTYPE_CMDID" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<const name="QUEUE_METHOD_CANCELCOMMAND" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;cancelCommand&quot;"/>
+<const name="QUEUE_METHOD_CANCELCOMMAND_PARAM_CMDID" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;cmdId&quot;"/>
+<directive kind="copyDeclaration">/** To come. */</directive>
+<const name="QUEUE_METHOD_REQUEUE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;requeue&quot;"/>
+<const name="QUEUE_METHOD_REQUEUE_PARAM_CMDID" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;cmdId&quot;"/>
+<const name="QUEUE_METHOD_REQUEUE_PARAM_TARGETCMDID" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;targetCmdId&quot;"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * The commands in the AccessControl command group govern transfer of control of agents between operators.</directive>
+<directive kind="copyDeclaration"> *</directive>
+<directive kind="copyDeclaration"> * The AccessControl Command Group contains the following commands:</directive>
+<directive kind="copyDeclaration"> * &lt;ul&gt;</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;requestControl:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;grabControl:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;releaseControl:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;transferControl:</directive>
+<directive kind="copyDeclaration"> * &lt;/ul&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<const name="ACCESSCONTROL" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;AccessControl&quot;"/>
+<directive kind="copyDeclaration">/** AccessControl method type for requesting control of an Agent. */</directive>
+<const name="ACCESSCONTROL_METHOD_REQUESTCONTROL" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;requestControl&quot;"/>
+<directive kind="copyDeclaration">/** AccessControl method type for grabbing control of an Agent. */</directive>
+<const name="ACCESSCONTROL_METHOD_GRABCONTROL" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;grabControl&quot;"/>
+<directive kind="copyDeclaration">/** AccessControl method type for release control of an Agent. */</directive>
+<const name="ACCESSCONTROL_METHOD_RELEASECONTROL" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;releaseControl&quot;"/>
+<directive kind="copyDeclaration">/** AccessControl method type for transferring control of an Agent.*/</directive>
+<const name="ACCESSCONTROL_METHOD_TRANSFERCONTROL" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;transferControl&quot;"/>
+<const name="ACCESSCONTROL_METHOD_TRANSFERCONTROL_PARAM_RECIPIENT" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;controlRecipient&quot;"/>
+<const name="ACCESSCONTROL_METHOD_TRANSFERCONTROL_DTYPE_RECIPIENT" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> *  RAFT: RAPID Advanced File Transfer subsystem.</directive>
+<directive kind="copyDeclaration"> *</directive>
+<directive kind="copyDeclaration"> * The RAFT Command Group contains the following commands:</directive>
+<directive kind="copyDeclaration"> *</directive>
+<directive kind="copyDeclaration"> * &lt;ul&gt;</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;putFile:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;putMatching:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;removeFile:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;pause:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;resume:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;setBandwidth:</directive>
+<directive kind="copyDeclaration"> * &lt;/ul&gt;</directive>
+<directive kind="copyDeclaration"> *</directive>
+<directive kind="copyDeclaration"> */</directive>
+<const name="RAFT" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;RAFT&quot;"/>
+<directive kind="copyDeclaration">/** RAFT paramter: Uuid of file. */</directive>
+<const name="RAFT_METHOD_PARAM_UUID" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;uuid&quot;"/>
+<const name="RAFT_METHOD_DTYPE_UUID" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<directive kind="copyDeclaration">/** RAFT paramter: Priority of file. */</directive>
+<const name="RAFT_METHOD_PARAM_PRIORITY" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;priority&quot;"/>
+<const name="RAFT_METHOD_DTYPE_PRIORITY" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+<directive kind="copyDeclaration">/** RAFT paramter: metaData key field name */</directive>
+<const name="RAFT_METHOD_PARAM_KEY" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;key&quot;"/>
+<const name="RAFT_METHOD_DTYPE_KEY" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<directive kind="copyDeclaration">/** RAFT paramter: value of the metaData key field. For now, only stings are supported. */</directive>
+<const name="RAFT_METHOD_PARAM_VALUE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;value&quot;"/>
+<const name="RAFT_METHOD_DTYPE_VALUE" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<directive kind="copyDeclaration">/** RAFT paramter: Channel id. */</directive>
+<const name="RAFT_METHOD_PARAM_CHANNELID" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;channelId&quot;"/>
+<const name="RAFT_METHOD_DTYPE_CHANNELID" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_INT"/>
+<directive kind="copyDeclaration">/** RAFT paramter: Bandwidth. */</directive>
+<const name="RAFT_METHOD_PARAM_BANDWIDTHBPS" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;bandwidthBps&quot;"/>
+<const name="RAFT_METHOD_DTYPE_BANDWIDTHBPS" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_INT"/>
+<const name="RAFT_METHOD_PARAM_PREFETCHKBANDWIDTHBPS" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;prefetchBandwidthBps&quot;"/>
+<const name="RAFT_METHOD_DTYPE_PREFETCHKBANDWIDTHBPS" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_INT"/>
+<directive kind="copyDeclaration">/**  Put file into RAFT queue. */</directive>
+<const name="RAFT_METHOD_PUTFILE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;putFile&quot;"/>
+<directive kind="copyDeclaration">/**  Put data product files into RAFT queue. */</directive>
+<const name="RAFT_METHOD_PUTMATCHING" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;putMatching&quot;"/>
+<directive kind="copyDeclaration">/** Remove file from RAFT queue. */</directive>
+<const name="RAFT_METHOD_REMOVEFILE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;removeFile&quot;"/>
+<directive kind="copyDeclaration">/** Pause a RAFT queue. */</directive>
+<const name="RAFT_METHOD_PAUSE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;pause&quot;"/>
+<directive kind="copyDeclaration">/** Resume a RAFT queue. */</directive>
+<const name="RAFT_METHOD_RESUME" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;resume&quot;"/>
+<directive kind="copyDeclaration">/** Resume a RAFT queue. */</directive>
+<const name="RAFT_METHOD_SETBANDWIDTH" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setBandwidth&quot;"/>
+</module>
+</types>

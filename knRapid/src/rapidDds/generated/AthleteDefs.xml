@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<const name="ATHLETE_LEG_1" type="long" value="0"/>
+<const name="ATHLETE_LEG_2" type="long" value="1"/>
+<const name="ATHLETE_LEG_3" type="long" value="2"/>
+<const name="ATHLETE_LEG_4" type="long" value="3"/>
+<const name="ATHLETE_LEG_5" type="long" value="4"/>
+<const name="ATHLETE_LEG_6" type="long" value="5"/>
+<const name="ATHLETE_AUX_LEG_ID_INDEX" type="long" value="0"/>
+<const name="ATHLETE_AUX_MOTOR_ANGLE_INDEX" type="long" value="1"/>
+<const name="ATHLETE_SUBSYS_NAME_EHA" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;ATHLETE_EHA&quot;"/>
+<const name="ATHLETE_SUBSYS_NAME_FORCE_TORQUE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;ATHLETE_FORCE_TORQUE&quot;"/>
+<const name="ATHLETE_SUBSYS_NAME_BATT" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;ATHLETE_BATTERY&quot;"/>
+<const name="ATHLETE_HEADING_RAD_KEY" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_HEADING_RAD&quot;"/>
+<const name="ATHLETE_BODY_TILT_KEY" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_BODY_TILT&quot;"/>
+<const name="ATHLETE_BODY_ROLL_KEY" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_BODY_ROLL&quot;"/>
+<const name="ATHLETE_BODY_PITCH_KEY" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_BODY_PITCH&quot;"/>
+<const name="ATHLETE_ODOMETRY_KEY" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_ODOMETRY&quot;"/>
+<const name="ATHLETE_HEADING_FLOAT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_HEADING_RAD__FLOAT__&quot;"/>
+<const name="ATHLETE_TILT_FLOAT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_BODY_TILT__FLOAT__&quot;"/>
+<const name="ATHLETE_ROLL_FLOAT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_BODY_ROLL__FLOAT__&quot;"/>
+<const name="ATHLETE_PITCH_FLOAT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_BODY_PITCH__FLOAT__&quot;"/>
+<const name="ATHLETE_ODOMETRY_FLOAT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_ODOMETRY__FLOAT__&quot;"/>
+<const name="ATHLETE_PROC_ID_INT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_PROCESSOR_ID__INT__&quot;"/>
+<const name="ATHLETE_CAM_REFP_X_FLOAT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_CAM_REFP_X__FLOAT__&quot;"/>
+<const name="ATHLETE_CAM_REFP_Y_FLOAT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_CAM_REFP_Y__FLOAT__&quot;"/>
+<const name="ATHLETE_CAM_REFP_Z_FLOAT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_CAM_REFP_Z__FLOAT__&quot;"/>
+<const name="ATHLETE_CAM_REFQ_P_FLOAT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_CAM_REFQ_P__FLOAT__&quot;"/>
+<const name="ATHLETE_CAM_REFQ_Y_FLOAT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_CAM_REFQ_Y__FLOAT__&quot;"/>
+<const name="ATHLETE_CAM_REFQ_R_FLOAT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_CAM_REFQ_R__FLOAT__&quot;"/>
+<const name="ATHLETE_CAM_REFQ_W_FLOAT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_CAM_REFQ_W__FLOAT__&quot;"/>
+<const name="ATHLETE_CAM_V2_FLOAT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_CAM_V2__FLOAT__&quot;"/>
+<const name="ATHLETE_CAM_IMG_ACQ_TIME_FLOAT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_CAM_IMGACQTIM__FLOAT__&quot;"/>
+<const name="ATHLETE_BATT1_INT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_BATT1__INT__&quot;"/>
+<const name="ATHLETE_BATT2_INT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_BATT2__INT__&quot;"/>
+<const name="ATHLETE_BATT3_INT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_BATT3__INT__&quot;"/>
+<const name="ATHLETE_BATT4_INT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_BATT4__INT__&quot;"/>
+<const name="ATHLETE_BATT5_INT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_BATT5__INT__&quot;"/>
+<const name="ATHLETE_BATT6_INT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_BATT6__INT__&quot;"/>
+<const name="ATHLETE_BATTV12_INT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_BATTV12__INT__&quot;"/>
+<const name="ATHLETE_BATTV24_INT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_BATTV24__INT__&quot;"/>
+<const name="ATHLETE_BATTV48_INT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_BATTV48__INT__&quot;"/>
+<const name="ATHLETE_BATTSOC_INT" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;ATHLETE_BATTSOC__INT__&quot;"/>
+<const name="ATHLETE_NUM_LEGS" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;ATHLETE_NUM_LEGS&quot;"/>
+<const name="ATHLETE_DRIVE_FACE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;ATHLETE_DRIVE_FACE&quot;"/>
+<const name="ATHLETE_NUM_JOINTS" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;ATHLETE_NUM_JOINTS&quot;"/>
+<const name="ATHLETE_CAMERA_SET" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;ATHLETE_CAMERA_SET&quot;"/>
+<const name="ATHLETE_CAMERA_SELECTION" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;ATHLETE_CAMERA_SELECTION&quot;"/>
+<const name="ATHLETE_CAMERA_LEG" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;ATHLETE_CAMERA_LEG&quot;"/>
+<directive kind="copyDeclaration">/** Articulation indexes for the JointData arrays. */</directive>
+<const name="ATHLETE_ARTIC_JOINTDATA_INDEX_HIP_YAW" type="long" value="0"/>
+<const name="ATHLETE_ARTIC_JOINTDATA_INDEX_HIP_PITCH" type="long" value="1"/>
+<const name="ATHLETE_ARTIC_JOINTDATA_INDEX_THIGH_PITCH" type="long" value="2"/>
+<const name="ATHLETE_ARTIC_JOINTDATA_INDEX_KNEE_PITCH" type="long" value="3"/>
+<const name="ATHLETE_ARTIC_JOINTDATA_INDEX_KNEE_ROLL" type="long" value="4"/>
+<const name="ATHLETE_ARTIC_JOINTDATA_INDEX_ANKLE_PITCH" type="long" value="5"/>
+<const name="ATHLETE_ARTIC_JOINTDATA_INDEX_ANKLE_ROLL" type="long" value="6"/>
+<const name="ATHLETE_ARTIC_JOINTDATA_INDEX_GRIPPER" type="long" value="7"/>
+<const name="ATHLETE_ARTIC_JOINTDATA_INDEX_WHEEL" type="long" value="8"/>
+<const name="ATHLETE_ARTIC_JOINTDATA_INDEX_DOCK" type="long" value="9"/>
+<const name="FLOAT_TYPE_KEY" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;__FLOAT__&quot;"/>
+<const name="INT_TYPE_KEY" type="nonBasic" nonBasicTypeName="rapid::String16" value="&quot;__INT__&quot;"/>
+</module>
+</types>

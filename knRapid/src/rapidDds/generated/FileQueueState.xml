@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * ChannelStatus is used to indicate whether a RAPID File Queue (part of the RAPID File Transfer Service)</directive>
+<directive kind="copyDeclaration"> * is currently capable of transferring files (Active) or is temporarily refraining from transferring files</directive>
+<directive kind="copyDeclaration"> * (Paused).</directive>
+<directive kind="copyDeclaration"> * &lt;ul&gt;</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;FILE_QUEUE_CHANNEL_ACTIVE: Capable of transferring files.</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;FILE_QUEUE_CHANNEL_PAUSED: Temporarily refraining from transferring files.</directive>
+<directive kind="copyDeclaration"> * &lt;/ul&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<enum name="ChannelStatus">
+<enumerator name="FILE_QUEUE_CHANNEL_ACTIVE"/>
+<enumerator name="FILE_QUEUE_CHANNEL_PAUSED"/>
+</enum>
+<struct name="ChannelState">
+<directive kind="copyDeclaration">/** Status of file in queue. */</directive>
+<member name="status" type="nonBasic" nonBasicTypeName="rapid::ChannelStatus"/>
+<directive kind="copyDeclaration">/** Size of queued data volume. */</directive>
+<member name="queuedDataVolume" type="longLong"/>
+<directive kind="copyDeclaration">/** Number of queued files */</directive>
+<member name="queuedFiles" type="short"/>
+</struct>
+<typedef name="ChannelStateSequence" sequenceMaxLength="-1" type="nonBasic" nonBasicTypeName="rapid::ChannelState"/>
+<directive kind="copyCDeclaration">class FileQueueStateTypeSupport;</directive>
+<directive kind="copyCDeclaration">class FileQueueStateDataWriter;</directive>
+<directive kind="copyCDeclaration">class FileQueueStateDataReader;</directive>
+<directive kind="copyCDeclaration">struct FileQueueStateSeq;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Holds information about a file that could be transferred to the ground from the robot.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<valuetype name="FileQueueState" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef FileQueueStateTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef FileQueueStateDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef FileQueueStateDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef FileQueueStateSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef FileQueueState Type;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Connection status of the file queue. The queue will not send data as long as there is no reader</directive>
+<directive kind="copyDeclaration"> * connected.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="connected" type="boolean" visibility="public"/>
+<member name="bandwidth" type="long" visibility="public"/>
+<member name="prefetchBandwidth" type="long" visibility="public"/>
+<directive kind="copyDeclaration">/** The state of the individual channels. */</directive>
+<member name="channels" type="nonBasic" nonBasicTypeName="rapid::ChannelStateSequence" visibility="public"/>
+</valuetype>
+</module>
+</types>

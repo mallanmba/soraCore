@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<directive kind="copyDeclaration">/** Frame Definition */</directive>
+<struct name="FrameDef">
+<directive kind="copyDeclaration">/** The name of the frame. */</directive>
+<member name="name" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * The name of the parent frame. This can contain a (partial) path to ensure uniqueness. An empty</directive>
+<directive kind="copyDeclaration"> * parent name denotes a root frame. The C++ implementation will always put the fully qualified path in</directive>
+<directive kind="copyDeclaration"> * there for starters.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="parent" type="nonBasic" nonBasicTypeName="rapid::String256"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * The coordinate frame transform. For frames updated by telemetry (...Sample messages), this does not</directive>
+<directive kind="copyDeclaration"> * change with updates of the acutal value, but only contains the start configuration.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="transform" type="nonBasic" nonBasicTypeName="rapid::Transform3D"/>
+<directive kind="copyDeclaration">/** Sequence of extra values stored with the frame, such as lat/lon for UTM-grid frames. */</directive>
+<member name="extras" type="nonBasic" nonBasicTypeName="rapid::KeyTypeValueSequence8"/>
+</struct>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * A sequence of frame definitions. The frames are presented in depth-first pre-order. That is, any parent</directive>
+<directive kind="copyDeclaration"> * field of a FrameDefSequence entry denotes a frame with a smaller index in the sequence than the entry</directive>
+<directive kind="copyDeclaration"> * has.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<typedef name="FrameDefSequence" sequenceMaxLength="256" type="nonBasic" nonBasicTypeName="rapid::FrameDef"/>
+<directive kind="copyCDeclaration">class FrameStoreConfigTypeSupport;</directive>
+<directive kind="copyCDeclaration">class FrameStoreConfigDataWriter;</directive>
+<directive kind="copyCDeclaration">class FrameStoreConfigDataReader;</directive>
+<directive kind="copyCDeclaration">struct FrameStoreConfigSeq;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * FrameConfig</directive>
+<directive kind="copyDeclaration"> */</directive>
+<valuetype name="FrameStoreConfig" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef FrameStoreConfigTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef FrameStoreConfigDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef FrameStoreConfigDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef FrameStoreConfigSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef FrameStoreConfig Type;</directive>
+<member name="frames" type="nonBasic" nonBasicTypeName="rapid::FrameDefSequence" visibility="public"/>
+</valuetype>
+</module>
+</types>

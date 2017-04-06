@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<module name="arc">
+<directive kind="copyCDeclaration">class EphemerisSampleTypeSupport;</directive>
+<directive kind="copyCDeclaration">class EphemerisSampleDataWriter;</directive>
+<directive kind="copyCDeclaration">class EphemerisSampleDataReader;</directive>
+<directive kind="copyCDeclaration">struct EphemerisSampleSeq;</directive>
+<valuetype name="EphemerisSample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef EphemerisSampleTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef EphemerisSampleDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef EphemerisSampleDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef EphemerisSampleSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef EphemerisSample Type;</directive>
+<member name="configIdx" type="long" visibility="public" key="true"/>
+<member name="solutionTime" type="longLong" visibility="public"/>
+<member name="lat" type="double" visibility="public"/>
+<member name="lon" type="double" visibility="public"/>
+<member name="vec" type="nonBasic" nonBasicTypeName="rapid::Vec3f" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</module>
+</types>

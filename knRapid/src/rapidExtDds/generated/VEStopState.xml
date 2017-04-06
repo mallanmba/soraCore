@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<module name="ext">
+<directive kind="copyCDeclaration">class VEStopStateTypeSupport;</directive>
+<directive kind="copyCDeclaration">class VEStopStateDataWriter;</directive>
+<directive kind="copyCDeclaration">class VEStopStateDataReader;</directive>
+<directive kind="copyCDeclaration">struct VEStopStateSeq;</directive>
+<valuetype name="VEStopState" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef VEStopStateTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef VEStopStateDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef VEStopStateDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef VEStopStateSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef VEStopState Type;</directive>
+<member name="active" type="boolean" visibility="public"/>
+<member name="advisoryOnly" type="boolean" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</types>

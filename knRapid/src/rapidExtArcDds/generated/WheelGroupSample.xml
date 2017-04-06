@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<module name="arc">
+<enum name="CtrlMode">
+<enumerator name="CTRL_POSITION"/>
+<enumerator name="CTRL_TRAPECOID"/>
+<enumerator name="CTRL_TRAJECTORY"/>
+<enumerator name="CTRL_HOLD"/>
+<enumerator name="CTRL_OFF"/>
+</enum>
+<enum name="PositionMode">
+<enumerator name="POS_ABS"/>
+<enumerator name="POS_REL"/>
+<enumerator name="POS_NA"/>
+</enum>
+<struct name="MotorProfile">
+<member name="ctrlMode" type="nonBasic" nonBasicTypeName="rapid::ext::arc::CtrlMode"/>
+<member name="posMode" type="nonBasic" nonBasicTypeName="rapid::ext::arc::PositionMode"/>
+<member name="position" type="double"/>
+<member name="speed" type="float"/>
+<member name="acc" type="float"/>
+</struct>
+<struct name="MotorState">
+<member name="cmd" type="nonBasic" nonBasicTypeName="rapid::ext::arc::MotorProfile"/>
+<member name="position" type="double"/>
+<member name="speed" type="float"/>
+</struct>
+<typedef name="MotorStateSequence32" sequenceMaxLength="32" type="nonBasic" nonBasicTypeName="rapid::ext::arc::MotorState"/>
+<valuetype name="WheelGroupSample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">typedef WheelGroupSample Type;</directive>
+<member name="targetTime" type="longLong" visibility="public"/>
+<member name="curvature" type="float" visibility="public"/>
+<member name="curvatureRate" type="float" visibility="public"/>
+<member name="speed" type="float" visibility="public"/>
+<member name="crabAngle" type="float" visibility="public"/>
+<member name="crabRate" type="float" visibility="public"/>
+<member name="targetCurvature" type="float" visibility="public"/>
+<member name="targetCurvatureRate" type="float" visibility="public"/>
+<member name="targetCrabRate" type="float" visibility="public"/>
+<member name="targetSpeed" type="float" visibility="public"/>
+<member name="targetCrabAngle" type="float" visibility="public"/>
+<member name="motors" type="nonBasic" nonBasicTypeName="rapid::ext::arc::MotorStateSequence32" visibility="public"/>
+<member name="motorStatus" type="nonBasic" nonBasicTypeName="rapid::LongSequence32" visibility="public"/>
+<member name="currents" type="nonBasic" nonBasicTypeName="rapid::FloatSequence32" visibility="public"/>
+<member name="temperatures" type="nonBasic" nonBasicTypeName="rapid::FloatSequence32" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</module>
+</types>

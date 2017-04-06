@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<module name="ext">
+<directive kind="copy">/**</directive>
+<directive kind="copy"> * SegmentType describes the type of segment that is being represented.</directive>
+<directive kind="copy"> */</directive>
+<enum name="SegmentType">
+<enumerator name="SEG_STRAIGHT"/>
+<enumerator name="SEG_ARC"/>
+<enumerator name="SEG_POINTTURN"/>
+<enumerator name="SEG_CLOTHOID"/>
+</enum>
+<directive kind="copy">/**</directive>
+<directive kind="copy"> * SingleSegment holds the info for an "atomic" segment.</directive>
+<directive kind="copy"> *</directive>
+<directive kind="copy"> */</directive>
+<valuetype name="SingleSegment" typeModifier="none">
+<member name="type" type="nonBasic" nonBasicTypeName="rapid::ext::SegmentType" visibility="public"/>
+<member name="distance" type="float" visibility="public"/>
+<member name="length" type="float" visibility="public"/>
+<member name="angleOffset" type="float" visibility="public"/>
+<member name="start" type="nonBasic" nonBasicTypeName="rapid::Transform3D" visibility="public"/>
+<member name="end" type="nonBasic" nonBasicTypeName="rapid::Transform3D" visibility="public"/>
+<member name="velocity" type="float" visibility="public"/>
+</valuetype>
+<typedef name="SegmentSequence" sequenceMaxLength="32" type="nonBasic" nonBasicTypeName="rapid::ext::SingleSegment"/>
+<directive kind="copyCDeclaration">class TrajectorySampleTypeSupport;</directive>
+<directive kind="copyCDeclaration">class TrajectorySampleDataWriter;</directive>
+<directive kind="copyCDeclaration">class TrajectorySampleDataReader;</directive>
+<directive kind="copyCDeclaration">struct TrajectorySampleSeq;</directive>
+<directive kind="copy">/**</directive>
+<directive kind="copy"> * TrajectorySample is a message that holds the current sequence of geometric trajectory segments that the robot plans to follow.</directive>
+<directive kind="copy"> * The receiver will need to convert this to whatever form they need to identify potential collisions or to render it in a GUI</directive>
+<directive kind="copy"> */</directive>
+<valuetype name="TrajectorySample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef TrajectorySampleTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef TrajectorySampleDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef TrajectorySampleDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef TrajectorySampleSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef TrajectorySample Type;</directive>
+<member name="geometricSegments" type="nonBasic" nonBasicTypeName="rapid::ext::SegmentSequence" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</types>

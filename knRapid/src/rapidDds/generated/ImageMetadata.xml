@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<const name="IMG_V_FOV_KEY" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;IMG_V_FOV&quot;"/>
+<const name="IMG_H_FOV_KEY" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;IMG_H_FOV&quot;"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Holds status information for an image sensor - typically a camera, but could be a laser scanner, gpr, or</directive>
+<directive kind="copyDeclaration"> * any sensor that can pack a data sample into a 2D array.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<struct name="ImageMetadata">
+<directive kind="copyDeclaration">/** Unique identifier for sensor. */</directive>
+<member name="sensorName" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<directive kind="copyDeclaration">/** Sensor type, e.g. Camera, LaserScanner. */</directive>
+<member name="sensorType" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * 3D transform which defines the zero position of the sensor with respect to the Agent's origin.</directive>
+<directive kind="copyDeclaration"> * May be deprecated in future because the framestore service should handle this.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="offset" type="nonBasic" nonBasicTypeName="rapid::Transform3D"/>
+<directive kind="copyDeclaration">/** Native width (columns) of data sample. */</directive>
+<member name="width" type="long"/>
+<directive kind="copyDeclaration">/** Native height (rows) of data sample. */</directive>
+<member name="height" type="long"/>
+<member name="rangeSettings" type="nonBasic" nonBasicTypeName="rapid::NamedFloatRangeValueSequence16"/>
+<directive kind="copyDeclaration">/** One of the values here is the MIME type if available. */</directive>
+<member name="optionSettings" type="nonBasic" nonBasicTypeName="rapid::NamedOptionSetValueSequence16"/>
+<directive kind="copyDeclaration">/** Extra sequence for native or Agent-specific information. */</directive>
+<member name="extras" type="nonBasic" nonBasicTypeName="rapid::KeyTypeValueSequence16"/>
+</struct>
+</module>
+</types>

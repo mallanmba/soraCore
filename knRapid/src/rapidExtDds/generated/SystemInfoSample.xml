@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<struct name="BatteryInfoSample">
+<member name="acStatus" type="long"/>
+<member name="batteryStatus" type="long"/>
+<member name="percentage" type="float"/>
+</struct>
+<typedef name="BatteryInfoSampleSequence" sequenceMaxLength="32" type="nonBasic" nonBasicTypeName="rapid::ext::BatteryInfoSample"/>
+<struct name="CpuInfoSample">
+<member name="busy" type="float"/>
+<member name="idle" type="float"/>
+<member name="nice" type="float"/>
+<member name="system" type="float"/>
+<member name="user" type="float"/>
+</struct>
+<typedef name="CpuInfoSampleSequence" sequenceMaxLength="32" type="nonBasic" nonBasicTypeName="rapid::ext::CpuInfoSample"/>
+<struct name="FilesystemInfoSample">
+<member name="used" type="longLong"/>
+<member name="available" type="longLong"/>
+</struct>
+<typedef name="FilesystemInfoSampleSequence" sequenceMaxLength="32" type="nonBasic" nonBasicTypeName="rapid::ext::FilesystemInfoSample"/>
+<struct name="MemoryInfoSample">
+<member name="buffers" type="long"/>
+<member name="cached" type="long"/>
+<member name="free" type="long"/>
+<member name="swap" type="long"/>
+</struct>
+<struct name="ThermalInfoSample">
+<member name="temperature" type="float"/>
+</struct>
+<typedef name="ThermalInfoSampleSequence" sequenceMaxLength="32" type="nonBasic" nonBasicTypeName="rapid::ext::ThermalInfoSample"/>
+<struct name="NetTrafficInfoSample">
+<member name="rx" type="long"/>
+<member name="tx" type="long"/>
+<member name="rxErrors" type="long"/>
+<member name="txErrors" type="long"/>
+</struct>
+<typedef name="NetTrafficInfoSampleSequence" sequenceMaxLength="16" type="nonBasic" nonBasicTypeName="rapid::ext::NetTrafficInfoSample"/>
+<struct name="WifiInfoSample">
+<member name="linkQuality" type="long"/>
+<member name="signalLevel" type="long"/>
+<member name="noiseLevel" type="long"/>
+<member name="frequency" type="float"/>
+<member name="bitrate" type="float"/>
+</struct>
+<typedef name="WifiInfoSampleSequence" sequenceMaxLength="8" type="nonBasic" nonBasicTypeName="rapid::ext::WifiInfoSample"/>
+<directive kind="copyCDeclaration">class SystemInfoSampleTypeSupport;</directive>
+<directive kind="copyCDeclaration">class SystemInfoSampleDataWriter;</directive>
+<directive kind="copyCDeclaration">class SystemInfoSampleDataReader;</directive>
+<directive kind="copyCDeclaration">struct SystemInfoSampleSeq;</directive>
+<valuetype name="SystemInfoSample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef SystemInfoSampleTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef SystemInfoSampleDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef SystemInfoSampleDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef SystemInfoSampleSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef SystemInfoSample Type;</directive>
+<member name="batteries" type="nonBasic" nonBasicTypeName="rapid::ext::BatteryInfoSampleSequence" visibility="public"/>
+<member name="memory" type="nonBasic" nonBasicTypeName="rapid::ext::MemoryInfoSample" visibility="public"/>
+<member name="cpus" type="nonBasic" nonBasicTypeName="rapid::ext::CpuInfoSampleSequence" visibility="public"/>
+<member name="filesystems" type="nonBasic" nonBasicTypeName="rapid::ext::FilesystemInfoSampleSequence" visibility="public"/>
+<member name="temperatures" type="nonBasic" nonBasicTypeName="rapid::ext::ThermalInfoSampleSequence" visibility="public"/>
+<member name="netInterfaces" type="nonBasic" nonBasicTypeName="rapid::ext::NetTrafficInfoSampleSequence" visibility="public"/>
+<member name="wifiInterfaces" type="nonBasic" nonBasicTypeName="rapid::ext::WifiInfoSampleSequence" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</types>

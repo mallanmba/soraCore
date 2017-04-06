@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<struct name="BatteryInfoConfig">
+<member name="name" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<member name="percentageLow" type="octet"/>
+<member name="percentageCritical" type="octet"/>
+</struct>
+<typedef name="BatteryInfoConfigSequence" sequenceMaxLength="32" type="nonBasic" nonBasicTypeName="rapid::ext::BatteryInfoConfig"/>
+<struct name="MemoryInfoConfig">
+<member name="total" type="long"/>
+<member name="memoryLow" type="long"/>
+<member name="memoryCritical" type="long"/>
+</struct>
+<struct name="CpuInfoConfig">
+<member name="numCpus" type="long"/>
+<member name="busyHigh" type="float"/>
+<member name="busyCritical" type="float"/>
+</struct>
+<struct name="FilesystemInfoConfig">
+<member name="capacity" type="longLong"/>
+<member name="name" type="nonBasic" nonBasicTypeName="rapid::String64"/>
+<member name="availableLow" type="longLong"/>
+<member name="availableCritical" type="longLong"/>
+</struct>
+<typedef name="FilesystemInfoConfigSequence" sequenceMaxLength="32" type="nonBasic" nonBasicTypeName="rapid::ext::FilesystemInfoConfig"/>
+<struct name="ThermalInfoConfig">
+<member name="location" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<member name="temperatureLow" type="float"/>
+<member name="temperatureHigh" type="float"/>
+<member name="temperatureLowCritical" type="float"/>
+<member name="temperatureHighCritical" type="float"/>
+</struct>
+<typedef name="ThermalInfoConfigSequence" sequenceMaxLength="32" type="nonBasic" nonBasicTypeName="rapid::ext::ThermalInfoConfig"/>
+<struct name="NetTrafficInfoConfig">
+<member name="name" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<member name="rxBandwidth" type="long"/>
+<member name="txBandwidth" type="long"/>
+<member name="rxHigh" type="long"/>
+<member name="rxCritical" type="long"/>
+<member name="txHigh" type="long"/>
+<member name="txCritical" type="long"/>
+</struct>
+<typedef name="NetTrafficInfoConfigSequence" sequenceMaxLength="16" type="nonBasic" nonBasicTypeName="rapid::ext::NetTrafficInfoConfig"/>
+<struct name="WifiInfoConfig">
+<member name="name" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<member name="qualityLow" type="long"/>
+<member name="qualityCritical" type="long"/>
+</struct>
+<typedef name="WifiInfoConfigSequence" sequenceMaxLength="8" type="nonBasic" nonBasicTypeName="rapid::ext::WifiInfoConfig"/>
+<directive kind="copyCDeclaration">class SystemInfoConfigTypeSupport;</directive>
+<directive kind="copyCDeclaration">class SystemInfoConfigDataWriter;</directive>
+<directive kind="copyCDeclaration">class SystemInfoConfigDataReader;</directive>
+<directive kind="copyCDeclaration">struct SystemInfoConfigSeq;</directive>
+<valuetype name="SystemInfoConfig" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef SystemInfoConfigTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef SystemInfoConfigDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef SystemInfoConfigDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef SystemInfoConfigSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef SystemInfoConfig Type;</directive>
+<member name="batteries" type="nonBasic" nonBasicTypeName="rapid::ext::BatteryInfoConfigSequence" visibility="public"/>
+<member name="memory" type="nonBasic" nonBasicTypeName="rapid::ext::MemoryInfoConfig" visibility="public"/>
+<member name="cpus" type="nonBasic" nonBasicTypeName="rapid::ext::CpuInfoConfig" visibility="public"/>
+<member name="filesystems" type="nonBasic" nonBasicTypeName="rapid::ext::FilesystemInfoConfigSequence" visibility="public"/>
+<member name="temperatures" type="nonBasic" nonBasicTypeName="rapid::ext::ThermalInfoConfigSequence" visibility="public"/>
+<member name="netInterfaces" type="nonBasic" nonBasicTypeName="rapid::ext::NetTrafficInfoConfigSequence" visibility="public"/>
+<member name="wifiInterfaces" type="nonBasic" nonBasicTypeName="rapid::ext::WifiInfoConfigSequence" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</types>

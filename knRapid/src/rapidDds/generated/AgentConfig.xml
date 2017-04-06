@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<directive kind="copyCDeclaration">class AgentConfigTypeSupport;</directive>
+<directive kind="copyCDeclaration">class AgentConfigDataWriter;</directive>
+<directive kind="copyCDeclaration">class AgentConfigDataReader;</directive>
+<directive kind="copyCDeclaration">struct AgentConfigSeq;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * AgentConfig</directive>
+<directive kind="copyDeclaration"> */</directive>
+<valuetype name="AgentConfig" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef AgentConfigTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef AgentConfigDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef AgentConfigDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef AgentConfigSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef AgentConfig Type;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * tags that describe the Agent</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="agentTags" type="nonBasic" nonBasicTypeName="rapid::String16Sequence16" visibility="public"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * List of topic names for messages from Agents that have multiple of a message type.</directive>
+<directive kind="copyDeclaration"> * The convention for topic naming is the base topic name, appended by a dash ("-")</directive>
+<directive kind="copyDeclaration"> * and a descriptive lower-case string. For example, rapid_position_sample-right_end_effector</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="topics" type="nonBasic" nonBasicTypeName="rapid::String128Sequence64" visibility="public"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Agent-specific state information can be stored in this extras sequence. The Name and Type</directive>
+<directive kind="copyDeclaration"> * information is stored in the KeyTypeSequence, and the AgentState message provides the values. The</directive>
+<directive kind="copyDeclaration"> * key denotes the name of a piece of information, the type is the DataType of the information, and the</directive>
+<directive kind="copyDeclaration"> * Value is the current value of the information upon start-up. This sequence has a counterpart in</directive>
+<directive kind="copyDeclaration"> * AgentState, named 'values'.</directive>
+<directive kind="copyDeclaration"> *</directive>
+<directive kind="copyDeclaration"> * For example,</directive>
+<directive kind="copyDeclaration"> *</directive>
+<directive kind="copyDeclaration"> * &lt;code&gt;</directive>
+<directive kind="copyDeclaration"> *   AgentConfig.valueKeys[0] = 'fooBar', BOOLEAN&lt;br&gt;</directive>
+<directive kind="copyDeclaration"> *   AgentConfig.valueKeys[1] = 'driveFace', INT&lt;br&gt;</directive>
+<directive kind="copyDeclaration"> *   AgentConfig.valueKeys[2] = 'fluxCapacitance', FLOAT&lt;br&gt;</directive>
+<directive kind="copyDeclaration"> * &lt;/code&gt;</directive>
+<directive kind="copyDeclaration"> *</directive>
+<directive kind="copyDeclaration"> * Updates are published as:</directive>
+<directive kind="copyDeclaration"> *</directive>
+<directive kind="copyDeclaration"> * &lt;code&gt;</directive>
+<directive kind="copyDeclaration"> *   AgentState.values[0] = 'false'&lt;br&gt;</directive>
+<directive kind="copyDeclaration"> *   AgentState.values[1] = '2'&lt;br&gt;</directive>
+<directive kind="copyDeclaration"> *   AgentState.values[2] = '3.14159'&lt;br&gt;</directive>
+<directive kind="copyDeclaration"> * &lt;/code&gt;</directive>
+<directive kind="copyDeclaration"> *</directive>
+<directive kind="copyDeclaration"> * The value in the Sequence is the default value for that key.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="valueKeys" type="nonBasic" nonBasicTypeName="rapid::KeyTypeValueSequence64" visibility="public"/>
+</valuetype>
+</module>
+</types>

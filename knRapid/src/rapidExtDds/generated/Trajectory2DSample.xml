@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<module name="ext">
+<typedef name="RTransMetaSequence" sequenceMaxLength="4" type="nonBasic" nonBasicTypeName="rapid::ParameterUnion"/>
+<const name="TRAJ2D_META_GOOD" type="long" value="0"/>
+<const name="TRAJ2D_META_UNKOWN" type="long" value="1"/>
+<const name="TRAJ2D_META_OBSTACLE" type="long" value="2"/>
+<const name="TRAJ2D_META_STOP_UNKOWN" type="long" value="3"/>
+<const name="TRAJ2D_META_STOP_OBSTACLE" type="long" value="4"/>
+<const name="TRAJ2D_META_STOP_PATH_DEVIATION" type="long" value="5"/>
+<struct name="RTrans2DMeta">
+<member name="x" type="float"/>
+<member name="y" type="float"/>
+<member name="theta" type="float"/>
+<member name="meta" type="nonBasic" nonBasicTypeName="rapid::ext::RTransMetaSequence"/>
+</struct>
+<typedef name="RTrans2DSequence" sequenceMaxLength="512" type="nonBasic" nonBasicTypeName="rapid::ext::RTrans2DMeta"/>
+<directive kind="copyCDeclaration">class Trajectory2DSampleTypeSupport;</directive>
+<directive kind="copyCDeclaration">class Trajectory2DSampleDataWriter;</directive>
+<directive kind="copyCDeclaration">class Trajectory2DSampleDataReader;</directive>
+<directive kind="copyCDeclaration">struct Trajectory2DSampleSeq;</directive>
+<valuetype name="Trajectory2DSample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef Trajectory2DSampleTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef Trajectory2DSampleDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef Trajectory2DSampleDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef Trajectory2DSampleSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef Trajectory2DSample Type;</directive>
+<directive kind="copyDeclaration">/** origin of the trajectory */</directive>
+<member name="origin" type="nonBasic" nonBasicTypeName="rapid::Transform3D" visibility="public"/>
+<directive kind="copyDeclaration">/** The trajectory of the robot relative to the provided pose, sampled at regular time steps, as specified by samplingInterval. */</directive>
+<member name="trajectory" type="nonBasic" nonBasicTypeName="rapid::ext::RTrans2DSequence" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</types>

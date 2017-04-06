@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<module name="ext">
+<const name="PROCMGR" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;ProcessManager&quot;"/>
+<directive kind="copyDeclaration">/**  Request to start a process. */</directive>
+<const name="PROCMGR_METHOD_START" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;start&quot;"/>
+<directive kind="copyDeclaration">/**  Request to stop a process. */</directive>
+<const name="PROCMGR_METHOD_STOP" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;stop&quot;"/>
+<directive kind="copyDeclaration">/**  Request to kill a process. */</directive>
+<const name="PROCMGR_METHOD_KILL" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;kill&quot;"/>
+<directive kind="copyDeclaration">/**  Setting the command-line parameters for a process. */</directive>
+<const name="PROCMGR_METHOD_SETCOMMANDLINE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setCommandLine&quot;"/>
+<directive kind="copyDeclaration">/** Key for parameter used in reply by bridge. */</directive>
+<const name="PROCMGR_METHOD_PARAM_PROCESSID" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;proccessId&quot;"/>
+<const name="PROCMGR_METHOD_DTYPE_PROCESSID" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_INT"/>
+<const name="PROCMGR_METHOD_PARAM_CMDLINE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;cmdLine&quot;"/>
+<const name="PROCMGR_METHOD_DTYPE_CMDLINE" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<const name="VESCTRL" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;VESCtrl&quot;"/>
+<directive kind="copyDeclaration">/**  Request to start a process. */</directive>
+<const name="VESCTRL_METHOD_SETACTIVE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setActive&quot;"/>
+<const name="VESCTRL_METHOD_SETADVISORYMODE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setAdvisoryMode&quot;"/>
+<directive kind="copyDeclaration">/** Key for parameter used in VECtrl. */</directive>
+<const name="VESCTRL_METHOD_PARAM_FLAG" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;flag&quot;"/>
+<const name="VESCTRL_METHOD_DTYPE_FLAG" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_BOOL"/>
+<const name="LMCTRL" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;LocalMapCtrl&quot;"/>
+<directive kind="copyDeclaration">/**  Request to start a process. */</directive>
+<const name="LMCTRL_METHOD_SETACTIVE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setActive&quot;"/>
+<const name="LMCTRL_METHOD_CLEARMAP" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;clearMap&quot;"/>
+<const name="LMCTRL_METHOD_CLEARCORRECTION" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;clearCorrection&quot;"/>
+<const name="LMCTRL_METHOD_CLEARUNDERROVER" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;clearUnderRover&quot;"/>
+<const name="LMCTRL_METHOD_SETREGION" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setRegion&quot;"/>
+<directive kind="copyDeclaration">/** Key for parameter used in LocalMapCtrl. */</directive>
+<const name="LMCTRL_METHOD_PARAM_FLAG" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;flag&quot;"/>
+<const name="LMCTRL_METHOD_DTYPE_FLAG" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_BOOL"/>
+<const name="LMCTRL_METHOD_PARAM_RADIUS" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;radius&quot;"/>
+<const name="LMCTRL_METHOD_DTYPE_RADIUS" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+<const name="LMCTRL_METHOD_PARAM_X" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;x&quot;"/>
+<const name="LMCTRL_METHOD_DTYPE_X" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+<const name="LMCTRL_METHOD_PARAM_Y" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;y&quot;"/>
+<const name="LMCTRL_METHOD_DTYPE_Y" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+<const name="LMCTRL_METHOD_PARAM_TRAV" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;traversability&quot;"/>
+<const name="LMCTRL_METHOD_DTYPE_TRAV" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+<const name="LMCTRL_METHOD_PARAM_CERT" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;certainty&quot;"/>
+<const name="LMCTRL_METHOD_DTYPE_CERT" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+</module>
+</module>
+</types>

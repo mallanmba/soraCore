@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<module name="arc">
+<struct name="Battery">
+<member name="serialNumber" type="long"/>
+<member name="voltage" type="float"/>
+<member name="averageCurrent" type="float"/>
+<member name="temperature" type="float"/>
+<member name="relativeState" type="float"/>
+<member name="absoluteState" type="float"/>
+<member name="remainingCapacity" type="float"/>
+<member name="fullChargeCapacity" type="float"/>
+<member name="remainingTime" type="longLong"/>
+<member name="averageRemainingTime" type="longLong"/>
+<member name="averageRemainingChargeTime" type="longLong"/>
+<member name="numberOfChargeCycles" type="long"/>
+</struct>
+<struct name="BatterySlot">
+<member name="present" type="boolean"/>
+<member name="charging" type="boolean"/>
+<member name="supplyingPower" type="boolean"/>
+<member name="chargePowerPresent" type="boolean"/>
+<member name="powerNoGood" type="boolean"/>
+<member name="chargeInhibited" type="boolean"/>
+</struct>
+<struct name="BatteryController">
+<member name="batterySlots" type="nonBasic" nonBasicTypeName="rapid::ext::arc::BatterySlot" arrayDimensions="8"/>
+<member name="batteries" type="nonBasic" nonBasicTypeName="rapid::ext::arc::Battery" arrayDimensions="8"/>
+</struct>
+<typedef name="BatteryControllerSequence16" sequenceMaxLength="16" type="nonBasic" nonBasicTypeName="rapid::ext::arc::BatteryController"/>
+<directive kind="copyCDeclaration">class BatteryPackSampleTypeSupport;</directive>
+<directive kind="copyCDeclaration">class BatteryPackSampleDataWriter;</directive>
+<directive kind="copyCDeclaration">class BatteryPackSampleDataReader;</directive>
+<directive kind="copyCDeclaration">struct BatteryPackSampleSeq;</directive>
+<valuetype name="BatteryPackSample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef BatteryPackSampleTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef BatteryPackSampleDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef BatteryPackSampleDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef BatteryPackSampleSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef BatteryPackSample Type;</directive>
+<member name="controllers" type="nonBasic" nonBasicTypeName="rapid::ext::arc::BatteryControllerSequence16" visibility="public"/>
+<member name="message" type="nonBasic" nonBasicTypeName="rapid::String128" visibility="public"/>
+<member name="minutesToEmpty" type="short" visibility="public"/>
+<member name="overallCharge" type="short" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</module>
+</types>

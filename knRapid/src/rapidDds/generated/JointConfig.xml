@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * JointDef defines the frame and DOF for a specific Agent's joints.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<struct name="JointDef">
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Name of frame that joint reports its position in - should match a frame in FrameStore.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="frameName" type="nonBasic" nonBasicTypeName="rapid::String128"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Defines the axis of rotation or motion. Note: This will change in the near future.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="dof" type="nonBasic" nonBasicTypeName="rapid::String64"/>
+</struct>
+<typedef name="JointDefSequence" sequenceMaxLength="64" type="nonBasic" nonBasicTypeName="rapid::JointDef"/>
+<directive kind="copyCDeclaration">class JointConfigTypeSupport;</directive>
+<directive kind="copyCDeclaration">class JointConfigDataWriter;</directive>
+<directive kind="copyCDeclaration">class JointConfigDataReader;</directive>
+<directive kind="copyCDeclaration">struct JointConfigSeq;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Joint configuration of a kinematic chain. Gives configuration of joint data for a specific Agent. Joint</directive>
+<directive kind="copyDeclaration"> * data is delivered using JointSample.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<valuetype name="JointConfig" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef JointConfigTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef JointConfigDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef JointConfigDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef JointConfigSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef JointConfig Type;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Name of the joint group.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="jointGroupName" type="nonBasic" nonBasicTypeName="rapid::String32" visibility="public"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * JointDefs for each joint.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="jointDefinitions" type="nonBasic" nonBasicTypeName="rapid::JointDefSequence" visibility="public"/>
+</valuetype>
+</module>
+</types>

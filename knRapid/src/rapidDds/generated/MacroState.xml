@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Meta-information for an associated MacroConfig as seen by the MacroManager.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<struct name="MacroInfo">
+<directive kind="copyDeclaration">/** Name of the macro. */</directive>
+<member name="name" type="nonBasic" nonBasicTypeName="rapid::String64"/>
+<directive kind="copyDeclaration">/** Version number of the macro. As provided in by hdr.serial of the latest corresponding MacroConfig instance. */</directive>
+<member name="serial" type="long"/>
+<directive kind="copyDeclaration">/** True if the macro passed basic checking by the MacroManager. */</directive>
+<member name="accepted" type="boolean"/>
+</struct>
+<directive kind="copyDeclaration">    /** Sequence of MacroInfo</directive>
+<directive kind="copyDeclaration">     *</directive>
+<directive kind="copyDeclaration">     * An asset can store at max 128 macros.</directive>
+<directive kind="copyDeclaration">     */</directive>
+<typedef name="MacroInfoSequence" sequenceMaxLength="128" type="nonBasic" nonBasicTypeName="rapid::MacroInfo"/>
+<directive kind="copyCDeclaration">class MacroStateTypeSupport;</directive>
+<directive kind="copyCDeclaration">class MacroStateDataWriter;</directive>
+<directive kind="copyCDeclaration">class MacroStateDataReader;</directive>
+<directive kind="copyCDeclaration">struct MacroStateSeq;</directive>
+<valuetype name="MacroState" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef MacroStateTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef MacroStateDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef MacroStateDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef MacroStateSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef MacroState Type;</directive>
+<directive kind="copyDeclaration">/** All of the MacroConfigs that this agent knows about. */</directive>
+<member name="macros" type="nonBasic" nonBasicTypeName="rapid::MacroInfoSequence" visibility="public"/>
+</valuetype>
+</module>
+</types>

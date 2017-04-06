@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<include file="ImageMetadata.xml"/>
+<module name="rapid">
+<directive kind="copy">/**</directive>
+<directive kind="copy"> * Holds status information for an image sensor - typically a camera, but could be a laser scanner, gpr, or any</directive>
+<directive kind="copy"> * sensor that can pack a data sample into a 2D array</directive>
+<directive kind="copy"> */</directive>
+<valuetype name="ImageSensorState" baseClass="rapid::Message" typeModifier="none">
+<member name="meta" type="nonBasic" nonBasicTypeName="rapid::ImageMetadata" visibility="public"/>
+</valuetype>
+</module>
+</types>

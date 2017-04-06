@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<const name="NAVMAP_NUM_SHORT_LAYERS" type="long" value="1"/>
+<const name="NAVMAP_NUM_OCTET_LAYERS" type="long" value="4"/>
+<typedef name="ShortMapLayerNameSequence" sequenceMaxLength="rapid::ext::NAVMAP_NUM_SHORT_LAYERS" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<typedef name="OctetMapLayerNameSequence" sequenceMaxLength="rapid::ext::NAVMAP_NUM_OCTET_LAYERS" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<directive kind="copyDeclaration">/** Map layer of height fields (DEM). */</directive>
+<const name="NAVMAP_HEIGHT" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;height&quot;"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Map layer with traversability assessments. Goodness is derived value from roughness, slope &amp;</directive>
+<directive kind="copyDeclaration"> * vehicle parameters.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<const name="NAVMAP_GOODNESS" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;goodness&quot;"/>
+<directive kind="copyDeclaration">/** Roughness of terrain. */</directive>
+<const name="NAVMAP_ROUGHNESS" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;roughness&quot;"/>
+<directive kind="copyDeclaration">/** Map layer with confidence values for the associated traversability asessment. */</directive>
+<const name="NAVMAP_CERTAINTY" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;certainty&quot;"/>
+<directive kind="copyDeclaration">/** Map layer with cell normal vectors. Two or three entries per pixel, packed layout. */</directive>
+<const name="NAVMAP_NORMALS" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;normals&quot;"/>
+<directive kind="copyCDeclaration">class NavMapConfigTypeSupport;</directive>
+<directive kind="copyCDeclaration">class NavMapConfigDataWriter;</directive>
+<directive kind="copyCDeclaration">class NavMapConfigDataReader;</directive>
+<directive kind="copyCDeclaration">struct NavMapConfigSeq;</directive>
+<directive kind="copyDeclaration">/** Telemetry data structure for transfering maps */</directive>
+<valuetype name="NavMapConfig" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef NavMapConfigTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef NavMapConfigDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef NavMapConfigDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef NavMapConfigSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef NavMapConfig Type;</directive>
+<directive kind="copyDeclaration">/** Reference frame. */</directive>
+<member name="referenceFrame" type="nonBasic" nonBasicTypeName="rapid::String128" visibility="public"/>
+<directive kind="copyDeclaration">/** Offset from the center of rotation to the lower left corner of the map. */</directive>
+<member name="offset" type="float" visibility="public" arrayDimensions="2"/>
+<directive kind="copyDeclaration">/** Size of a cell (in the reference frame coordinate system). */</directive>
+<member name="cellSize" type="float" visibility="public" arrayDimensions="2"/>
+<directive kind="copyDeclaration">/** Number of cells in x &amp; y. */</directive>
+<member name="numCells" type="short" visibility="public" arrayDimensions="2"/>
+<member name="shortLayerNames" type="nonBasic" nonBasicTypeName="rapid::ext::ShortMapLayerNameSequence" visibility="public"/>
+<member name="octetLayerNames" type="nonBasic" nonBasicTypeName="rapid::ext::OctetMapLayerNameSequence" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</types>

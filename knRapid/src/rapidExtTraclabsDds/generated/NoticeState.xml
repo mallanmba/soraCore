@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="NoticeTypes.xml"/>
+<include file="BaseTypes.xml"/>
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<module name="traclabs">
+<typedef name="ModalityTypes" sequenceMaxLength="8" type="nonBasic" nonBasicTypeName="rapid::ext::traclabs::ModalityType"/>
+<directive kind="copy">/**</directive>
+<directive kind="copy"> * NoticeState represents the current state of</directive>
+<directive kind="copy"> * of all published notice items. The data type is keyed</directive>
+<directive kind="copy"> * on itemId, so each notice item represents a separate instance.</directive>
+<directive kind="copy"> */</directive>
+<valuetype name="NoticeState" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">typedef NoticeState Type;</directive>
+<directive kind="copy">/** what notice relates to (ie. ESTOP) */</directive>
+<member name="itemId" type="nonBasic" nonBasicTypeName="rapid::String16" visibility="public" key="true"/>
+<directive kind="copy">/** unique for each notice */</directive>
+<member name="noticeId" type="nonBasic" nonBasicTypeName="rapid::String16" visibility="public"/>
+<member name="latency" type="nonBasic" nonBasicTypeName="rapid::ext::traclabs::LatencyType" visibility="public"/>
+<member name="foa" type="nonBasic" nonBasicTypeName="rapid::ext::traclabs::FocusOfAttentionType" visibility="public"/>
+<member name="modalities" type="nonBasic" nonBasicTypeName="rapid::ext::traclabs::ModalityTypes" visibility="public"/>
+<directive kind="copy">/** how long notice should remain active, in seconds */</directive>
+<member name="timeout" type="long" visibility="public"/>
+<directive kind="copy">/** acknowledgement state of notice */</directive>
+<member name="ackState" type="nonBasic" nonBasicTypeName="rapid::ext::traclabs::NoticeAckState" visibility="public"/>
+<directive kind="copy">/**</directive>
+<directive kind="copy"> * If DONTCARE, string is empty</directive>
+<directive kind="copy"> * If UNACKNOWLEDGED, id of who should acknowledge notice.</directive>
+<directive kind="copy"> * If ACKNOWLEDGED, id of who acknowledged notice</directive>
+<directive kind="copy"> */</directive>
+<member name="ackTarget" type="nonBasic" nonBasicTypeName="rapid::String64" visibility="public"/>
+<member name="subject" type="nonBasic" nonBasicTypeName="rapid::String64" visibility="public"/>
+<member name="body" type="nonBasic" nonBasicTypeName="rapid::String128" visibility="public"/>
+<directive kind="copy">/** extension data */</directive>
+<member name="values" type="nonBasic" nonBasicTypeName="rapid::ValueSequence16" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</module>
+</types>

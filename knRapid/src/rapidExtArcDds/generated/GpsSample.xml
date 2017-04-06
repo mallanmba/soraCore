@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<module name="arc">
+<directive kind="copyCDeclaration">class GpsSampleTypeSupport;</directive>
+<directive kind="copyCDeclaration">class GpsSampleDataWriter;</directive>
+<directive kind="copyCDeclaration">class GpsSampleDataReader;</directive>
+<directive kind="copyCDeclaration">struct GpsSampleSeq;</directive>
+<valuetype name="GpsSample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef GpsSampleTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef GpsSampleDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef GpsSampleDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef GpsSampleSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef GpsSample Type;</directive>
+<directive kind="copyDeclaration">/** The coordinates of the receiver in meters*/</directive>
+<directive kind="copyDeclaration">/** xyz is in NEU coordinates, z is ellipsoidal height*/</directive>
+<member name="xyz" type="nonBasic" nonBasicTypeName="rapid::Vec3d" visibility="public"/>
+<member name="sigmaXyz" type="nonBasic" nonBasicTypeName="rapid::Vec3d" visibility="public"/>
+<member name="utmZone" type="octet" visibility="public"/>
+<member name="utmDesig" type="char" visibility="public"/>
+<member name="mode" type="octet" visibility="public"/>
+<member name="numSats" type="octet" visibility="public"/>
+<member name="diffAge" type="longLong" visibility="public"/>
+<member name="solAge" type="longLong" visibility="public"/>
+<directive kind="copyDeclaration">/** mean sea level(orthometric height) = z(ellipsoidal height) - undulation (geoid height)*/</directive>
+<member name="undulation" type="float" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</module>
+</types>

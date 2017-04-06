@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<module name="arc">
+<directive kind="copyCDeclaration">class SpectrumSampleTypeSupport;</directive>
+<directive kind="copyCDeclaration">class SpectrumSampleDataWriter;</directive>
+<directive kind="copyCDeclaration">class SpectrumSampleDataReader;</directive>
+<directive kind="copyCDeclaration">struct SpectrumSampleSeq;</directive>
+<valuetype name="SpectrumSample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef SpectrumSampleTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef SpectrumSampleDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef SpectrumSampleDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef SpectrumSampleSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef SpectrumSample Type;</directive>
+<directive kind="copyDeclaration">/** Spectrum Data, specify name and index range in SpectrumConfig.spectrumNameRange use each element as the bin */</directive>
+<member name="spectrumData" type="nonBasic" nonBasicTypeName="rapid::LongSequence1K" visibility="public"/>
+<directive kind="copyDeclaration">/** Specifies any spectrum instrument specific information */</directive>
+<member name="values" type="nonBasic" nonBasicTypeName="rapid::ValueSequence64" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</module>
+</types>

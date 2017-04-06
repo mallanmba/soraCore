@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<directive kind="copyCDeclaration">class RangeScanSampleTypeSupport;</directive>
+<directive kind="copyCDeclaration">class RangeScanSampleDataWriter;</directive>
+<directive kind="copyCDeclaration">class RangeScanSampleDataReader;</directive>
+<directive kind="copyCDeclaration">struct RangeScanSampleSeq;</directive>
+<directive kind="copyDeclaration">/** Single (or multiple) line range scan. */</directive>
+<valuetype name="RangeScanSample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef RangeScanSampleTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef RangeScanSampleDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef RangeScanSampleDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef RangeScanSampleSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef RangeScanSample Type;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Horizontal shot angles of samples in a scan-line for those sensors</directive>
+<directive kind="copyDeclaration"> * that have &lt;b&gt;dynamic&lt;/b&gt; horizontal spacing. For sensors with static horizontal</directive>
+<directive kind="copyDeclaration"> * spacing, this sequence will be empty and the corresponding member in</directive>
+<directive kind="copyDeclaration"> * RangeScanConfig will be used.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="scanAzimuth" type="nonBasic" nonBasicTypeName="rapid::ShortSequence64" visibility="public"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Vertical shot angles of samples for those sensors that have &lt;b&gt;dynamic&lt;b&gt;</directive>
+<directive kind="copyDeclaration"> * vertical spacing between scan lines. For sensors with static vertical</directive>
+<directive kind="copyDeclaration"> * spacing, this sequence will be empty and the corresponding member in</directive>
+<directive kind="copyDeclaration"> * RangeScanConfig will be used.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="scanElevation" type="nonBasic" nonBasicTypeName="rapid::ShortSequence64" visibility="public"/>
+<directive kind="copyDeclaration">/** Vector of 16 bit data samples. */</directive>
+<member name="rangeData" type="nonBasic" nonBasicTypeName="rapid::ShortSequence2K" visibility="public"/>
+<member name="intensityData" type="nonBasic" nonBasicTypeName="rapid::OctetSequence2K" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</types>

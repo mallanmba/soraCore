@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<module name="arc">
+<directive kind="copyCDeclaration">class SpectrumConfigTypeSupport;</directive>
+<directive kind="copyCDeclaration">class SpectrumConfigDataWriter;</directive>
+<directive kind="copyCDeclaration">class SpectrumConfigDataReader;</directive>
+<directive kind="copyCDeclaration">struct SpectrumConfigSeq;</directive>
+<struct name="NamedIndexRange">
+<member name="name" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<member name="start" type="short"/>
+<member name="end" type="short"/>
+</struct>
+<typedef name="NamedIndexRangeSequence16" sequenceMaxLength="16" type="nonBasic" nonBasicTypeName="rapid::ext::arc::NamedIndexRange"/>
+<valuetype name="SpectrumConfig" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef SpectrumConfigTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef SpectrumConfigDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef SpectrumConfigDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef SpectrumConfigSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef SpectrumConfig Type;</directive>
+<directive kind="copyDeclaration">/** name of instrument */</directive>
+<member name="name" type="nonBasic" nonBasicTypeName="rapid::String32" visibility="public"/>
+<directive kind="copyDeclaration">/** Specifies index range information about spectrum samples */</directive>
+<member name="indexRanges" type="nonBasic" nonBasicTypeName="rapid::ext::arc::NamedIndexRangeSequence16" visibility="public"/>
+<directive kind="copyDeclaration">/** Specifies any spectrum instrument specific information */</directive>
+<member name="valueKeys" type="nonBasic" nonBasicTypeName="rapid::KeyTypeValueSequence64" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</module>
+</types>

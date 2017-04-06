@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<module name="ext">
+<module name="arc">
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * pose rotation is assumed to be quaternion</directive>
+<directive kind="copyDeclaration"> */</directive>
+<struct name="TrajPoint3D">
+<member name="pose" type="nonBasic" nonBasicTypeName="rapid::Transform3D"/>
+</struct>
+<typedef name="TrajPoint3DSequence" sequenceMaxLength="64" type="nonBasic" nonBasicTypeName="rapid::ext::arc::TrajPoint3D"/>
+<struct name="Trajectory3D">
+<member name="weight" type="float"/>
+<member name="name" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<member name="t0" type="longLong"/>
+<member name="tsep" type="longLong"/>
+<member name="points" type="nonBasic" nonBasicTypeName="rapid::ext::arc::TrajPoint3DSequence"/>
+</struct>
+</module>
+</module>
+</module>
+</types>

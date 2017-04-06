@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<directive kind="copyCDeclaration">class FileQueueReceiverSampleTypeSupport;</directive>
+<directive kind="copyCDeclaration">class FileQueueReceiverSampleDataWriter;</directive>
+<directive kind="copyCDeclaration">class FileQueueReceiverSampleDataReader;</directive>
+<directive kind="copyCDeclaration">struct FileQueueReceiverSampleSeq;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Holds information about a file that could be transferred to the ground from the robot.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<valuetype name="FileQueueReceiverSample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef FileQueueReceiverSampleTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef FileQueueReceiverSampleDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef FileQueueReceiverSampleDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef FileQueueReceiverSampleSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef FileQueueReceiverSample Type;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Connection status to the file queue.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="connected" type="boolean" visibility="public"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Number of bufferd but unprocessed chunks.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="bufferedChunks" type="long" visibility="public"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Number of processed chunks.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="processedChunks" type="long" visibility="public"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Number of completed files.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="completedFiles" type="long" visibility="public"/>
+</valuetype>
+</module>
+</types>

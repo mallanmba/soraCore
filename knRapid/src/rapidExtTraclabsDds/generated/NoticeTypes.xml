@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<module name="rapid">
+<module name="ext">
+<module name="traclabs">
+<enum name="LatencyType">
+<enumerator name="LATENCY_DONTCARE"/>
+<enumerator name="LATENCY_IMMEDIATE"/>
+<enumerator name="LATENCY_DEFERRED"/>
+<enumerator name="LATENCY_ARCHIVE"/>
+</enum>
+<enum name="FocusOfAttentionType">
+<enumerator name="FA_DONTCARE"/>
+<enumerator name="FA_PRIMARY"/>
+<enumerator name="FA_SECONDARY"/>
+<enumerator name="FA_NOSHIFT"/>
+</enum>
+<enum name="ModalityType">
+<enumerator name="MODALITY_DONTCARE"/>
+<enumerator name="MODALITY_3DNOTICE"/>
+<enumerator name="MODALITY_3DAVATAR"/>
+<enumerator name="MODALITY_WEBGUI"/>
+<enumerator name="MODALITY_EMAIL"/>
+<enumerator name="MODALITY_DISPLAY"/>
+<enumerator name="MODALITY_DISPLAYQUEUE"/>
+<enumerator name="MODALITY_PERSONALARCHIVE"/>
+<enumerator name="MODALITY_SPEECH"/>
+<enumerator name="MODALITY_STATUSBAR"/>
+</enum>
+<enum name="NoticeAckState">
+<enumerator name="NAS_DONTCARE"/>
+<enumerator name="NAS_UNACKNOWLEDGED"/>
+<enumerator name="NAS_ACKNOWLEDGED"/>
+</enum>
+</module>
+</module>
+</module>
+</types>

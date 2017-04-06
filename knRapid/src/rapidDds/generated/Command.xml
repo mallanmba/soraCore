@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * QueueAction</directive>
+<directive kind="copyDeclaration"> * &lt;ul&gt;</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt; BYPASS: the cmd is acted upon immediately.</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt; APPEND: the cmd is appended to the tail of the Pending queue. This is the normal operation for commanding.</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt; DELETE: the cmd with the ID specified in targetCmdID is removed from the queue.</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt; INSERT: the cmd is inserted immediately following the cmd with the ID specified in targetCmdID.</directive>
+<directive kind="copyDeclaration"> *		      If targetCmdID is "head", then the cmd is inserted at the head of the queue.</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt; REPLACE: cmd replaces the ID specified in targetCmdID. This cmd will have a new ID</directive>
+<directive kind="copyDeclaration"> * &lt;ul&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<enum name="QueueAction">
+<enumerator name="QUEUE_BYPASS"/>
+<enumerator name="QUEUE_APPEND"/>
+<enumerator name="QUEUE_DELETE"/>
+<enumerator name="QUEUE_INSERT"/>
+<enumerator name="QUEUE_REPLACE"/>
+</enum>
+<directive kind="copyCDeclaration">class CommandTypeSupport;</directive>
+<directive kind="copyCDeclaration">class CommandDataWriter;</directive>
+<directive kind="copyCDeclaration">class CommandDataReader;</directive>
+<directive kind="copyCDeclaration">struct CommandSeq;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Command is a message used to send directives to an Agent.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<valuetype name="Command" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef CommandTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef CommandDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef CommandDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef CommandSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef Command Type;</directive>
+<directive kind="copyDeclaration">/** Name of command being sent. Should get this from list of possible commands in CommandConfig. */</directive>
+<member name="cmdName" type="nonBasic" nonBasicTypeName="rapid::String64" visibility="public"/>
+<directive kind="copyDeclaration">/** Unique identifier for command, = username+timestamp. */</directive>
+<member name="cmdId" type="nonBasic" nonBasicTypeName="rapid::String64" visibility="public"/>
+<directive kind="copyDeclaration">/** Source that generated the command. */</directive>
+<member name="cmdSrc" type="nonBasic" nonBasicTypeName="rapid::String32" visibility="public"/>
+<directive kind="copyDeclaration">/** Subsystem name if command is being sent to subsystem of an Agent. */</directive>
+<member name="subsysName" type="nonBasic" nonBasicTypeName="rapid::String32" visibility="public"/>
+<directive kind="copyDeclaration">/** Value of the arguments for this particular command. */</directive>
+<member name="arguments" type="nonBasic" nonBasicTypeName="rapid::ParameterSequence16" visibility="public"/>
+<directive kind="copyDeclaration">/** For queue manipulation. Normally "QUEUE_APPEND". */</directive>
+<member name="cmdAction" type="nonBasic" nonBasicTypeName="rapid::QueueAction" visibility="public"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * targetCmdId:</directive>
+<directive kind="copyDeclaration"> * &lt;ul&gt;</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt; if QUEUE_BYPASS, targetCmdId is not used</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt; if QUEUE_APPEND, targetCmdId is not used</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt; if QUEUE_DELETE, targetCmdId identifies the cmdId of the cmd to be removed</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt; if QUEUE_INSERT, targetCmdId identifies the cmdId of the cmd immediately preceding the target slot. If "head", then the head of the queue.</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt; if QUEUE_REPLACE, targetCmdId identifies the cmdId of the cmd to be replaced</directive>
+<directive kind="copyDeclaration"> * &lt;ul&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="targetCmdId" type="nonBasic" nonBasicTypeName="rapid::String64" visibility="public"/>
+</valuetype>
+</module>
+</types>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Command.xml"/>
+<module name="rapid">
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * &lt;ul&gt;</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;Q_STATUS_INIT:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;Q_STATUS_OUTBOUND: SENT</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;Q_STATUS_LOST: SENT</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;Q_STATUS_INLINE: PENDING</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;Q_STATUS_PREEMPTED: PENDING</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;Q_STATUS_INPROCESS: ACTIVE</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;Q_STATUS_PAUSED: ACTIVE</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;Q_STATUS_CANCELED: COMPLETED</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;Q_STATUS_SUCCEEDED: COMPLETED</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;Q_STATUS_FAILED: COMPLETED</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;Q_STATUS_ALIEN_PENDING:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;Q_STATUS_ALIEN_ACTIVE:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;Q_STATUS_ALIEN_COMPLETED:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;Q_STATUS_FORGOTTEN_BY_ROBOT:</directive>
+<directive kind="copyDeclaration"> * &lt;/ul&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<enum name="StatusType">
+<enumerator name="Q_STATUS_INIT"/>
+<enumerator name="Q_STATUS_OUTBOUND"/>
+<enumerator name="Q_STATUS_LOST"/>
+<enumerator name="Q_STATUS_INLINE"/>
+<enumerator name="Q_STATUS_PREEMPTED"/>
+<enumerator name="Q_STATUS_INPROCESS"/>
+<enumerator name="Q_STATUS_PAUSED"/>
+<enumerator name="Q_STATUS_CANCELED"/>
+<enumerator name="Q_STATUS_SUCCEEDED"/>
+<enumerator name="Q_STATUS_FAILED"/>
+<enumerator name="Q_STATUS_ALIEN_PENDING"/>
+<enumerator name="Q_STATUS_ALIEN_ACTIVE"/>
+<enumerator name="Q_STATUS_ALIEN_COMPLETED"/>
+<enumerator name="Q_STATUS_FORGOTTEN_BY_ROBOT"/>
+</enum>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * ResultType describes the result of a command on the completed queue.</directive>
+<directive kind="copyDeclaration"> * &lt;ul&gt;</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;Q_RESULT_INIT:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;Q_RESULT_SUCCEEDED:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;Q_RESULT_FAILED:</directive>
+<directive kind="copyDeclaration"> * &lt;/ul&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<enum name="ResultType">
+<enumerator name="Q_RESULT_INIT"/>
+<enumerator name="Q_RESULT_SUCCEEDED"/>
+<enumerator name="Q_RESULT_FAILED"/>
+</enum>
+<directive kind="copyDeclaration">/** CommandRecord holds a command, its status and its result. */</directive>
+<valuetype name="CommandRecord" typeModifier="none">
+<member name="cmd" type="nonBasic" nonBasicTypeName="rapid::Command" visibility="public"/>
+<member name="trResult" type="nonBasic" nonBasicTypeName="rapid::ResultType" visibility="public"/>
+<member name="trStatus" type="nonBasic" nonBasicTypeName="rapid::StatusType" visibility="public"/>
+</valuetype>
+<directive kind="copyDeclaration">/** SingleQueue holds a sequence of CommandRecords. Maximum length for a SingleQueue is 64. */</directive>
+<struct name="SingleQueue">
+<member name="queue" sequenceMaxLength="64" type="nonBasic" nonBasicTypeName="rapid::CommandRecord"/>
+</struct>
+<directive kind="copyCDeclaration">class QueueStateTypeSupport;</directive>
+<directive kind="copyCDeclaration">class QueueStateDataWriter;</directive>
+<directive kind="copyCDeclaration">class QueueStateDataReader;</directive>
+<directive kind="copyCDeclaration">struct QueueStateSeq;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * QueueState is a message that holds single queues of pending, active, completed and sent commands. This</directive>
+<directive kind="copyDeclaration"> * is primarily used with a Sequencer that handles the queueing of commands.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<valuetype name="QueueState" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef QueueStateTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef QueueStateDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef QueueStateDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef QueueStateSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef QueueState Type;</directive>
+<member name="pending" type="nonBasic" nonBasicTypeName="rapid::SingleQueue" visibility="public"/>
+<member name="active" type="nonBasic" nonBasicTypeName="rapid::SingleQueue" visibility="public"/>
+<member name="completed" type="nonBasic" nonBasicTypeName="rapid::SingleQueue" visibility="public"/>
+<member name="sent" type="nonBasic" nonBasicTypeName="rapid::SingleQueue" visibility="public"/>
+</valuetype>
+</module>
+</types>

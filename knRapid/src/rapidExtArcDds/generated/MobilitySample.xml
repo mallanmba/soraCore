@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<module name="arc">
+<directive kind="copyCDeclaration">class MobilitySampleTypeSupport;</directive>
+<directive kind="copyCDeclaration">class MobilitySampleDataWriter;</directive>
+<directive kind="copyCDeclaration">class MobilitySampleDataReader;</directive>
+<directive kind="copyCDeclaration">struct MobilitySampleSeq;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * MobilitySample defines a snapshot of the Mobility subsystem's state.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<valuetype name="MobilitySample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef MobilitySampleTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef MobilitySampleDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef MobilitySampleDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef MobilitySampleSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef MobilitySample Type;</directive>
+<member name="goalName" type="nonBasic" nonBasicTypeName="rapid::String32" visibility="public"/>
+<member name="commandFrame" type="nonBasic" nonBasicTypeName="rapid::String128" visibility="public"/>
+<member name="xyt" type="nonBasic" nonBasicTypeName="rapid::Vec3d" visibility="public"/>
+<member name="xytTolerance" type="nonBasic" nonBasicTypeName="rapid::Vec3d" visibility="public"/>
+<member name="hintedSpeed" type="float" visibility="public"/>
+<member name="navAlgo" type="nonBasic" nonBasicTypeName="rapid::String32" visibility="public"/>
+<directive kind="copyDeclaration">/** extension values */</directive>
+<member name="keyedValues" type="nonBasic" nonBasicTypeName="rapid::KeyTypeValueSequence8" visibility="public"/>
+</valuetype>
+<const name="GOAL_UNKNOWN_NAME" type="long" value="-6"/>
+<const name="GOAL_OUT_OF_RANGE" type="long" value="-5"/>
+<const name="GOAL_FAILURE" type="long" value="-4"/>
+<const name="GOAL_TIMEOUT" type="long" value="-3"/>
+<const name="GOAL_INTERRUPTED" type="long" value="-2"/>
+<const name="GOAL_INACTIVE" type="long" value="-1"/>
+<const name="GOAL_ACHIEVED" type="long" value="0"/>
+<const name="GOAL_ACTIVE" type="long" value="1"/>
+<const name="GOAL_NULL" type="long" value="-7"/>
+</module>
+</module>
+</module>
+</types>
