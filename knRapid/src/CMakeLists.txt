@@ -16,9 +16,9 @@ add_build_switch( rapidFrameStore     EIGEN3_FOUND)
 add_build_switch( knFrameStoreSvc     EIGEN3_FOUND )
 add_build_switch( knSystemInfo        MIRO_miroXml_LIBRARY AND NOT APPLE AND UNIX )
 add_build_switch( knSystemInfoSvc     KNRAPID_HAS_DDS AND KNRAPID_BUILD_knSystemInfo )
-add_build_switch( knFetchPool         MIRO_miroXml_LIBRARY AND QT_FOUND )
-add_build_switch( knRaft              KNRAPID_BUILD_rapidCommanding AND IRGUTIL_irgSha1_LIBRARY AND KNRAPID_BUILD_knFetchPool )
-add_build_switch( knProcessManager    KNRAPID_HAS_DDS AND UNIX )
+#add_build_switch( knFetchPool         MIRO_miroXml_LIBRARY AND QT_FOUND )
+#add_build_switch( knRaft              KNRAPID_BUILD_rapidCommanding AND IRGUTIL_irgSha1_LIBRARY AND KNRAPID_BUILD_knFetchPool )
+#add_build_switch( knProcessManager    KNRAPID_HAS_DDS AND UNIX )
 
 
 

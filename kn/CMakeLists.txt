@@ -16,17 +16,13 @@ include( UserOptions )
 ## we have to play some tricks to get install
 ## path to "stick" in Windows
 ##------------------------------------------------
-set( ${PROJECT_UPPER}_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "irg apps install path")
-set( CMAKE_INSTALL_PREFIX ${${PROJECT_UPPER}_INSTALL_PREFIX} CACHE INTERNAL "" )
+set( ${PROJECT_UPPER}_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}" CACHE PATH "irg apps install path")
 
 # find dependencies
 
 find_package( ACE )
 find_package( Eigen3 )
 find_package( Boost 1.50 COMPONENTS REQUIRED program_options signals thread system chrono )
-
-find_package( GTest )
-find_package( Doxygen )
 
 minimum_requirements( Boost_FOUND )
 
@@ -71,7 +67,6 @@ endif( WIN32 )
 
 #-----------------------------------
 add_subdirectory( src )
-add_subdirectory( doc )
 
 # install the export file
 #------------------------------------

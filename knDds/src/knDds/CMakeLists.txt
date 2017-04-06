@@ -90,7 +90,7 @@ if ( KNDDS_HAS_RTI_DistLogger )
   )
 endif ( KNDDS_HAS_RTI_DistLogger )
 
-add_subdirectory(examples)
+#add_subdirectory(examples)
 
 install_library( ${LIB_NAME}  )
 install_files  ( /include/knDds FILES ${HEADERS} )

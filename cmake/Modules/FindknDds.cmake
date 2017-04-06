@@ -7,7 +7,7 @@ include( SetArchitecture )
 string(REGEX REPLACE "/[^/]*$" "" PROJ_SRC_PARENT ${PROJECT_SOURCE_DIR})
 
 if( NOT KNDDS_ROOT_DIR )
-  set( KNDDS_ROOT_DIR ${PROJ_SRC_PARENT}/${ARCHITECTURE} )
+  set( KNDDS_ROOT_DIR /usr )
 endif( NOT KNDDS_ROOT_DIR )
 
 message(STATUS "  KNDDS root hardcoded without check to ${KNDDS_ROOT_DIR}")

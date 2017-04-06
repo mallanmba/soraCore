@@ -29,8 +29,7 @@ include( UserOptions )
 ## we have to play some tricks to get install
 ## path to "stick" in Windows
 ##------------------------------------------------
-set( RAPID_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "RAPID install path")
-set( CMAKE_INSTALL_PREFIX ${RAPID_INSTALL_PREFIX} CACHE INTERNAL "" )
+set( RAPID_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}" CACHE PATH "RAPID install path")
 
 
 #---------------------------------------------
@@ -41,7 +40,6 @@ find_package_if( RtiDds KNRAPID_BUILD_WITH_DDS  )
 find_package( ACE )
 find_package( Qt4 )
 find_package( PThreads-win32 )
-find_package( CURL )
 
 find_package( Boost 1.50.0 COMPONENTS program_options filesystem system thread bind function)
 find_package( Eigen3 )
@@ -51,8 +49,6 @@ find_package( IrgUtil )
 find_package( Miro )
 find_package( kn )
 find_package( knDds )
-
-find_package( Doxygen )
 
 build_with_var( WITH_DDS  RTIDDS_FOUND )
 
@@ -84,9 +80,8 @@ endif( WIN32 )
 #-----------------------------------
 add_subdirectory( etc )
 add_subdirectory( src )
-add_subdirectory( doc )
 
-add_build_switch( examples BUILD_DEFAULT_TRUE )
+add_build_switch( examples BUILD_DEFAULT_FALSE )
 
 # install the export file
 #------------------------------------
