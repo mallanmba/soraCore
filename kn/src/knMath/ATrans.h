@@ -23,6 +23,7 @@
 
 #include <iosfwd>
 #include <limits>
+#include <cmath>
 
 #include "knConfig.h"
 #include "knMath_Export.h"

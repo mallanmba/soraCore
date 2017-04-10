@@ -19,7 +19,9 @@
 #include <QObject>
 #include <QPixmap>
 
+#ifndef Q_MOC_RUN
 #include "knDds/DdsTypedConnector.h"
+#endif
 
 #include "rapidDds/ImageSensorSample.h"
 #include "rapidDds/ImageSensorSampleSupport.h"
