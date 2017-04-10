@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<enum name="ProcessIoStream">
+<enumerator name="PROCESS_STDIN"/>
+<enumerator name="PROCESS_STDOUT"/>
+<enumerator name="PROCESS_STDERR"/>
+</enum>
+<directive kind="copyCDeclaration">class ProcessIoSampleTypeSupport;</directive>
+<directive kind="copyCDeclaration">class ProcessIoSampleDataWriter;</directive>
+<directive kind="copyCDeclaration">class ProcessIoSampleDataReader;</directive>
+<directive kind="copyCDeclaration">struct ProcessIoSampleSeq;</directive>
+<valuetype name="ProcessIoSample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef ProcessIoSampleTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef ProcessIoSampleDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef ProcessIoSampleDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef ProcessIoSampleSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef ProcessIoSample Type;</directive>
+<member name="processIdx" type="long" visibility="public" key="true"/>
+<member name="stream" type="nonBasic" nonBasicTypeName="rapid::ext::ProcessIoStream" visibility="public" key="true"/>
+<member name="lineNumber" type="long" visibility="public"/>
+<member name="line" type="nonBasic" nonBasicTypeName="rapid::String1K" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</types>

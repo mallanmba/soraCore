@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * &lt;ul&gt;</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;RAPID_FILE_PREFETCH_PENDING:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;RAPID_FILE_PREFETCHING:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;RAPID_FILE_PENDING:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;RAPID_FILE_ACTIVE:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;RAPID_FILE_PAUSED:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;RAPID_FILE_DONE:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;RAPID_FILE_CANCELED:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;RAPID_FILE_ERROR:</directive>
+<directive kind="copyDeclaration"> * &lt;/ul&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<enum name="FileTransferStatus">
+<enumerator name="RAPID_FILE_PREFETCH_PENDING"/>
+<enumerator name="RAPID_FILE_PREFETCHING"/>
+<enumerator name="RAPID_FILE_PENDING"/>
+<enumerator name="RAPID_FILE_ACTIVE"/>
+<enumerator name="RAPID_FILE_PAUSED"/>
+<enumerator name="RAPID_FILE_DONE"/>
+<enumerator name="RAPID_FILE_CANCELED"/>
+<enumerator name="RAPID_FILE_ERROR"/>
+</enum>
+<directive kind="copyCDeclaration">class FileQueueEntryStateTypeSupport;</directive>
+<directive kind="copyCDeclaration">class FileQueueEntryStateDataWriter;</directive>
+<directive kind="copyCDeclaration">class FileQueueEntryStateDataReader;</directive>
+<directive kind="copyCDeclaration">struct FileQueueEntryStateSeq;</directive>
+<directive kind="copyDeclaration">/** Holds information about a file that could be transferred to the ground from the robot. */</directive>
+<valuetype name="FileQueueEntryState" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef FileQueueEntryStateTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef FileQueueEntryStateDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef FileQueueEntryStateDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef FileQueueEntryStateSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef FileQueueEntryState Type;</directive>
+<directive kind="copyDeclaration">/** The unique identifier for this file. */</directive>
+<member name="fileUuid" type="nonBasic" nonBasicTypeName="rapid::String64" visibility="public" key="true"/>
+<directive kind="copyDeclaration">/** Status of file in queue. */</directive>
+<member name="status" type="nonBasic" nonBasicTypeName="rapid::FileTransferStatus" visibility="public"/>
+<directive kind="copyDeclaration">/** Number of chunks already sent. */</directive>
+<member name="chunksSent" type="long" visibility="public"/>
+<directive kind="copyDeclaration">/** Total number of chunks to transfer. */</directive>
+<member name="numChunks" type="long" visibility="public"/>
+<member name="submissionTime" type="longLong" visibility="public"/>
+<member name="priority" type="float" visibility="public"/>
+<member name="channelId" type="short" visibility="public"/>
+</valuetype>
+</module>
+</types>

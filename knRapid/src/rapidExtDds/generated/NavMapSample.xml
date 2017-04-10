@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<include file="NavMapConfig.xml"/>
+<module name="rapid">
+<module name="ext">
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Map layer data for data samples reduced to 8 bit values. Data structure holding a vector of data</directive>
+<directive kind="copyDeclaration"> * points. To reduce footprint, the data is sent as 8 bit values (octet). The data-structure holds an</directive>
+<directive kind="copyDeclaration"> * offset and a scaling factor, to restore the original data samples. e.g.</directive>
+<directive kind="copyDeclaration"> * &lt;code&gt;</directive>
+<directive kind="copyDeclaration"> * double value = data * scale + offset</directive>
+<directive kind="copyDeclaration"> * &lt;/code&gt;</directive>
+<directive kind="copyDeclaration"> * The density parameter allows a layer to be of lower resolution than the map itself.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<struct name="OctetMapLayer">
+<directive kind="copyDeclaration">/** Data value offset. */</directive>
+<member name="offset" type="double"/>
+<directive kind="copyDeclaration">/** Data value scale. */</directive>
+<member name="scale" type="float"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Sampling density. A full resolution layer has a density of 1, a half resolution layer has a</directive>
+<directive kind="copyDeclaration"> * density of 2, etc. &lt;i&gt;Sampling density must be a power of 2&lt;/i&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="density" type="short"/>
+<directive kind="copyDeclaration">/** Vector of 8 bit data samples. */</directive>
+<member name="data" type="nonBasic" nonBasicTypeName="rapid::OctetSequence64K"/>
+</struct>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Map layer data for data samples reduced to 16 bit values. Data structure holding a vector of data</directive>
+<directive kind="copyDeclaration"> * points. To reduce footprint, the data is sent as 16 bit values (short). The data-structure holds an</directive>
+<directive kind="copyDeclaration"> * offset and a scaling factor, to restore the original data samples. e.g.</directive>
+<directive kind="copyDeclaration"> * &lt;code&gt;</directive>
+<directive kind="copyDeclaration"> * double value = data * scale + offset</directive>
+<directive kind="copyDeclaration"> * &lt;/code&gt;</directive>
+<directive kind="copyDeclaration"> * The density parameter allows a layer to be of lower resolution than the map itself.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<struct name="ShortMapLayer">
+<directive kind="copyDeclaration">/** Data value offset. */</directive>
+<member name="offset" type="double"/>
+<directive kind="copyDeclaration">/** Data value scale. */</directive>
+<member name="scale" type="float"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Sampling density. A full resolution layer has a density of 1, a half resolution (in both</directive>
+<directive kind="copyDeclaration"> * dimensions) layer has a density of 2, etc. &lt;i&gt;Sampling density must be a power of 2&lt;/i&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="density" type="short"/>
+<directive kind="copyDeclaration">/** Vector of 16 bit data samples. */</directive>
+<member name="data" type="nonBasic" nonBasicTypeName="rapid::ShortSequence64K"/>
+</struct>
+<typedef name="ShortMapLayerSequence" sequenceMaxLength="rapid::ext::NAVMAP_NUM_SHORT_LAYERS" type="nonBasic" nonBasicTypeName="rapid::ext::ShortMapLayer"/>
+<typedef name="OctetMapLayerSequence" sequenceMaxLength="rapid::ext::NAVMAP_NUM_OCTET_LAYERS" type="nonBasic" nonBasicTypeName="rapid::ext::OctetMapLayer"/>
+<directive kind="copyCDeclaration">class NavMapSampleTypeSupport;</directive>
+<directive kind="copyCDeclaration">class NavMapSampleDataWriter;</directive>
+<directive kind="copyCDeclaration">class NavMapSampleDataReader;</directive>
+<directive kind="copyCDeclaration">struct NavMapSampleSeq;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Telemetry data structure for transfering maps.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<valuetype name="NavMapSample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef NavMapSampleTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef NavMapSampleDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef NavMapSampleDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef NavMapSampleSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef NavMapSample Type;</directive>
+<directive kind="copyDeclaration">/** The x,y integer tile idenitifier. */</directive>
+<member name="tileId" type="long" visibility="public" arrayDimensions="2" key="true"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Location of the map in the reference frame. This is a 6 dof pose, so far all our mapping</directive>
+<directive kind="copyDeclaration"> * algorithms only deal with rotations around the z-axis.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="location" type="nonBasic" nonBasicTypeName="rapid::Transform3D" visibility="public"/>
+<member name="shortLayers" type="nonBasic" nonBasicTypeName="rapid::ext::ShortMapLayerSequence" visibility="public"/>
+<member name="octetLayers" type="nonBasic" nonBasicTypeName="rapid::ext::OctetMapLayerSequence" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</types>

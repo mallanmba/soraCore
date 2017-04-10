@@ -7,7 +7,7 @@ include( SetArchitecture )
 string(REGEX REPLACE "/[^/]*$" "" PROJ_SRC_PARENT ${PROJECT_SOURCE_DIR})
 
 if( NOT KN_ROOT_DIR )
-  set( KN_ROOT_DIR ${PROJ_SRC_PARENT}/${ARCHITECTURE} )
+  set( KN_ROOT_DIR /usr )
 endif( NOT KN_ROOT_DIR )
 
 message(STATUS "  kn root hardcoded without check to ${KN_ROOT_DIR}")

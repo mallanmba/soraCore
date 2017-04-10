@@ -23,8 +23,7 @@ include( UserOptions )
 ## we have to play some tricks to get install
 ## path to "stick" in Windows
 ##------------------------------------------------
-set( KNDDS_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "KNDDS install path")
-set( CMAKE_INSTALL_PREFIX ${KNDDS_INSTALL_PREFIX} CACHE INTERNAL "" )
+set( KNDDS_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}" CACHE PATH "KNDDS install path")
 
 
 #---------------------------------------------
@@ -41,7 +40,7 @@ find_package( Boost 1.50.0 COMPONENTS program_options filesystem system chrono)
 find_package( Miro )
 find_package( kn )
 
-find_package( Doxygen )
+#find_package( Doxygen )
 
 add_build_var( WITH_DDS_LBPlugin NOT APPLE )
 add_build_var( WITH_DDS_Monitor  NOT APPLE )
@@ -79,7 +78,7 @@ setup_configure_file()
 
 #-----------------------------------
 add_subdirectory( src )
-add_subdirectory( doc )
+#add_subdirectory( doc )
 
 # install the export file
 #------------------------------------

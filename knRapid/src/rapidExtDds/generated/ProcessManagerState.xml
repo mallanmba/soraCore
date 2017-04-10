@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<enum name="ProcessStatus">
+<enumerator name="PROCESS_STATE_UNAVAIL"/>
+<enumerator name="PROCESS_STATE_STARTING"/>
+<enumerator name="PROCESS_STATE_RESTARTING"/>
+<enumerator name="PROCESS_STATE_RUNNING"/>
+<enumerator name="PROCESS_STATE_STOPPING"/>
+<enumerator name="PROCESS_STATE_STOPPED"/>
+<enumerator name="PROCESS_STATE_STOPPED_UNEXPECTEDLY"/>
+<enumerator name="PROCESS_STATE_COMPLETED"/>
+<enumerator name="PROCESS_STATE_KILLED"/>
+</enum>
+<typedef name="ProcessStatusSequence" sequenceMaxLength="32" type="nonBasic" nonBasicTypeName="rapid::ext::ProcessStatus"/>
+<directive kind="copyCDeclaration">class ProcessManagerStateTypeSupport;</directive>
+<directive kind="copyCDeclaration">class ProcessManagerStateDataWriter;</directive>
+<directive kind="copyCDeclaration">class ProcessManagerStateDataReader;</directive>
+<directive kind="copyCDeclaration">struct ProcessManagerStateSeq;</directive>
+<valuetype name="ProcessManagerState" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef ProcessManagerStateTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef ProcessManagerStateDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef ProcessManagerStateDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef ProcessManagerStateSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef ProcessManagerState Type;</directive>
+<directive kind="copy">/** status sequence corresponds with ProcessManagerConfig.processes sequence */</directive>
+<member name="processStatus" type="nonBasic" nonBasicTypeName="rapid::ext::ProcessStatusSequence" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</types>

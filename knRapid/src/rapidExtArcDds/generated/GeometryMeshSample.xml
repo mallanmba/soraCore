@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<module name="arc">
+<enum name="GeometryIndexMode">
+<enumerator name="GIM_TRIANGLES"/>
+<enumerator name="GIM_TRISTRIP"/>
+<enumerator name="GIM_TRIFAN"/>
+<enumerator name="GIM_QUADS"/>
+<enumerator name="GIM_LINES"/>
+<enumerator name="GIM_LINE_STRIP"/>
+<enumerator name="GIM_LINE_LOOP"/>
+<enumerator name="GIM_POINTS"/>
+</enum>
+<typedef name="GeometryIndexModeSequence32" sequenceMaxLength="32" type="nonBasic" nonBasicTypeName="rapid::ext::arc::GeometryIndexMode"/>
+<typedef name="IndexSequence256K" sequenceMaxLength="262144" type="unsignedShort"/>
+<typedef name="OctetSequence170K" sequenceMaxLength="174760" type="octet"/>
+<directive kind="copyCDeclaration">class GeometryMeshSampleTypeSupport;</directive>
+<directive kind="copyCDeclaration">class GeometryMeshSampleDataWriter;</directive>
+<directive kind="copyCDeclaration">class GeometryMeshSampleDataReader;</directive>
+<directive kind="copyCDeclaration">struct GeometryMeshSampleSeq;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Telemetry data structure for transfering meshes.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<valuetype name="GeometryMeshSample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef GeometryMeshSampleTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef GeometryMeshSampleDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef GeometryMeshSampleDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef GeometryMeshSampleSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef GeometryMeshSample Type;</directive>
+<directive kind="copyDeclaration">/** Mesh identifier that can be used to identify multiple mesh instances. */</directive>
+<member name="geometryId" type="long" visibility="public" key="true"/>
+<member name="indexModes" type="nonBasic" nonBasicTypeName="rapid::ext::arc::GeometryIndexModeSequence32" visibility="public"/>
+<member name="indexLengths" type="nonBasic" nonBasicTypeName="rapid::LongSequence32" visibility="public"/>
+<member name="indexData" type="nonBasic" nonBasicTypeName="rapid::ext::arc::IndexSequence256K" visibility="public"/>
+<member name="vertexScale" type="float" visibility="public"/>
+<member name="vertexData" type="nonBasic" nonBasicTypeName="rapid::ShortSequence128K" visibility="public"/>
+<member name="normalScale" type="float" visibility="public"/>
+<member name="normalData" type="nonBasic" nonBasicTypeName="rapid::OctetSequence128K" visibility="public"/>
+<member name="colorScale" type="float" visibility="public"/>
+<member name="colorData" type="nonBasic" nonBasicTypeName="rapid::ext::arc::OctetSequence170K" visibility="public"/>
+<member name="texCoord0Scale" type="float" visibility="public"/>
+<member name="texCoord0Data" type="nonBasic" nonBasicTypeName="rapid::ShortSequence96K" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</module>
+</types>

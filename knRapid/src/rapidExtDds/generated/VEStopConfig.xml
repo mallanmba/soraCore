@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<module name="ext">
+<directive kind="copyCDeclaration">class VEStopConfigTypeSupport;</directive>
+<directive kind="copyCDeclaration">class VEStopConfigDataWriter;</directive>
+<directive kind="copyCDeclaration">class VEStopConfigDataReader;</directive>
+<directive kind="copyCDeclaration">struct VEStopConfigSeq;</directive>
+<valuetype name="VEStopConfig" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef VEStopConfigTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef VEStopConfigDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef VEStopConfigDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef VEStopConfigSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef VEStopConfig Type;</directive>
+<directive kind="copyDeclaration">/** The evaluation interval for the trajectory sequences in microsec. Typically 0.2s. */</directive>
+<member name="evaluationInterval" type="longLong" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</types>

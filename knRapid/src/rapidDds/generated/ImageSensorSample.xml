@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="ImageMetadata.xml"/>
+<include file="Message.xml"/>
+<module name="rapid">
+<directive kind="copyDeclaration">/** Images of size up to 1MB are supported. */</directive>
+<typedef name="ImageData" sequenceMaxLength="1048576" type="octet"/>
+<directive kind="copyCDeclaration">class ImageSensorSampleTypeSupport;</directive>
+<directive kind="copyCDeclaration">class ImageSensorSampleDataWriter;</directive>
+<directive kind="copyCDeclaration">class ImageSensorSampleDataReader;</directive>
+<directive kind="copyCDeclaration">struct ImageSensorSampleSeq;</directive>
+<directive kind="copyDeclaration">/** Image sensor information, plus payload. */</directive>
+<valuetype name="ImageSensorSample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef ImageSensorSampleTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef ImageSensorSampleDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef ImageSensorSampleDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef ImageSensorSampleSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef ImageSensorSample Type;</directive>
+<directive kind="copyDeclaration">/** Metadata for this specific sensor. */</directive>
+<member name="meta" type="nonBasic" nonBasicTypeName="rapid::ImageMetadata" visibility="public"/>
+<directive kind="copyDeclaration">/** MIME type, if available. */</directive>
+<member name="mimeType" type="nonBasic" nonBasicTypeName="rapid::String32" visibility="public"/>
+<directive kind="copyDeclaration">/** Image data */</directive>
+<member name="data" type="nonBasic" nonBasicTypeName="rapid::ImageData" visibility="public"/>
+</valuetype>
+</module>
+</types>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * The file queue channel configuration. The file queue can have multiple channels. Bandwidth is split up</directive>
+<directive kind="copyDeclaration"> * between the channels through a token system.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<struct name="ChannelConfig">
+<directive kind="copyDeclaration">/** Name of the channel. */</directive>
+<member name="name" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<directive kind="copyDeclaration">/** Number of tokens that channel has. */</directive>
+<member name="numTokens" type="short"/>
+</struct>
+<directive kind="copyDeclaration">/** Sequence of channel specifications. */</directive>
+<typedef name="ChannelConfigSequence" sequenceMaxLength="8" type="nonBasic" nonBasicTypeName="rapid::ChannelConfig"/>
+<directive kind="copyCDeclaration">class FileQueueConfigTypeSupport;</directive>
+<directive kind="copyCDeclaration">class FileQueueConfigDataWriter;</directive>
+<directive kind="copyCDeclaration">class FileQueueConfigDataReader;</directive>
+<directive kind="copyCDeclaration">struct FileQueueConfigSeq;</directive>
+<directive kind="copyDeclaration">/** Holds information about a file that could be transferred to the ground from the robot. */</directive>
+<valuetype name="FileQueueConfig" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef FileQueueConfigTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef FileQueueConfigDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef FileQueueConfigDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef FileQueueConfigSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef FileQueueConfig Type;</directive>
+<member name="channels" type="nonBasic" nonBasicTypeName="rapid::ChannelConfigSequence" visibility="public"/>
+</valuetype>
+</module>
+</types>

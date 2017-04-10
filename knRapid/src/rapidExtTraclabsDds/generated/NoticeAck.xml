@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<module name="traclabs">
+<valuetype name="NoticeAck" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">typedef NoticeAck Type;</directive>
+<directive kind="copy">/** noticeId of notice being acknowledged */</directive>
+<member name="noticeId" type="nonBasic" nonBasicTypeName="rapid::String16" visibility="public"/>
+<directive kind="copy">/** id of user who acknowledged the notice */</directive>
+<member name="ackTarget" type="nonBasic" nonBasicTypeName="rapid::String64" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</module>
+</types>

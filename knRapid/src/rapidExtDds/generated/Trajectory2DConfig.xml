@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<module name="ext">
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Specifies how to interpret the sequence of transforms</directive>
+<directive kind="copyDeclaration"> * &lt;ul&gt;</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;RTRANS2D_RELATIVE_TO_ORIGIN: transforms are all offsets from the origin</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;RTRANS2D_RELATIVE_TO_PREVIOUS: transform is relative to the previous transform; the first transform is relative to the origin</directive>
+<directive kind="copyDeclaration"> * &lt;/ul&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<enum name="RTrans2DInterpretation">
+<enumerator name="RTRANS2D_RELATIVE_TO_ORIGIN"/>
+<enumerator name="RTRANS2D_RELATIVE_TO_PREVIOUS"/>
+</enum>
+<directive kind="copyCDeclaration">class Trajectory2DConfigTypeSupport;</directive>
+<directive kind="copyCDeclaration">class Trajectory2DConfigDataWriter;</directive>
+<directive kind="copyCDeclaration">class Trajectory2DConfigDataReader;</directive>
+<directive kind="copyCDeclaration">struct Trajectory2DConfigSeq;</directive>
+<valuetype name="Trajectory2DConfig" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef Trajectory2DConfigTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef Trajectory2DConfigDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef Trajectory2DConfigDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef Trajectory2DConfigSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef Trajectory2DConfig Type;</directive>
+<directive kind="copyDeclaration">/** Denotes the frame the pose is given in. This frame should exist in the frame store. */</directive>
+<member name="referenceFrame" type="nonBasic" nonBasicTypeName="rapid::String128" visibility="public"/>
+<directive kind="copyDeclaration">/** Interpretation of trajectory transforms - either relative to origin, or relative to previous */</directive>
+<member name="trajectoryInterp" type="nonBasic" nonBasicTypeName="rapid::ext::RTrans2DInterpretation" visibility="public"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * The sampling interval for the trajectory sequence in microsec. Typically 0.1s.</directive>
+<directive kind="copyDeclaration"> * If the trajectory is not time sampled, this field should be set to 0</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="samplingInterval" type="longLong" visibility="public"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * keys describing the fields in the trajectory RTransMetaSequence</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="trajectoryMetaKeys" type="nonBasic" nonBasicTypeName="rapid::KeyTypeSequence4" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</types>

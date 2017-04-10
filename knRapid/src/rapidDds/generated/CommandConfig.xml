@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<directive kind="copyDeclaration">/** A command definition. Arguments will define name of argument as Key, type of argument as Type. */</directive>
+<struct name="CommandDef">
+<directive kind="copyDeclaration">/** The name of the command, to be used as cmdName in Command. */</directive>
+<member name="name" type="nonBasic" nonBasicTypeName="rapid::String64"/>
+<directive kind="copyDeclaration">/** Describes whether or not this command can be aborted once begun. */</directive>
+<member name="abortable" type="boolean"/>
+<directive kind="copyDeclaration">/** Describes whether or not this command can be suspended once begun. */</directive>
+<member name="suspendable" type="boolean"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * The arguments needed to send this command: key is the name of the argument, type is the expected</directive>
+<directive kind="copyDeclaration"> * data type of the argument.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="parameters" type="nonBasic" nonBasicTypeName="rapid::KeyTypeSequence16"/>
+</struct>
+<typedef name="CommandDefSequence" sequenceMaxLength="100" type="nonBasic" nonBasicTypeName="rapid::CommandDef"/>
+<struct name="SubsystemType">
+<directive kind="copyDeclaration">/** Name of subsystem type. */</directive>
+<member name="name" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<member name="commands" type="nonBasic" nonBasicTypeName="rapid::CommandDefSequence"/>
+</struct>
+<struct name="Subsystem">
+<directive kind="copyDeclaration">/** Name of subsystem instance. */</directive>
+<member name="name" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<directive kind="copyDeclaration">/** Has to match a subsystem type name. */</directive>
+<member name="subsystemTypeName" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+</struct>
+<typedef name="SubsystemTypeSequence" sequenceMaxLength="64" type="nonBasic" nonBasicTypeName="rapid::SubsystemType"/>
+<typedef name="SubsystemSequence" sequenceMaxLength="128" type="nonBasic" nonBasicTypeName="rapid::Subsystem"/>
+<directive kind="copyCDeclaration">class CommandConfigTypeSupport;</directive>
+<directive kind="copyCDeclaration">class CommandConfigDataWriter;</directive>
+<directive kind="copyCDeclaration">class CommandConfigDataReader;</directive>
+<directive kind="copyCDeclaration">struct CommandConfigSeq;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Message that sets up the possible commands an Agent can send and any arguments needed to perform said</directive>
+<directive kind="copyDeclaration"> * command.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<valuetype name="CommandConfig" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef CommandConfigTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef CommandConfigDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef CommandConfigDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef CommandConfigSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef CommandConfig Type;</directive>
+<directive kind="copyDeclaration">/** Lists CommandDefs of all commands that can be performed by said Agent. */</directive>
+<member name="availableSubsystemTypes" type="nonBasic" nonBasicTypeName="rapid::SubsystemTypeSequence" visibility="public"/>
+<member name="availableSubsystems" type="nonBasic" nonBasicTypeName="rapid::SubsystemSequence" visibility="public"/>
+</valuetype>
+</module>
+</types>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<directive kind="copyDeclaration">/** Indexes for k10 motor group messages. */</directive>
+<module name="k10">
+<module name="joint">
+<directive kind="copyDeclaration">/** Motor group includes steering and wheel angles. */</directive>
+<const name="JOINTS_MOTOR_GROUP" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;MotorGroup&quot;"/>
+<directive kind="copyDeclaration">/** Arm that had been mounted on K9 previously. */</directive>
+<const name="JOINTS_K9_ARM" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;K9Arm&quot;"/>
+<directive kind="copyDeclaration">/** Indexes for the motor group. */</directive>
+<const name="FL_DRIVE" type="long" value="0"/>
+<const name="FR_DRIVE" type="long" value="1"/>
+<const name="RL_DRIVE" type="long" value="2"/>
+<const name="RR_DRIVE" type="long" value="3"/>
+<const name="FL_STEER" type="long" value="4"/>
+<const name="FR_STEER" type="long" value="5"/>
+<const name="RL_STEER" type="long" value="6"/>
+<const name="RR_STEER" type="long" value="7"/>
+</module>
+</module>
+</module>
+</types>

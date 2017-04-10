@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<module name="ext">
+<module name="traclabs">
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * A list of commonly used topic names.</directive>
+<directive kind="copyDeclaration"> * Custom topic names should</directive>
+<directive kind="copyDeclaration"> * have the standard name as the root, separated from the specialization by the "-" character, e.g.</directive>
+<directive kind="copyDeclaration"> * &lt;code&gt;rapid_position_sample-relative&lt;code&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<const name="NOTICE_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;traclabs_notice_config&quot;"/>
+<const name="NOTICE_STATE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;traclabs_notice_state&quot;"/>
+<const name="NOTICE_ACK_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;traclabs_notice_ack&quot;"/>
+</module>
+</module>
+</module>
+</types>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<directive kind="copyDeclaration">/** MIME Types to use for ImageSensorSample, if appropriate. */</directive>
+<const name="MIME_IMAGE_PNG" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/png&quot;"/>
+<const name="MIME_IMAGE_BMP" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/bmp&quot;"/>
+<const name="MIME_IMAGE_CIS_COD" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/cis-cod&quot;"/>
+<const name="MIME_IMAGE_GIF" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/gif&quot;"/>
+<const name="MIME_IMAGE_IEF" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/ief&quot;"/>
+<const name="MIME_IMAGE_JPEG" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/jpeg&quot;"/>
+<const name="MIME_IMAGE_PIPEG" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/pipeg&quot;"/>
+<const name="MIME_IMAGE_SVG_XML" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/svg+xml&quot;"/>
+<const name="MIME_IMAGE_TIFF" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/tiff&quot;"/>
+<const name="MIME_IMAGE_CMU_RASTER" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/x-cmu-raster&quot;"/>
+<const name="MIME_IMAGE_CMX" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/x-cmx&quot;"/>
+<const name="MIME_IMAGE_ICON" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/x-icon&quot;"/>
+<const name="MIME_IMAGE_PNM" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/x-portable-anymap&quot;"/>
+<const name="MIME_IMAGE_PBM" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/x-portable-bitmap&quot;"/>
+<const name="MIME_IMAGE_PGM" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/x-portable-graymap&quot;"/>
+<const name="MIME_IMAGE_PPM" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/x-portable-pixmap&quot;"/>
+<const name="MIME_IMAGE_RGB" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/x-rgb&quot;"/>
+<const name="MIME_IMAGE_XBM" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/x-xbitmap&quot;"/>
+<const name="MIME_IMAGE_XPM" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/x-xpixmap&quot;"/>
+<const name="MIME_IMAGE_XWD" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/x-xwindowdump&quot;"/>
+<const name="MIME_IMAGE_EXR" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;image/x-exr&quot;"/>
+</module>
+</types>

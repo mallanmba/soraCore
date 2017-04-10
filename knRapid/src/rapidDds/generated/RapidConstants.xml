@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * A list of commonly used topic names. If an Agent has multiple of the same message type, the topics</directive>
+<directive kind="copyDeclaration"> * should be named accordingly and listed in the AgentConfig topics. Custom topic names should</directive>
+<directive kind="copyDeclaration"> * have the standard name as the root, separated from the specialization by the "-" character, e.g.</directive>
+<directive kind="copyDeclaration"> * &lt;code&gt;rapid_position_sample-relative&lt;code&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<const name="ACK_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_ack&quot;"/>
+<const name="AGENT_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_agent_config&quot;"/>
+<const name="AGENT_STATE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_agent_state&quot;"/>
+<const name="COMMAND_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_command&quot;"/>
+<const name="COMMAND_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_command_config&quot;"/>
+<const name="FILEANNOUNCE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_fileannounce&quot;"/>
+<const name="FILEQUEUE_COMMAND_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_filequeue_command&quot;"/>
+<const name="FILEQUEUE_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_filequeue_config&quot;"/>
+<const name="FILEQUEUE_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_filequeue_sample&quot;"/>
+<const name="FILEQUEUE_STATE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_filequeue_state&quot;"/>
+<const name="FILEQUEUEENTRY_STATE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_filequeueentry_state&quot;"/>
+<const name="FILEQUEUEENTRY_STATE_RECEIVER_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_filequeueentry_state_receiver&quot;"/>
+<const name="FILEQUEUERECEIVER_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_filequeuereceiver_sample&quot;"/>
+<const name="FRAMESTORE_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_framestore_config&quot;"/>
+<const name="IMAGESENSOR_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_imagesensor_sample&quot;"/>
+<const name="IMAGESENSOR_STATE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_imagesensor_state&quot;"/>
+<const name="JOINT_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_joint_config&quot;"/>
+<const name="JOINT_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_joint_sample&quot;"/>
+<const name="MACRO_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_macro_config&quot;"/>
+<const name="MACRO_STATE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_macro_state&quot;"/>
+<const name="POINTCLOUD_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_pointcloud_config&quot;"/>
+<const name="POINTCLOUD_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_pointcloud_sample&quot;"/>
+<const name="POSITION_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_position_config&quot;"/>
+<const name="POSITION_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_position_sample&quot;"/>
+<const name="QUEUE_STATE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_queue_state&quot;"/>
+<const name="TEXTMESSAGE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_textmessage&quot;"/>
+<const name="ACCESSCONTROL_STATE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_accesscontrol_state&quot;"/>
+</module>
+</types>

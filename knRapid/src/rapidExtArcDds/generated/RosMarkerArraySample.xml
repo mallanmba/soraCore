@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<module name="arc">
+<enum name="ShapeType">
+<enumerator name="ARROW" value="0"/>
+<enumerator name="CUBE" value="1"/>
+<enumerator name="SPHERE" value="2"/>
+<enumerator name="CYLINDER" value="3"/>
+<enumerator name="LINE_STRIP" value="4"/>
+<enumerator name="LINE_LIST" value="5"/>
+<enumerator name="CUBE_LIST" value="6"/>
+<enumerator name="SPHERE_LIST" value="7"/>
+<enumerator name="POINTS" value="8"/>
+<enumerator name="TEXT_VIEW_FACING" value="9"/>
+<enumerator name="MESH_RESOURCE" value="10"/>
+<enumerator name="TRIANGLE_LIST" value="11"/>
+</enum>
+<enum name="Action">
+<enumerator name="ADD" value="0"/>
+<enumerator name="DELETE" value="2"/>
+<enumerator name="DELETEALL" value="3"/>
+</enum>
+<typedef name="PointSequence1K" sequenceMaxLength="1024" type="nonBasic" nonBasicTypeName="rapid::Vec3f"/>
+<typedef name="ColorSequence1K" sequenceMaxLength="1024" type="nonBasic" nonBasicTypeName="rapid::Color4f"/>
+<directive kind="copyDeclaration"> /** Direct copy of ROS type */</directive>
+<struct name="Marker">
+<directive kind="copy">/** Namespace to place this object in... used in conjunction with id to create a unique name for the object */</directive>
+<member name="ns" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<directive kind="copy">/** object ID useful in conjunction with the namespace for manipulating and deleting the object later */</directive>
+<member name="id" type="long"/>
+<directive kind="copy">/** Type of object */</directive>
+<member name="type" type="nonBasic" nonBasicTypeName="rapid::ext::arc::ShapeType"/>
+<directive kind="copy">/** 0 add/modify an object, 1 (deprecated), 2 deletes an object, 3 deletes all objects */</directive>
+<member name="action" type="nonBasic" nonBasicTypeName="rapid::ext::arc::Action"/>
+<directive kind="copy">/** Pose of the object */</directive>
+<member name="pose" type="nonBasic" nonBasicTypeName="rapid::Transform3D"/>
+<directive kind="copy">/** Scale of the object 1,1,1 means default (usually 1 meter square) */</directive>
+<member name="scale" type="nonBasic" nonBasicTypeName="rapid::Vec3f"/>
+<directive kind="copy">/** RGBA color [0.0-1.0] */</directive>
+<member name="color" type="nonBasic" nonBasicTypeName="rapid::Color4f"/>
+<directive kind="copy">/** NS How long (in nanoseconds) the object should last before being automatically deleted.  0 means forever */</directive>
+<member name="lifetime" type="longLong"/>
+<directive kind="copy">/** If this marker should be frame-locked, i.e. retransformed into its frame every timestep */</directive>
+<member name="frame_locked" type="boolean"/>
+<directive kind="copy">/** Only used if the type specified has some use for them (eg. POINTS, LINE_STRIP, ...) */</directive>
+<member name="points" type="nonBasic" nonBasicTypeName="rapid::ext::arc::PointSequence1K"/>
+<directive kind="copy"/>
+<member name="colors" type="nonBasic" nonBasicTypeName="rapid::ext::arc::ColorSequence1K"/>
+<directive kind="copy">/**  NOTE: only used for text markers */</directive>
+<member name="text" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<directive kind="copy">/**  NOTE: only used for MESH_RESOURCE markers */</directive>
+<member name="mesh_resource" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<member name="mesh_use_embedded_materials" type="boolean"/>
+</struct>
+<typedef name="MarkerArraySequence8" sequenceMaxLength="8" type="nonBasic" nonBasicTypeName="rapid::ext::arc::Marker"/>
+<directive kind="copyCDeclaration">class  RosMarkerArraySampleTypeSupport;</directive>
+<directive kind="copyCDeclaration">class  RosMarkerArraySampleDataWriter;</directive>
+<directive kind="copyCDeclaration">class  RosMarkerArraySampleDataReader;</directive>
+<directive kind="copyCDeclaration">struct RosMarkerArraySampleSeq;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * MarkerArraySample</directive>
+<directive kind="copyDeclaration"> */</directive>
+<valuetype name="RosMarkerArraySample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef RosMarkerArraySampleTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef RosMarkerArraySampleDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef RosMarkerArraySampleDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef RosMarkerArraySampleSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef RosMarkerArraySample Type;</directive>
+<member name="marker_array" type="nonBasic" nonBasicTypeName="rapid::ext::arc::MarkerArraySequence8" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</module>
+</types>

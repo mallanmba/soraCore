@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<enum name="RangeScanDirection">
+<enumerator name="SCAN_HORIZONTAL"/>
+<enumerator name="SCAN_VERTICAL"/>
+</enum>
+<typedef name="Transform3DSequence64" sequenceMaxLength="64" type="nonBasic" nonBasicTypeName="rapid::Transform3D"/>
+<directive kind="copyCDeclaration">class RangeScanConfigTypeSupport;</directive>
+<directive kind="copyCDeclaration">class RangeScanConfigDataWriter;</directive>
+<directive kind="copyCDeclaration">class RangeScanConfigDataReader;</directive>
+<directive kind="copyCDeclaration">struct RangeScanConfigSeq;</directive>
+<directive kind="copyDeclaration">/**  Single (or multiple) line range scan. */</directive>
+<valuetype name="RangeScanConfig" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef RangeScanConfigTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef RangeScanConfigDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef RangeScanConfigDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef RangeScanConfigSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef RangeScanConfig Type;</directive>
+<directive kind="copyDeclaration">/** Reference frame. */</directive>
+<member name="referenceFrame" type="nonBasic" nonBasicTypeName="rapid::String128" visibility="public"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Descriptions of rows from the same scan-line. If instrument is a single line scanner, this is</directive>
+<directive kind="copyDeclaration"> * unused. If instrument has multiple scan lines, this defines which samples belong to which scan</directive>
+<directive kind="copyDeclaration"> * line. e.g. if there are 4 scan lines of 100 points each, the Sample vector would be of size 400,</directive>
+<directive kind="copyDeclaration"> * and rowLengths = {100, 100, 100, 100}.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="scanLengths" type="nonBasic" nonBasicTypeName="rapid::ShortSequence64" visibility="public"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Specifies whether the scan lines are aligned horizontally (i.e. azimuth first)</directive>
+<directive kind="copyDeclaration"> * or vertically (i.e. elevation first)</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="scanDirection" type="nonBasic" nonBasicTypeName="rapid::ext::RangeScanDirection" visibility="public"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Horizontal shot angles of samples in a scan-line for those sensors</directive>
+<directive kind="copyDeclaration"> * that have &lt;b&gt;static&lt;/b&gt; horizontal spacing. For sensors with dynamic horizontal</directive>
+<directive kind="copyDeclaration"> * spacing, this sequence will be empty and the corresponding member in</directive>
+<directive kind="copyDeclaration"> * RangeScanSample will be used.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="scanAzimuth" type="nonBasic" nonBasicTypeName="rapid::ShortSequence64" visibility="public"/>
+<directive kind="copyDeclaration">/** Scaling factor to convert azimuth units to radians. */</directive>
+<member name="scanAzimuthScale" type="float" visibility="public"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Vertical shot angles of samples for those sensors that have &lt;b&gt;static&lt;/b&gt;</directive>
+<directive kind="copyDeclaration"> * vertical spacing between scan lines. For sensors with dynamic vertical</directive>
+<directive kind="copyDeclaration"> * spacing, this sequence will be empty and the corresponding member in</directive>
+<directive kind="copyDeclaration"> * RangeScanSample will be used.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="scanElevation" type="nonBasic" nonBasicTypeName="rapid::ShortSequence64" visibility="public"/>
+<directive kind="copyDeclaration">/** Scaling factor to convert elevation units to radians. */</directive>
+<member name="scanElevationScale" type="float" visibility="public"/>
+<directive kind="copyDeclaration">/** Scaling factor to convert range units to meters. */</directive>
+<member name="rangeScale" type="float" visibility="public"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Scaling factor to convert byte value to intensity units</directive>
+<directive kind="copyDeclaration"> * FIXME: this is underspecified. What are intensity units?</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="intensityScale" type="float" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</types>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<module name="ext">
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * A list of commonly used topic names. If an Agent has multiple of the same message type, the topics</directive>
+<directive kind="copyDeclaration"> * should be named accordingly and listed in the AgentConfig topics. Custom topic names should</directive>
+<directive kind="copyDeclaration"> * have the standard name as the root, separated from the specialization by the "-" character, e.g.</directive>
+<directive kind="copyDeclaration"> * &lt;code&gt;rapid_position_sample-relative&lt;code&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<const name="NAVMAP_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_navmap_config&quot;"/>
+<const name="NAVMAP_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_navmap_sample&quot;"/>
+<const name="RANGESCAN_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_rangescan_config&quot;"/>
+<const name="RANGESCAN_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_rangescan_sample&quot;"/>
+<const name="PROCESSMANAGER_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_processmanager_config&quot;"/>
+<const name="PROCESSMANAGER_STATE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_processmanager_state&quot;"/>
+<const name="PROCESSIO_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_processio_sample&quot;"/>
+<const name="SYSTEMINFO_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_systeminfo_config&quot;"/>
+<const name="SYSTEMINFO_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_systeminfo_sample&quot;"/>
+<const name="TRAJECTORY_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_trajectory_config&quot;"/>
+<const name="TRAJECTORY_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_trajectory_sample&quot;"/>
+<const name="TRAJECTORY2D_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_trajectory2d_config&quot;"/>
+<const name="TRAJECTORY2D_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_trajectory2d_sample&quot;"/>
+<const name="VESTOP_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_vestop_config&quot;"/>
+<const name="VESTOP_STATE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_vestop_state&quot;"/>
+</module>
+</module>
+</types>

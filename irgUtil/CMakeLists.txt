@@ -16,11 +16,7 @@ include( SetupUtilities )
 ## we have to play some tricks to get install
 ## path to "stick" in Windows
 ##------------------------------------------------
-set( IRGUTIL_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "irgUtil install path")
-set( CMAKE_INSTALL_PREFIX ${IRGUTIL_INSTALL_PREFIX} CACHE INTERNAL "" )
-
-find_package(GTest)
-find_package(Doxygen)
+set( IRGUTIL_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}" CACHE PATH "irgUtil install path")
 
 ## find the packages we depend on 
 
@@ -48,7 +44,6 @@ setup_configure_file()
 # Defaults
 #-----------------------------------
 add_subdirectory( src )
-add_subdirectory( doc )
 
 # install the export file
 #------------------------------------

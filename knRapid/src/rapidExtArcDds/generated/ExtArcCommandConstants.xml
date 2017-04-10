@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<module name="ext">
+<module name="arc">
+<const name="FIELDDMAPPING" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;FieldDMapping&quot;"/>
+<directive kind="copyDeclaration">/**  Request to start a process. */</directive>
+<const name="FIELDDMAPPING_METHOD_SETACTIVE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setActive&quot;"/>
+<directive kind="copyDeclaration">/** Key for parameter used in FIELDDMAPPING. */</directive>
+<const name="FIELDDMAPPING_METHOD_PARAM_FLAG" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;flag&quot;"/>
+<const name="FIELDDMAPPING_METHOD_DTYPE_FLAG" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_BOOL"/>
+<const name="DSTARLITEMAPPING" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;DStarLiteMapping&quot;"/>
+<const name="DSTARLITEMAPPING_METHOD_SETACTIVE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setActive&quot;"/>
+<const name="DSTARLITEMAPPING_METHOD_PARAM_FLAG" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;flag&quot;"/>
+<const name="DSTARLITEMAPPING_METHOD_DTYPE_FLAG" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_BOOL"/>
+<const name="MOTION" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;Motion&quot;"/>
+<const name="MOTION_METHOD_DTYPE" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+<const name="MOTION_METHOD_ABORT" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;abort&quot;"/>
+<const name="MOTION_METHOD_SETSPEED" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setSpeed&quot;"/>
+<const name="MOTION_METHOD_SETSPEED_PARAM_MAXWHEELSPEED" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;maxWheelSpeed&quot;"/>
+<const name="MOTION_METHOD_DRIVEARC" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;driveArc&quot;"/>
+<const name="MOTION_METHOD_DRIVEARC_PARAM_DISTANCE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;distance&quot;"/>
+<const name="MOTION_METHOD_DRIVEARC_PARAM_HEADINGCHANGE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;headingChange&quot;"/>
+<const name="MOTION_METHOD_DRIVEARC_PARAM_CRABDIRECTION" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;crabDirection&quot;"/>
+<const name="MOTION_METHOD_DRIVETO" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;driveTo&quot;"/>
+<const name="MOTION_METHOD_DRIVETO_PARAM_DELTAX" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;dX&quot;"/>
+<const name="MOTION_METHOD_DRIVETO_PARAM_DELTAY" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;dY&quot;"/>
+<const name="MOTION_METHOD_DRIVETO_PARAM_HEADINGCHANGE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;headingChange&quot;"/>
+<const name="PAINTER" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;Painter&quot;"/>
+<const name="PAINTER_METHOD_DRAWLINE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;drawLine&quot;"/>
+<const name="PAINTER_METHOD_DRAWLINE_PARAM_LABEL" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;label&quot;"/>
+<const name="PAINTER_METHOD_DRAWLINE_DTYPE_LABEL" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<const name="PAINTER_METHOD_DRAWLINE_PARAM_TYPE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;type&quot;"/>
+<const name="PAINTER_METHOD_DRAWLINE_DTYPE_TYPE" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<const name="PAINTER_METHOD_DRAWLINE_PARAM_WIDTH" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;width&quot;"/>
+<const name="PAINTER_METHOD_DRAWLINE_DTYPE_WIDTH" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+<const name="PAINTER_METHOD_DRAWLINE_PARAM_XYZ0" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;xyz0&quot;"/>
+<const name="PAINTER_METHOD_DRAWLINE_DTYPE_XYZ0" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_VEC3d"/>
+<const name="PAINTER_METHOD_DRAWLINE_PARAM_XYZ1" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;xyz1&quot;"/>
+<const name="PAINTER_METHOD_DRAWLINE_DTYPE_XYZ1" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_VEC3d"/>
+<const name="PAINTER_METHOD_ERASELINE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;eraseLine&quot;"/>
+<const name="PAINTER_METHOD_ERASELINE_PARAM_LABEL" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;label&quot;"/>
+<const name="PAINTER_METHOD_ERASELINE_DTYPE_LABEL" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<const name="SCI" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;ScienceInstrument&quot;"/>
+<const name="SCI_METHOD_SETPARAMETERS" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setParameters&quot;"/>
+<const name="SCI_METHOD_DTYPE_DOCUMENT" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<const name="SCI_METHOD_PARAM_DOCUMENT0" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;document0&quot;"/>
+<const name="SCI_METHOD_PARAM_DOCUMENT1" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;document1&quot;"/>
+<const name="SCI_METHOD_PARAM_DOCUMENT2" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;document2&quot;"/>
+<const name="SCI_METHOD_PARAM_DOCUMENT3" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;document3&quot;"/>
+<const name="SCI_METHOD_PARAM_DOCUMENT4" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;document4&quot;"/>
+<const name="SCI_METHOD_PARAM_DOCUMENT5" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;document5&quot;"/>
+<const name="SCI_METHOD_PARAM_DOCUMENT6" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;document6&quot;"/>
+<const name="SCI_METHOD_PARAM_DOCUMENT7" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;document7&quot;"/>
+<const name="SCI_METHOD_ACQUIRE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;acquire&quot;"/>
+<const name="SCI_METHOD_DTYPE_STATIONMETADATA" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_STRING"/>
+<const name="SCI_METHOD_PARAM_STATIONMETADATA0" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;stationMetadata0&quot;"/>
+<const name="SCI_METHOD_PARAM_STATIONMETADATA1" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;stationMetadata1&quot;"/>
+<const name="SCI_METHOD_PARAM_STATIONMETADATA2" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;stationMetadata2&quot;"/>
+<const name="SCI_METHOD_PARAM_STATIONMETADATA3" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;stationMetadata3&quot;"/>
+<const name="SCI_METHOD_PARAM_STATIONMETADATA4" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;stationMetadata4&quot;"/>
+<const name="SCI_METHOD_PARAM_STATIONMETADATA5" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;stationMetadata5&quot;"/>
+<const name="SCI_METHOD_PARAM_STATIONMETADATA6" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;stationMetadata6&quot;"/>
+<const name="SCI_METHOD_PARAM_STATIONMETADATA7" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;stationMetadata7&quot;"/>
+<const name="IMGSTREAM" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;ImageStream&quot;"/>
+<const name="IMGSTREAM_METHOD_setResolution" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setResolution&quot;"/>
+<const name="IMGSTREAM_METHOD_setResolution_PARAM_divisor" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;divisor&quot;"/>
+<const name="IMGSTREAM_METHOD_setResolution_DTYPE_divisor" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_INT"/>
+<const name="IMGSTREAM_METHOD_setResizeWidth" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setResizeWidth&quot;"/>
+<const name="IMGSTREAM_METHOD_setResizeWidth_PARAM_width" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;width&quot;"/>
+<const name="IMGSTREAM_METHOD_setResizeWidth_DTYPE_width" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_INT"/>
+<const name="IMGSTREAM_METHOD_setResizeHeight" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setResizeHeight&quot;"/>
+<const name="IMGSTREAM_METHOD_setResizeHeight_PARAM_height" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;height&quot;"/>
+<const name="IMGSTREAM_METHOD_setResizeHeight_DTYPE_height" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_INT"/>
+<const name="IMGSTREAM_METHOD_setResize" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setResize&quot;"/>
+<const name="IMGSTREAM_METHOD_setResize_PARAM_width" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;width&quot;"/>
+<const name="IMGSTREAM_METHOD_setResize_DTYPE_width" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_INT"/>
+<const name="IMGSTREAM_METHOD_setResize_PARAM_height" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;height&quot;"/>
+<const name="IMGSTREAM_METHOD_setResize_DTYPE_height" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_INT"/>
+<const name="IMGSTREAM_METHOD_setResizeQuality" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setResizeQuality&quot;"/>
+<const name="IMGSTREAM_METHOD_setResizeQuality_PARAM_quality" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;quality&quot;"/>
+<const name="IMGSTREAM_METHOD_setResizeQuality_DTYPE_quality" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_INT"/>
+<const name="IMGSTREAM_METHOD_setCrop" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setCrop&quot;"/>
+<const name="IMGSTREAM_METHOD_setCrop_PARAM_cropX" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;cropX&quot;"/>
+<const name="IMGSTREAM_METHOD_setCrop_DTYPE_cropX" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_INT"/>
+<const name="IMGSTREAM_METHOD_setCrop_PARAM_cropY" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;cropY&quot;"/>
+<const name="IMGSTREAM_METHOD_setCrop_DTYPE_cropY" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_INT"/>
+<const name="IMGSTREAM_METHOD_setCrop_PARAM_width" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;width&quot;"/>
+<const name="IMGSTREAM_METHOD_setCrop_DTYPE_width" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_INT"/>
+<const name="IMGSTREAM_METHOD_setCrop_PARAM_height" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;height&quot;"/>
+<const name="IMGSTREAM_METHOD_setCrop_DTYPE_height" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_INT"/>
+<const name="IMGSTREAM_METHOD_setQuality" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setQuality&quot;"/>
+<const name="IMGSTREAM_METHOD_setQuality_PARAM_quality" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;quality&quot;"/>
+<const name="IMGSTREAM_METHOD_setQuality_DTYPE_quality" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_INT"/>
+<const name="IMGSTREAM_METHOD_setSaveImages" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setSaveImages&quot;"/>
+<const name="IMGSTREAM_METHOD_setSaveImages_PARAM_saveImages" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;saveImages&quot;"/>
+<const name="IMGSTREAM_METHOD_setSaveImages_DTYPE_saveImages" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_BOOL"/>
+<const name="IMGSTREAM_METHOD_reconnect" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;reconnect&quot;"/>
+<const name="ADVNAV" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;AdvNav&quot;"/>
+<const name="ADVNAV_METHOD_startGlobalAlign" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;startGlobalAlign&quot;"/>
+<const name="ROSBRIDGE" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;RosBridge&quot;"/>
+<const name="ROSBRIDGE_METHOD_setMinSeparation" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setMinSeparation&quot;"/>
+<const name="ROSBRIDGE_METHOD_setMinSeparation_PARAM_msec" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;msec&quot;"/>
+<const name="ROSBRIDGE_METHOD_setMinSeparation_DTYPE_msec" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_INT"/>
+<const name="GIMBAL" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;Gimbal&quot;"/>
+<const name="GIMBAL_METHOD_setPanTilt" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;setPanTilt&quot;"/>
+<const name="GIMBAL_METHOD_setPanTilt_PARAM_pan" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;pan&quot;"/>
+<const name="GIMBAL_METHOD_setPanTilt_DTYPE_pan" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+<const name="GIMBAL_METHOD_setPanTilt_PARAM_tilt" type="nonBasic" nonBasicTypeName="rapid::String32" value="&quot;tilt&quot;"/>
+<const name="GIMBAL_METHOD_setPanTilt_DTYPE_tilt" type="nonBasic" nonBasicTypeName="rapid::DataType" value="rapid::RAPID_FLOAT"/>
+</module>
+</module>
+</module>
+</types>

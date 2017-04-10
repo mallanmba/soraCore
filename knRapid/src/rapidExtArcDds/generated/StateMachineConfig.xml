@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<module name="arc">
+<struct name="TransitionTriple">
+<member name="sourceState" type="octet"/>
+<member name="event" type="octet"/>
+<member name="targetState" type="octet"/>
+</struct>
+<typedef name="TransitionSequence16K" sequenceMaxLength="-1" type="nonBasic" nonBasicTypeName="rapid::ext::arc::TransitionTriple"/>
+<directive kind="copyCDeclaration">class StateMachineConfigTypeSupport;</directive>
+<directive kind="copyCDeclaration">class StateMachineConfigDataWriter;</directive>
+<directive kind="copyCDeclaration">class StateMachineConfigDataReader;</directive>
+<directive kind="copyCDeclaration">struct StateMachineConfigSeq;</directive>
+<directive kind="copyDeclaration">/** StateMachineConfig message sets up configuration for StateMachineSample messages. */</directive>
+<valuetype name="StateMachineConfig" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef StateMachineConfigTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef StateMachineConfigDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef StateMachineConfigDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef StateMachineConfigSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef StateMachineConfig Type;</directive>
+<member name="subsystem" type="nonBasic" nonBasicTypeName="rapid::String32" visibility="public" key="true"/>
+<member name="stateMachine" type="nonBasic" nonBasicTypeName="rapid::String32" visibility="public" key="true"/>
+<member name="states" type="nonBasic" nonBasicTypeName="rapid::String32Sequence128" visibility="public"/>
+<member name="events" type="nonBasic" nonBasicTypeName="rapid::String32Sequence128" visibility="public"/>
+<member name="transitions" type="nonBasic" nonBasicTypeName="rapid::ext::arc::TransitionSequence16K" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</module>
+</types>

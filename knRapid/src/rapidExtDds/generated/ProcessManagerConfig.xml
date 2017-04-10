@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<directive kind="copy">/**</directive>
+<directive kind="copy"> * ProcessConfig</directive>
+<directive kind="copy"> */</directive>
+<struct name="ProcessConfig">
+<member name="name" type="nonBasic" nonBasicTypeName="rapid::String64"/>
+<member name="comment" type="nonBasic" nonBasicTypeName="rapid::String64"/>
+<member name="environment" type="nonBasic" nonBasicTypeName="rapid::String256Sequence64"/>
+<member name="workingDirectory" type="nonBasic" nonBasicTypeName="rapid::String256"/>
+<member name="binaryName" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<member name="commandLineParams" type="nonBasic" nonBasicTypeName="rapid::String256"/>
+<member name="selfTerminating" type="boolean"/>
+<member name="startOnInit" type="boolean"/>
+<member name="waitOnInit" type="boolean"/>
+<member name="startupTimeout" type="long"/>
+<member name="runningMatch" type="nonBasic" nonBasicTypeName="rapid::String256"/>
+<member name="aliveInterface" type="nonBasic" nonBasicTypeName="rapid::String32"/>
+<directive kind="copy">/** Number of times of automatic restart on unexpected shutdown */</directive>
+<member name="restartsOnFailure" type="long"/>
+</struct>
+<typedef name="ProcessConfigSequence" sequenceMaxLength="32" type="nonBasic" nonBasicTypeName="rapid::ext::ProcessConfig"/>
+<directive kind="copyCDeclaration">class ProcessManagerConfigTypeSupport;</directive>
+<directive kind="copyCDeclaration">class ProcessManagerConfigDataWriter;</directive>
+<directive kind="copyCDeclaration">class ProcessManagerConfigDataReader;</directive>
+<directive kind="copyCDeclaration">struct ProcessManagerConfigSeq;</directive>
+<directive kind="copy">/**</directive>
+<directive kind="copy"> * ProcessManagerConfig</directive>
+<directive kind="copy"> */</directive>
+<valuetype name="ProcessManagerConfig" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef ProcessManagerConfigTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef ProcessManagerConfigDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef ProcessManagerConfigDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef ProcessManagerConfigSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef ProcessManagerConfig Type;</directive>
+<member name="configName" type="nonBasic" nonBasicTypeName="rapid::String64" visibility="public"/>
+<member name="processes" type="nonBasic" nonBasicTypeName="rapid::ext::ProcessConfigSequence" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</types>

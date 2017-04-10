@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<module name="ext">
+<module name="arc">
+<directive kind="copyCDeclaration">class Float32ConfigTypeSupport;</directive>
+<directive kind="copyCDeclaration">class Float32ConfigDataWriter;</directive>
+<directive kind="copyCDeclaration">class Float32ConfigDataReader;</directive>
+<directive kind="copyCDeclaration">struct Float32ConfigSeq;</directive>
+<directive kind="copyDeclaration">/** Float32Config message sets up configuration for Float32Sample messages. */</directive>
+<valuetype name="Float32Config" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef Float32ConfigTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef Float32ConfigDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef Float32ConfigDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef Float32ConfigSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef Float32Config Type;</directive>
+<member name="category" type="nonBasic" nonBasicTypeName="rapid::String32" visibility="public"/>
+<member name="metaData" type="nonBasic" nonBasicTypeName="rapid::KeyTypeValueSequence16" visibility="public"/>
+<member name="dataKeys" type="nonBasic" nonBasicTypeName="rapid::String32Sequence32" visibility="public"/>
+</valuetype>
+</module>
+</module>
+</module>
+</types>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<directive kind="copyCDeclaration">class FileQueueSampleTypeSupport;</directive>
+<directive kind="copyCDeclaration">class FileQueueSampleDataWriter;</directive>
+<directive kind="copyCDeclaration">class FileQueueSampleDataReader;</directive>
+<directive kind="copyCDeclaration">struct FileQueueSampleSeq;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Holds information about a file that could be transferred to the ground from the robot.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<valuetype name="FileQueueSample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef FileQueueSampleTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef FileQueueSampleDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef FileQueueSampleDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef FileQueueSampleSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef FileQueueSample Type;</directive>
+<directive kind="copyDeclaration">/** The unique identifier for this file. */</directive>
+<member name="fileUuid" type="nonBasic" nonBasicTypeName="rapid::String64" visibility="public"/>
+<directive kind="copyDeclaration">/** Bucket number of sliced file. */</directive>
+<member name="chunkId" type="long" visibility="public"/>
+<directive kind="copyDeclaration">/** Total number of chunks to transfer. */</directive>
+<member name="numChunks" type="long" visibility="public"/>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Bit bucket with the binary data chunk. Max size of the bucket is 128KByte. For samples with</directive>
+<directive kind="copyDeclaration"> * chunkId &lt; numChunks - 1, chunkData.length() == 131072.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<member name="chunkData" type="nonBasic" nonBasicTypeName="rapid::OctetSequence1K" visibility="public"/>
+</valuetype>
+</module>
+</types>

@@ -7,7 +7,7 @@ include( SetArchitecture )
 string(REGEX REPLACE "/[^/]*$" "" PROJ_SRC_PARENT ${PROJECT_SOURCE_DIR})
 
 if( NOT IRGUTIL_ROOT_DIR )
-  set( IRGUTIL_ROOT_DIR ${PROJ_SRC_PARENT}/${ARCHITECTURE} )
+  set( IRGUTIL_ROOT_DIR /usr )
 endif( NOT IRGUTIL_ROOT_DIR )
 
 message(STATUS "  irgUtil root hardcoded without check to ${IRGUTIL_ROOT_DIR}")

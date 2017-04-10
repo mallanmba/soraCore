@@ -6,18 +6,26 @@ file( GLOB ALL_IDL_FILENAMES "${CMAKE_CURRENT_SOURCE_DIR}/*.idl" )
 
 set( EXTRA_RTIDDS_IDL_ARGS "-I${CMAKE_CURRENT_SOURCE_DIR}/../rapidDds" )
 
-rtidds_wrap_idl( ${ALL_IDL_FILENAMES} )
+# use rti dds to generate the sources
+#rtidds_wrap_idl( ${ALL_IDL_FILENAMES} )
+# use pre-compiled sources so we don't have to redistributed rapid
+file( GLOB RTIDDS_IDL_GENERATED_XMLS "${CMAKE_CURRENT_SOURCE_DIR}/generated/*.xml" )
+file( GLOB RTIDDS_IDL_GENERATED_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/generated/*.h" )
+file( GLOB RTIDDS_IDL_GENERATED "${CMAKE_CURRENT_SOURCE_DIR}/generated/*.cxx" )
 
 include_directories( 
   ${RTIDDS_INCLUDE_DIR} 
-  ${CMAKE_CURRENT_BINARY_DIR}/../rapidDds
+  ${CMAKE_CURRENT_SOURCE_DIR}/../rapidDds/generated
 )
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/generated )
+
 link_libraries( 
   ${RTIDDS_LIBRARIES} 
   rapidDds
 )
 
-add_srcdir_definitions(${RTIDDS_EXPORT} ${RTIDDS_DEFINES})
+add_srcdir_definitions("NDDS_USER_DLL_EXPORT" ${RTIDDS_DEFINES})
+
 
 add_library( ${LIB_NAME} SHARED
   ${RTIDDS_IDL_GENERATED}

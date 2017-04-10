@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<directive kind="copyDeclaration">/** Flag values for joint status sequence. */</directive>
+<directive kind="copyDeclaration">/** Joint is enabled. */</directive>
+<const name="JOINT_ENABLED" type="long" value="0x0000"/>
+<directive kind="copyDeclaration">/** Joint is disabled. */</directive>
+<const name="JOINT_DISABLED" type="long" value="0x0001"/>
+<directive kind="copyDeclaration">/** Joint is unable to move. */</directive>
+<const name="JOINT_FROZEN" type="long" value="0x0003"/>
+<directive kind="copyDeclaration">/** Joint has been e-stopped. */</directive>
+<const name="JOINT_ESTOP" type="long" value="0x0005"/>
+<directive kind="copyDeclaration">/** Joint has had a failure. */</directive>
+<const name="JOINT_FAILURE" type="long" value="0x0100"/>
+<directive kind="copyDeclaration">/** Joint is drawing too much current. */</directive>
+<const name="JOINT_OVER_CURRENT" type="long" value="0x0300"/>
+<directive kind="copyDeclaration">/** Joint is exceeded position error limits. */</directive>
+<const name="JOINT_POSITION_ERROR" type="long" value="0x0500"/>
+<directive kind="copyCDeclaration">class JointSampleTypeSupport;</directive>
+<directive kind="copyCDeclaration">class JointSampleDataWriter;</directive>
+<directive kind="copyCDeclaration">class JointSampleDataReader;</directive>
+<directive kind="copyCDeclaration">struct JointSampleSeq;</directive>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * JointSample delivers joint data at a high frequency. Use JointConfig to deciper the configuration of</directive>
+<directive kind="copyDeclaration"> * joints.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<valuetype name="JointSample" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef JointSampleTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef JointSampleDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef JointSampleDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef JointSampleSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef JointSample Type;</directive>
+<directive kind="copyDeclaration">/** Angle position (in radians) of the joint. */</directive>
+<member name="anglePos" type="nonBasic" nonBasicTypeName="rapid::FloatSequence64" visibility="public"/>
+<directive kind="copyDeclaration">/** Angle velocity (in radians/sec) of the joint. */</directive>
+<member name="angleVel" type="nonBasic" nonBasicTypeName="rapid::FloatSequence64" visibility="public"/>
+<directive kind="copyDeclaration">/** Angle acceleration (in radians/sec^2) of the joint. */</directive>
+<member name="angleAcc" type="nonBasic" nonBasicTypeName="rapid::FloatSequence64" visibility="public"/>
+<directive kind="copyDeclaration">/** Current draw of joint motor. */</directive>
+<member name="current" type="nonBasic" nonBasicTypeName="rapid::FloatSequence64" visibility="public"/>
+<directive kind="copyDeclaration">/** Torque sensed at the joint (in N-m). */</directive>
+<member name="torque" type="nonBasic" nonBasicTypeName="rapid::FloatSequence64" visibility="public"/>
+<directive kind="copyDeclaration">/** Temperature of the joint (in degrees Celsius). */</directive>
+<member name="temperature" type="nonBasic" nonBasicTypeName="rapid::FloatSequence64" visibility="public"/>
+<directive kind="copyDeclaration">/** Bit field representing the state of the joint. */</directive>
+<member name="status" type="nonBasic" nonBasicTypeName="rapid::LongSequence64" visibility="public"/>
+<directive kind="copyDeclaration">/** A list of sequences for any parameters not otherwise included. */</directive>
+<member name="auxFloat" type="nonBasic" nonBasicTypeName="rapid::NFSeqSequence16" visibility="public"/>
+</valuetype>
+</module>
+</types>

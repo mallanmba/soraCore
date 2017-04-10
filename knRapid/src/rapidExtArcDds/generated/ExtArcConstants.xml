@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="BaseTypes.xml"/>
+<module name="rapid">
+<module name="ext">
+<module name="arc">
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * A list of commonly used topic names. If an Agent has multiple of the same message type, the topics</directive>
+<directive kind="copyDeclaration"> * should be named accordingly and listed in the AgentConfig topics. Custom topic names should</directive>
+<directive kind="copyDeclaration"> * have the standard name as the root, separated from the specialization by the "-" character, e.g.</directive>
+<directive kind="copyDeclaration"> * &lt;code&gt;rapid_position_sample-relative&lt;code&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<const name="BATTERYPACK_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_batterypack_config&quot;"/>
+<const name="BATTERYPACK_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_batterypack_sample&quot;"/>
+<const name="DLP_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_dlp_config&quot;"/>
+<const name="DLP_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_dlp_sample&quot;"/>
+<const name="EPHEMERIS_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_ephemeris_config&quot;"/>
+<const name="EPHEMERIS_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_ephemeris_sample&quot;"/>
+<const name="FLOAT32_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_float32_config&quot;"/>
+<const name="FLOAT32_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_float32_sample&quot;"/>
+<const name="GEOMETRY_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_geometry_config&quot;"/>
+<const name="GEOMETRYMESH_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_geometrymesh_sample&quot;"/>
+<const name="GPS_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_gps_config&quot;"/>
+<const name="GPS_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_gps_sample&quot;"/>
+<const name="HYDRA_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_hydra_config&quot;"/>
+<const name="HYDRA_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_hydra_sample&quot;"/>
+<const name="MOBILITY_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_mobility_sample&quot;"/>
+<const name="SPECTRUM_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_spectrum_config&quot;"/>
+<const name="SPECTRUM_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_spectrum_sample&quot;"/>
+<const name="STATEMACHINE_CONFIG_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_statemachine_config&quot;"/>
+<const name="STATEMACHINE_STATE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_statemachine_state&quot;"/>
+<const name="WHEELGROUP_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_wheelgroup_sample&quot;"/>
+<const name="ROSMARKERARRAY_SAMPLE_TOPIC" type="nonBasic" nonBasicTypeName="rapid::String64" value="&quot;rapid_rosmarkerarray_sample&quot;"/>
+</module>
+</module>
+</module>
+</types>

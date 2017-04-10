@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/opt/rti/ndds.5.1.0/scripts/../resource/rtiddsgen/schema/rti_dds_topic_types.xsd">
+<include file="Message.xml"/>
+<module name="rapid">
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * Importance level of the message.</directive>
+<directive kind="copyDeclaration"> * &lt;ul&gt;</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;MSG_DEBUG:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;MSG_INFO:</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;MSG_ATTENTION: Important, but not in a bad way.</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;MSG_WARN: Something potentially bad happened.</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;MSG_ERROR: Something bad definitely happened.</directive>
+<directive kind="copyDeclaration"> *   &lt;li&gt;MSG_CRITICAL: Something really bad happened.</directive>
+<directive kind="copyDeclaration"> * &lt;/ul&gt;</directive>
+<directive kind="copyDeclaration"> */</directive>
+<enum name="MessageLevel">
+<enumerator name="MSG_DEBUG"/>
+<enumerator name="MSG_INFO"/>
+<enumerator name="MSG_ATTENTION"/>
+<enumerator name="MSG_WARN"/>
+<enumerator name="MSG_ERROR"/>
+<enumerator name="MSG_CRITICAL"/>
+</enum>
+<directive kind="copyDeclaration">/**</directive>
+<directive kind="copyDeclaration"> * TextMessage is a message that allows RAPID application users to chat with each other or for logging-style</directive>
+<directive kind="copyDeclaration"> * activities.</directive>
+<directive kind="copyDeclaration"> */</directive>
+<valuetype name="TextMessage" baseClass="rapid::Message" typeModifier="none">
+<directive kind="copyCDeclaration">#if RTI_DDS_VERSION_MAJOR &lt; 4 || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR &lt; 5) || (RTI_DDS_VERSION_MAJOR == 4  &amp;&amp; RTI_DDS_VERSION_MINOR  == 5 &amp;&amp; RTI_DDS_VERSION_RELEASE != 'f' )</directive>
+<directive kind="copyCDeclaration">typedef TextMessageTypeSupport TypeSupport;</directive>
+<directive kind="copyCDeclaration">typedef TextMessageDataWriter DataWriter;</directive>
+<directive kind="copyCDeclaration">typedef TextMessageDataReader DataReader;</directive>
+<directive kind="copyCDeclaration">typedef TextMessageSeq Seq;</directive>
+<directive kind="copyCDeclaration">#endif</directive>
+<directive kind="copyCDeclaration">typedef TextMessage Type;</directive>
+<directive kind="copyDeclaration">/** Importance level of message. */</directive>
+<member name="level" type="nonBasic" nonBasicTypeName="rapid::MessageLevel" visibility="public"/>
+<directive kind="copyDeclaration">/** What message is pertaining to. */</directive>
+<member name="category" type="nonBasic" nonBasicTypeName="rapid::String64" visibility="public"/>
+<directive kind="copyDeclaration">/** Actual text message. */</directive>
+<member name="message" type="nonBasic" nonBasicTypeName="rapid::String2K" visibility="public"/>
+</valuetype>
+</module>
+</types>
