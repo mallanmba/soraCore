@@ -71,13 +71,17 @@ find_package( Doxygen )
 
 build_with_var( WITH_DDS RTIDDS_FOUND )
 
+if (WITH_DDS)
+  set(knRapid_EXPORT_LIBRARIES rapidDds rapidIo rapidExtDds rapidExtIo rapidExtArcDds rapidExtArcIo rapidCommanding)
+endif (WITH_DDS)
+
 if (catkin_FOUND)
   ###################################
   ## catkin specific configuration ##
   ###################################
   catkin_package(
     INCLUDE_DIRS src # NOTE: see knRapid-extras.cmake for additional include dirs
-    LIBRARIES rapidDds rapidIo rapidExtDds rapidExtIo rapidExtArcDds rapidExtArcIo rapidCommanding
+    LIBRARIES ${knRapid_EXPORT_LIBRARIES}
     CFG_EXTRAS knRapid-extras.cmake
     CATKIN_DEPENDS knDds
   )
