@@ -69,13 +69,17 @@ build_with_var( WITH_DDS_LBPlugin RTIDDS_LB_FOUND )
 build_with_var( WITH_DDS_Monitor  RTIDDS_MON_FOUND )
 build_with_var( WITH_RTI_DistLogger RTIDDS_DLOGGER_FOUND )
 
+if (WITH_DDS)
+  set(knDDS_EXPORT_LIBRARIES knDds knDdsUtils)
+endif (WITH_DDS)
+
 if (catkin_FOUND)
   ###################################
   ## catkin specific configuration ##
   ###################################
   catkin_package(
     INCLUDE_DIRS src
-    LIBRARIES knDds knDdsUtil
+    LIBRARIES ${knDDS_EXPORT_LIBRARIES}
     CATKIN_DEPENDS kn Miro
     CFG_EXTRAS knDds-extras.cmake
     DEPENDS RTIDDS
