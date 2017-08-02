@@ -47,7 +47,7 @@ if (catkin_FOUND)
     INCLUDE_DIRS src
     LIBRARIES knShare knMath knGeometry knFrameStore knMotorShare
     CFG_EXTRAS kn-extras.cmake
-    DEPENDS ACE Boost EIGEN3
+    DEPENDS ACE Boost
   )
   ## set variable with full path of extras file so we can append library info
   set_cfg_extras_file()
@@ -76,8 +76,9 @@ setup_ctest()
 # everything needs to include boost headers, so set it
 # up at the top level for convinience
 ##-----------------------------------------------
-include_directories(
+include_directories(SYSTEM
   ${Boost_INCLUDE_DIR}
+  ${EIGEN3_INCLUDE_DIRS}
 )
 
 #-----------------------------------
