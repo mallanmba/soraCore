@@ -71,9 +71,9 @@ find_package( Doxygen )
 
 build_with_var( WITH_DDS RTIDDS_FOUND )
 
-if (WITH_DDS)
+if (RTIDDS_FOUND)
   set(knRapid_EXPORT_LIBRARIES rapidDds rapidIo rapidExtDds rapidExtIo rapidExtArcDds rapidExtArcIo rapidCommanding)
-endif (WITH_DDS)
+endif (RTIDDS_FOUND)
 
 if (catkin_FOUND)
   ###################################
@@ -100,8 +100,11 @@ endif(catkin_FOUND)
 include_directories(
   ${PROJECT_SOURCE_DIR}/src
   ${PROJECT_BINARY_DIR}/src
-  ${Boost_INCLUDE_DIR}
   ${catkin_INCLUDE_DIRS}
+  ${CATKIN_DEVEL_PREFIX}/include
+)
+include_directories(SYSTEM
+  ${Boost_INCLUDE_DIR}
 )
 
 ## Set up RPATH and *Config.h
