@@ -69,9 +69,11 @@ build_with_var( WITH_DDS_LBPlugin RTIDDS_LB_FOUND )
 build_with_var( WITH_DDS_Monitor  RTIDDS_MON_FOUND )
 build_with_var( WITH_RTI_DistLogger RTIDDS_DLOGGER_FOUND )
 
-if (WITH_DDS)
-  set(knDDS_EXPORT_LIBRARIES knDds knDdsUtils)
-endif (WITH_DDS)
+if (RTIDDS_FOUND)
+  set(knDDS_EXPORT_LIBRARIES knDds knDdsUtil)
+endif (RTIDDS_FOUND)
+
+message("knDDS_EXPORT_LIBRARIES ${knDDS_EXPORT_LIBRARIES}")
 
 if (catkin_FOUND)
   ###################################
@@ -82,7 +84,7 @@ if (catkin_FOUND)
     LIBRARIES ${knDDS_EXPORT_LIBRARIES}
     CATKIN_DEPENDS kn Miro
     CFG_EXTRAS knDds-extras.cmake
-    DEPENDS RTIDDS
+    DEPENDS
   )
   ## set variable with full path of extras file so we can append library info
   set_cfg_extras_file()
@@ -101,8 +103,10 @@ include_directories(
 
 include_directories(
   ${KN_INCLUDE_DIR}
-  ${Boost_INCLUDE_DIR}
   ${catkin_INCLUDE_DIRS}
+)
+include_directories(SYSTEM
+  ${Boost_INCLUDE_DIR}
 )
 
 if( WIN32 )
