@@ -71,8 +71,9 @@ find_package( Doxygen )
 
 build_with_var( WITH_DDS RTIDDS_FOUND )
 
+set(knRapid_EXPORT_LIBRARIES knSystemInfo) #knFetchPool
 if (RTIDDS_FOUND)
-  set(knRapid_EXPORT_LIBRARIES rapidDds rapidIo rapidExtDds rapidExtIo rapidExtArcDds rapidExtArcIo rapidCommanding)
+  set(knRapid_EXPORT_LIBRARIES ${knRapid_EXPORT_LIBRARIES} rapidDds rapidIo rapidExtDds rapidExtIo rapidExtArcDds rapidExtArcIo rapidCommanding)
 endif (RTIDDS_FOUND)
 
 if (catkin_FOUND)
