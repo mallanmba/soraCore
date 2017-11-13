@@ -23,6 +23,7 @@
 #include "knSystemInfo/SystemInfoParameters.h"
 
 #include <vector>
+#include <string>
 
 namespace kn
 {
@@ -37,6 +38,7 @@ namespace kn
       unsigned long long available;
     };
     typedef std::vector<Data> DataVector;
+    typedef std::vector<std::string> StringVector;
 
     FilesystemInfo(FilesystemInfoParameters const& params);
 
@@ -47,7 +49,7 @@ namespace kn
 
   private:
     int getFilesystem(Data& info, unsigned int index);
-    std::vector< FilesystemParameters > collectFileSystems();
+    std::vector< FilesystemParameters > collectFileSystems(const std::vector< std::string >& volumeNames);
 
     FilesystemInfoParameters m_params;
     

@@ -32,10 +32,12 @@ namespace kn
   FilesystemInfo::FilesystemInfo(FilesystemInfoParameters const& params) :
     m_params(params)
   {
-    if (params.volumes.empty()) {
-      m_params.volumes = this->collectFileSystems();
-
+    StringVector volumes;
+    volumes.reserve(params.volumes.size());
+    for (size_t i = 0; i < m_params.volumes.size(); ++i) {
+      volumes.push_back(m_params.volumes[i].name);
     }
+    m_params.volumes = this->collectFileSystems(volumes);
   }
 
   
@@ -75,8 +77,13 @@ namespace kn
     return rc;
   } 
 
-  std::vector<FilesystemParameters> FilesystemInfo::collectFileSystems()
+  std::vector<FilesystemParameters> FilesystemInfo::collectFileSystems(StringVector const& volumeNames)
   {
+    StringVector names(volumeNames);
+    sort(names.begin(), names.end());
+    StringVector::iterator iter = unique(names.begin(), names.end());
+    names.erase(iter, names.end());
+
     vector<FilesystemParameters> volumes;
 
     std::ifstream is("/proc/mounts");
@@ -92,7 +99,9 @@ namespace kn
       sstr >> volume.name;
       sstr >> volume.path;
 
-      volumes.push_back(volume);
+      if (names.empty() || binary_search(names.begin(), names.end(), volume.name)) {
+        volumes.push_back(volume);
+      }
     }
 
     return volumes;
