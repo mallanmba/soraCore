@@ -49,6 +49,7 @@ link_libraries (
   ${MIRO_miroCore_LIBRARY}
   ${Boost_SYSTEM_LIBRARY}
   ${Boost_THREAD_LIBRARY}
+  ${QT_LIBRARIES}
 )
 
 if( CURL_FOUND AND CURL_HAS_SSH )
