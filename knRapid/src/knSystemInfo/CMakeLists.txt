@@ -55,6 +55,8 @@ add_definitions(-D${EXPORT_DEFINE})
 link_libraries(
   ${MIRO_miroXml_LIBRARY} 
   ${KN_knShare_LIBRARY}
+  ${QT_QTXML_LIBRARY}
+  ${QT_QTCORE_LIBRARY}
 )
 
 add_library(${LIB_NAME} SHARED

@@ -85,44 +85,46 @@ add_srcdir_definitions(${RTIDDS_DEFINES} RTIDDS_FOUND )
 # rapid printers
 #=============================
 
-link_libraries(
-  ${LIB_NAME}
-)
-
-set( TARGETS
- accessControlStatePrinter
- ackPrinter
- agentPrinter
- commandPrinter
-# commandAckPrinter
- commandConfigPrinter
- fileAnnouncePrinter
- fileQueueConfigPrinter
- fileQueueEntryStatePrinter
- fileQueueReceiverEntryStatePrinter
- fileQueueReceiverSamplePrinter
- fileQueueSamplePrinter
- fileQueueStatePrinter
- frameStoreConfigPrinter
- macroConfigPrinter
- macroStatePrinter
- positionCovPrinter
- positionPrinter
- pointCloudPrinter
- queueStatePrinter
- jointPrinter
- imageSensorSamplePrinter
- textMessageClient
- textMessagePrinter
-)
-
-foreach( TARGET ${TARGETS} )
-  add_executable( ${TARGET}
-    ${TARGET}.cpp
-  )
-endforeach( TARGET ${TARGETS} )
-target_link_libraries( fileQueueEntryStatePrinter ${Boost_PROGRAM_OPTIONS_LIBRARY})
-
 install_library( ${LIB_NAME} )
 install_files  ( /include/${DIR_NAME} FILES ${HEADERS} )
-install_targets( /bin ${TARGETS} )
+
+if ( KNRAPID_HAS_DDS )
+  set( TARGETS
+    accessControlStatePrinter
+    ackPrinter
+    agentPrinter
+    commandPrinter
+#   commandAckPrinter
+    commandConfigPrinter
+    fileAnnouncePrinter
+    fileQueueConfigPrinter
+    fileQueueEntryStatePrinter
+    fileQueueReceiverEntryStatePrinter
+    fileQueueReceiverSamplePrinter
+    fileQueueSamplePrinter
+    fileQueueStatePrinter
+    frameStoreConfigPrinter
+    macroConfigPrinter
+    macroStatePrinter
+    positionCovPrinter
+    positionPrinter
+    pointCloudPrinter
+    queueStatePrinter
+    jointPrinter
+    imageSensorSamplePrinter
+    textMessageClient
+    textMessagePrinter
+  )
+
+  foreach( TARGET ${TARGETS} )
+    add_executable( ${TARGET}
+      ${TARGET}.cpp
+    )
+    target_link_libraries(${TARGET}
+      ${LIB_NAME}
+    )
+  endforeach( TARGET ${TARGETS} )
+  target_link_libraries( fileQueueEntryStatePrinter ${Boost_PROGRAM_OPTIONS_LIBRARY})
+
+  install_targets( /bin ${TARGETS} )
+endif()
