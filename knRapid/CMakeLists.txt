@@ -11,6 +11,7 @@ if (CATKIN_DEVEL_PREFIX)
     Miro
     kn
     knDds
+    qt_gui_cpp
   )
   include_directories( ${CATKIN_DEVEL_PREFIX}/include )
 endif(CATKIN_DEVEL_PREFIX)
