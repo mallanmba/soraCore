@@ -40,6 +40,7 @@ namespace rapid
     virtual FuturePtr simpleMove6Dof(rapid::Command const& cmd);
     virtual FuturePtr moveTo6Dof(rapid::Command const& cmd);
     virtual FuturePtr abort();
+    virtual FuturePtr moveGoal2D(rapid::Command const& cmd);
 
     static rapid::SubsystemType const * typeDescription();
   };
