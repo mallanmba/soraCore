@@ -20,11 +20,11 @@
 #define kn_MemoryInfo_h
 
 #include "knSystemInfo_Export.h"
+#include "knSystemInfo/SystemInfoParameters.h"
+
 
 namespace kn
 {
-  class MemoryInfoParameters;
-  
   /** Publishes system information: laptop battery, ram/cpu/net usage, ect. to an event channel */ 
   class knSystemInfo_Export MemoryInfo
   {
@@ -34,6 +34,7 @@ namespace kn
       unsigned int cached;
       unsigned int buffers;
       unsigned int free;
+      unsigned int available;
       unsigned int swap;
     };
 
@@ -43,7 +44,7 @@ namespace kn
     int sampleInfo(Data& memory);
     
   private:
-    MemoryInfoParameters const& m_params;
+    MemoryInfoParameters m_params;
     unsigned int m_total;
     
     static const int BUFFER_SIZE = 256;

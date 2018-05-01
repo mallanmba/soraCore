@@ -20,14 +20,12 @@
 #define kn_NetTrafficInfo_h
 
 #include "knSystemInfo_Export.h"
+#include "knSystemInfo/SystemInfoParameters.h"
 
 #include <vector>
 
 namespace kn
 {
-  class NetTrafficParameters;
-  class NetTrafficInfoParameters;
-  
   /** Publishes system information: laptop battery, ram/cpu/net usage, ect. to an event channel */ 
   class knSystemInfo_Export NetTrafficInfo
   {
@@ -39,16 +37,19 @@ namespace kn
       unsigned int txErrors;
       unsigned int rxErrors;
     };
-        typedef std::vector<Data> DataVector;
+    typedef std::vector<Data> DataVector;
 
     NetTrafficInfo(NetTrafficInfoParameters const& params);
 
     int sampleInfo(DataVector& ifs);
+    NetTrafficInfoParameters const& params() const {
+      return m_params;
+    }
 
   private:
     int getNetTraffic(Data& interface, unsigned int index);
 
-    NetTrafficInfoParameters const& m_params;
+    NetTrafficInfoParameters m_params;
     DataVector m_lastNetTrafficInfo;
     
     static const int BUFFER_SIZE = 256;

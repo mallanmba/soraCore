@@ -11,6 +11,7 @@ if (CATKIN_DEVEL_PREFIX)
     Miro
     kn
     knDds
+    qt_gui_cpp
   )
   include_directories( ${CATKIN_DEVEL_PREFIX}/include )
 endif(CATKIN_DEVEL_PREFIX)
@@ -59,8 +60,27 @@ endif (NOT catkin_FOUND)
 add_build_var( WITH_DDS NOT APPLE )
 find_package( RtiDds )
 
+if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
+  message(STATUS "FOUND QT 5")
+  find_package(Qt5Widgets REQUIRED)
+  find_package(Qt5Xml REQUIRED)
+  if (Qt5_POSITION_INDEPENDENT_CODE)
+    SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
+  endif()
+  include_directories(SYSTEM "${Qt5Widgets_INCLUDE_DIRS}")
+  include_directories(SYSTEM "${Qt5Xml_INCLUDE_DIRS}")
+  set(QT_QTXML_LIBRARY Qt5::Xml)
+  set(QT_QTCORE_LIBRARY Qt5::Widgets)
+else()
+  message(STATUS "FOUND QT 4")
+  find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
+  include(${QT_USE_FILE})
+  include_directories(SYSTEM "${QT_INCLUDE_DIR}")
+  include_directories(SYSTEM "${QT_QTXML_INCLUDE_DIR}")
+  include_directories(SYSTEM "${QT_QTCORE_INCLUDE_DIR}")
+endif()
+
 find_package( ACE )
-find_package( Qt4 )
 find_package( PThreads-win32 )
 find_package( CURL )
 
@@ -71,13 +91,18 @@ find_package( Doxygen )
 
 build_with_var( WITH_DDS RTIDDS_FOUND )
 
+set(knRapid_EXPORT_LIBRARIES knSystemInfo) #knFetchPool
+if (RTIDDS_FOUND)
+  set(knRapid_EXPORT_LIBRARIES ${knRapid_EXPORT_LIBRARIES} rapidDds rapidIo rapidExtDds rapidExtIo rapidExtArcDds rapidExtArcIo rapidCommanding)
+endif (RTIDDS_FOUND)
+
 if (catkin_FOUND)
   ###################################
   ## catkin specific configuration ##
   ###################################
   catkin_package(
     INCLUDE_DIRS src # NOTE: see knRapid-extras.cmake for additional include dirs
-    LIBRARIES rapidDds rapidIo rapidExtDds rapidExtIo rapidExtArcDds rapidExtArcIo rapidCommanding
+    LIBRARIES ${knRapid_EXPORT_LIBRARIES}
     CFG_EXTRAS knRapid-extras.cmake
     CATKIN_DEPENDS knDds
   )
@@ -96,8 +121,11 @@ endif(catkin_FOUND)
 include_directories(
   ${PROJECT_SOURCE_DIR}/src
   ${PROJECT_BINARY_DIR}/src
-  ${Boost_INCLUDE_DIR}
   ${catkin_INCLUDE_DIRS}
+  ${CATKIN_DEVEL_PREFIX}/include
+)
+include_directories(SYSTEM
+  ${Boost_INCLUDE_DIR}
 )
 
 ## Set up RPATH and *Config.h

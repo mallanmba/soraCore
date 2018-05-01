@@ -20,20 +20,20 @@
 #define kn_BatteryInfo_h
 
 #include "knSystemInfo_Export.h"
+#include "knSystemInfo/SystemInfoParameters.h"
 
 #include <vector>
 
 namespace kn
 {
-  class CpuParameters;
-  class CpuInfoParameters;
-  
   /** Publishes system information: laptop battery, ram/cpu/net usage, ect. to an event channel */ 
   class knSystemInfo_Export CpuInfo
   {
   public:
     struct Data
     {
+      std::string name;
+
       unsigned int user;
       unsigned int nice;
       unsigned int system;
@@ -45,11 +45,14 @@ namespace kn
     CpuInfo(CpuInfoParameters const& params);
 
     int sampleInfo(DataVector& cpus);
+    unsigned int numCpus() const {
+      return m_params.numCpus;
+    }
 
   private:
-    int getCpu(Data& cpu, unsigned int index);
+   int numCpus();
 
-    CpuInfoParameters const& m_params;
+    CpuInfoParameters m_params;
     DataVector m_lastCpuInfo;
     
     static int const BUFFER_SIZE = 256;

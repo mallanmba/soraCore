@@ -42,10 +42,6 @@ set( HEADERS
 include_directories( 
   ${ACE_INCLUDE_DIR}
   ${MIRO_INCLUDE_DIR}
-  ${QT_INCLUDE_DIR}
-  ${QT_QT_INCLUDE_DIR}
-  ${QT_QTXML_INCLUDE_DIR}
-  ${QT_QTCORE_INCLUDE_DIR}
   ${Boost_INCLUDE_DIR}
   ${KN_INCLUDE_DIR}
   )
@@ -55,6 +51,8 @@ add_definitions(-D${EXPORT_DEFINE})
 link_libraries(
   ${MIRO_miroXml_LIBRARY} 
   ${KN_knShare_LIBRARY}
+  ${QT_QTXML_LIBRARY}
+  ${QT_QTCORE_LIBRARY}
 )
 
 add_library(${LIB_NAME} SHARED
