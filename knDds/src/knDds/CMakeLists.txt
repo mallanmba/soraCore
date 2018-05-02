@@ -63,19 +63,13 @@ add_target_definitions( ${LIB_NAME} ${EXPORT_DEFINE} )
 add_srcdir_definitions( ${RTIDDS_DEFINES} )
 
 ## NOTE catkin_build 
-## Unexplained linking failures occur with the knDds examples if qt_gui_cpp
-## is added to the find_package(catkin...) list, e.g. 
-## .../libnddscore.so: undefined reference to `dlopen'
-## .../libnddscore.so: undefined reference to `dlclose'
-## .../libnddscore.so: undefined reference to `dlerror'
-## .../libnddscore.so: undefined reference to `dlsym'
-## Adding ${CMAKE_DL_LIBS} (dl) to the link line on the examples does not fix
-## the problem, but adding ${CMAKE_DL_LIBS} immediately after ${RTIDDS_LIBRARIES}
-## does. Note that ${RTIDDS_LIBRARIES} ALREADY has -ldl in the variable. However,
-## while the RTIDDS_LIBRARIES variable has the full paths to the RTI libraries, 
-## the link line does NOT. I don't know if it is catkin or cmake that is munging 
-## the contents of the RTIDDS_LIBRARIES variable but non-deterministic behavior 
-## in a build system is not OK. 
+## Unexplained linking failures in examples ocurred on Ubuntu 14.04 with the 
+## RTI 5.2.3.15_ROUTING-198-eng-build, but not 5.2.3 release. Adding ${CMAKE_DL_LIBS} (dl) 
+## to the link line on the examples did not fix the problem, but adding ${CMAKE_DL_LIBS} 
+## immediately after ${RTIDDS_LIBRARIES} does. Note that ${RTIDDS_LIBRARIES} ALREADY has 
+## -ldl in the variable. However, while the RTIDDS_LIBRARIES variable has the full paths 
+## to the RTI libraries, the link line does NOT. I don't know if it is catkin or cmake
+## that is munging the contents of the RTIDDS_LIBRARIES variable.
 
 target_link_libraries( ${LIB_NAME}
   ${ACE_LIBRARIES}
