@@ -184,25 +184,20 @@ module rapid {
     const DataType MOBILITY_METHOD_SIMPLEMOVE6DOF_DTYPE_ROT = RAPID_MAT33f;    
 
     const String32 MOBILITY_METHOD_MOVE = "move";
-
     const String32 MOBILITY_METHOD_MOVE_PARAM_FRAME_NAME = "referenceFrame";
     const DataType MOBILITY_METHOD_MOVE_DTYPE_FRAME_NAME = RAPID_STRING;
-
     //@copy-declaration /**  Can be defined as a rotation about an axis. */
     const String32 MOBILITY_METHOD_MOVE_PARAM_END_LOCATION = "xyt";
     const DataType MOBILITY_METHOD_MOVE_DTYPE_END_LOCATION = RAPID_VEC3d;
-
     //@copy-declaration /**
     //@copy-declaration  * The x,y,theta tolerance for waypoint. Theta is specified in radians. For a non-directional waypoint, use
     //@copy-declaration  * negative or > PI value.
     //@copy-declaration  */
     const String32 MOBILITY_METHOD_MOVE_PARAM_END_LOCATION_TOLERANCE = "xytTolerance"; 
     const DataType MOBILITY_METHOD_MOVE_DTYPE_END_LOCATION_TOLERANCE = RAPID_VEC3d;
-
     //@copy-declaration /** In meters/sec. */
     const String32 MOBILITY_METHOD_MOVE_PARAM_HINTED_SPEED = "hintedSpeed";
     const DataType MOBILITY_METHOD_MOVE_DTYPE_HINTED_SPEED = RAPID_FLOAT;
-
     const String32 MOBILITY_METHOD_MOVE_PARAM_NAV_ALGO     = "navAlgo";
     const DataType MOBILITY_METHOD_MOVE_DTYPE_NAV_ALGO     = RAPID_STRING;
     
@@ -215,12 +210,21 @@ module rapid {
     const DataType MOBILITY_METHOD_MOVE6DOF_DTYPE_END_LOCATION_TOLERANCE = RAPID_VEC3d;
     const String32 MOBILITY_METHOD_MOVE6DOF_PARAM_ROT          = "rot"; 
     const DataType MOBILITY_METHOD_MOVE6DOF_DTYPE_ROT          = RAPID_MAT33f;    
-
     //@copy-declaration /**  In meters/sec. */
     const String32 MOBILITY_METHOD_MOVE6DOF_PARAM_HINTED_SPEED = "hintedSpeed";
     const DataType MOBILITY_METHOD_MOVE6DOF_DTYPE_HINTED_SPEED = RAPID_FLOAT;
     const String32 MOBILITY_METHOD_MOVE6DOF_PARAM_NAV_ALGO     = "navAlgo";
     const DataType MOBILITY_METHOD_MOVE6DOF_DTYPE_NAV_ALGO     = RAPID_STRING;
+    
+    const String32 MOBILITY_METHOD_MOVEGOAL2D = "moveGoal2D";
+    const String32 MOBILITY_METHOD_MOVEGOAL2D_PARAM_FRAME_NAME = "referenceFrame";
+    const DataType MOBILITY_METHOD_MOVEGOAL2D_DTYPE_FRAME_NAME = RAPID_STRING;
+    const String32 MOBILITY_METHOD_MOVEGOAL2D_PARAM_END_LOCATION = "xyt";
+    const DataType MOBILITY_METHOD_MOVEGOAL2D_DTYPE_END_LOCATION = RAPID_VEC3d;
+    const String32 MOBILITY_METHOD_MOVEGOAL2D_PARAM_END_LOCATION_TOLERANCE = "xytTolerance"; 
+    const DataType MOBILITY_METHOD_MOVEGOAL2D_DTYPE_END_LOCATION_TOLERANCE = RAPID_VEC3d;
+    const String32 MOBILITY_METHOD_MOVEGOAL2D_PARAM_GOAL_ID = "goalId";
+    const DataType MOBILITY_METHOD_MOVEGOAL2D_DTYPE_GOAL_ID = RAPID_STRING;
     
     //@copy-declaration /** Navigation Algorithm for MobilityCommand. */
     const String32 NAV_ALGO_SAFE  = "RAPID_NAV_SAFE";

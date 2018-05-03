@@ -70,6 +70,9 @@ namespace rapid
     case 4: // STOPALLMOTION
       amiRef = this->abort();
       break;
+    case 5: // MOVEGOAL2D
+      amiRef = this->moveGoal2D(cmd);
+      break;
     default:
       boost::throw_exception(EBadSyntax(string("Unknown Mobility command cmdName:") + cmd.cmdName));
     }
@@ -119,6 +122,14 @@ namespace rapid
     };
     int const NUM_SIMPLEMOVE6DOF_ARGUMENTS = sizeof(simpleMove6DofArguments) / sizeof(KeyTypePair);
 
+    KeyTypePair moveGoal2DArguments[] = {
+      { MOBILITY_METHOD_MOVEGOAL2D_PARAM_FRAME_NAME,             MOBILITY_METHOD_MOVEGOAL2D_DTYPE_FRAME_NAME },
+      { MOBILITY_METHOD_MOVEGOAL2D_PARAM_END_LOCATION,           MOBILITY_METHOD_MOVEGOAL2D_DTYPE_END_LOCATION },
+      { MOBILITY_METHOD_MOVEGOAL2D_PARAM_END_LOCATION_TOLERANCE, MOBILITY_METHOD_MOVEGOAL2D_DTYPE_END_LOCATION_TOLERANCE },
+      { MOBILITY_METHOD_MOVEGOAL2D_PARAM_GOAL_ID,                MOBILITY_METHOD_MOVEGOAL2D_DTYPE_GOAL_ID }
+    };
+    int const NUM_MOVEGOAL2D_ARGUMENTS = sizeof(moveGoal2DArguments) / sizeof(KeyTypePair);
+
     int const NULL_ARGUMENTS = 0;
 
     struct Cmd
@@ -134,7 +145,8 @@ namespace rapid
       { MOBILITY_METHOD_MOVE6DOF, NUM_MOVE6DOF_ARGUMENTS, move6DofArguments, true },
       { MOBILITY_METHOD_SIMPLEMOVE, NUM_SIMPLEMOVE_ARGUMENTS, simpleMoveArguments, true },
       { MOBILITY_METHOD_SIMPLEMOVE6DOF, NUM_SIMPLEMOVE6DOF_ARGUMENTS, simpleMove6DofArguments, true },
-      { MOBILITY_METHOD_STOPALLMOTION, NULL_ARGUMENTS, NULL, false }
+      { MOBILITY_METHOD_STOPALLMOTION, NULL_ARGUMENTS, NULL, false },
+      { MOBILITY_METHOD_MOVEGOAL2D, NUM_MOVEGOAL2D_ARGUMENTS, moveGoal2DArguments, true },
     };
     static int const MOBILITY_COMMANDS = sizeof(commands) / sizeof (Cmd);
   }
@@ -191,4 +203,12 @@ namespace rapid
   {
     boost::throw_exception(EExecFailed(string("Mobility command command not supported: abort")));
   }
+  
+  MobilitySubsysImplBase::FuturePtr
+  MobilitySubsysImplBase::moveGoal2D(Command const& cmd)
+  {
+    boost::throw_exception(EExecFailed(string("Mobility command command not supported: ") + cmd.cmdName));
+  }
+
+
 }
