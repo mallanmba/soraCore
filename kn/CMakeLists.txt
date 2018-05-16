@@ -1,34 +1,60 @@
+cmake_minimum_required(VERSION 2.8.3)
 project(kn)
-cmake_minimum_required(VERSION 2.6)
 
-set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
+###################################
+## catkin                        ##
+###################################
+if (CATKIN_DEVEL_PREFIX)
+  find_package(catkin  REQUIRED COMPONENTS
+    irg_cmake
+  )
+  include_directories( ${CATKIN_DEVEL_PREFIX}/include )
+endif(CATKIN_DEVEL_PREFIX)
 
-include( SetArchitecture )
-include( SetupBuildSwitch )
-include( SetupConfigureFile )
-include( SetupInstall )
-include( SetupRPATH )
-include( SetupCTest )
-include( SetupWarnLevel )
-include( SetupUtilities )
-include( UserOptions )
+if (NOT catkin_FOUND)
+  set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
 
-## we have to play some tricks to get install
-## path to "stick" in Windows
-##------------------------------------------------
-set( ${PROJECT_UPPER}_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "irg apps install path")
-set( CMAKE_INSTALL_PREFIX ${${PROJECT_UPPER}_INSTALL_PREFIX} CACHE INTERNAL "" )
+  include( SetArchitecture )
+  include( SetupBuildSwitch )
+  include( SetupConfigureFile )
+  include( SetupInstall )
+  include( SetupRPATH )
+  include( SetupCTest )
+  include( SetupWarnLevel )
+  include( SetupUtilities )
+  include( UserOptions )
+
+  ## we have to play some tricks to get install
+  ## path to "stick" in Windows
+  ##------------------------------------------------
+  set( ${PROJECT_UPPER}_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "irg apps install path")
+  set( CMAKE_INSTALL_PREFIX ${${PROJECT_UPPER}_INSTALL_PREFIX} CACHE INTERNAL "" )
+endif (NOT catkin_FOUND)
 
 # find dependencies
-
-find_package( ACE )
+find_package( ACE REQUIRED )
 find_package( Eigen3 )
-find_package( Boost 1.50 COMPONENTS REQUIRED program_options signals thread system chrono )
+find_package( Boost 1.46 REQUIRED program_options signals thread system chrono )
 
 find_package( GTest )
 find_package( Doxygen )
 
-minimum_requirements( Boost_FOUND )
+if (catkin_FOUND)
+  ###################################
+  ## catkin specific configuration ##
+  ###################################
+  catkin_package(
+    INCLUDE_DIRS src
+    LIBRARIES knShare knMath knGeometry knFrameStore knMotorShare
+    CFG_EXTRAS kn-extras.cmake
+    DEPENDS ACE Boost EIGEN3
+  )
+  ## set variable with full path of extras file so we can append library info
+  set_cfg_extras_file()
+
+  # add devel/include - this should add to persistent catkin metadata
+  list(APPEND ${PROJECT_NAME}_INCLUDE_DIRS ${CATKIN_DEVEL_PREFIX}/include)
+endif( catkin_FOUND )
 
 ## We must add the in-source and out-of-source
 ## include paths 
@@ -79,3 +105,4 @@ install_export()
 
 #------------------------------------
 print_build_switches()
+

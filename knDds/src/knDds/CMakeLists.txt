@@ -67,6 +67,8 @@ target_link_libraries( ${LIB_NAME}
   ${MIRO_miroXml_LIBRARY}
   ${RTIDDS_LIBRARIES}
   ${KN_knShare_LIBRARY}
+  ${catkin_LIBRARIES}
+  ${QT_QTCORE_LIBRARY}
 )
 
 if ( KNDDS_HAS_DDS_LBPlugin )

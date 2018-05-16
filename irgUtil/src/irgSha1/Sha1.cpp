@@ -31,7 +31,9 @@ A million repetitions of "a"
 #    define LITTLE_ENDIAN
 #  endif
 #else
-#  undefine LITTLE_ENDIAN
+#  ifdef LITTLE_ENDIAN
+#    undef LITTLE_ENDIAN
+#  endif
 #endif
 
 #define SHA1HANDSOFFACE_LITTLE_ENDIAN

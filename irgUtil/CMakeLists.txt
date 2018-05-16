@@ -1,6 +1,22 @@
+cmake_minimum_required(VERSION 2.8.3)
 project(irgUtil)
-cmake_minimum_required(VERSION 2.6)
 
+if (CATKIN_DEVEL_PREFIX)
+  find_package(catkin  REQUIRED COMPONENTS
+    irg_cmake
+  )
+  include_directories( ${CATKIN_DEVEL_PREFIX}/include )
+endif(CATKIN_DEVEL_PREFIX)
+
+if (catkin_FOUND)
+  ###################################
+  ## catkin specific configuration ##
+  ###################################
+  catkin_package(
+    INCLUDE_DIRS src
+    LIBRARIES irgSha1 irgUtmll
+  )
+else (catkin_FOUND)
 set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake/Modules ${CMAKE_MODULE_PATH} )
 
 include (TestBigEndian)
@@ -18,11 +34,13 @@ include( SetupUtilities )
 ##------------------------------------------------
 set( IRGUTIL_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "irgUtil install path")
 set( CMAKE_INSTALL_PREFIX ${IRGUTIL_INSTALL_PREFIX} CACHE INTERNAL "" )
+endif (catkin_FOUND)
+
+## find the packages we depend on 
 
 find_package(GTest)
 find_package(Doxygen)
 
-## find the packages we depend on 
 
 ## add the in-source and out-of-source
 ## include paths 

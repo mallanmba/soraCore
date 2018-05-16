@@ -68,6 +68,7 @@ target_link_libraries( ${LIB_NAME}
   ${KNDDS_knDds_LIBRARY}
   ${MIRO_miroXml_LIBRARY}
   ${RTIDDS_LIBRARIES}
+  ${QT_QTXML_LIBRARY}
 )
 
 # export define only applies to lib

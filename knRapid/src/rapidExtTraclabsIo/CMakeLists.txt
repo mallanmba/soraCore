@@ -31,7 +31,7 @@ include_directories(
   ${KNDDS_INCLUDE_DIR}
   ${KNDDS_INCLUDE_DIR}
   ${RTIDDS_INCLUDE_DIR}
-  ${CMAKE_BINARY_DIR}/src/rapidDds
+  ${CMAKE_CURRENT_BINARY_DIR}/../rapidDds
 )
 
 link_libraries(

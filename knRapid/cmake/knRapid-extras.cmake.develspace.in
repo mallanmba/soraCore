@@ -1,0 +1,24 @@
+# source: knRapid-extras.cmake.develspace.in
+
+## Create INCLUDE_DIR variable for downstream packages that
+## include knRapid rtiddsgen generated headers
+set(KNRAPID_INCLUDE_DIR @CATKIN_DEVEL_PREFIX@/include
+                        @CATKIN_DEVEL_PREFIX@/include/rapidDds
+                        @CATKIN_DEVEL_PREFIX@/include/rapidExtDds
+                        @CATKIN_DEVEL_PREFIX@/include/rapidExtArcDds )
+                        
+set(KNRAPID_rapidDds_IDL_DIR       @PROJECT_SOURCE_DIR@/src/rapidDds )
+set(KNRAPID_rapidExtDds_IDL_DIR    @PROJECT_SOURCE_DIR@/src/rapidExtDds )
+set(KNRAPID_rapidExtArcDds_IDL_DIR @PROJECT_SOURCE_DIR@/src/rapidExtArcDds )
+                        
+## add include dirs to catkin_INCLUDE_DIRS 
+set( catkin_INCLUDE_DIRS  ${catkin_INCLUDE_DIRS} ${KNRAPID_INCLUDE_DIR} )
+
+if( NOT KNRAPID_COMPILER_FLAGS_HAS_RUN )
+  if( CMAKE_COMPILER_IS_GNUCXX )
+    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-write-strings"
+              CACHE STRING "Flags used by the C++ compiler during all build types." 
+              FORCE )
+  endif ()
+  set( KNRAPID_COMPILER_FLAGS_HAS_RUN ON CACHE INTERNAL "one-time setup of compiler warning flags for generated DDS code" FORCE)
+endif()
