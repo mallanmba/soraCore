@@ -52,7 +52,7 @@ add_build_var( WITH_DDS NOT APPLE )
 find_package( RtiDds )
 
 find_package( ACE )
-find_package( Qt4 )
+find_package( Qt4 COMPONENTS QtCore QtGui)
 find_package( PThreads-win32 )
 
 find_package( Boost 1.50.0 COMPONENTS program_options filesystem system chrono)
