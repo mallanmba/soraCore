@@ -13,6 +13,11 @@ if (CATKIN_DEVEL_PREFIX)
     knDds
   )
   include_directories( ${CATKIN_DEVEL_PREFIX}/include )
+  
+catkin_add_env_hooks(
+  43.knRapid
+  SHELLS sh DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/env-hooks)
+  
 endif(CATKIN_DEVEL_PREFIX)
 
 if (NOT catkin_FOUND)
