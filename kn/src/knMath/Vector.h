@@ -36,6 +36,8 @@ namespace kn
    * to a number of "obviously preferred ones.
    */
 
+  typedef Eigen::VectorXd Vector;
+
   /** @ingroup knMath */
   typedef Eigen::Vector3d Vector3;
   /** @ingroup knMath */
