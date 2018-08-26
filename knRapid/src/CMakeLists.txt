@@ -16,8 +16,8 @@ add_build_switch( rapidFrameStore     KNRAPID_HAS_DDS AND EIGEN3_FOUND)
 add_build_switch( knFrameStoreSvc     KNRAPID_HAS_DDS AND EIGEN3_FOUND )
 add_build_switch( knSystemInfo        NOT APPLE AND UNIX )
 add_build_switch( knSystemInfoSvc     KNRAPID_HAS_DDS AND KNRAPID_BUILD_knSystemInfo )
-add_build_switch( knFetchPool         QT_FOUND )
-add_build_switch( knRaft              KNRAPID_BUILD_rapidCommanding AND IRGUTIL_irgSha1_LIBRARY AND KNRAPID_BUILD_knFetchPool )
+add_subdirectory( knFetchPool )
+add_build_switch( knRaft              KNRAPID_BUILD_rapidCommanding )
 add_build_switch( knProcessManager    KNRAPID_HAS_DDS AND UNIX )
 
 

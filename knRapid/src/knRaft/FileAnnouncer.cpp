@@ -93,11 +93,11 @@ FileAnnouncer::announceFile(const char* path,
     }
 
     m_publisher->sendEvent();
-    return TRUE;
+    return true;
   }
 
   KN_ERROR_OSTR("FileAnnouncer: file \"" << path << "\" is invalid: exists=" << fi.exists() << ", isFile=" << fi.isFile() << ", isReadable=" << fi.isReadable());
-  return FALSE;
+  return false;
 }
 
 

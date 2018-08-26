@@ -47,7 +47,7 @@ namespace kn
     m_sizeX(0),
     m_sizeY(0)
   {
-    set_size(x, y);
+    resize(x, y);
   }
   
   int
@@ -67,7 +67,7 @@ namespace kn
   }
 
   void
-  Array2DViewBase::set_size(size_t x, size_t y) 
+  Array2DViewBase::resize(size_t x, size_t y)
   {
     if (x != m_sizeX || y != m_sizeY) {
      
