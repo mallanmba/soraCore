@@ -23,14 +23,22 @@
 
 #include <sys/statvfs.h>
 
+#include <fstream>
+
 namespace kn
 {
   using namespace std;
 
   FilesystemInfo::FilesystemInfo(FilesystemInfoParameters const& params) :
-    m_params(params),
-    m_lastFilesystemInfo(params.volumes.size())
-  {}
+    m_params(params)
+  {
+    StringVector volumes;
+    volumes.reserve(params.volumes.size());
+    for (size_t i = 0; i < m_params.volumes.size(); ++i) {
+      volumes.push_back(m_params.volumes[i].name);
+    }
+    m_params.volumes = this->collectFileSystems(volumes);
+  }
 
   
   int 
@@ -68,4 +76,35 @@ namespace kn
     }
     return rc;
   } 
+
+  std::vector<FilesystemParameters> FilesystemInfo::collectFileSystems(StringVector const& volumeNames)
+  {
+    StringVector names(volumeNames);
+    sort(names.begin(), names.end());
+    StringVector::iterator iter = unique(names.begin(), names.end());
+    names.erase(iter, names.end());
+
+    vector<FilesystemParameters> volumes;
+
+    std::ifstream is("/proc/mounts");
+    string line;
+    while (is.good() && ! is.eof()) {
+      std::getline(is, line);
+      if (line.substr(0, 5) != "/dev/") {
+        continue;
+      }
+
+      FilesystemParameters volume;
+      stringstream sstr(line);
+      sstr >> volume.name;
+      sstr >> volume.path;
+
+      if (names.empty() || binary_search(names.begin(), names.end(), volume.name)) {
+        volumes.push_back(volume);
+      }
+    }
+
+    return volumes;
+  }
+
 }

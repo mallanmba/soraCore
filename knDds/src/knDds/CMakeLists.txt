@@ -62,11 +62,24 @@ add_target_definitions( ${LIB_NAME} ${EXPORT_DEFINE} )
 # DDS defines apply to all projects in this directory
 add_srcdir_definitions( ${RTIDDS_DEFINES} )
 
+## NOTE catkin_build 
+## Unexplained linking failures in examples ocurred on Ubuntu 14.04 with the 
+## RTI 5.2.3.15_ROUTING-198-eng-build, but not 5.2.3 release. Adding ${CMAKE_DL_LIBS} (dl) 
+## to the link line on the examples did not fix the problem, but adding ${CMAKE_DL_LIBS} 
+## immediately after ${RTIDDS_LIBRARIES} does. Note that ${RTIDDS_LIBRARIES} ALREADY has 
+## -ldl in the variable. However, while the RTIDDS_LIBRARIES variable has the full paths 
+## to the RTI libraries, the link line does NOT. I don't know if it is catkin or cmake
+## that is munging the contents of the RTIDDS_LIBRARIES variable.
+
 target_link_libraries( ${LIB_NAME}
   ${ACE_LIBRARIES}
   ${MIRO_miroXml_LIBRARY}
   ${RTIDDS_LIBRARIES}
+  ${CMAKE_DL_LIBS}
   ${KN_knShare_LIBRARY}
+  ${catkin_LIBRARIES}
+  ${QT_QTXML_LIBRARY}
+  ${QT_QTCORE_LIBRARY}
 )
 
 if ( KNDDS_HAS_DDS_LBPlugin )

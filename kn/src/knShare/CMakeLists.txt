@@ -18,12 +18,10 @@ set( SOURCES
   Singleton.cpp
   StateMachine.cpp
   StateMachineRepository.cpp
-  Time.cpp
 )
 
 set( HEADERS
   ${EXPORT_FILE}
-  Chrono.h
   ConditionVariable.h
   Functional.h
   Image.h
@@ -40,12 +38,19 @@ set( HEADERS
   StateMachine.h
   StateMachineRepository.h
   Thread.h
-  Time.h
 )
 
-include_directories(
-  ${Boost_INCLUDE_DIR}
+if (${Boost_CHRONO_FOUND})
+set( HEADERS
+  ${HEADERS}
+  Chrono.h
+  Time.h
 )
+set ( SOURCES
+  ${SOURCES}
+  Time.cpp
+)
+endif (${Boost_CHRONO_FOUND})
 
 add_library(${LIB_NAME} SHARED
   ${SOURCES}

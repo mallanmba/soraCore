@@ -17,7 +17,6 @@
 
 ******************************************************************************/
 #include "MemoryInfo.h"
-#include "SystemInfoParameters.h"
 
 #include "miro/Log.h"
 
@@ -60,6 +59,12 @@ namespace kn
           int i = sscanf(buffer, "MemFree: %u kB\n", &memory.free);
           if (i != 1) {
             MIRO_LOG(LL_ERROR, "Error parsing MemFree.");
+          }
+        }
+         else if (!strncmp(buffer, "MemAvailable:", 8)) {
+          int i = sscanf(buffer, "MemAvailable: %u kB\n", &memory.available);
+          if (i != 1) {
+            MIRO_LOG(LL_ERROR, "Error parsing MemAvailable.");
             rc = -1;
           }
         }

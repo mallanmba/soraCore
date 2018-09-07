@@ -1,0 +1,8 @@
+# source: kn-extras.cmake.installspace.in
+
+## Create INCLUDE_DIR variable for downstream packages
+set(KN_INCLUDE_DIR @CMAKE_INSTALL_PREFIX@/include )
+
+## add include dirs to catkin_INCLUDE_DIRS 
+set( catkin_INCLUDE_DIRS  ${catkin_INCLUDE_DIRS} ${KN_INCLUDE_DIR} )
+

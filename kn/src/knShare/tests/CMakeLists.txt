@@ -10,10 +10,7 @@ link_libraries(
 )
 
 set( TARGETS
-  array2DPerformance
   array2DTest
-  asyncTest
-  knChronoTest
   lruPoolTest
   repositorySingletonTest
   singletonFooTest
@@ -22,12 +19,23 @@ set( TARGETS
   stateMachineTest
 )
 
-if (NOT WIN32)
-  set( TARGETS 
+if (${Boost_CHRONO_FOUND})
+  set( TARGETS
     ${TARGETS}
-    knLatencyTest
+    asyncTest
+    array2DPerformance
+    knChronoTest
   )
-endif (NOT WIN32)
+
+  if (NOT WIN32)
+    add_executable( knLatencyTest knLatencyTest.cpp)
+    target_link_libraries( knLatencyTest
+      knShare
+      ${Boost_THREAD_LIBRARY}
+      ${ACE_LIBRARIES}
+    )
+  endif (NOT WIN32)
+endif (${Boost_CHRONO_FOUND})
 
 foreach( TARGET ${TARGETS} )
   add_executable( ${TARGET} ${TARGET}.cpp)
@@ -41,10 +49,6 @@ target_link_libraries( singletonFooTest        libknA libknB libknC)
 target_link_libraries( repositorySingletonTest libknA libknB libknC)
 target_link_libraries( singletonTest           libknA libknB libknC)
 target_link_libraries( singletonLibraryTest    ${ACE_LIBRARIES})
-if (NOT WIN32)
-  target_link_libraries( knLatencyTest           ${ACE_LIBRARIES})
-endif (NOT WIN32)
-
 
 #-- install ----------------
 install_targets( /tests ${TARGETS} )

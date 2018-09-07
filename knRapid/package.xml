@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>knRapid</name>
+  <version>1.0.0</version>
+  <description>Rapid Implementation of soraCore</description>
+  <maintainer email="hans.utz@nasa.gov">Hans Utz</maintainer>
+
+  <license>Apache2</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>irg_cmake</build_depend>
+  
+  <depend>irgUtil</depend>
+  <depend>kn</depend>
+  <depend>knDds</depend>
+  <depend>Miro</depend>
+</package>

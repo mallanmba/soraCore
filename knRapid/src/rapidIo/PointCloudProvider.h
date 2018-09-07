@@ -20,7 +20,7 @@
 #define rapid_PointCloudProvider_h
 
 #include "rapidIo_Export.h"
-#include "RapidIoParameters.h"
+#include "rapidIo/RapidIoParameters.h"
 #include "PointCloudIo.h"
 
 #include "rapidUtil/Provider_T.h"

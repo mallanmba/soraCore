@@ -28,7 +28,7 @@ add_library(${LIB_NAME} SHARED
 
 set( TARGETS
   utmToLatLon 
-  latLonToUtm 
+  latLonToUtm
 )
 
 foreach( TEST_TARGET ${TARGETS} )
