@@ -20,6 +20,12 @@ module rapid {
 
     const String32 IMG_V_FOV_KEY = "IMG_V_FOV";
     const String32 IMG_H_FOV_KEY = "IMG_H_FOV";
+    const String32 IMG_CROP_X_KEY  = "CROP_X";
+    const String32 IMG_CROP_Y_KEY  = "CROP_Y";
+    const String32 IMG_CROP_W_KEY  = "CROP_WIDTH";
+    const String32 IMG_CROP_H_KEY  = "CROP_HEIGHT";
+    const String32 IMG_JPEG_Q_KEY  = "JPEG_QUALITY";
+    const String32 IMG_MIN_SEP_KEY = "MIN_SEPARATION";
 
     //@copy-declaration /**
     //@copy-declaration  * Holds status information for an image sensor - typically a camera, but could be a laser scanner, gpr, or
