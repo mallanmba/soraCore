@@ -12,7 +12,6 @@ string( TOUPPER  "${EXPORT}_BUILD_DLL" EXPORT_DEFINE )
 set( SOURCES
   ATrans.cpp
   RotMat3d.cpp
-  Plane.cpp
 )
 
 set( HEADERS
@@ -25,7 +24,7 @@ set( HEADERS
   Quaternion.h
   RotMat3d.h
   Vector.h
-  Plane.h
+  Functions.h
 )
 
 include_directories(

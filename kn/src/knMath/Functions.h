@@ -27,6 +27,7 @@ namespace kn
   template <class T>
   inline int signum(T x, T epsilon = T(0)) { return (epsilon < x) - (x < epsilon); }
 
+  template <class T>
   inline void mod(T& x, T y)
   /*!< replace x by x mod y, extending C++ % to give valid
     results for all signs of x and y :

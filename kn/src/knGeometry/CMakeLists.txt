@@ -11,13 +11,11 @@ string( TOUPPER  "${EXPORT}_BUILD_DLL" EXPORT_DEFINE )
 
 set( SOURCES
   PointCloud.cpp
-  Polygon.cpp
 )
 
 set( HEADERS
   ${EXPORT_FILE}
   PointCloud.h
-  Polygon.h
 )
 
 include_directories(
