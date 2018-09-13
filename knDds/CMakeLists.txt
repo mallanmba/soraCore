@@ -9,7 +9,6 @@ if (CATKIN_DEVEL_PREFIX)
     irg_cmake
     kn
     Miro
-    qt_gui_cpp
   )
   include_directories( ${CATKIN_DEVEL_PREFIX}/include )
 endif(CATKIN_DEVEL_PREFIX)
@@ -52,7 +51,7 @@ endif( CMAKE_COMPILER_IS_GNUCXX )
 add_build_var( WITH_DDS NOT APPLE )
 find_package( RtiDds )
 
-if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
+if( MIRO_BUILD_WITH_QT5 )
   message(STATUS "FOUND QT 5")
   find_package(Qt5Widgets REQUIRED)
   find_package(Qt5Xml REQUIRED)
