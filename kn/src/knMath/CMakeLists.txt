@@ -24,6 +24,7 @@ set( HEADERS
   Quaternion.h
   RotMat3d.h
   Vector.h
+  Functions.h
 )
 
 include_directories(

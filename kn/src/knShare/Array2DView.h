@@ -71,7 +71,7 @@ namespace kn
     static int iLog2(int x);
 
   protected:
-    void set_size(size_t x, size_t y);
+    void resize(size_t x, size_t y);
 
   private:
     size_t m_sizeX;
@@ -125,9 +125,9 @@ namespace kn
       return m_cells[index(x, y)];
     }
 
-    void set_size(size_t x, size_t y) {
+    void resize(size_t x, size_t y) {
       if (x != sizeX() || y != sizeY()) {
-        Array2DViewBase::set_size(x, y);
+        Array2DViewBase::resize(x, y);
         if (x > 0 && y > 0) {
           m_cells.reset(new Cell[numCells()]);
         }

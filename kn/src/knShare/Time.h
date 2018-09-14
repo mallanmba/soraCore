@@ -69,6 +69,20 @@ namespace kn
     
     friend knShare_Export std::ostream& operator<<(std::ostream& ostr, Time6 const& timestamp);
   };
+
+  inline double tv2d(TimePoint const& time)
+  {
+    duration<double> durationInSeconds(time.time_since_epoch());
+
+    return durationInSeconds.count();
+  }
+  inline double tv2d(Duration const& d)
+  {
+    duration<double> durationInSeconds(d);
+
+    return durationInSeconds.count();
+  }
+
 }
 
 #endif
