@@ -39,6 +39,9 @@ module rapid {
 
         //@copy-declaration  /** Direct copy of ROS type */
         struct Marker {
+            //@copy /** tf frame name because RAPID header does not specify frame name */
+            String32 frame_id;
+            
             //@copy /** Namespace to place this object in... used in conjunction with id to create a unique name for the object */
             String32 ns;
 
@@ -83,7 +86,7 @@ module rapid {
             boolean mesh_use_embedded_materials;
         };
 
-        typedef sequence<Marker,8> MarkerArraySequence8;
+        typedef sequence<Marker,32> MarkerArraySequence;
 
         //@copy-c-declaration class  RosMarkerArraySampleTypeSupport;
         //@copy-c-declaration class  RosMarkerArraySampleDataWriter;
@@ -103,7 +106,7 @@ module rapid {
             //@copy-c-declaration #endif
             //@copy-c-declaration typedef RosMarkerArraySample Type;
 
-            public MarkerArraySequence8 marker_array;
+            public MarkerArraySequence marker_array;
         };
     };
   };
