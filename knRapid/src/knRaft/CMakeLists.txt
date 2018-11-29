@@ -34,9 +34,6 @@ include_directories(
   ${KNDDS_INCLUDE_DIR}
   ${RTIDDS_INCLUDE_DIR}
   ${Boost_INCLUDE_DIR}
-  ${QT_INCLUDE_DIR}
-  ${QT_QTXML_INCLUDE_DIR}
-  ${QT_QTCORE_INCLUDE_DIR}
 )
 
 link_directories( ${Boost_LIBRARY_DIRS} )
