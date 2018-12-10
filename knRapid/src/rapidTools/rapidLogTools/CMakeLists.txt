@@ -9,8 +9,6 @@ set(HEADERS
 
 include_directories( 
   ${IRGUTIL_INCLUDE_DIR} 
-  ${QT_INCLUDE_DIR}
-  ${QT_QTCORE_INCLUDE_DIR}
   ${KNRAPID_INCLUDE_DIR}
 )
 
