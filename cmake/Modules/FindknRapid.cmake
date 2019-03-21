@@ -2,15 +2,21 @@ message(STATUS "Looking for knRapid")
 
 # XXX FIXME XXX stub "search" for knRapid
 include( SetArchitecture )
+include( GetLibraryList )
 
 # Set parent directory as a search location
 string(REGEX REPLACE "/[^/]*$" "" PROJ_SRC_PARENT ${PROJECT_SOURCE_DIR})
 
 if( NOT KNRAPID_ROOT_DIR )
-  set( KNRAPID_ROOT_DIR ${PROJ_SRC_PARENT}/${ARCHITECTURE} )
+  find_file( knRapidConfig_INCLUDE_H "include/knRapidConfig.h"
+    ${PROJ_SRC_PARENT}/${ARCHITECTURE})
+  if(knRapidConfig_INCLUDE_H) 
+    string(REGEX REPLACE "/[^/]*/[^/]*$" "" KNRAPID_ROOT_DIR ${knRapidConfig_INCLUDE_H} )
+  else()
+    set( KNRAPID_ROOT_DIR ${PROJ_SRC_PARENT}/${ARCHITECTURE} )
+    message(STATUS "  knRapid root hardcoded without check to ${KNRAPID_ROOT_DIR}")
+  endif()
 endif( NOT KNRAPID_ROOT_DIR )
-
-message(STATUS "  knRapid root hardcoded without check to ${KNRAPID_ROOT_DIR}")
 
 set( KNRAPID_INCLUDE_DIR ${KNRAPID_ROOT_DIR}/include 
                        ${KNRAPID_ROOT_DIR}/include/rapidDds 
