@@ -45,8 +45,8 @@ if (NOT catkin_FOUND)
   ## we have to play some tricks to get install
   ## path to "stick" in Windows
   ##------------------------------------------------
-  set( RAPID_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "RAPID install path")
-  set( CMAKE_INSTALL_PREFIX ${RAPID_INSTALL_PREFIX} CACHE INTERNAL "" )
+  set( KNRAPID_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../${ARCHITECTURE}" CACHE PATH "RAPID install path")
+  set( CMAKE_INSTALL_PREFIX ${KNRAPID_INSTALL_PREFIX} CACHE INTERNAL "" )
 
   find_package( IrgUtil )
   find_package( Miro )
