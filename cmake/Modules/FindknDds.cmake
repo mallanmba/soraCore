@@ -2,15 +2,22 @@ message(STATUS "Looking for knDds")
 
 # XXX FIXME XXX stub "search" for knDds
 include( SetArchitecture )
+include( GetLibraryList )
 
 # Set parent directory as a search location
 string(REGEX REPLACE "/[^/]*$" "" PROJ_SRC_PARENT ${PROJECT_SOURCE_DIR})
 
 if( NOT KNDDS_ROOT_DIR )
-  set( KNDDS_ROOT_DIR ${PROJ_SRC_PARENT}/${ARCHITECTURE} )
+  find_file( knDdsConfig_INCLUDE_H "include/knDdsConfig.h"
+    ${PROJ_SRC_PARENT}/${ARCHITECTURE})
+  if(knDdsConfig_INCLUDE_H) 
+    string(REGEX REPLACE "/[^/]*/[^/]*$" "" KNDDS_ROOT_DIR ${knDdsConfig_INCLUDE_H} )
+  else()
+    set( KNDDS_ROOT_DIR ${PROJ_SRC_PARENT}/${ARCHITECTURE} )
+    message(STATUS "  knDds root hardcoded without check to ${KNDDS_ROOT_DIR}")
+  endif()
 endif( NOT KNDDS_ROOT_DIR )
 
-message(STATUS "  KNDDS root hardcoded without check to ${KNDDS_ROOT_DIR}")
 
 set( KNDDS_INCLUDE_DIR ${KNDDS_ROOT_DIR}/include 
                        ${KNDDS_ROOT_DIR}/include/rapidDds 
