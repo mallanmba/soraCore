@@ -26,8 +26,6 @@ include_directories(
   ${CMAKE_CURRENT_BINARY_DIR}/../../../rapidDds
   ${Boost_INCLUDE_DIR}
   ${RTIDDS_INCLUDE_DIR}
-  ${QT_INCLUDE_DIR}
-  ${QT_QTCORE_INCLUDE_DIR}
 )
 
 link_libraries(

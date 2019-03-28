@@ -35,9 +35,6 @@ include_directories (
   ${RTIDDS_INCLUDE_DIR}
   ${KN_INCLUDE_DIR}
   ${Boost_INCLUDE_DIR}
-  ${QT_INCLUDE_DIR}
-  ${QT_QTXML_INCLUDE_DIR}
-  ${QT_QTCORE_INCLUDE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}/../rapidDds
 )
 
