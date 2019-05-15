@@ -24,3 +24,5 @@ namespace kn
   {}
 }
 
+ACE_SINGLETON_TEMPLATE_INSTANTIATE(ACE_Singleton, kn::DdsTypeRegistratorRepository, ACE_SYNCH_RECURSIVE_MUTEX);
+

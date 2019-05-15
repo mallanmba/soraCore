@@ -269,3 +269,7 @@ namespace kn
     throw ENotRegistered(name);
   }
 }
+
+ACE_SINGLETON_TEMPLATE_INSTANTIATE(ACE_Unmanaged_Singleton, kn::DdsDomainParticipantRepository, ACE_SYNCH_RECURSIVE_MUTEX);
+ACE_SINGLETON_TEMPLATE_INSTANTIATE(ACE_Unmanaged_Singleton, kn::DdsPublisherRepository, ACE_SYNCH_RECURSIVE_MUTEX);
+ACE_SINGLETON_TEMPLATE_INSTANTIATE(ACE_Unmanaged_Singleton, kn::DdsSubscriberRepository, ACE_SYNCH_RECURSIVE_MUTEX);
