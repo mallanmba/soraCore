@@ -1,3 +1,3 @@
 #include "RapidSubsystemRepository.h"
 
-ACE_SINGLETON_TEMPLATE_INSTANTIATION(kn::Repository<rapid::RapidSubsystemPtr>);
+KN_SINGLETON_TEMPLATE_INSTANTIATION(kn::Repository<rapid::RapidSubsystemPtr>);

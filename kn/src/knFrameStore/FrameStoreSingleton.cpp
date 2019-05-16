@@ -23,5 +23,5 @@ namespace kn
   Singleton<FrameStore> FrameStoreSingleton::instance;
 }
 
-ACE_SINGLETON_TEMPLATE_INSTANTIATION(kn::Singleton<kn::FrameStore>)
+KN_SINGLETON_TEMPLATE_INSTANTIATION(kn::Singleton<kn::FrameStore>)
 

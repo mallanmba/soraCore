@@ -18,4 +18,4 @@
 ******************************************************************************/
 #include "StateMachineRepository.h"
 
-ACE_SINGLETON_TEMPLATE_INSTANTIATION(kn::Singleton<kn::Repository<kn::StateMachine *> >);
+KN_SINGLETON_TEMPLATE_INSTANTIATION(kn::Singleton<kn::Repository<kn::StateMachine *> >);

@@ -63,6 +63,6 @@ TextMessager::sendText(const char* category,
 }
 
 }
-ACE_SINGLETON_TEMPLATE_INSTANTIATION(kn::Singleton<rapid::TextMessager>);
+KN_SINGLETON_TEMPLATE_INSTANTIATION(kn::Singleton<rapid::TextMessager>);
 
 

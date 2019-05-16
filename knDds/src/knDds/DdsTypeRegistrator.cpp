@@ -18,11 +18,13 @@
 ******************************************************************************/
 #include "DdsTypeRegistrator.h"
 
+#include "knShare/Singleton.h"
+
 namespace kn
 {
   DdsTypeRegistratorBase::~DdsTypeRegistratorBase() throw()
   {}
 }
 
-ACE_SINGLETON_TEMPLATE_INSTANTIATE(ACE_Singleton, kn::DdsTypeRegistratorRepository, ACE_SYNCH_RECURSIVE_MUTEX);
+KN_SINGLETON_TEMPLATE_INSTANTIATE(ACE_Singleton, kn::DdsTypeRegistratorRepository, ACE_SYNCH_RECURSIVE_MUTEX);
 
