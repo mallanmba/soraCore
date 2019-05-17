@@ -18,7 +18,4 @@
 ******************************************************************************/
 #include "StateMachineRepository.h"
 
-// does this evaluate to true on any of our target platforms?
-#if defined (ACE_HAS_EXPLICIT_STATIC_TEMPLATE_MEMBER_INSTANTIATION)
-template kn::Singleton<kn::StateMachineRepository> * kn::Singleton<kn::StateMachineRepository>::s_instance_;
-#endif /* ACE_HAS_EXPLICIT_STATIC_TEMPLATE_MEMBER_INSTANTIATION */
+KN_SINGLETON_TEMPLATE_INSTANTIATION(kn::Singleton<kn::Repository<kn::StateMachine *> >);
