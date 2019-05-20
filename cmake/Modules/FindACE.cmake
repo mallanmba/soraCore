@@ -50,11 +50,9 @@ if( ACE_ROOT_DIR )
   # FIXME - do a proper header search
   if( EXISTS ${ACE_ROOT_DIR}/ace/ACE.h )
     set( ACE_INCLUDE_DIR  ${ACE_ROOT_DIR}  CACHE PATH "ACE include path" )
-  else( EXISTS ${ACE_ROOT_DIR}/ace/ACE.h )
-    set( ACE_INCLUDE_DIR  ${ACE_ROOT_DIR}/include  CACHE PATH "ACE include path" )
   else( EXISTS ${ACE_ROOT_DIR}/include/ace/ACE.h )
     set( ACE_INCLUDE_DIR  ${ACE_ROOT_DIR}/include  CACHE PATH "ACE include path" )
-  endif( EXISTS ${ACE_ROOT_DIR}/ace/ACE.h )
+  endif( )
   
   get_library_list(ACE ${ACE_LIBRARY_DIR} "d" "ACE")
   
