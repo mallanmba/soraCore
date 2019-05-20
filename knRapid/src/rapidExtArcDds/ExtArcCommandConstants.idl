@@ -149,6 +149,10 @@ module rapid {
       const String32 IMGSTREAM_METHOD_setSaveImages_PARAM_saveImages = "saveImages";
       const DataType IMGSTREAM_METHOD_setSaveImages_DTYPE_saveImages = RAPID_BOOL;
 
+      const String32 IMGSTREAM_METHOD_setRotationAngle = "setRotationAngle";
+      const String32 IMGSTREAM_METHOD_setRotationAngle_PARAM_rotationAngle = "rotationAngle";
+      const DataType IMGSTREAM_METHOD_setRotationAngle_DTYPE_rotationAngle = RAPID_INT;
+
       const String32 IMGSTREAM_METHOD_reconnect = "reconnect";
 
       

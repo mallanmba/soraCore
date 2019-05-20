@@ -23,7 +23,5 @@ namespace kn
   Singleton<FrameStore> FrameStoreSingleton::instance;
 }
 
-#if defined (ACE_HAS_EXPLICIT_STATIC_TEMPLATE_MEMBER_INSTANTIATION)
-template kn::Singleton <FrameStore> * kn::Singleton <FrameStore>::s_instance;
-#endif /* ACE_HAS_EXPLICIT_STATIC_TEMPLATE_MEMBER_INSTANTIATION */
+KN_SINGLETON_TEMPLATE_INSTANTIATION(kn::Singleton<kn::FrameStore>)
 

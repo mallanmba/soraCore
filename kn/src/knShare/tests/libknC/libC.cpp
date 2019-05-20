@@ -29,17 +29,7 @@ struct Bar
 
 Bar bar;
 
-// From ace/README:
-//ACE_HAS_EXPLICIT_STATIC_TEMPLATE_MEMBER_INSTANTIATION  
-//                                        For the GCC compiler
-//                                        on AIX, HPUX and VxWorks we have to
-//                                        explicitly instantiate static template
-//                                        members else we get multiple instances
-//                                        of the same static.
-#if defined (ACE_HAS_EXPLICIT_STATIC_TEMPLATE_MEMBER_INSTANTIATION)
-  template kn::Singleton<Foo> * kn::Singleton<Foo>::s_instance;
-  template kn::Singleton<int> * kn::Singleton<int>::s_instance;
-  template kn::Singleton<kn::Repository<Foo> > *
-    kn::Singleton<kn::Repository<Foo> >::s_instance;
-#endif /* ACE_HAS_EXPLICIT_STATIC_TEMPLATE_MEMBER_INSTANTIATION */
 
+KN_SINGLETON_TEMPLATE_INSTANTIATION(kn::Singleton<Foo>);
+KN_SINGLETON_TEMPLATE_INSTANTIATION(kn::Singleton<FooRepository>);
+KN_SINGLETON_TEMPLATE_INSTANTIATION(kn::Singleton<int>);

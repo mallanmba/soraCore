@@ -26,6 +26,7 @@ module rapid {
     const String32 IMG_CROP_H_KEY  = "CROP_HEIGHT";
     const String32 IMG_JPEG_Q_KEY  = "JPEG_QUALITY";
     const String32 IMG_MIN_SEP_KEY = "MIN_SEPARATION";
+    const String32 IMG_ROT_ANG_KEY = "ROT_ANGLE";
 
     //@copy-declaration /**
     //@copy-declaration  * Holds status information for an image sensor - typically a camera, but could be a laser scanner, gpr, or

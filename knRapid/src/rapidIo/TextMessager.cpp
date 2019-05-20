@@ -62,8 +62,7 @@ TextMessager::sendText(const char* category,
   m_publisher->sendEvent();
 }
 
-#if defined (ACE_HAS_EXPLICIT_STATIC_TEMPLATE_MEMBER_INSTANTIATION)
-template kn::Singleton<rapid::TextMessager> * kn::Singleton<rapid::TextMessager>::s_instance_;
-#endif /* ACE_HAS_EXPLICIT_STATIC_TEMPLATE_MEMBER_INSTANTIATION */
-
 }
+KN_SINGLETON_TEMPLATE_INSTANTIATION(kn::Singleton<rapid::TextMessager>);
+
+

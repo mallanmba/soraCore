@@ -19,6 +19,8 @@
 #include "DdsEntityRepositories.h"
 #include "DdsSupport.h"
 
+#include "knShare/Singleton.h"
+
 #include "miro/Log.h"
 
 namespace kn
@@ -269,3 +271,7 @@ namespace kn
     throw ENotRegistered(name);
   }
 }
+KN_SINGLETON_TEMPLATE_INSTANTIATE(ACE_Unmanaged_Singleton, kn::DdsDomainParticipantRepository, ACE_SYNCH_RECURSIVE_MUTEX);
+
+KN_SINGLETON_TEMPLATE_INSTANTIATE(ACE_Unmanaged_Singleton, kn::DdsPublisherRepository, ACE_SYNCH_RECURSIVE_MUTEX);
+KN_SINGLETON_TEMPLATE_INSTANTIATE(ACE_Unmanaged_Singleton, kn::DdsSubscriberRepository, ACE_SYNCH_RECURSIVE_MUTEX);
