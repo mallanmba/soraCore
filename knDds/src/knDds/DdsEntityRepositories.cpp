@@ -48,7 +48,7 @@ namespace kn
   /** The repository takes ownership of the instance. */
   void
   DdsEntityRepository::add(std::string const& _name, DDS::Entity * _instance)
-  throw(EAlreadyRegistered)
+  //throw(EAlreadyRegistered)
   {
     if (instances_.find(_name) == instances_.end()) {
       instances_.insert(std::make_pair(_name, _instance));
@@ -63,7 +63,7 @@ namespace kn
    * if no instance is registered under the specified name.
    */
   DDS::Entity *
-  DdsEntityRepository::get(std::string const & _name) throw(ENotRegistered)
+  DdsEntityRepository::get(std::string const & _name) //throw(ENotRegistered)
   {
     InstanceMap::const_iterator i = instances_.find(_name);
     if (i != instances_.end())
@@ -125,14 +125,14 @@ namespace kn
   }
 
   DDS::DomainParticipant *
-  DdsDomainParticipantRepository::get(std::string const& name) throw(ENotRegistered)
+  DdsDomainParticipantRepository::get(std::string const& name) //throw(ENotRegistered)
   {
     return dynamic_cast<DDS::DomainParticipant *>(this->Super::get(name));
   }
 
   void
   DdsDomainParticipantRepository::remove(std::string const& name)
-  throw(ENotRegistered)
+  //throw(ENotRegistered)
   {
     DDS::DomainParticipantFactory * dpf =
       DDS::DomainParticipantFactory::get_instance();
@@ -185,14 +185,14 @@ namespace kn
   }
 
   DDS::Publisher *
-  DdsPublisherRepository::get(std::string const& name) throw(ENotRegistered)
+  DdsPublisherRepository::get(std::string const& name) //throw(ENotRegistered)
   {
     return dynamic_cast<DDS::Publisher *>(this->Super::get(name));
   }
 
   void
   DdsPublisherRepository::remove(std::string const& name)
-  throw(ENotRegistered)
+  //throw(ENotRegistered)
   {
     InstanceMap::iterator i = instances_.find(name);
     if (i != instances_.end()) {
@@ -243,14 +243,14 @@ namespace kn
   }
 
   DDS::Subscriber *
-  DdsSubscriberRepository::get(std::string const& name) throw(ENotRegistered)
+  DdsSubscriberRepository::get(std::string const& name) //throw(ENotRegistered)
   {
     return dynamic_cast<DDS::Subscriber *>(this->Super::get(name));
   }
 
   void
   DdsSubscriberRepository::remove(std::string const& name)
-  throw(ENotRegistered)
+  //throw(ENotRegistered)
   {
     InstanceMap::iterator i = instances_.find(name);
     if (i != instances_.end()) {

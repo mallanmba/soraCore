@@ -35,7 +35,7 @@ namespace kn
   {
   public:
     virtual ~DdsTypeRegistratorBase() throw();
-    virtual void registerType(DDS::DomainParticipant * participant) throw(Miro::Exception) = 0;
+    virtual void registerType(DDS::DomainParticipant * participant) =0;//throw(Miro::Exception) = 0;
   };
 
   template<typename T>
@@ -43,7 +43,8 @@ namespace kn
   {
   public:
     virtual ~DdsTypeRegistrator() throw() {}
-    virtual void registerType(DDS::DomainParticipant * participant) throw(Miro::Exception) {
+    virtual void registerType(DDS::DomainParticipant * participant) //throw(Miro::Exception) 
+    {
       /* Register type before creating topic */
       char const * type = T::TypeSupport::get_type_name();
       MIRO_LOG_OSTR(LL_NOTICE, "registering type of name: " << type);
