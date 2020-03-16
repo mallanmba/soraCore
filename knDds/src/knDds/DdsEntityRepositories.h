@@ -60,11 +60,11 @@ namespace kn
     virtual ~DdsEntityRepository() throw();
 
     //! Register an instance at the repository.
-    virtual void add(std::string const& name, DDS::Entity * type) throw(EAlreadyRegistered);
+    virtual void add(std::string const& name, DDS::Entity * type);// throw(EAlreadyRegistered);
     //! Look up an instance by name.
-    virtual Type * get(std::string const& name) throw(ENotRegistered);
+    virtual Type * get(std::string const& name);// throw(ENotRegistered);
     //! Remove instance from the repository, deleting it.
-    virtual void remove(std::string const& name) throw(ENotRegistered) = 0;
+    virtual void remove(std::string const& name) = 0;// throw(ENotRegistered) = 0;
     //! Get read-only access to the whole repository.
     InstanceMap const& getMap() const throw() {
       return instances_;
@@ -128,9 +128,9 @@ namespace kn
     virtual ~DdsDomainParticipantRepository() throw();
 
     //! Look up an instance by name.
-    virtual Type * get(std::string const& name = "Default") throw(ENotRegistered);
+    virtual Type * get(std::string const& name = "Default");// throw(ENotRegistered);
     //! Remove instance from the repository, deleting it.
-    virtual void remove(std::string const& name) throw(ENotRegistered);
+    virtual void remove(std::string const& name);// throw(ENotRegistered);
 
     //! Singleton instance accessor wrapper.
     static SingletonType instance;
@@ -168,9 +168,9 @@ namespace kn
     virtual ~DdsPublisherRepository() throw();
 
     //! Look up an instance by name.
-    virtual Type * get(std::string const& name) throw(ENotRegistered);
+    virtual Type * get(std::string const& name);// throw(ENotRegistered);
     //! Remove instance from the repository, deleting it.
-    virtual void remove(std::string const& name) throw(ENotRegistered);
+    virtual void remove(std::string const& name);// throw(ENotRegistered);
 
     //! Singleton instance accessor wrapper.
     static SingletonType instance;
@@ -207,9 +207,9 @@ namespace kn
     virtual ~DdsSubscriberRepository() throw();
 
     //! Look up an instance by name.
-    virtual Type * get(std::string const& name) throw(ENotRegistered);
+    virtual Type * get(std::string const& name);// throw(ENotRegistered);
     //! Remove instance from the repository, deleting it.
-    virtual void remove(std::string const& name) throw(ENotRegistered);
+    virtual void remove(std::string const& name);// throw(ENotRegistered);
 
     //! Singleton instance accessor wrapper.
     static SingletonType instance;

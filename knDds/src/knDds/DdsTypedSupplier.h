@@ -112,8 +112,8 @@ namespace kn
 
     Type const& event() const throw();
     Type& event() throw();
-    void sendEvent() throw(Miro::Exception);
-    void sendEvent(Type const& data, DDS::InstanceHandle_t const& handle = DDS_HANDLE_NIL) throw(Miro::Exception);
+    void sendEvent(); //throw(Miro::Exception);
+    void sendEvent(Type const& data, DDS::InstanceHandle_t const& handle = DDS_HANDLE_NIL); //throw(Miro::Exception);
     virtual DataWriter& dataWriter() throw() {
       return dynamic_cast<DataWriter&>(*m_writer);
     }
@@ -340,7 +340,7 @@ namespace kn
    */ 
   template<class T>
   void
-  DdsTypedSupplier<T>::sendEvent(Type const& data, DDS::InstanceHandle_t const& handle) throw(Miro::Exception)
+  DdsTypedSupplier<T>::sendEvent(Type const& data, DDS::InstanceHandle_t const& handle) //throw(Miro::Exception)
   {
     DDS::ReturnCode_t rc = static_cast<DataWriter *>(m_writer)->write(data, handle);
 
@@ -354,7 +354,7 @@ namespace kn
    */
   template<class T>
   void
-  DdsTypedSupplier<T>::sendEvent() throw(Miro::Exception)
+  DdsTypedSupplier<T>::sendEvent() //throw(Miro::Exception)
   {
     DDS::ReturnCode_t rc = static_cast<DataWriter *>(m_writer)->write(*m_instance, DDS_HANDLE_NIL);
 
